@@ -1,5 +1,5 @@
 #author: Joris Jean van der Lugt
-#date: 28-10-2021
+#date: 27-01-2021
 #Human cinnamaldehyde pbk Model adapted from:  "Dose-dependent DNA adduct formation by cinnamaldehyde and other food-borne α,β-unsaturated aldehydes predicted by physiologically based in silico modelling"
 
 library(RxODE)
@@ -28,12 +28,16 @@ colnames <-c("Age","Height_start","Height_cv","Height","BW_start","BW_cv","BW","
              "V_B","V_A","V_V","V_SI","V_RP","V_SP","Q_C","Q_F","Q_L","Q_SI","Q_RP","Q_SP")
 
 par_var_m <- length(colnames)
+par_var_f <- length(colnames)
 
 #create data frames for population males
 var_m <- matrix(NA, nrow = N, ncol = par_var_m)
 colnames(var_m) <- colnames
 var_m <- as.data.frame(var_m)
-
+#create data frames for the population of females
+var_f <- matrix(NA, nrow = NF, ncol = par_var_f)
+colnames(var_f) <- colnames
+var_f <- as.data.frame(var_f)
 
 RM_L_DA <- 0 
 RM_Lc_GSH  <- 0 
@@ -51,12 +55,26 @@ var_m$P_SI     <-  2.04 #Small intestine/Blood partition coefficients
 var_m$P_RP     <-  2.04 #Richly perfused tissues/Blood partition coefficients
 var_m$P_SP     <-  1.57 #Slowely perfused tissues/Blood partition coefficients
 
-#-Cinnamyl AlcOHol-#
+#-Cinnamyl Alcohol-#
 var_m$P_OH_F    <-  40.5 #Fat/Blood partition coefficient
 var_m$P_OH_L    <-  2.09 #Fat/Blood partition coefficient
 var_m$P_OH_SI   <-  2.09 #Small intestine/Blood partition coefficients
 var_m$P_OH_RP   <-  2.09 #Richly perfused tissues/Blood partition coefficients
 var_m$P_OH_SP   <-  1.60 #Slowly perfused tissues/Blood partition coefficients
+
+
+var_f$P_F      <-  39.3 #Fat/Blood partition coefficient
+var_f$P_L      <-  2.04 #Fat/Blood partition coefficient
+var_f$P_SI     <-  2.04 #Small intestine/Blood partition coefficients
+var_f$P_RP     <-  2.04 #Richly perfused tissues/Blood partition coefficients
+var_f$P_SP     <-  1.57 #Slowely perfused tissues/Blood partition coefficients
+
+#-Cinnamyl Alcohol-#
+var_f$P_OH_F    <-  40.5 #Fat/Blood partition coefficient
+var_f$P_OH_L    <-  2.09 #Fat/Blood partition coefficient
+var_f$P_OH_SI   <-  2.09 #Small intestine/Blood partition coefficients
+var_f$P_OH_RP   <-  2.09 #Richly perfused tissues/Blood partition coefficients
+var_f$P_OH_SP   <-  1.60 #Slowly perfused tissues/Blood partition coefficients
 
 #--Pyshiological Parameters--#
 #Population specific parameters (Male)
@@ -85,13 +103,45 @@ var_m$V_SP     <-var_m$BW - var_m$V_B - var_m$V_RP -var_m$V_SI - var_m$V_L - var
 
 #-Cardiac parameters-#
 
-#MALE
 var_m$Q_C           <- var_m$BSA * 60 * (3 - 0.01 * (var_m$Age - 20))           #Cardiac output (L/h)
 var_m$Q_SI          <- var_m$Q_C * 0.15                                         #Blood flow to the gut (L/h)
 var_m$Q_F           <- var_m$Q_C * 0.05                                         #Blood flow to adipose tissue (L/h)
 var_m$Q_L           <- var_m$Q_C * 0.065                                        #Blood flow to liver via hepatic artery (L/h)
 var_m$Q_RP          <- 0.626 * var_m$Q_C - var_m$Q_SI - var_m$Q_L               #Blood flow to richly perfused tissue (L/h)
 var_m$Q_SP          <- 0.374 * var_m$Q_C - var_m$Q_F                            #Blood flow to slowly perfused tissue (L/h)
+
+##--Population specific parameters (female)--##
+Age                    <- runif(N,18,50)                                       #Age (years)
+var_f$Age              <- Age
+var_f$Height_start     <- 161.66 + 0.1319 * var_f$Age - 0.0027*var_f$Age^2    #Body height baseline (cm)
+var_f$Height_cv        <- rnorm(N,0,0.039)                                     #Variation in body height
+var_f$Height           <- var_f$Height_start * exp(var_m$Height_cv)            #Body height (cm)
+var_f$BW_start         <- exp(2.7383+0.0091 * var_f$Height)                     #Body weight baseline (kg)
+var_f$BW_cv            <- rnorm(N,0,0.188)                                      #Variation in body weight
+var_f$BW               <- var_f$BW_start * exp(var_f$BW_cv)                    #Body weight (kg)
+var_f$BSA              <- 0.007184 * var_f$Height^0.725 * var_f$BW^0.425       #Body surface area (m2)
+
+#-Tissues volumes in % body weight-#
+
+var_f$V_L       <- (1072.8 * (var_f$BSA)-345.7) / 1000                             #Volume liver tissue (l)
+var_f$V_F       <- (1.61*var_f$BW)/(var_f$Height/100)-38.3                         #Volume adipose tissue (L)
+var_f$V_F_min   <- 0.05 * var_f$BW                                           #Minimum of adipose tissue should be at least 5% of body weight
+var_f$V_F       <- ifelse(var_f$V_F < var_f$V_F_min, var_f$V_F_min, var_f$V_F)      #To ensure that adipose tissue is at least 5% of body weight
+var_f$V_B       <-(((35.5 * var_f$Height + 2.27 * var_f$BW - 3382)/ 0.6178 )/ 1000)        #Volume blood (L)
+var_f$V_A       <-var_m$V_B / 3                                                   #Volume arterial blood (L)
+var_f$V_V       <-var_m$V_B * (2/3)                                               #Volume venous blood (L) 
+var_f$V_SI      <-0.021 * (var_m$BW - var_m$V_F * 0.92) / 1.05                           #Volume gut tissue (L)
+var_f$V_RP      <-(2.331 * 10^-3 * var_f$Age + 0.1253 * var_f$BW^0.8477 + var_f$Height^0.3821 - 4.725) - var_m$V_SI - var_m$V_L   #Volume richly perfused tissue (L)
+var_f$V_SP      <-var_f$BW - var_f$V_B - var_f$V_RP -var_f$V_SI - var_f$V_L - var_f$V_F  #Volume slowly perfused tissue (L)
+
+#-Cardiac parameters-#
+
+var_f$Q_C           <- var_m$BSA * 60 * (3 - 0.01 * (var_m$Age - 20))           #Cardiac output (L/h)
+var_f$Q_SI          <- var_m$Q_C * 0.17                                         #Blood flow to the gut (L/h)
+var_f$Q_F           <- var_m$Q_C * 0.085                                         #Blood flow to adipose tissue (L/h)
+var_f$Q_L           <- var_m$Q_C * 0.065                                        #Blood flow to liver via hepatic artery (L/h)
+var_f$Q_RP          <- 0.626 * var_m$Q_C - var_m$Q_SI - var_m$Q_L               #Blood flow to richly perfused tissue (L/h)
+var_f$Q_SP          <- 0.374 * var_m$Q_C - var_m$Q_F    
 
 #----GSH parameters----#
 #--GSH synthesis in umol/kg tissue/h--#
@@ -153,12 +203,71 @@ var_m$Vsmax_SI_AO    <- 30 #Scaled Vmax for enzymatic reduction of cinnamaldehyd
 var_m$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
 var_m$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
+#----GSH parameters female----#
+#--GSH synthesis in umol/kg tissue/h--#
+
+var_f$G_SYN_L     <- 1122  #Liver 
+var_f$G_SYN_SI    <- 27    #Small intestine
+
+#-Apparent first order rate constant GSH turn over(RAT?) per h-#
+var_f$k_L_GLOS    <- 0.142 #Liver
+var_f$k_SI_GLOS   <- 0.044 #Small intestine
+
+#--Initial GSH concentration--#
+var_f$init_GSH_L  <- 5639   #initial GSH concentration in the liver in umol/kg
+var_f$init_GSH_SI <- 1250   #initial GSH concentration in the small intestine in umol/kg
+
+var_f$k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
+var_f$k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
+
+#----Protein reactive sites in μmol/kg tissue----#
+var_f$C_PRO_L     <- 3000  #Liver
+var_f$C_PRO_SI    <- 774   #Small intestine
+
+#----DNA parameters----#
+var_f$C_L_dG     <-  1.36 #Concentration of 2ʹ-dG in the liver μmol/kg liver
+var_f$T_0.5      <-  38.5   #Half-life of DNA adduct in the liver in hours
+
+
+#--Chemical parameters--#
+var_f$Ka <- 5.0  #Absorption rate constant for uptake in the Small intestine in per H
+
+#----Liver----#
+
+#-first rate order constants-#
+var_f$k_L_OH  <- 4.2e-02   #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
+
+#--Michaelis menten constants--#
+var_f$Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
+var_f$Km_L_AO     <-  330  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the liver in μM
+var_f$Km_L_GST    <-  100 #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM  
+var_f$Km_L_GST_G  <-  100 #??????
+
+#--Vmax values--#
+var_f$Vsmax_L_CA    <-  9.7  #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
+var_f$Vsmax_L_AO    <-  73   #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
+var_f$Vsmax_L_GST   <-  37   #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
+var_f$Vsmax_L_GST_G <- 100   #???????????
+
+#----Small intestines----#
+#--Michaelis menten constants--#
+var_f$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
+var_f$Km_SI_AO    <- 90  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
+var_f$Km_SI_OH    <- 290 #Km for enzymatic oxidation of cinnamly alcOHol into cinnamaldehyde in the Small Intestine in μM
+var_f$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM (RAT value)
+var_f$Km_SI_GST_G <- 100  #?????????
+
+#-Vmax values-#
+var_f$Vsmax_SI_CA    <- 21 #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
+var_f$Vsmax_SI_AO    <- 30 #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
+var_f$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
+var_f$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Combine datasets Male and Female for PBPK model
-#phys <- rbind(var_m,var_f)
+phys <- rbind(var_m,var_f)
 
 #ONLY MALE
-phys <- var_m
+#phys <- var_m
 
 #ONLY FEMALE
 #  phys <- var_mf
@@ -531,6 +640,6 @@ for (i in 1:(time.end/time.frame+1)) {
 }
 
 colnames(tab_C_L)=c("time","C_L_P2.5","C_L_P50","C_L_P97.5")
-sdkajfskd
+
 
 
