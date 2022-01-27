@@ -22,7 +22,7 @@ N           <-1000     #Number of males
 NF          <-1000     #Number of females
 Dose_in_mg   <-250      #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
-DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+6     #The administered dose in umol 
+
 
 colnames <-c("Age","Height_start","Height_cv","Height","BW_start","BW_cv","BW","BSA","V_L","V_F","V_F_min",
              "V_B","V_A","V_V","V_SI","V_RP","V_SP","Q_C","Q_F","Q_L","Q_SI","Q_RP","Q_SP")
@@ -336,6 +336,7 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
+DOSE<-(Dose_in_mg * phys$BW)/ MW  * 1e+6     #The administered dose in umol 
 
 parameters=cbind(RM_L_DA=RM_L_DA,  
                  RM_Lc_GSH=RM_Lc_GSH, 

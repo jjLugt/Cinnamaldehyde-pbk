@@ -6,7 +6,7 @@
 
 #Comparison between human desolve and rxode model
 
-combined_liver <- data.frame(solve.pbk["time"],solve.pbk["A_L"],df_pbk_results['A_L'])
+combined_liver <- data.frame(solve.pbk_nonpop["time"],solve.pbk_nonpop["A_L"],df_pbk_results['A_L'])
 colnames(combined_liver)=c("time","Human_desolve","Human_rxode")       #Add column names
 c_liver <- melt(data = combined_liver, id.vars="time", variable.name= "lever", variable.value = "concentratie")
 
@@ -33,5 +33,3 @@ ggL <- ggplot(combined_liver)+
   theme_classic()
 
 ggL+ scale_y_log10()
-
-bla bla
