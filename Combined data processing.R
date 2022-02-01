@@ -33,3 +33,19 @@ ggL <- ggplot(combined_liver)+
   theme_classic()
 
 ggL+ scale_y_log10()
+
+#combined figure of all three models liver outputs
+combined_venous <- data.frame(tab_C_V["time"],tab_C_V[2],tab_C_V[3],tab_C_V[4],df_pbk_results['A_V'],solve.pbk_nonpop["A_V"])
+colnames(combined_venous)=c("time","C_L_P2.5","C_L_P50","C_L_P97.5","Human_desolve","Human_rxode")       #Add column names
+
+ggV <- ggplot(combined_venous)+
+  geom_line(aes(x=time, y=C_L_P2.5), linetype = "dashed")+
+  geom_line(aes(x=time, y=C_L_P50), color = "red", size = 1)+
+  geom_line(aes(x=time, y=C_L_P97.5), linetype = "dashed")+
+  geom_line(aes(x=time, y=Human_desolve),color="green", size = 1)+
+  geom_line(aes(x=time, y=Human_rxode),color="blue",size=1)+
+  labs(y = "Venous blood concentration ",
+       x = "Time (h)")  +
+  theme_classic()
+
+ggV+ scale_y_log10()

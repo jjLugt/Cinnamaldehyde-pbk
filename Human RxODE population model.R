@@ -264,10 +264,10 @@ var_f$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alc
 var_f$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Combine datasets Male and Female for PBPK model
-phys <- rbind(var_m,var_f)
+#phys <- rbind(var_m,var_f)
 
 #ONLY MALE
-#phys <- var_m
+phys <- var_m
 
 #ONLY FEMALE
 #  phys <- var_mf
@@ -447,7 +447,7 @@ inits <- c("A_GI"         = 0 ,
 
 #Step 3 exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = DOSE, dur=0.001, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose = DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
 
 
