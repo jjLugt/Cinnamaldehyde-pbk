@@ -110,8 +110,7 @@ var_m$Q_L           <- var_m$Q_C * 0.065                                        
 var_m$Q_RP          <- 0.626 * var_m$Q_C - var_m$Q_SI - var_m$Q_L               #Blood flow to richly perfused tissue (L/h)
 var_m$Q_SP          <- 0.374 * var_m$Q_C - var_m$Q_F                            #Blood flow to slowly perfused tissue (L/h)
 
-##--Population specific parameters (female)--##
-Age                    <- runif(N,18,50)                                       #Age (years)
+##--Population specific parameters (female)--##                                      #Age (years)
 var_f$Age              <- Age
 var_f$Height_start     <- 161.66 + 0.1319 * var_f$Age - 0.0027*var_f$Age^2    #Body height baseline (cm)
 var_f$Height_cv        <- rnorm(N,0,0.039)                                     #Variation in body height
@@ -264,10 +263,10 @@ var_f$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alc
 var_f$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Combine datasets Male and Female for PBPK model
-#phys <- rbind(var_m,var_f)
+phys <- rbind(var_m,var_f)
 
 #ONLY MALE
-phys <- var_m
+#phys <- var_m
 
 #ONLY FEMALE
 #  phys <- var_mf
