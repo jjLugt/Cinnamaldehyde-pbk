@@ -1,6 +1,3 @@
-#install libraries
-library("sensitivity")
-
 #author: Joris Jean van der Lugt
 #date: 27-01-2021
 #Human cinnamaldehyde pbk Model adapted from:  "Dose-dependent DNA adduct formation by cinnamaldehyde and other food-borne α,β-unsaturated aldehydes predicted by physiologically based in silico modelling"
@@ -12,6 +9,7 @@ library(readr)
 library(shiny)
 library(truncnorm)
 library(reshape2)
+library(sensitivity)
 
 #Simulations
 set.seed(15204)         #to ensure a reproducible output
@@ -20,7 +18,7 @@ time.units   <-"h"
 nbr.doses    <-1        #number of doses
 time.0       <-0        #time start dosing
 time.end     <-8        #time end of simulation
-time.frame   <-0.01     #time steps of simulation
+time.frame   <-0.1     #time steps of simulation
 N           <-1000     #Number of males
 NF          <-1000     #Number of females
 Dose_in_mg   <-250      #Dose in mg/kg-bw
@@ -487,8 +485,9 @@ for(i in 1:par_var){
 n_boot <- 1000
 
 #Sobol design
-sa <- soboljansen(model = NULL, X1, X2, nboot = n_boot, conf = 0.95)
+sa <- soboljansen(model=NULL , X1, X2, nboot = n_boot, conf = 0.95)
 phys <- sa$X
+
 
 PBK_Cinnamaldehyde <- RxODE({
   
@@ -633,18 +632,22 @@ PBK_Cinnamaldehyde <- RxODE({
   
 })
 
+
+
+
+
 print(PBK_Cinnamaldehyde)
 solve.pbk <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
-
-solve.pbk.sa=as.data.frame(matrix(NA,801000,2))
+solve.pbk$vec_t=rep(seq(0,8,0.1),times=1000)
+solve.pbk.sa=as.data.frame(matrix(NA,81000,2))
 colnames(solve.pbk.sa)=c("time","CV")
 solve.pbk.sa[,1]=solve.pbk$time
 solve.pbk.sa[,2]=solve.pbk$C_V
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
                                   solve.pbk.sa[,"time"]==2|solve.pbk.sa[,"time"]==3|solve.pbk.sa[,"time"]==4|
                                   solve.pbk.sa[,"time"]==8),]
-SimRes = as.data.frame(matrix(NA,8000,8))
+SimRes = as.data.frame(matrix(NA,1000,8))
 
 tab1=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2),]
 tab2=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.5),]
@@ -675,12 +678,12 @@ t_SA <- 4
 for(i in 1:length(t_A)){
   print(i)
   if (t_A[i] %in% t_SA) {
-    tell(x = sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
+    tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
     FOI[,i]       = sa$S[,1]    #First order indices
     TI[,i]        = sa$T[,1]    #Total indices
     TI.borninf[,i] = sa$T[,4]   #Lower CL total indices
     TI.bornsup[,i] = sa$T[,5]   #Upper CL total indices
     
-     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
+    plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
 }
