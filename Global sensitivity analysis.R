@@ -482,16 +482,20 @@ for(i in 1:par_var){
   X2[,i] <- runif(n_sim, min = Lower[,i], max = Upper[,i])
 }
 
-n_boot <- 1000
+n_boot <- 1
 
-#Sobol design
-sa <- soboljansen(model=NULL , X1, X2, nboot = n_boot, conf = 0.95)
-phys <- sa$X
+
 
 
 PBK_Cinnamaldehyde <- RxODE({
   
   #--Defining the compartments of the model--#
+  
+  RM_L_DA <- 0 
+  RM_Lc_GSH  <- 0 
+  RM_SI_AG_GST <- 0
+  RM_SI_AG_CHEM <- 0
+  RM_SIc_GSH <- 0 
   
   #-Concentration in fat-#
   C_F            <- A_F       / V_F;                    #Concentration in Fat in umol/kg
@@ -633,6 +637,8 @@ PBK_Cinnamaldehyde <- RxODE({
 })
 
 
+#Sobol design
+sa <- soboljansen(model= PBK_Cinnamaldehyde , X1, X2, nboot = n_boot, conf = 0.95, events = ex)
 
 
 
