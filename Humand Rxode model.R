@@ -6,7 +6,7 @@ library(RxODE)
 library(tidyverse)
 library(readxl)
 library(readr)
-library(shiny)
+#library(shiny)
 library(truncnorm)
 library(reshape2)
 
@@ -17,9 +17,7 @@ time.units   <-"h"
 nbr.doses    <-1        #number of doses
 time.0       <-0        #time start dosing
 time.end     <-8        #time end of simulation
-time.frame   <-0.01     #time steps of simulation
-#N           <-1000     #Number of males
-#NF          <-1000     #Number of females
+time.frame   <-0.1     #time steps of simulation
 Dose_in_mg   <-250      #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
 DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+6     #The administered dose in umol 
@@ -133,7 +131,7 @@ Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol i
 Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Collection of all parameters so they can be entered in the function
-parameters=cbind(RM_L_DA=RM_L_DA,  
+parameters <- c(RM_L_DA=RM_L_DA,  
                  RM_Lc_GSH=RM_Lc_GSH, 
                  RM_SI_AG_GST=RM_SI_AG_GST,
                  RM_SI_AG_CHEM=RM_SI_AG_CHEM,
@@ -381,7 +379,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
 })
 
-print(PBK_Cinnamaldehyde)
+#print(PBK_Cinnamaldehyde)
 solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
 pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
