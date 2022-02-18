@@ -264,13 +264,46 @@ var_f$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alc
 var_f$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Combine datasets Male and Female for PBPK model
-#phys <- rbind(var_m,var_f)
+phys <- rbind(var_m,var_f)
 
 #ONLY MALE
-phys <- var_m
+#phys <- var_m
 
 #ONLY FEMALE
 #  phys <- var_mf
+
+#names for the lists
+colnames <- c(colnames(phys))
+par_var <- length(colnames)
+
+Mean <- phys[1,]
+Lower <- Mean - 0.3*Mean
+Upper <- Mean + 0.3*Mean
+
+#create data frames for population
+n_sim  <- 1000                #number of iterations
+X1 <- matrix(NA, nrow = n_sim, ncol = par_var)
+colnames(X1) <- colnames
+X1 <- as.data.frame(X1)
+var <- X1
+
+X2 <- matrix(NA, nrow = n_sim, ncol = par_var)
+colnames(X2) <- colnames
+X2 <- as.data.frame(X2)
+var <- X2
+
+#create distribution population
+for(i in 1:par_var){
+  X1[,i] <- runif(n_sim, min = Lower[,i], max = Upper[,i])
+  X2[,i] <- runif(n_sim, min = Lower[,i], max = Upper[,i])
+}
+
+n_boot <- 1000
+
+#Sobol design
+sa <- soboljansen(model= NULL , X1, X2, nboot = n_boot, conf = 0.95, events = ex)
+phys <- sa$X
+
 
 P_F<-phys$P_F
 P_L<-phys$P_L
@@ -452,41 +485,6 @@ ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
 
 
 
-
-
-
-
-#names for the lists
-colnames <- c(colnames(phys))
-par_var <- length(colnames)
-
-Mean <- phys[1,]
-Lower <- Mean - 0.1*Mean
-Upper <- Mean + 0.1*Mean
-
-#create data frames for population
-n_sim  <- 1000                #number of iterations
-X1 <- matrix(NA, nrow = n_sim, ncol = par_var)
-colnames(X1) <- colnames
-X1 <- as.data.frame(X1)
-var <- X1
-
-X2 <- matrix(NA, nrow = n_sim, ncol = par_var)
-colnames(X2) <- colnames
-X2 <- as.data.frame(X2)
-var <- X2
-
-#create distribution population
-for(i in 1:par_var){
-  X1[,i] <- runif(n_sim, min = Lower[,i], max = Upper[,i])
-  X2[,i] <- runif(n_sim, min = Lower[,i], max = Upper[,i])
-}
-
-n_boot <- 1
-
-
-
-
 PBK_Cinnamaldehyde <- RxODE({
   
   #--Defining the compartments of the model--#
@@ -637,23 +635,20 @@ PBK_Cinnamaldehyde <- RxODE({
 })
 
 
-#Sobol design
-sa <- soboljansen(model= PBK_Cinnamaldehyde , X1, X2, nboot = n_boot, conf = 0.95, events = ex)
-
 
 
 print(PBK_Cinnamaldehyde)
 solve.pbk <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
-solve.pbk$vec_t=rep(seq(0,8,0.1),times=1000)
-solve.pbk.sa=as.data.frame(matrix(NA,81000,2))
+solve.pbk$vec_t=rep(seq(0,8,0.1),times=66000)
+solve.pbk.sa=as.data.frame(matrix(NA,5346000,2))
 colnames(solve.pbk.sa)=c("time","CV")
 solve.pbk.sa[,1]=solve.pbk$time
 solve.pbk.sa[,2]=solve.pbk$C_V
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
                                   solve.pbk.sa[,"time"]==2|solve.pbk.sa[,"time"]==3|solve.pbk.sa[,"time"]==4|
                                   solve.pbk.sa[,"time"]==8),]
-SimRes = as.data.frame(matrix(NA,1000,8))
+SimRes = as.data.frame(matrix(NA,66000,8))
 
 tab1=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2),]
 tab2=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.5),]
@@ -693,3 +688,6 @@ for(i in 1:length(t_A)){
     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
 }
+
+
+
