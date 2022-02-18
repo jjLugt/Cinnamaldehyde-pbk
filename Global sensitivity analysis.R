@@ -141,7 +141,7 @@ var_f$Q_SI          <- var_m$Q_C * 0.17                                         
 var_f$Q_F           <- var_m$Q_C * 0.085                                         #Blood flow to adipose tissue (L/h)
 var_f$Q_L           <- var_m$Q_C * 0.065                                        #Blood flow to liver via hepatic artery (L/h)
 var_f$Q_RP          <- 0.626 * var_m$Q_C - var_m$Q_SI - var_m$Q_L               #Blood flow to richly perfused tissue (L/h)
-var_f$Q_SP          <- 0.374 * var_m$Q_C - var_m$Q_F    
+var_f$Q_SP          <- 0.374 * var_m$Q_C - var_m$Q_F                            #Blood flow to slowly perfused tissue (L/h)
 
 #----GSH parameters----#
 #--GSH synthesis in umol/kg tissue/h--#
