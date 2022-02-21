@@ -91,14 +91,14 @@ var_m$BSA              <- 0.007184 * var_m$Height^0.725 * var_m$BW^0.425       #
 
 #-Tissues volumes in % body weight-#
 
-var_m$V_L    <- (1072.8 * (var_m$BSA)-345.7) / 1000                             #Volume liver tissue (l)
-var_m$V_F  <- (1.36 * var_m$BW)/(var_m$Height/100)-42                         #Volume adipose tissue (L)
-var_m$V_F_min  <- 0.05 * var_m$BW                                           #Minimum of adipose tissue should be at least 5% of body weight
+var_m$V_L      <- (1072.8 * (var_m$BSA)-345.7) / 1000                              #Volume liver tissue (l)
+var_m$V_F      <- (1.36 * var_m$BW)/(var_m$Height/100)-42                          #Volume adipose tissue (L)
+var_m$V_F_min  <- 0.05 * var_m$BW                                                  #Minimum of adipose tissue should be at least 5% of body weight
 var_m$V_F      <- ifelse(var_m$V_F < var_m$V_F_min, var_m$V_F_min, var_m$V_F)      #To ensure that adipose tissue is at least 5% of body weight
-var_m$V_B       <-(((13.1 * var_m$Height + 18.05 * var_m$BW - 480) / 0.5723) / 1000)         #Volume blood (L)
-var_m$V_A       <-var_m$V_B / 3                                                   #Volume arterial blood (L)
-var_m$V_V       <-var_m$V_B * (2/3)                                               #Volume venous blood (L) 
-var_m$V_SI     <-0.021 * (var_m$BW - var_m$V_F * 0.92) / 1.05                           #Volume gut tissue (L)
+var_m$V_B      <-(((13.1 * var_m$Height + 18.05 * var_m$BW - 480) / 0.5723) / 1000)#Volume blood (L)
+var_m$V_A      <-var_m$V_B / 3                                                     #Volume arterial blood (L)
+var_m$V_V      <-var_m$V_B * (2/3)                                                 #Volume venous blood (L) 
+var_m$V_SI     <-0.021 * (var_m$BW - var_m$V_F * 0.92) / 1.05                      #Volume gut tissue (L)
 var_m$V_RP     <-(2.331 * 10^-3 * var_m$Age + 0.1253 * var_m$BW^0.8477 + var_m$Height^0.3821 - 4.725) - var_m$V_SI - var_m$V_L   #Volume richly perfused tissue (L)
 var_m$V_SP     <-var_m$BW - var_m$V_B - var_m$V_RP -var_m$V_SI - var_m$V_L - var_m$V_F  #Volume slowly perfused tissue (L)
 
@@ -111,37 +111,6 @@ var_m$Q_L           <- var_m$Q_C * 0.065                                        
 var_m$Q_RP          <- 0.626 * var_m$Q_C - var_m$Q_SI - var_m$Q_L               #Blood flow to richly perfused tissue (L/h)
 var_m$Q_SP          <- 0.374 * var_m$Q_C - var_m$Q_F                            #Blood flow to slowly perfused tissue (L/h)
 
-##--Population specific parameters (female)--##                                      #Age (years)
-var_f$Age              <- Age
-var_f$Height_start     <- 161.66 + 0.1319 * var_f$Age - 0.0027*var_f$Age^2    #Body height baseline (cm)
-var_f$Height_cv        <- rnorm(N,0,0.039)                                     #Variation in body height
-var_f$Height           <- var_f$Height_start * exp(var_m$Height_cv)            #Body height (cm)
-var_f$BW_start         <- exp(2.7383+0.0091 * var_f$Height)                     #Body weight baseline (kg)
-var_f$BW_cv            <- rnorm(N,0,0.188)                                      #Variation in body weight
-var_f$BW               <- var_f$BW_start * exp(var_f$BW_cv)                    #Body weight (kg)
-var_f$BSA              <- 0.007184 * var_f$Height^0.725 * var_f$BW^0.425       #Body surface area (m2)
-
-#-Tissues volumes in % body weight-#
-
-var_f$V_L       <- (1072.8 * (var_f$BSA)-345.7) / 1000                             #Volume liver tissue (l)
-var_f$V_F       <- (1.61*var_f$BW)/(var_f$Height/100)-38.3                         #Volume adipose tissue (L)
-var_f$V_F_min   <- 0.05 * var_f$BW                                           #Minimum of adipose tissue should be at least 5% of body weight
-var_f$V_F       <- ifelse(var_f$V_F < var_f$V_F_min, var_f$V_F_min, var_f$V_F)      #To ensure that adipose tissue is at least 5% of body weight
-var_f$V_B       <-(((35.5 * var_f$Height + 2.27 * var_f$BW - 3382)/ 0.6178 )/ 1000)        #Volume blood (L)
-var_f$V_A       <-var_m$V_B / 3                                                   #Volume arterial blood (L)
-var_f$V_V       <-var_m$V_B * (2/3)                                               #Volume venous blood (L) 
-var_f$V_SI      <-0.021 * (var_m$BW - var_m$V_F * 0.92) / 1.05                           #Volume gut tissue (L)
-var_f$V_RP      <-(2.331 * 10^-3 * var_f$Age + 0.1253 * var_f$BW^0.8477 + var_f$Height^0.3821 - 4.725) - var_m$V_SI - var_m$V_L   #Volume richly perfused tissue (L)
-var_f$V_SP      <-var_f$BW - var_f$V_B - var_f$V_RP -var_f$V_SI - var_f$V_L - var_f$V_F  #Volume slowly perfused tissue (L)
-
-#-Cardiac parameters-#
-
-var_f$Q_C           <- var_m$BSA * 60 * (3 - 0.01 * (var_m$Age - 20))           #Cardiac output (L/h)
-var_f$Q_SI          <- var_m$Q_C * 0.17                                         #Blood flow to the gut (L/h)
-var_f$Q_F           <- var_m$Q_C * 0.085                                         #Blood flow to adipose tissue (L/h)
-var_f$Q_L           <- var_m$Q_C * 0.065                                        #Blood flow to liver via hepatic artery (L/h)
-var_f$Q_RP          <- 0.626 * var_m$Q_C - var_m$Q_SI - var_m$Q_L               #Blood flow to richly perfused tissue (L/h)
-var_f$Q_SP          <- 0.374 * var_m$Q_C - var_m$Q_F    
 
 #----GSH parameters----#
 #--GSH synthesis in umol/kg tissue/h--#
@@ -180,14 +149,13 @@ var_m$k_L_OH  <- 4.2e-02   #Scaled first rate order constant for the enzymatic o
 #--Michaelis menten constants--#
 var_m$Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
 var_m$Km_L_AO     <-  330  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the liver in μM
-var_m$Km_L_GST    <-  100 #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM  
-var_m$Km_L_GST_G  <-  100 #??????
+var_m$Km_L_GST    <-  100  #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM  
+var_m$Km_L_GST_G  <-  100  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM)
 
 #--Vmax values--#
 var_m$Vsmax_L_CA    <-  9.7  #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
 var_m$Vsmax_L_AO    <-  73   #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
 var_m$Vsmax_L_GST   <-  37   #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
-var_m$Vsmax_L_GST_G <- 100   #???????????
 
 #----Small intestines----#
 #--Michaelis menten constants--#
@@ -195,7 +163,7 @@ var_m$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinn
 var_m$Km_SI_AO    <- 90  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
 var_m$Km_SI_OH    <- 290 #Km for enzymatic oxidation of cinnamly alcOHol into cinnamaldehyde in the Small Intestine in μM
 var_m$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM (RAT value)
-var_m$Km_SI_GST_G <- 100  #?????????
+var_m$Km_SI_GST_G <- 100 #Km toward cinnamaldehyde for enzymatic conjugation of cinnamaldehyde in the small intestine μM
 
 #-Vmax values-#
 var_m$Vsmax_SI_CA    <- 21 #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
@@ -205,6 +173,42 @@ var_m$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldeh
 
 #---Dose male---#
 var_m$DOSE <- (Dose_in_mg * var_m$BW)/ MW  * 1e+6     #The administered dose in umol 
+
+
+
+
+##------------Population specific parameters (female)--------------------##                                     
+var_f$Age              <- Age                                                  #Age (years)
+var_f$Height_start     <- 161.66 + 0.1319 * var_f$Age - 0.0027*var_f$Age^2     #Body height baseline (cm)
+var_f$Height_cv        <- rnorm(N,0,0.039)                                     #Variation in body height
+var_f$Height           <- var_f$Height_start * exp(var_m$Height_cv)            #Body height (cm)
+var_f$BW_start         <- exp(2.7383+0.0091 * var_f$Height)                    #Body weight baseline (kg)
+var_f$BW_cv            <- rnorm(N,0,0.188)                                     #Variation in body weight
+var_f$BW               <- var_f$BW_start * exp(var_f$BW_cv)                    #Body weight (kg)
+var_f$BSA              <- 0.007184 * var_f$Height^0.725 * var_f$BW^0.425       #Body surface area (m2)
+
+#-Tissues volumes in % body weight-#
+
+var_f$V_L       <- (1072.8 * (var_f$BSA)-345.7) / 1000                              #Volume liver tissue (l)
+var_f$V_F       <- (1.61*var_f$BW)/(var_f$Height/100)-38.3                          #Volume adipose tissue (L)
+var_f$V_F_min   <- 0.05 * var_f$BW                                                  #Minimum of adipose tissue should be at least 5% of body weight
+var_f$V_F       <- ifelse(var_f$V_F < var_f$V_F_min, var_f$V_F_min, var_f$V_F)      #To ensure that adipose tissue is at least 5% of body weight
+var_f$V_B       <-(((35.5 * var_f$Height + 2.27 * var_f$BW - 3382)/ 0.6178 )/ 1000) #Volume blood (L)
+var_f$V_A       <-var_f$V_B / 3                                                     #Volume arterial blood (L)
+var_f$V_V       <-var_f$V_B * (2/3)                                                 #Volume venous blood (L) 
+var_f$V_SI      <-0.021 * (var_f$BW - var_f$V_F * 0.92) / 1.05                           #Volume gut tissue (L)
+var_f$V_RP      <-(2.331 * 10^-3 * var_f$Age + 0.1253 * var_f$BW^0.8477 + var_f$Height^0.3821 - 4.725) - var_m$V_SI - var_m$V_L   #Volume richly perfused tissue (L)
+var_f$V_SP      <-var_f$BW - var_f$V_B - var_f$V_RP -var_f$V_SI - var_f$V_L - var_f$V_F  #Volume slowly perfused tissue (L)
+
+#-Cardiac parameters-#
+
+var_f$Q_C           <- var_f$BSA * 60 * (3 - 0.01 * (var_m$Age - 20))           #Cardiac output (L/h)
+var_f$Q_SI          <- var_f$Q_C * 0.17                                         #Blood flow to the gut (L/h)
+var_f$Q_F           <- var_f$Q_C * 0.085                                        #Blood flow to adipose tissue (L/h)
+var_f$Q_L           <- var_f$Q_C * 0.065                                        #Blood flow to liver via hepatic artery (L/h)
+var_f$Q_RP          <- 0.626 * var_f$Q_C - var_f$Q_SI - var_f$Q_L               #Blood flow to richly perfused tissue (L/h)
+var_f$Q_SP          <- 0.374 * var_f$Q_C - var_f$Q_F    
+
 
 #----GSH parameters female----#
 #--GSH synthesis in umol/kg tissue/h--#
@@ -244,13 +248,12 @@ var_f$k_L_OH  <- 4.2e-02   #Scaled first rate order constant for the enzymatic o
 var_f$Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
 var_f$Km_L_AO     <-  330  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the liver in μM
 var_f$Km_L_GST    <-  100 #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM  
-var_f$Km_L_GST_G  <-  100 #??????
+var_f$Km_L_GST_G  <-  1.7*10^3 #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the liver (μM)
 
 #--Vmax values--#
 var_f$Vsmax_L_CA    <-  9.7  #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
 var_f$Vsmax_L_AO    <-  73   #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
 var_f$Vsmax_L_GST   <-  37   #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
-var_f$Vsmax_L_GST_G <- 100   #???????????
 
 #----Small intestines----#
 #--Michaelis menten constants--#
@@ -258,7 +261,7 @@ var_f$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinn
 var_f$Km_SI_AO    <- 90  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
 var_f$Km_SI_OH    <- 290 #Km for enzymatic oxidation of cinnamly alcOHol into cinnamaldehyde in the Small Intestine in μM
 var_f$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM (RAT value)
-var_f$Km_SI_GST_G <- 100  #?????????
+var_f$Km_SI_GST_G <- 0  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM)
 
 #-Vmax values-#
 var_f$Vsmax_SI_CA    <- 21 #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
@@ -332,7 +335,6 @@ Km_L_GST_G<-phys$Km_L_GST_G
 Vsmax_L_CA<-phys$Vsmax_L_CA
 Vsmax_L_AO<-phys$Vsmax_L_AO
 Vsmax_L_GST<-phys$Vsmax_L_GST
-Vsmax_L_GST_G<-phys$Vsmax_L_GST_G
 Km_SI_CA<-phys$Km_SI_CA
 Km_SI_AO<-phys$Km_SI_AO
 Km_SI_OH<-phys$Km_SI_OH
@@ -403,7 +405,6 @@ parameters=cbind(RM_L_DA=RM_L_DA,
                  Vsmax_L_CA=Vsmax_L_CA,
                  Vsmax_L_AO=Vsmax_L_AO,
                  Vsmax_L_GST=Vsmax_L_GST,
-                 Vsmax_L_GST_G=Vsmax_L_GST_G,
                  Km_SI_CA=Km_SI_CA,
                  Km_SI_AO=Km_SI_AO,
                  Km_SI_OH=Km_SI_OH,
@@ -472,20 +473,20 @@ PBK_Cinnamaldehyde <- RxODE({
   C_L            <- A_L       / V_L;                    #Concentration Cinnamaldehyde in the Liver in umol/kg
   C_V_L          <- C_L       / P_L;                    #Concentration of cinnamaldehyde in venous blood leaving the Liver in umol/l
   C_OH_L         <- A_OH_L    / V_L;                    #Concentration of Cinnamyl alcOHol in the Liver in umol/kg
-  C_OH_V_L       <- C_OH_L   / P_OH_L;                 #Concentration of Cinnamyl alcOHol in venous blood leaving the Liver in umol/l
+  C_OH_V_L       <- C_OH_L   / P_OH_L;                  #Concentration of Cinnamyl alcOHol in venous blood leaving the Liver in umol/l
   
   RM_L_CA       <- Vsmax_L_CA * C_V_L / (Km_L_CA + C_V_L);         #Amount of Cinnamaldehyde oxidized to carboxylic acid in the liver in umol
   RM_L_AO       <- Vsmax_L_AO * C_V_L / (Km_L_AO + C_V_L );        #Amount of Cinnamaldehyde reduced to cinnamyl alcOHol in the liver in umol
   
   #-GSH in the liver-#
-  C_Lc_GSH       <- AM_Lc_GSH / V_L;                    #Concentration of GSH in the liver cytosol in umol/l  
+  C_Lc_GSH       <- AM_Lc_GSH / V_L;                               #Concentration of GSH in the liver cytosol in umol/l  
   
   RM_L_AG_GST   <- Vsmax_L_GST * C_V_L * C_Lc_GSH/(Km_L_GST_G * C_V_L + Km_L_GST * C_Lc_GSH + C_Lc_GSH * C_V_L); #Amount of cinnamaldehyde metabolized with GSH in the liver to conjugate GST   #KM_L_GST_G is stil unknown
   RM_L_AG_CHEM  <- k_GSH * C_V_L * C_Lc_GSH * V_L;                 #Amount of Cinnamaldehyde chemically bound in liver to GSH in umol
   RM_L_AP       <- k_GSH * C_V_L * C_PRO_L * V_L;                  #Amount of Cinnamaldehyde proteins adducts in the liver in umol
   RM_L_DA_FORM  <- k_DNA * C_V_L * C_L_dG * V_L;                   #Formation of DNA adduct in the liver 
   RM_L_DA       <- RM_L_DA_FORM - RM_L_DA * (log(2)/T_0.5);        #Amount of DNA adduct in the liver
-  R_OH_M_L_C_A  <- k_L_OH * C_OH_V_L;                                #Amount of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in umol
+  R_OH_M_L_C_A  <- k_L_OH * C_OH_V_L;                              #Amount of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in umol
   RM_Lc_GSH     <- G_SYN_L * V_L * 0.9 - (RM_L_AG_GST + RM_L_AG_CHEM + k_L_GLOS * RM_Lc_GSH);  #Amount of GSH in the liver cytosol
   
   #-Concentration in the Small intestine-#
@@ -499,7 +500,7 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_SI_AO      <- Vsmax_SI_AO * C_V_SI / (Km_SI_AO + C_V_SI);    #Ammount of Cinnamaldehyde reduced to cinnamyl alcOHol in the small intestine in umol
   
   #-Concentration of GSH in the Small Intestine-#
-  RM_SIc_GSH    <- G_SYN_SI * V_SI * 0.9 - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * RM_SIc_GSH); #Amount of gsh in the smal intestine 
+  RM_SIc_GSH     <- G_SYN_SI * V_SI * 0.9 - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * RM_SIc_GSH); #Amount of gsh in the smal intestine 
   C_SIc_GSH      <- RM_SIc_GSH/ V_SI;                   #Concentration of GSH in the Small Intestine in umol/l
   
   #Cinnamaldehyde metabolism in the SI
@@ -543,21 +544,21 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #-Liver-#
   #-Differential equations for metabolism in the liver-#
-  d/dt(AM_L_CA)       <- RM_L_CA;       #Amount of Cinnamaldehyde oxidized to carboxylic acid in the liver in umol
+  d/dt(AM_L_CA)       <- RM_L_CA;        #Amount of Cinnamaldehyde oxidized to carboxylic acid in the liver in umol
   
   d/dt(AM_L_AO)       <- RM_L_AO;        #Amount of Cinnamaldehyde reduced to cinnamyl alcOHol in the liver in umol
   
   d/dt(AM_L_AG_GST)   <- RM_L_AG_GST;    #Amount of cinnamaldehyde metabolized with GSH in the liver to conjugate GST   #KM_L_GST_G is stil unknown
   
-  d/dt(AM_L_AG_CHEM)  <- RM_SI_AG_CHEM;               #Amount of Cinnamaldehyde chemically bound in liver to GSH in umol
+  d/dt(AM_L_AG_CHEM)  <- RM_SI_AG_CHEM;  #Amount of Cinnamaldehyde chemically bound in liver to GSH in umol
   
-  d/dt(AM_L_AP)       <- RM_L_AP;                 #Amount of Cinnamaldehyde proteins adducts in the liver in umol
+  d/dt(AM_L_AP)       <- RM_L_AP;        #Amount of Cinnamaldehyde proteins adducts in the liver in umol
   
-  d/dt(AM_L_DA_FORM)  <- RM_L_DA_FORM;                 #Formation of DNA adduct in the liver 
+  d/dt(AM_L_DA_FORM)  <- RM_L_DA_FORM;   #Formation of DNA adduct in the liver 
   
   d/dt(AM_L_DA)       <- RM_L_DA;        #Amount of DNA adduct in the liver
   
-  d/dt(A_OH_M_L_C_A)  <- R_OH_M_L_C_A;          #Amount of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in umol
+  d/dt(A_OH_M_L_C_A)  <- R_OH_M_L_C_A;   #Amount of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in umol
   
   d/dt(A_OH_L)        <- Q_L * C_OH_A + Q_SI *C_OH_V_SI - (Q_L+Q_SI) * C_OH_V_L + RM_L_AO - R_OH_M_L_C_A; # Amount of Cinnamyl alcOHol in the liver in umol 
   
@@ -581,7 +582,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   d/dt(AM_SI_AP)      <- RM_SI_AP;             #Amount of Cinnamaldehyde protein adducts in the small intestine in umol
   
-  d/dt(A_OH_M_SI_C_A) <- R_OH_M_SI_C_A; #Amount of Cinnamyl alcOHol enzymatically oxidized to cinnamaldehyde in the small intestine in umol  umol 
+  d/dt(A_OH_M_SI_C_A) <- R_OH_M_SI_C_A;        #Amount of Cinnamyl alcOHol enzymatically oxidized to cinnamaldehyde in the small intestine in umol  umol 
   
   d/dt(A_OH_SI)       <- Q_SI * (C_OH_A - C_OH_V_SI) + RM_SI_AO - R_OH_M_SI_C_A; #Amount of Cinnamyl alcOHol in the Small intestine in umol 
   

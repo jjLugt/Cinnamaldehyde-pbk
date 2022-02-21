@@ -34,7 +34,7 @@ ggL <- ggplot(combined_liver)+
 
 ggL+ scale_y_log10()
 
-#combined figure of all three models liver outputs
+#combined figure of all three models venous blood outputs
 combined_venous <- data.frame(tab_C_V["time"],tab_C_V[2],tab_C_V[3],tab_C_V[4],df_pbk_results['A_V'],solve.pbk_nonpop["A_V"])
 colnames(combined_venous)=c("time","C_L_P2.5","C_L_P50","C_L_P97.5","Human_desolve","Human_rxode")       #Add column names
 
