@@ -153,8 +153,8 @@ var_m$k_L_GLOS    <- 0.142 #Liver
 var_m$k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-var_m$init_GSH_L  <- 5639   #initial GSH concentration in the liver in umol/kg
-var_m$init_GSH_SI <- 1250   #initial GSH concentration in the small intestine in umol/kg
+var_m$init_GSH_L  <- 5639 * var_m$V_L  #initial GSH concentration in the liver in umol
+var_m$init_GSH_SI <- 1250 * var_m$V_SI  #initial GSH concentration in the small intestine in umol
 
 var_m$k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 var_m$k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
@@ -202,6 +202,9 @@ var_m$Vsmax_SI_AO    <- 30 #Scaled Vmax for enzymatic reduction of cinnamaldehyd
 var_m$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
 var_m$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
+#---Dose male---#
+var_m$DOSE <- (Dose_in_mg * var_m$BW)/ MW  * 1e+6     #The administered dose in umol 
+
 #----GSH parameters female----#
 #--GSH synthesis in umol/kg tissue/h--#
 
@@ -213,8 +216,8 @@ var_f$k_L_GLOS    <- 0.142 #Liver
 var_f$k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-var_f$init_GSH_L  <- 5639   #initial GSH concentration in the liver in umol/kg
-var_f$init_GSH_SI <- 1250   #initial GSH concentration in the small intestine in umol/kg
+var_f$init_GSH_L  <- 5639 * var_f$V_L  #initial GSH concentration in the liver in umol/kg
+var_f$init_GSH_SI <- 1250 * var_f$V_SI  #initial GSH concentration in the small intestine in umol/kg
 
 var_f$k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 var_f$k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
@@ -261,6 +264,9 @@ var_f$Vsmax_SI_CA    <- 21 #Scaled Vmax for enzymatic oxidation of cinnamaldehyd
 var_f$Vsmax_SI_AO    <- 30 #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
 var_f$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
 var_f$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
+
+#---Dose female---#
+var_f$DOSE <- (Dose_in_mg * var_f$BW)/ MW  * 1e+6     #The administered dose in umol 
 
 #Combine datasets Male and Female for PBPK model
 phys <- rbind(var_m,var_f)
@@ -335,7 +341,7 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-DOSE<-(Dose_in_mg * phys$BW)/ MW  * 1e+6     #The administered dose in umol 
+DOSE<- phys$DOSE 
 
 parameters=cbind(RM_L_DA=RM_L_DA,  
                  RM_Lc_GSH=RM_Lc_GSH, 
@@ -426,7 +432,7 @@ inits <- c("A_GI"         = 0 ,
            "A_OH_M_L_C_A" = 0,
            "A_OH_L"       = 0,
            "A_L"          = 0,
-           "AM_Lc_GSH"    =init_GSH_L, 
+           "AM_Lc_GSH"    =init_GSH_L , 
            "AM_SI_CA"     = 0,
            "AM_SI_AO"     = 0,
            "AM_SI_AG_GST" = 0,
@@ -435,7 +441,7 @@ inits <- c("A_GI"         = 0 ,
            "A_OH_M_SI_C_A"= 0,
            "A_OH_SI"      = 0,
            "A_SI"         = 0,
-           "AM_SIc_GSH"   =init_GSH_SI,
+           "AM_SIc_GSH"   =init_GSH_SI ,
            "A_RP"         = 0,
            "A_OH_RP"      = 0,
            "A_SP"          = 0,
@@ -446,7 +452,7 @@ inits <- c("A_GI"         = 0 ,
 
 #Step 3 exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose = phys$DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
 
 
