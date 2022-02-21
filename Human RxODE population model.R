@@ -39,6 +39,7 @@ var_f <- matrix(NA, nrow = NF, ncol = par_var_f)
 colnames(var_f) <- colnames
 var_f <- as.data.frame(var_f)
 
+#----These amounts are defined in the PBK model itself but R is stupid and I have to define them before then or it wont work----#
 RM_L_DA <- 0 
 RM_Lc_GSH  <- 0 
 RM_SI_AG_GST <- 0
@@ -432,7 +433,7 @@ inits <- c("A_GI"         = 0 ,
            "A_OH_M_L_C_A" = 0,
            "A_OH_L"       = 0,
            "A_L"          = 0,
-           "AM_Lc_GSH"    =init_GSH_L , 
+           "AM_Lc_GSH"    =init_GSH_L, 
            "AM_SI_CA"     = 0,
            "AM_SI_AO"     = 0,
            "AM_SI_AG_GST" = 0,
@@ -441,7 +442,7 @@ inits <- c("A_GI"         = 0 ,
            "A_OH_M_SI_C_A"= 0,
            "A_OH_SI"      = 0,
            "A_SI"         = 0,
-           "AM_SIc_GSH"   =init_GSH_SI ,
+           "AM_SIc_GSH"   =init_GSH_SI,
            "A_RP"         = 0,
            "A_OH_RP"      = 0,
            "A_SP"          = 0,
@@ -498,11 +499,11 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_SI_AO      <- Vsmax_SI_AO * C_V_SI / (Km_SI_AO + C_V_SI);    #Ammount of Cinnamaldehyde reduced to cinnamyl alcOHol in the small intestine in umol
   
   #-Concentration of GSH in the Small Intestine-#
-  RM_SIc_GSH    <- G_SYN_SI * V_SI * 0.9 - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * RM_SIc_GSH); 
+  RM_SIc_GSH    <- G_SYN_SI * V_SI * 0.9 - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * RM_SIc_GSH); #Amount of gsh in the smal intestine 
   C_SIc_GSH      <- RM_SIc_GSH/ V_SI;                   #Concentration of GSH in the Small Intestine in umol/l
   
   #Cinnamaldehyde metabolism in the SI
-  RM_SI_AG_GST  <- Vsmax_SI_GST * C_V_SI * C_SIc_GSH / (Km_SI_GST_G * C_V_SI + Km_SI_GST * C_SIc_GSH + C_SIc_GSH * C_V_SI);  #-amount of cinnamaldehyde metabolized in the small intestine to GSH conjugate by GST in umol
+  RM_SI_AG_GST  <- Vsmax_SI_GST * C_V_SI * C_SIc_GSH / (Km_SI_GST_G * C_V_SI + Km_SI_GST * C_SIc_GSH + C_SIc_GSH * C_V_SI);  #-amount of cinnamaldehyde metabolized in the small intestine to GSH-conjugate by GST in umol
   R_OH_M_SI_C_A <- Vsmax_SI_OH * C_OH_V_SI/(Km_SI_OH + C_OH_V_SI);#Amount of Cinnamyl alcOHol enzymatically oxidized to cinnamaldehyde in the small intestine in umol  umol 
   RM_SI_AG_CHEM <- k_GSH * C_V_SI * C_SIc_GSH * V_SI;             #Amount of Cinnamaldehyde bound in the small intestine to GSH in umol
   RM_SI_AP      <- k_GSH * C_V_SI * C_PRO_SI * V_SI;              #Amount of Cinnamaldehyde protein adducts in the small intestine in umol
