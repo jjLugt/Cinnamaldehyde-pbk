@@ -49,3 +49,24 @@ ggV <- ggplot(combined_venous)+
   theme_classic()
 
 ggV+ scale_y_log10()
+
+
+#----paramter histograms-----#
+
+#bw
+hist(phys$BW)
+hist(var_m$BW)
+hist(var_f$BW)
+
+mean(phys$BW)
+average(var_f$BW)
+
+
+#height
+hist(phys$Height)
+hist(var_f$Height)
+hist(var_m$Height)
+
+mean(phys$Height)
+mean(var_f$Height)
+mean(var_m$Height)
