@@ -289,8 +289,8 @@ colnames <- c(colnames(phys))
 par_var <- length(colnames)
 
 Mean <- phys[1,]
-Lower <- Mean - 0.4 * Mean
-Upper <- Mean + 0.4 * Mean
+Lower <- Mean - 0.2 * Mean
+Upper <- Mean + 0.2 * Mean
 
 #create data frames for population
 n_sim  <- 1000                #number of iterations
@@ -649,7 +649,7 @@ PBK_Cinnamaldehyde <- RxODE({
 
 
 print(PBK_Cinnamaldehyde)
-solve.pbk <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
+solve.pbk <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=12) #Solve the PBPK model
 
 solve.pbk$vec_t=rep(seq(0,8,0.1),times=66000)
 solve.pbk.sa=as.data.frame(matrix(NA,5346000,2))
