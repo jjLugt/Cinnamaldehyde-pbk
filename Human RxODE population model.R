@@ -130,8 +130,8 @@ var_m$k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical rea
 var_m$k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
 
 #----Protein reactive sites in μmol/kg tissue----#
-var_m$C_PRO_L     <- 3000  #Liver
-var_m$C_PRO_SI    <- 774   #Small intestine
+var_m$C_PRO_L     <- 5319  #Liver
+var_m$C_PRO_SI    <- 245   #Small intestine
 
 #----DNA parameters----#
 var_m$C_L_dG     <-  1.36 #Concentration of 2ʹ-dG in the liver μmol/kg liver
@@ -150,7 +150,7 @@ var_m$k_L_OH  <- 4.2e-02   #Scaled first rate order constant for the enzymatic o
 var_m$Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
 var_m$Km_L_AO     <-  330  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the liver in μM
 var_m$Km_L_GST    <-  100  #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM  
-var_m$Km_L_GST_G  <-  100  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM)
+var_m$Km_L_GST_G  <-  1.7*10^3  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine μM
 
 #--Vmax values--#
 var_m$Vsmax_L_CA    <-  9.7  #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
@@ -162,14 +162,14 @@ var_m$Vsmax_L_GST   <-  37   #Scaled Vmax for enzymatic conjugation of cinnamald
 var_m$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
 var_m$Km_SI_AO    <- 90  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
 var_m$Km_SI_OH    <- 290 #Km for enzymatic oxidation of cinnamly alcOHol into cinnamaldehyde in the Small Intestine in μM
-var_m$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM (RAT value)
+var_m$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM RAT value
 var_m$Km_SI_GST_G <- 100 #Km toward cinnamaldehyde for enzymatic conjugation of cinnamaldehyde in the small intestine μM
 
 #-Vmax values-#
 var_m$Vsmax_SI_CA    <- 21 #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
 var_m$Vsmax_SI_AO    <- 30 #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
 var_m$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
-var_m$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
+var_m$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h RAT value
 
 #---Dose male---#
 var_m$DOSE <- (Dose_in_mg * var_m$BW)/ MW  * 1e+6     #The administered dose in umol 
@@ -181,7 +181,7 @@ var_m$DOSE <- (Dose_in_mg * var_m$BW)/ MW  * 1e+6     #The administered dose in 
 var_f$Age              <- Age                                                  #Age (years)
 var_f$Height_start     <- 161.66 + 0.1319 * var_f$Age - 0.0027*var_f$Age^2     #Body height baseline (cm)
 var_f$Height_cv        <- rnorm(N,0,0.039)                                     #Variation in body height
-var_f$Height           <- var_f$Height_start * exp(var_m$Height_cv)            #Body height (cm)
+var_f$Height           <- var_f$Height_start * exp(var_f$Height_cv)            #Body height (cm)
 var_f$BW_start         <- exp(2.7383+0.0091 * var_f$Height)                    #Body weight baseline (kg)
 var_f$BW_cv            <- rnorm(N,0,0.188)                                     #Variation in body weight
 var_f$BW               <- var_f$BW_start * exp(var_f$BW_cv)                    #Body weight (kg)
@@ -197,12 +197,12 @@ var_f$V_B       <-(((35.5 * var_f$Height + 2.27 * var_f$BW - 3382)/ 0.6178 )/ 10
 var_f$V_A       <-var_f$V_B / 3                                                     #Volume arterial blood (L)
 var_f$V_V       <-var_f$V_B * (2/3)                                                 #Volume venous blood (L) 
 var_f$V_SI      <-0.021 * (var_f$BW - var_f$V_F * 0.92) / 1.05                           #Volume gut tissue (L)
-var_f$V_RP      <-(2.331 * 10^-3 * var_f$Age + 0.1253 * var_f$BW^0.8477 + var_f$Height^0.3821 - 4.725) - var_m$V_SI - var_m$V_L   #Volume richly perfused tissue (L)
+var_f$V_RP      <-(2.331 * 10^-3 * var_f$Age + 0.1253 * var_f$BW^0.8477 + var_f$Height^0.3821 - 4.725) - var_f$V_SI - var_f$V_L   #Volume richly perfused tissue (L)
 var_f$V_SP      <-var_f$BW - var_f$V_B - var_f$V_RP -var_f$V_SI - var_f$V_L - var_f$V_F  #Volume slowly perfused tissue (L)
 
 #-Cardiac parameters-#
 
-var_f$Q_C           <- var_f$BSA * 60 * (3 - 0.01 * (var_m$Age - 20))           #Cardiac output (L/h)
+var_f$Q_C           <- var_f$BSA * 60 * (3 - 0.01 * (var_f$Age - 20))           #Cardiac output (L/h)
 var_f$Q_SI          <- var_f$Q_C * 0.17                                         #Blood flow to the gut (L/h)
 var_f$Q_F           <- var_f$Q_C * 0.085                                        #Blood flow to adipose tissue (L/h)
 var_f$Q_L           <- var_f$Q_C * 0.065                                        #Blood flow to liver via hepatic artery (L/h)
@@ -228,8 +228,8 @@ var_f$k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical rea
 var_f$k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
 
 #----Protein reactive sites in μmol/kg tissue----#
-var_f$C_PRO_L     <- 3000  #Liver
-var_f$C_PRO_SI    <- 774   #Small intestine
+var_f$C_PRO_L     <- 5319  #Liver
+var_f$C_PRO_SI    <- 245   #Small intestine
 
 #----DNA parameters----#
 var_f$C_L_dG     <-  1.36 #Concentration of 2ʹ-dG in the liver μmol/kg liver
@@ -488,8 +488,9 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_L_DA       <- RM_L_DA_FORM - RM_L_DA * (log(2)/T_0.5);        #Amount of DNA adduct in the liver
   R_OH_M_L_C_A  <- k_L_OH * C_OH_V_L;                              #Amount of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in umol
   RM_Lc_GSH     <- G_SYN_L * V_L * 0.9 - (RM_L_AG_GST + RM_L_AG_CHEM + k_L_GLOS * RM_Lc_GSH);  #Amount of GSH in the liver cytosol
-  
-  #-Concentration in the Small intestine-#
+ # if (RM_Lc_GSH < 0) {RM_Lc_GSH <- 0};  # to prevent RM_Lc_GSH to dip below zero as this is not possible
+ 
+   #-Concentration in the Small intestine-#
   C_SI           <- A_SI      / V_SI;                   #Concentration Cinnamaldehyde in the Small intestine in umol/kg
   C_V_SI         <- C_SI      / P_SI;                   #Concentration of cinnamaldehyde in venous blood leaving the Small intestine in umol/l
   C_OH_SI        <- A_OH_SI   / V_SI;                   #Concentration of Cinnamyl alcOHol in the Small intestine in umol/kg

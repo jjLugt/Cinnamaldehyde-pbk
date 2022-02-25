@@ -88,8 +88,8 @@ k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction 
 k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
 
 #----Protein reactive sites in μmol/kg tissue----#
-C_PRO_L     <- 3000  #Liver
-C_PRO_SI    <- 774   #Small intestine
+C_PRO_L     <- 5319  #Liver
+C_PRO_SI    <- 245   #Small intestine
 
 #----DNA parameters----#
 C_L_dG     <-  1.36 #Concentration of 2ʹ-dG in the liver μmol/kg liver
@@ -181,7 +181,6 @@ parameters=cbind(RM_L_DA=RM_L_DA,
                  Vsmax_L_CA=Vsmax_L_CA,
                  Vsmax_L_AO=Vsmax_L_AO,
                  Vsmax_L_GST=Vsmax_L_GST,
-                 Vsmax_L_GST_G=Vsmax_L_GST_G,
                  Km_SI_CA=Km_SI_CA,
                  Km_SI_AO=Km_SI_AO,
                  Km_SI_OH=Km_SI_OH,
