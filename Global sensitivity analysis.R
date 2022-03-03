@@ -289,8 +289,8 @@ colnames <- c(colnames(phys))
 par_var <- length(colnames)
 
 Mean <- phys[1,]
-Lower <- Mean - 0.2 * Mean
-Upper <- Mean + 0.2 * Mean
+Lower <- Mean - 0.1 * Mean
+Upper <- Mean + 0.1 * Mean
 
 #create data frames for population
 n_sim  <- 1000                #number of iterations
