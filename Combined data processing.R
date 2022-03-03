@@ -63,13 +63,20 @@ average(var_f$BW)
 
 
 #height
+<<<<<<< HEAD
 hist(phys$Height,breaks = 100)
 hist(var_f$Height, breaks = 100)
 hist(var_m$Height,breaks = 100)
+=======
+hist(phys$Height)
+hist(var_f$Height)
+hist(var_m$Height)
+>>>>>>> c55adebb6f01ef1434a8e143ec58c931e21ed8ca
 
 mean(phys$Height)
 mean(var_f$Height)
 mean(var_m$Height)
+<<<<<<< HEAD
 
 
 
@@ -123,3 +130,5 @@ hist(popgen.data$Richly.Perfused.mass[0:2000] , breaks = 100)
 mean(popgen.data$Richly.Perfused.mass[0:2000])
 mean(phys$V_RP)
 
+=======
+>>>>>>> c55adebb6f01ef1434a8e143ec58c931e21ed8ca
