@@ -18,7 +18,7 @@ nbr.doses    <-1        #number of doses
 time.0       <-0        #time start dosing
 time.end     <-8        #time end of simulation
 time.frame   <-0.01     #time steps of simulation
-Dose_in_mg   <-250      #Dose in mg/kg-bw
+Dose_in_mg   <-0     #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
 DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+6     #The administered dose in umol 
 
@@ -81,8 +81,8 @@ k_L_GLOS    <- 0.142 #Liver
 k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-init_GSH_L  <- 5639 * V_L   #initial GSH concentration in the liver in umol/kg
-init_GSH_SI <- 1250 * V_SI  #initial GSH concentration in the small intestine in umol/kg
+init_GSH_L  <- 5639 * V_L   #initial amount of GSH in the liver in umol/kg
+init_GSH_SI <- 1250 * V_SI  #initial amount of GSH in the small intestine in umol/kg
 
 k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
@@ -229,7 +229,7 @@ inits <- c("A_GI"         = 0 ,
 
 #Step 3 exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = DOSE, dur=0.001, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose = DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
 
 
@@ -262,8 +262,8 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_L_DA_FORM  <- k_DNA * C_V_L * C_L_dG * V_L;                   #Formation of DNA adduct in the liver 
   RM_L_DA       <- RM_L_DA_FORM - RM_L_DA * (log(2)/T_0.5);        #Amount of DNA adduct in the liver
   R_OH_M_L_C_A  <- k_L_OH * C_OH_V_L;                                #Amount of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in umol
-  RM_Lc_GSH     <-G_SYN_L * V_L * 0.9 - (RM_L_AG_GST + RM_L_AG_CHEM + k_L_GLOS * RM_Lc_GSH);  #Amount of GSH in the liver cytosol
-  if (RM_Lc_GSH < 0) {RM_Lc_GSH <- 0};  # to prevent RM_Lc_GSH to dip below zero as this is not possible
+  RM_Lc_GSH     <- G_SYN_L * V_L * 0.9 - (RM_L_AG_GST + RM_L_AG_CHEM + k_L_GLOS * RM_Lc_GSH);  #Amount of GSH in the liver cytosol
+  #if (RM_Lc_GSH < 0) {RM_Lc_GSH <- 0};  # to prevent RM_Lc_GSH to dip below zero as this is not possible
   
   #-Concentration in the Small intestine-#
   C_SI           <- A_SI      / V_SI;                   #Concentration Cinnamaldehyde in the Small intestine in umol/kg
