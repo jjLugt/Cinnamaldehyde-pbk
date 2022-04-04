@@ -224,8 +224,8 @@ var_f$k_L_GLOS    <- 0.142 #Liver
 var_f$k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-var_f$init_GSH_L  <- 5639 * var_f$V_L  #initial GSH concentration in the liver in umol/kg
-var_f$init_GSH_SI <- 1250 * var_f$V_SI  #initial GSH concentration in the small intestine in umol/kg
+var_f$init_GSH_L  <- 5639 * var_f$V_L  #initial GSH amount in the liver in umol/kg
+var_f$init_GSH_SI <- 1250 * var_f$V_SI  #initial GSH amount in the small intestine in umol/kg
 
 var_f$k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 var_f$k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
