@@ -1,38 +1,21 @@
 library(pksensi)
-library(httk)
+library(deSolve)
 
 
-pbtk1cpt <- function(t, state, parameters) {
-  with(as.list(c(state, parameters)), {
-    dAgutlument = - kgutabs * Agutlument
-    dAcompartment = kgutabs * Agutlument - ke * Acompartment
-    dAmetabolized = ke * Acompartment
-    Ccompartment = Acompartment / vdist * BW;
-    list(c(dAgutlument, dAcompartment, dAmetabolized), 
-         "Ccompartment" = Ccompartment) 
-  })
-}
-
-initState <- c(Agutlument = 10, Acompartment = 0, Ametabolized = 0)
-t <- seq(from = 0.01, to = 24.01, by = 1)
-outputs <- c("Ccompartment")
-
-
-pars1comp <- (parameterize_1comp(chem.name = "acetaminophen"))
-#> Human volume of distribution returned in units of L/kg BW.
-
-q <- c("qunif", "qunif", "qunif", "qnorm")
-q.arg <- list(list(min = pars1comp$Vdist / 2, max = pars1comp$Vdist * 2),
-              list(min = pars1comp$kelim / 2, max = pars1comp$kelim * 2),
-              list(min = pars1comp$kgutabs / 2, max = pars1comp$kgutabs * 2),
-              list(mean = pars1comp$BW, sd = 5))
-
+q <- "qunif"
+q.arg <- list(list(min = 0.6, max = 1),
+              list(min = 0.5, max = 1.5),
+              list(min = 0.02, max = 0.3),
+              list(min = 20, max = 60))
+params <- c("F","KA","KE","V")
 set.seed(1234)
-params <- c("vdist", "ke", "kgutabs", "BW")
-x <- rfast99(params, n = 200, q = q, q.arg = q.arg, replicate = 1)
-
-out <- solve_fun(x, time = t, func = pbtk1cpt, initState = initState, outnames = outputs)
-
-pksim(out) 
-
+x <- rfast99(params = params, n = 200, q = q, q.arg = q.arg, rep = 20)
+time <- seq(from = 0.25, to = 12.25, by = 0.5)
+out <- solve_fun(x, model = FFPK, time = time, vars = "output")
+# Check results of sensitivity measures
+check(out)
 plot(out)
+heat_check(out, show.all = TRUE)
+heat_check(out, index = "CI")
+
+

@@ -374,8 +374,8 @@ q.arg
 
 
 set.seed(1234)
-x <- rfast99(params = parameters , n =10, q = q, q.arg = q.arg, replicate = 100)
+x <- rfast99(params = parameters , n =10, q = q, q.arg = q.arg, replicate = 5)
 
 
 outputs <- c("A_L", "A_V")
-out <- solve_fun(x, time = times, func = PBK_Cinnamaldehyde, initState = state, outnames = outputs, method ="euler", hini = 0.001)
+out <- solve_fun(x, time = times, func = PBK_Cinnamaldehyde, initState = state, outnames = outputs, method ="euler", hini = 0.1)
