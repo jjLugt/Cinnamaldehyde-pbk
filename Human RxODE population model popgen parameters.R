@@ -619,21 +619,21 @@ PBK_Cinnamaldehyde <- RxODE({
 })
 
 print(PBK_Cinnamaldehyde)
-solve.pbk <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
+solve.pbk_popgen <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
-tab_solve_C_V=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
+tab_solve_C_V_popgen=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
 for (i in 1:(N+NF)) {
-  tab.i=solve.pbk[which(solve.pbk[,"sim.id"]==i),]                  #Put all individuals in data frame
+  tab.i=solve.pbk_popgen[which(solve.pbk_popgen[,"sim.id"]==i),]                  #Put all individuals in data frame
   tab.i=as.data.frame(tab.i)
-  tab_solve_C_V[,i]=tab.i$C_V
+  tab_solve_C_V_popgen[,i]=tab.i$C_V
 }
 
-tab_C_V=as.data.frame(matrix(NA,time.end/time.frame+1,4))       #Create an empty data frame with amount of timepoints=amount of rows and 4 columns
-tab_C_V[,1]=c(seq(time.0,time.end,by=time.frame))               #Timepoints in first column
+tab_C_V_popgen=as.data.frame(matrix(NA,time.end/time.frame+1,4))       #Create an empty data frame with amount of timepoints=amount of rows and 4 columns
+tab_C_V_popgen[,1]=c(seq(time.0,time.end,by=time.frame))               #Timepoints in first column
 for (i in 1:(time.end/time.frame+1)) {
-  tab_C_V[i,2]=quantile(tab_solve_C_V[i,],0.025, na.rm = TRUE)      #Lower bound of confidence interval in second column
-  tab_C_V[i,3]=quantile(tab_solve_C_V[i,],0.5, na.rm = TRUE)        #Median in third column
-  tab_C_V[i,4]=quantile(tab_solve_C_V[i,],0.975, na.rm = TRUE)      #Upper bound of confidence interval in fourth column
+  tab_C_V_popgen[i,2]=quantile(tab_solve_C_V_popgen[i,],0.025, na.rm = TRUE)      #Lower bound of confidence interval in second column
+  tab_C_V_popgen[i,3]=quantile(tab_solve_C_V_popgen[i,],0.5, na.rm = TRUE)        #Median in third column
+  tab_C_V_popgen[i,4]=quantile(tab_solve_C_V_popgen[i,],0.975, na.rm = TRUE)      #Upper bound of confidence interval in fourth column
 }
 colnames(tab_C_V)=c("time","CV_P2.5","CV_P50","CV_P97.5")       #Add column names
 
@@ -647,23 +647,23 @@ gg <- ggplot(tab_C_V)+
 
 gg
 
-tab_solve_C_L=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
+tab_solve_C_L_popgen=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
 for (i in 1:(N+NF)) {
-  tab.i=solve.pbk[which(solve.pbk[,"sim.id"]==i),]                  #Put all individuals in data frame
+  tab.i=solve.pbk_popgen[which(solve.pbk_popgen[,"sim.id"]==i),]                  #Put all individuals in data frame
   tab.i=as.data.frame(tab.i)
-  tab_solve_C_L[,i]=tab.i$C_L
+  tab_solve_C_L_popgen[,i]=tab.i$C_L
 }
 
 
-tab_C_L=as.data.frame(matrix(NA,time.end/time.frame+1,4))       #Create an empty data frame with amount of timepoints=amount of rows and 4 columns
-tab_C_L[,1]=c(seq(time.0,time.end,by=time.frame))               #Timepoints in first column
+tab_C_L_popgen=as.data.frame(matrix(NA,time.end/time.frame+1,4))       #Create an empty data frame with amount of timepoints=amount of rows and 4 columns
+tab_C_L_popgen[,1]=c(seq(time.0,time.end,by=time.frame))               #Timepoints in first column
 for (i in 1:(time.end/time.frame+1)) {
-  tab_C_L[i,2]=quantile(tab_solve_C_L[i,],0.025, na.rm = TRUE)      #Lower bound of confidence interval in second column
-  tab_C_L[i,3]=quantile(tab_solve_C_L[i,],0.5, na.rm = TRUE)        #Median in third column
-  tab_C_L[i,4]=quantile(tab_solve_C_L[i,],0.975, na.rm = TRUE)      #Upper bound of confidence interval in fourth column
+  tab_C_L_popgen[i,2]=quantile(tab_solve_C_L_popgen[i,],0.025, na.rm = TRUE)      #Lower bound of confidence interval in second column
+  tab_C_L_popgen[i,3]=quantile(tab_solve_C_L_popgen[i,],0.5, na.rm = TRUE)        #Median in third column
+  tab_C_L_popgen[i,4]=quantile(tab_solve_C_L_popgen[i,],0.975, na.rm = TRUE)      #Upper bound of confidence interval in fourth column
 }
 
-colnames(tab_C_L)=c("time","C_L_P2.5","C_L_P50","C_L_P97.5")
+colnames(tab_C_L_popgen)=c("time","C_L_P2.5","C_L_P50","C_L_P97.5")
 
 
 

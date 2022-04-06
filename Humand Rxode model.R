@@ -19,7 +19,6 @@ time.0       <-0        #time start dosing
 time.end     <-8        #time end of simulation
 time.frame   <-0.01     #time steps of simulation
 Dose_in_mg   <-250     #Dose in mg/kg-bw
-Dose_in_mg   <-0     #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
 DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+6     #The administered dose in umol 
 
