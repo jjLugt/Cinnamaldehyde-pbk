@@ -66,8 +66,8 @@ k_L_GLOS    <- 0.142 #Liver
 k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-init_GSH_L  <- 5639   #initial GSH concentration in the liver in umol/kg
-init_GSH_SI <- 1250   #initial GSH concentration in the small intestine in umol/kg
+init_GSH_L  <- 5639 * V_L  #initial GSH concentration in the liver in umol/kg
+init_GSH_SI <- 1250 *V_SI  #initial GSH concentration in the small intestine in umol/kg
 
 k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
@@ -101,13 +101,12 @@ k_L_OH  <- 4.2e-02   #Scaled first rate order constant for the enzymatic oxidati
 Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
 Km_L_AO     <-  330  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the liver in μM
 Km_L_GST    <-  100 #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM  
-Km_L_GST_G  <-  100 #??????
+Km_L_GST_G  <-  1.7*10^3 #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the liver (μM)
 
 #--Vmax values--#
 Vsmax_L_CA    <-  9.7  #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
 Vsmax_L_AO    <-  73   #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
 Vsmax_L_GST   <-  37   #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
-Vsmax_L_GST_G <- 100   #???????????
 
 #----Small intestines----#
 #--Michaelis menten constants--#
@@ -115,7 +114,7 @@ Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinnamic a
 Km_SI_AO    <- 90  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
 Km_SI_OH    <- 290 #Km for enzymatic oxidation of cinnamly alcOHol into cinnamaldehyde in the Small Intestine in μM
 Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM (RAT value)
-Km_SI_GST_G <- 100  #?????????
+Km_SI_GST_G <- 0  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM)
 
 #-Vmax values-#
 Vsmax_SI_CA    <- 21 #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
@@ -126,7 +125,7 @@ Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde wi
 #Collection of all parameters so they can be entered in the function
 parameters=c(P_F, P_L, P_SI, P_RP, P_SP, P_OH_F, P_OH_L, P_OH_SI, P_OH_RP, P_OH_SP, BW, V_F, V_L, V_SI, V_A, V_V, V_SI, V_RP, V_SP, Q_C, Q_F, Q_L, Q_SI, Q_RP, Q_SP, G_SYN_L, G_SYN_SI, 
              k_L_GLOS, k_SI_GLOS, init_GSH_L, init_GSH_SI, k_GSH, k_DNA, C_PRO_L, C_PRO_SI, C_L_dG, T_0.5, DOSE, Ka, Km_L_CA, Km_L_CA, Km_L_GST, Km_L_GST_G, Vsmax_L_CA, Vsmax_L_AO,
-             Vsmax_L_GST, Vsmax_L_GST_G, Km_SI_CA, Km_SI_AO, Km_SI_OH, Km_SI_GST, Km_SI_GST_G, Vsmax_SI_CA, Vsmax_SI_AO, Vsmax_SI_GST)
+             Vsmax_L_GST,  Km_SI_CA, Km_SI_AO, Km_SI_OH, Km_SI_GST, Km_SI_GST_G, Vsmax_SI_CA, Vsmax_SI_AO, Vsmax_SI_GST)
 
 
 #----Compartment definitions,and definition of the model----#
@@ -279,7 +278,7 @@ PBK_Cinnamaldehyde=function(t,state,parameters){
   })
 } 
 
-#defining the begin situation of the model (in this case no chemical present in the organs)
+#defining the begin situation of the model (in this case no prior Cinnamaldehyde present in the organs)
 state <- c("A_GI"         = DOSE ,
            "A_V"          = 0,
            "AA_A"         = 0,
@@ -296,7 +295,7 @@ state <- c("A_GI"         = DOSE ,
            "A_OH_M_L_C_A"  = 0,
            "A_OH_L"       = 0,
            "A_L"          = 0,
-           "AM_Lc_GSH"    =init_GSH_L, 
+           "AM_Lc_GSH"    =init_GSH_L , 
            "AM_SI_CA"     = 0,
            "AM_SI_AO"     = 0,
            "AM_SI_AG_GST" = 0,
@@ -305,7 +304,7 @@ state <- c("A_GI"         = DOSE ,
            "A_OH_M_SI_C_A" = 0,
            "A_OH_SI"      = 0,
            "A_SI"         = 0,
-           "AM_SIc_GSH"   =init_GSH_SI,
+           "AM_SIc_GSH"   =init_GSH_SI ,
            "A_RP"         = 0,
            "A_OH_RP"      = 0,
            "A_SP"          = 0,
