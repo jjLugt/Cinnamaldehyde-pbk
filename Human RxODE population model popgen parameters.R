@@ -114,7 +114,7 @@ var_m_pop$V_B      <-(((13.1 * var_m_pop$Height + 18.05 * var_m_pop$BW - 480) / 
 var_m_pop$V_A      <-var_m_pop$V_B / 3                                                     #Volume arterial blood (L)
 var_m_pop$V_V      <-var_m_pop$V_B * (2/3)                                                 #Volume venous blood (L) 
 var_m_pop$V_SI     <-pg_m_par$`Small intestine mass`                     #Volume gut tissue (L)
-var_m_pop$V_RP <-pg_m_par$`Richly Perfused mass`+ pg_m_par$`Lung mass`   #Volume richly perfused tissue (L)
+var_m_pop$V_RP     <-pg_m_par$`Richly Perfused mass`+ pg_m_par$`Lung mass`   #Volume richly perfused tissue (L)
 var_m_pop$V_SP     <-pg_m_par$`Slowly Perfused mass`  #Volume slowly perfused tissue (L)
 
 #-Cardiac parameters-#
@@ -123,9 +123,9 @@ var_m_pop$Q_C           <- pg_m_par$`Cardiac Output`           #Cardiac output (
 var_m_pop$Q_SI          <- pg_m_par$`Small intestine flow`                                         #Blood flow to the gut (L/h)
 var_m_pop$Q_F           <- pg_m_par$`Adipose flow`                                         #Blood flow to adipose tissue (L/h)
 var_m_pop$Q_L           <- pg_m_par$`Liver flow`                                        #Blood flow to liver via hepatic artery (L/h)
-var_m_pop$Q_RP          <- pg_m_par$`Lung flow` - pg_m_par$`Liver flow`- pg_m_par$`Slowly Perfused flow`             #Blood flow to richly perfused tissue (L/h)
+var_m_pop$Q_RP          <- pg_m_par$`Cardiac Output` - pg_m_par$`Liver flow`- pg_m_par$`Slowly Perfused flow`- pg_m_par$`Small intestine flow` - pg_m_par$'Adipose flow' #Blood flow to richly perfused tissue (L/h)
 var_m_pop$Q_SP          <- pg_m_par$`Slowly Perfused flow`                            #Blood flow to slowly perfused tissue (L/h)
-
+var_m_pop$check         <- var_m_pop$Q_SI + var_m_pop$Q_F + var_m_pop$Q_L + var_m_pop$Q_RP + var_m_pop$Q_SP
 
 #----GSH parameters----#
 #--GSH synthesis in umol/kg tissue/h--#
@@ -635,9 +635,9 @@ for (i in 1:(time.end/time.frame+1)) {
   tab_C_V_popgen[i,3]=quantile(tab_solve_C_V_popgen[i,],0.5, na.rm = TRUE)        #Median in third column
   tab_C_V_popgen[i,4]=quantile(tab_solve_C_V_popgen[i,],0.975, na.rm = TRUE)      #Upper bound of confidence interval in fourth column
 }
-colnames(tab_C_V)=c("time","CV_P2.5","CV_P50","CV_P97.5")       #Add column names
+colnames(tab_C_V_popgen)=c("time","CV_P2.5","CV_P50","CV_P97.5")       #Add column names
 
-gg <- ggplot(tab_C_V)+
+gg <- ggplot(tab_C_V_popgen)+
   geom_line(aes(x=time, y=CV_P2.5), linetype = "dashed")+
   geom_line(aes(x=time, y=CV_P50), color = "red", size = 1)+
   geom_line(aes(x=time, y=CV_P97.5), linetype = "dashed")+
