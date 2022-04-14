@@ -21,6 +21,7 @@ time.frame   <-0.01     #time steps of simulation
 Dose_in_mg   <-250     #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
 DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+6     #The administered dose in umol 
+inhalation_dose <- (Dose_in_mg * 70)/ MW * 1e+6  #The inhaled dose in umol
 
 RM_L_DA <- 0 
 RM_Lc_GSH  <- 0 
@@ -57,6 +58,7 @@ V_A      <- 2.0   #Arterial Blood
 V_V      <- 5.9   #Venous Blood
 V_RP     <- 4.1   #Richly perfused 
 V_SP     <- 51.7  #Slowly perfused 
+V_PU      <- 
 
 #-Cardiac parameters-#
 
@@ -72,7 +74,7 @@ Q_SP     <- 24.8   #Slowly perfused (SP)
 
 
 #inhalation parameters
-Q_P = QPC*pow(BW,0.75) ; #Alveolar ventilation
+Q_P = 300  # aveolar ventilation l/h
 
 #----GSH parameters----#
 #--GSH synthesis in umol/kg tissue/h--#
@@ -144,6 +146,7 @@ parameters=cbind(RM_L_DA=RM_L_DA,
                  P_SI=P_SI,
                  P_RP=P_RP,
                  P_SP=P_SP,
+                 P_B=P_B,
                  P_OH_F=P_OH_F,
                  P_OH_L=P_OH_L,
                  P_OH_SI=P_OH_SI,
@@ -163,6 +166,7 @@ parameters=cbind(RM_L_DA=RM_L_DA,
                  Q_SI=Q_SI,
                  Q_RP=Q_RP,
                  Q_SP=Q_SP,
+                 Q_P=Q_P,
                  G_SYN_L=G_SYN_L,
                  G_SYN_SI=G_SYN_SI,
                  k_L_GLOS=k_L_GLOS,
@@ -198,6 +202,8 @@ parameters=cbind(RM_L_DA=RM_L_DA,
 
 #defining the begin situation of the model (in this case no chemical present in the organs)
 inits <- c("A_GI"         = 0 ,
+           "A_I"          = 0,
+           "A_X"          = 0,
            "A_V"          = 0,
            "AA_A"         = 0,
            "A_OH_V"       = 0,
@@ -234,6 +240,7 @@ inits <- c("A_GI"         = 0 ,
 #Step 3 exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(dose = DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose = inhalation_dose, dur = 0.01, cmt="A_I", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
 
 
@@ -243,16 +250,15 @@ PBK_Cinnamaldehyde <- RxODE({
   #--Defining the compartments of the model--#
   
   #Concentration in lung
-  C_I = CIX *EXPPULSE ;   # inhaled concentration 
-  C_X <- CPU/P_B ;    #exhaled concentration mg/l
-  C_PU = (QP*CI+(QF*CVF + QL*CVL + QS*CVS + QR*CVR + QK*CVK))/(QP/PB+QC) ; # concentration in pulmonary tissue
+  C_I          <- C_I_X  ;                        #inhaled concentration 
+  C_PU         <- A_I  / V_PU                      #concentration in pulmonary tissue
+  C_V_PU       <- C_PU       / P_PU;                    #Concentration of cinnamaldehyde in venous blood leaving Fat in umol/l
+  C_OH_PU      <- A_OH_PU    / V_PU;                    #Concentration of Cinnamyl alcOHol in Fat in umol/kg
+  C_OH_V_PU       <- C_OH_PU    / P_OH_RP;                 #Concentration of Cinnamyl alcOHol in venous blood leaving Fat in umol/l
   
-  CV = (QF*CVF + QL*CVL + QS*CVS + QR*CVR + QK*CVK)/QC ;
-  CPUM = CPU*1000/MW ;
-  RAI = QP*CI ;
-  dt(AI) = RAI ;
-  RAX = QP*CX ;
-  dt(AX) = RAX ;
+  
+   C_X <- C_PU / P_B ;                      #exhaled concentration mg/l
+  
   
   #-Concentration in fat-#
   C_F            <- A_F       / V_F;                    #Concentration in Fat in umol/kg
@@ -323,8 +329,12 @@ PBK_Cinnamaldehyde <- RxODE({
   #-amount of Cinnamaldehyde in GI cavity in umol
   d/dt(A_GI)          <- -Ka * A_GI;  
   
+  #amount of cinnamaldehyde inhaled/exhaled
+  d/dt(A_I) <- Q_P * C_I ;
+  d/dt(A_X) <- Q_P * C_X ;
+  
   #-Amount of Cinnamaldehyde in Venous blood in umol 
-  d/dt(A_V)           <- Q_F * C_V_F + (Q_L + Q_SI) * C_V_L + Q_RP * C_V_RP + Q_SP * C_V_SP - Q_C*C_V;
+  d/dt(A_V)           <- Q_F * C_V_F + (Q_L + Q_SI) * C_V_L + Q_RP * C_V_RP + Q_SP * C_V_SP + Q_P * C_PU - Q_C*C_V;
   d/dt(AA_A)          <- C_A;
   
   #-Amount of Cinnamyl alcOHol in venous blood in umol 
