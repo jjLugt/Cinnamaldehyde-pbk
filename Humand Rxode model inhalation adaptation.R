@@ -18,10 +18,11 @@ nbr.doses    <-1        #number of doses
 time.0       <-0        #time start dosing
 time.end     <-8        #time end of simulation
 time.frame   <-0.01     #time steps of simulation
-Dose_in_mg   <-250     #Dose in mg/kg-bw
+Dose_in_mg   <-0     #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
+inhalation_dose_in_mg <- 0  #The inhaled dose in mg/kg
 DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+6     #The administered dose in umol 
-inhalation_dose <- (Dose_in_mg * 70)/ MW * 1e+6  #The inhaled dose in umol
+inhalation_dose <- (inhalation_dose_in_mg * 70)/ MW * 1e+6  #The inhaled dose in umol
 
 RM_L_DA <- 0 
 RM_Lc_GSH  <- 0 
@@ -34,18 +35,20 @@ RM_SIc_GSH <- 0
 #-Cinnamaldehyde-#
 
 P_F      <-  39.3 #Fat/Blood partition coefficient
-P_L      <-  2.04 #Fat/Blood partition coefficient
+P_L      <-  2.04 #liver/Blood partition coefficient
 P_SI     <-  2.04 #Small intestine/Blood partition coefficients
 P_RP     <-  2.04 #Richly perfused tissues/Blood partition coefficients
 P_SP     <-  1.57 #Slowely perfused tissues/Blood partition coefficients
-P_B       <-   # Blood/Air Partition Coefficient (unitless)
+P_B      <- 274.84 # Blood/Air Partition Coefficient (unitless)
+P_PU     <-  2.04  #lung/Blood partition coefficient
+
 #-Cinnamyl AlcOHol-#
 P_OH_F    <-  40.5 #Fat/Blood partition coefficient
-P_OH_L    <-  2.09 #Fat/Blood partition coefficient
+P_OH_L    <-  2.09 #liver/Blood partition coefficient
 P_OH_SI   <-  2.09 #Small intestine/Blood partition coefficients
 P_OH_RP   <-  2.09 #Richly perfused tissues/Blood partition coefficients
 P_OH_SP   <-  1.60 #Slowly perfused tissues/Blood partition coefficients
-
+P_OH_PU   <-  2.09 #Lung/Blood partition coefficients
 #--Pyshiological Parameters--#
 BW      <- 70    #Body weight in Kg
 
@@ -56,9 +59,9 @@ V_L      <- 2.6   #Liver
 V_SI     <- 0.9   #Small intestine
 V_A      <- 2.0   #Arterial Blood
 V_V      <- 5.9   #Venous Blood
-V_RP     <- 4.1   #Richly perfused 
+V_RP     <- 3.3   #Richly perfused 
 V_SP     <- 51.7  #Slowly perfused 
-V_PU      <- 
+V_PU     <- 0.8   #Lung volume 
 
 #-Cardiac parameters-#
 
@@ -71,6 +74,7 @@ Q_L      <- 14.1   #Liver
 Q_SI     <- 8.6    #Small intestine
 Q_RP     <- 47.3   #Richly perfused (RP)
 Q_SP     <- 24.8   #Slowly perfused (SP)
+Q_PU     <- 100    #lung blood flow 
 
 
 #inhalation parameters
@@ -147,11 +151,13 @@ parameters=cbind(RM_L_DA=RM_L_DA,
                  P_RP=P_RP,
                  P_SP=P_SP,
                  P_B=P_B,
+                 P_PU=P_PU,
                  P_OH_F=P_OH_F,
                  P_OH_L=P_OH_L,
                  P_OH_SI=P_OH_SI,
                  P_OH_RP=P_OH_RP,
                  P_OH_SP=P_OH_SP,
+                 P_OH_PU=P_OH_PU,
                  BW=BW,
                  V_F=V_F,
                  V_L=V_L,
@@ -160,12 +166,14 @@ parameters=cbind(RM_L_DA=RM_L_DA,
                  V_V=V_V,
                  V_RP=V_RP,
                  V_SP=V_SP,
+                 V_PU=V_PU,
                  Q_C=Q_C,
                  Q_F=Q_F,
                  Q_L=Q_L,
                  Q_SI=Q_SI,
                  Q_RP=Q_RP,
                  Q_SP=Q_SP,
+                 Q_PU=Q_PU,
                  Q_P=Q_P,
                  G_SYN_L=G_SYN_L,
                  G_SYN_SI=G_SYN_SI,
@@ -180,6 +188,7 @@ parameters=cbind(RM_L_DA=RM_L_DA,
                  C_L_dG=C_L_dG,
                  T_0.5=T_0.5,
                  DOSE=DOSE,
+                 inhalation_dose=inhalation_dose,
                  Ka=Ka,
                  k_L_OH = k_L_OH,
                  Km_L_CA=Km_L_CA,
@@ -204,6 +213,7 @@ parameters=cbind(RM_L_DA=RM_L_DA,
 inits <- c("A_GI"         = 0 ,
            "A_I"          = 0,
            "A_X"          = 0,
+           "A_OH_PU"     =0,
            "A_V"          = 0,
            "AA_A"         = 0,
            "A_OH_V"       = 0,
@@ -250,14 +260,14 @@ PBK_Cinnamaldehyde <- RxODE({
   #--Defining the compartments of the model--#
   
   #Concentration in lung
-  C_I          <- C_I_X  ;                        #inhaled concentration 
-  C_PU         <- A_I  / V_PU                      #concentration in pulmonary tissue
+  C_I          <-  A_I / Q_P  ;                          #inhaled concentration umol/l
+  C_PU         <- (A_I - A_X)/ V_PU;             #concentration in pulmonary tissue
   C_V_PU       <- C_PU       / P_PU;                    #Concentration of cinnamaldehyde in venous blood leaving Fat in umol/l
   C_OH_PU      <- A_OH_PU    / V_PU;                    #Concentration of Cinnamyl alcOHol in Fat in umol/kg
-  C_OH_V_PU       <- C_OH_PU    / P_OH_RP;                 #Concentration of Cinnamyl alcOHol in venous blood leaving Fat in umol/l
+  C_OH_V_PU    <- C_OH_PU    / P_OH_RP;                 #Concentration of Cinnamyl alcOHol in venous blood leaving Fat in umol/l
   
   
-   C_X <- C_PU / P_B ;                      #exhaled concentration mg/l
+  C_X <- C_PU / P_B ;                      #exhaled concentration mg/l
   
   
   #-Concentration in fat-#
@@ -329,16 +339,18 @@ PBK_Cinnamaldehyde <- RxODE({
   #-amount of Cinnamaldehyde in GI cavity in umol
   d/dt(A_GI)          <- -Ka * A_GI;  
   
-  #amount of cinnamaldehyde inhaled/exhaled
-  d/dt(A_I) <- Q_P * C_I ;
-  d/dt(A_X) <- Q_P * C_X ;
+  #amount of cinnamaldehyde inhaled/exhaled  in umol
+  d/dt(A_I)           <- (Q_P * C_I) - A_X ;
+  d/dt(A_X)           <- Q_P * C_X ;
+  d/dt(A_OH_PU)       <- Q_PU * (C_OH_A - C_OH_V_PU);
+  
   
   #-Amount of Cinnamaldehyde in Venous blood in umol 
-  d/dt(A_V)           <- Q_F * C_V_F + (Q_L + Q_SI) * C_V_L + Q_RP * C_V_RP + Q_SP * C_V_SP + Q_P * C_PU - Q_C*C_V;
+  d/dt(A_V)           <- Q_F * C_V_F + (Q_L + Q_SI) * C_V_L + Q_RP * C_V_RP + Q_SP * C_V_SP + Q_PU * C_PU - Q_C*C_V;
   d/dt(AA_A)          <- C_A;
   
   #-Amount of Cinnamyl alcOHol in venous blood in umol 
-  d/dt(A_OH_V)        <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP - Q_C * C_OH_V; 
+  d/dt(A_OH_V)        <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP + Q_PU * C_OH_V_PU - Q_C * C_OH_V; 
   
   #-Fat-#
   d/dt(A_F)           <- Q_F * (C_A - C_V_F);                            #Amount of Cinnamaldehyde in the Fat in umol 
