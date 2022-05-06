@@ -20,7 +20,7 @@ time.end     <-8        #time end of simulation
 time.frame   <-0.01     #time steps of simulation
 Dose_in_mg   <-0     #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
-inhalation_dose_in_mg <- 0  #The inhaled dose in mg/kg
+inhalation_dose_in_mg <- 100  #The inhaled dose in mg/kg
 DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+6     #The administered dose in umol 
 inhalation_dose <- (inhalation_dose_in_mg * 70)/ MW * 1e+6  #The inhaled dose in umol
 
@@ -260,8 +260,8 @@ PBK_Cinnamaldehyde <- RxODE({
   #--Defining the compartments of the model--#
   
   #Concentration in lung
-  C_I          <-  A_I / Q_P  ;                          #inhaled concentration umol/l
-  C_PU         <- (A_I - A_X)/ V_PU;             #concentration in pulmonary tissue
+  C_I          <-  A_I / Q_P  ;                         #inhaled concentration umol/l
+  C_PU         <- (A_I - A_X)/ V_PU;                    #concentration in pulmonary tissue
   C_V_PU       <- C_PU       / P_PU;                    #Concentration of cinnamaldehyde in venous blood leaving Fat in umol/l
   C_OH_PU      <- A_OH_PU    / V_PU;                    #Concentration of Cinnamyl alcOHol in Fat in umol/kg
   C_OH_V_PU    <- C_OH_PU    / P_OH_RP;                 #Concentration of Cinnamyl alcOHol in venous blood leaving Fat in umol/l
@@ -377,7 +377,7 @@ PBK_Cinnamaldehyde <- RxODE({
   d/dt(A_OH_L)        <- Q_L * C_OH_A + Q_SI *C_OH_V_SI - (Q_L+Q_SI) * C_OH_V_L + RM_L_AO - R_OH_M_L_C_A; # Amount of Cinnamyl alcOHol in the liver in umol 
   
   #-Amount of cinnamaldehyde in the liver in umol-#
-  d/dt(A_L)           <-  Q_L * C_A + Q_SI + C_V_SI - (Q_L + Q_SI) * C_V_L - (RM_L_CA + RM_L_AO + RM_L_AG_GST + RM_L_AG_CHEM + RM_L_AP + RM_L_DA_FORM + R_OH_M_L_C_A);            #amount in mg/h in time in liver
+  d/dt(A_L)           <-  Q_L * C_A + Q_SI * C_V_SI - (Q_L + Q_SI) * C_V_L - (RM_L_CA + RM_L_AO + RM_L_AG_GST + RM_L_AG_CHEM + RM_L_AP + RM_L_DA_FORM + R_OH_M_L_C_A);            #amount in mg/h in time in liver
   
   #--GSH in the Liver cytosol--#
   
@@ -413,27 +413,32 @@ PBK_Cinnamaldehyde <- RxODE({
   #-Slowly perfused Tissue-#
   d/dt(A_SP)     <- Q_SP * (C_A - C_V_SP);             #Amount of Cinnamaldehyde in the SP tissue in umol 
   d/dt(A_OH_SP)  <- Q_SP * (C_OH_A - C_OH_V_SP);       #Amount of Cinnamyl alcOHol in the SP tissue in umol
-  
 })
 
 print(PBK_Cinnamaldehyde)
 solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
-pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of GSH in the liver")
-pL_GSH + scale_y_log10()
+#pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
+ # geom_line() + 
+  #labs(x = "Time in hours", y = "umol") +
+  #ggtitle("Amount of GSH in the liver")
+#pL_GSH + scale_y_log10()
 
-pA_L = ggplot(solve.pbk_nonpop, aes(time, A_L )) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of Cinnamaldehyde in the liver")
-pA_L 
+#pA_L = ggplot(solve.pbk_nonpop, aes(time, A_L )) + 
+ # geom_line() + 
+  #labs(x = "Time in hours", y = "umol") +
+  #ggtitle("Amount of Cinnamaldehyde in the liver")
+#pA_L 
 
-pA_SP = ggplot(solve.pbk_nonpop, aes(time, A_SP )) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of Cinnamaldehyde in Slowely perfused tissue")
-pA_SP
+#pA_SP = ggplot(solve.pbk_nonpop, aes(time, A_SP )) + 
+ # geom_line() + 
+#  labs(x = "Time in hours", y = "umol") +
+ # ggtitle("Amount of Cinnamaldehyde in Slowely perfused tissue")
+#pA_SP
 
+#mass balance calculation
+#adding al compartments with cinnamaldehyde
+mass_df <-solve.pbk_nonpop[,c(1:24, 26:31, 33,34,36:50)]
+
+mass_at_t <-rowSums(mass_df[800,])
+mass_at_t - inhalation_dose

@@ -18,7 +18,7 @@ nbr.doses    <-1        #number of doses
 time.0       <-0        #time start dosing
 time.end     <-8        #time end of simulation
 time.frame   <-0.01     #time steps of simulation
-Dose_in_mg   <-250     #Dose in mg/kg-bw
+Dose_in_mg   <-100    #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
 DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+6     #The administered dose in umol 
 
@@ -229,7 +229,7 @@ inits <- c("A_GI"         = 0 ,
 
 #Step 3 exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose = DOSE, dur=0.001, cmt="A_GI", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
 
 
@@ -309,8 +309,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #-Amount of Cinnamaldehyde in Venous blood in umol 
   d/dt(A_V)           <- Q_F * C_V_F + (Q_L + Q_SI) * C_V_L + Q_RP * C_V_RP + Q_SP * C_V_SP - Q_C*C_V;
-  d/dt(AA_A)          <- C_A;
-  
+  d/dt(AA_A)          <- C_V;
   #-Amount of Cinnamyl alcOHol in venous blood in umol 
   d/dt(A_OH_V)        <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP - Q_C * C_OH_V; 
   
@@ -336,10 +335,10 @@ PBK_Cinnamaldehyde <- RxODE({
   
   d/dt(A_OH_M_L_C_A)  <- R_OH_M_L_C_A;          #Amount of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in umol
   
-  d/dt(A_OH_L)        <- Q_L * C_OH_A + Q_SI *C_OH_V_SI - (Q_L+Q_SI) * C_OH_V_L + RM_L_AO - R_OH_M_L_C_A; # Amount of Cinnamyl alcOHol in the liver in umol 
+  d/dt(A_OH_L)        <- Q_L * C_OH_A + Q_SI * C_OH_V_SI - (Q_L + Q_SI) * C_OH_V_L + RM_L_AO - R_OH_M_L_C_A; # Amount of Cinnamyl alcOHol in the liver in umol 
   
   #-Amount of cinnamaldehyde in the liver in umol-#
-  d/dt(A_L)           <-  Q_L * C_A + Q_SI + C_V_SI - (Q_L + Q_SI) * C_V_L - (RM_L_CA + RM_L_AO + RM_L_AG_GST + RM_L_AG_CHEM + RM_L_AP + RM_L_DA_FORM + R_OH_M_L_C_A);            #amount in mg/h in time in liver
+  d/dt(A_L)           <-  Q_L * C_A + Q_SI * C_V_SI - (Q_L + Q_SI) * C_V_L - (RM_L_CA + RM_L_AO + RM_L_AG_GST + RM_L_AG_CHEM + RM_L_AP + RM_L_DA_FORM + R_OH_M_L_C_A);            #amount in mg/h in time in liver
   
   #--GSH in the Liver cytosol--#
   
@@ -399,3 +398,8 @@ pA_SP = ggplot(solve.pbk_nonpop, aes(time, A_SP )) +
   ggtitle("Amount of Cinnamaldehyde in Slowely perfused tissue")
 pA_SP
 
+mass_df <-solve.pbk_nonpop[,c(44:59,61:68,70:72)]
+mass_at_t <- rowSums(mass_df[30,])
+mass_at_t/ 1e+6 *MW / 70
+DOSE / 1e+6*MW / 70
+mass_at_t/ 1e+6 *MW / 70 - (DOSE / 1e+6*MW / 70)
