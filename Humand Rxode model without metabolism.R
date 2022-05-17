@@ -20,7 +20,7 @@ time.end     <-8        #time end of simulation
 time.frame   <-0.01     #time steps of simulation
 Dose_in_mg   <-100    #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
-DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+6     #The administered dose in umol 
+DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+3     #The administered dose in umol 
 
 RM_L_DA <- 0 
 RM_Lc_GSH  <- 0 
@@ -81,8 +81,8 @@ k_L_GLOS    <- 0.142 #Liver
 k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-init_GSH_L  <- 5639 * V_L   #initial amount of GSH in the liver in umol/kg
-init_GSH_SI <- 1250 * V_SI  #initial amount of GSH in the small intestine in umol/kg
+init_GSH_L  <- 5639 * V_L   #initial amount of GSH in the liver in umol
+init_GSH_SI <- 1250 * V_SI  #initial amount of GSH in the small intestine in umol
 
 k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
@@ -278,25 +278,9 @@ PBK_Cinnamaldehyde <- RxODE({
 print(PBK_Cinnamaldehyde)
 solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
-pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of GSH in the liver")
-pL_GSH + scale_y_log10()
 
-pA_L = ggplot(solve.pbk_nonpop, aes(time, A_L )) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of Cinnamaldehyde in the liver")
-pA_L 
 
-pA_SP = ggplot(solve.pbk_nonpop, aes(time, A_SP )) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of Cinnamaldehyde in Slowely perfused tissue")
-pA_SP
-
-mass_df <-solve.pbk_nonpop[,c(1:21)]
-mass_at_t <- rowSums(mass_df[100,])
-mass_at_t/70 * MW /1e+6 - DOSE/70 * MW /1e+6
+mass_df <-solve.pbk_nonpop[,c(14:21)]
+mass_at_t <- rowSums(mass_df[5,])
+mass_at_t/70 * MW /1e+3 - DOSE/70 * MW /1e+3
 
