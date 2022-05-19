@@ -22,12 +22,14 @@ Dose_in_mg   <-100    #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
 DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+3     #The administered dose in umol 
 
-RM_L_DA <- 0 
-RM_Lc_GSH  <- 0 
-RM_SI_AG_GST <- 0
-RM_SI_AG_CHEM <- 0
-RM_SIc_GSH <- 0 
 
+Rin <-0
+R_F<-0
+R_L<-0
+R_SI<-0
+R_V<-0
+R_SP<-0
+R_RP<-0
 
 #--Physico-chemical parameters--#
 #-Cinnamaldehyde-#
@@ -130,11 +132,13 @@ Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol i
 Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Collection of all parameters so they can be entered in the function
-parameters=cbind(RM_L_DA=RM_L_DA,  
-                 RM_Lc_GSH=RM_Lc_GSH, 
-                 RM_SI_AG_GST=RM_SI_AG_GST,
-                 RM_SI_AG_CHEM=RM_SI_AG_CHEM,
-                 RM_SIc_GSH=RM_SIc_GSH,
+parameters=cbind(Rin <-Rin,
+                 R_F<-R_F,
+                 R_L<-R_L,
+                 R_SI<-R_SI,
+                 R_V<-R_V,
+                 R_SP<-R_SP,
+                 R_RP<-R_SP,
                  P_F=P_F,
                  P_L=P_L,
                  P_SI=P_SI,
@@ -159,46 +163,20 @@ parameters=cbind(RM_L_DA=RM_L_DA,
                  Q_SI=Q_SI,
                  Q_RP=Q_RP,
                  Q_SP=Q_SP,
-                 G_SYN_L=G_SYN_L,
-                 G_SYN_SI=G_SYN_SI,
-                 k_L_GLOS=k_L_GLOS,
-                 k_SI_GLOS=k_SI_GLOS,
-                 init_GSH_L=init_GSH_L,
-                 init_GSH_SI=init_GSH_SI,
-                 k_GSH=k_GSH,
-                 k_DNA=k_DNA,
-                 C_PRO_L=C_PRO_L,
-                 C_PRO_SI=C_PRO_SI,
-                 C_L_dG=C_L_dG,
-                 T_0.5=T_0.5,
                  DOSE=DOSE,
-                 Ka=Ka,
-                 k_L_OH = k_L_OH,
-                 Km_L_CA=Km_L_CA,
-                 Km_L_AO=Km_L_AO,
-                 Km_L_GST=Km_L_GST,
-                 Km_L_GST_G=Km_L_GST_G,
-                 Vsmax_L_CA=Vsmax_L_CA,
-                 Vsmax_L_AO=Vsmax_L_AO,
-                 Vsmax_L_GST=Vsmax_L_GST,
-                 Km_SI_CA=Km_SI_CA,
-                 Km_SI_AO=Km_SI_AO,
-                 Km_SI_OH=Km_SI_OH,
-                 Km_SI_GST=Km_SI_GST,
-                 Km_SI_GST_G=Km_SI_GST_G,
-                 Vsmax_SI_CA=Vsmax_SI_CA,
-                 Vsmax_SI_AO=Vsmax_SI_AO,
-                 Vsmax_SI_OH=Vsmax_SI_OH,
-                 Vsmax_SI_GST=Vsmax_SI_GST)
+                 Ka=Ka
+                 )
 
 
 #defining the begin situation of the model (in this case no chemical present in the organs)
-inits <- c("A_GI"         = 0 ,
+inits <- c("A_GI"         = 0,
            "A_V"          = 0,
-           "AA_A"         = 0,
+           "A_A"          =0,
            "A_F"          = 0,
            "A_L"          = 0,
-           "A_SI"         = 0
+           "A_SI"         = 0,
+           "A_RP"         =0,
+           "A_SP"         =0
 );
 
 
@@ -209,78 +187,90 @@ ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
 
 
-
 PBK_Cinnamaldehyde <- RxODE({
   
   #--Defining the compartments of the model--#
   
+  #rate of change in cinnamaldehyde concentration in the GI cavity in umol-#
+  Rin            <- -Ka * A_GI;
+  
+  #-Blood concentrations-#
+  C_V            <- A_V       / V_V ;           #Concentration of Cinnamaldehyde in Venous blood in umol/l
+  C_A            <- A_A     / V_A                          #Concentration of cinnamaldehyde in Arterial blood   
+  
+  
   #-Concentration in fat-#
   C_F            <- A_F       / V_F;                    #Concentration in Fat in umol/kg
   C_V_F          <- C_F       / P_F;                    #Concentration of cinnamaldehyde in venous blood leaving Fat in umol/l
-
-  #-Concentration in Liver-#
-  C_L            <- A_L       / V_L;                    #Concentration Cinnamaldehyde in the Liver in umol/kg
-  C_V_L          <- C_L       / P_L;                    #Concentration of cinnamaldehyde in venous blood leaving the Liver in umol/l
-  
-  #-Concentration in the Small intestine-#
-  C_SI           <- A_SI      / V_SI;                   #Concentration Cinnamaldehyde in the Small intestine in umol/kg
-  C_V_SI         <- C_SI      / P_SI;                   #Concentration of cinnamaldehyde in venous blood leaving the Small intestine in umol/l
- 
+  R_F            <- Q_F * (C_A - C_V_F); #rate of change in cinnamaldehyde concentration in the Fat in umol
   
   
   #-Concentration in richly perfused tissue-#
   C_RP           <- A_RP      / V_RP;                   #Concentration of Cinnamaldehyde in RP tissue in umol/kg
   C_V_RP         <- C_RP      / P_RP;                   #concentration of Cinnamaldehyde in RP venous blood leaving the tissue in umol/L
- 
+  R_RP           <- Q_RP * (C_A - C_V_RP); #rate of change in cinnamaldehyde concentration in the RP in umol-#
   
   #-Concentration in slowly perfused tissue-#
-  C_SP            <- A_SP     / V_SP;                   #Concentration in SP tissue in umol/kg
+  C_SP           <- A_SP     / V_SP;                   #Concentration in SP tissue in umol/kg
   C_V_SP         <- C_SP      / P_SP;                   #Concentration of Cinnamaldehyde in venous blood leaving the SP in umol/l
+  R_SP           <- Q_SP * (C_A - C_V_SP); #rate of change in cinnamaldehyde concentration in the SP tissue in umol#
   
+  #-Concentration in the Small intestine-#
+  C_SI           <- A_SI      / V_SI;                   #Concentration Cinnamaldehyde in the Small intestine in umol/kg
+  C_V_SI         <- C_SI      / P_SI;                   #Concentration of cinnamaldehyde in venous blood leaving the Small intestine in umol/l
+  R_SI           <- Q_SI * (C_A - C_V_SI) +Ka *A_GI #rate of change in cinnamaldehyde concentration in the SI in umol-#
   
-  #-Blood concentrations-#
-  C_V            <- A_V       / ( V_A + V_V);           #Concentration of Cinnamaldehyde in Venous blood in umol/l
-  C_A            <- C_V; 
+  #-Concentration in Liver-#
+  C_L            <- A_L       / V_L;                    #Concentration Cinnamaldehyde in the Liver in umol/kg
+  C_V_L          <- C_L       / P_L;                    #Concentration of cinnamaldehyde in venous blood leaving the Liver in umol/l
+  R_L            <- Q_L * C_A + Q_SI * C_V_SI - (Q_L + Q_SI) * C_V_L; #rate of change in cinnamaldehyde concentration in the liver in umol-#
   
+  R_V            <- Q_F * C_V_F + (Q_L + Q_SI) * C_V_L + Q_RP * C_V_RP + Q_SP * C_V_SP - Q_C * C_V; #rate of change in cinnamaldehyde concentration in the venous blood in umol
+  R_A            <- Q_C * C_V - (Q_F * C_A + Q_L * C_A + Q_SI * C_A + Q_RP * C_A + Q_SP * C_A);
   #--Differential equations--#
   
   #-amount of Cinnamaldehyde in GI cavity in umol
-  d/dt(A_GI)          <- -Ka * A_GI;  
+  d/dt(A_GI)     <- Rin;
   
   #-Amount of Cinnamaldehyde in Venous blood in umol 
-  d/dt(A_V)           <- Q_F * C_V_F + (Q_L + Q_SI) * C_V_L + Q_RP * C_V_RP + Q_SP * C_V_SP - Q_C*C_V;
-  d/dt(AA_A)          <- A_V;
+  
+  d/dt(A_V)      <- R_V;
+  d/dt(A_A)      <-R_A;
   
   #-Fat-#
-  d/dt(A_F)           <- Q_F * (C_A - C_V_F);                            #Amount of Cinnamaldehyde in the Fat in umol 
-  
+  #Amount of Cinnamaldehyde in the Fat in umol 
+  d/dt(A_F)      <- R_F;                         
 
   
   #-Amount of cinnamaldehyde in the liver in umol-#
-  d/dt(A_L)           <-  Q_L * C_A + Q_SI * C_V_SI - (Q_L + Q_SI) * C_V_L 
-  
+  d/dt(A_L)      <- R_L; 
   
   #-Amount of Cinnamaldehyde in the Small intestine-#
-  d/dt(A_SI)          <- Q_SI * (C_A - C_V_SI) + Ka *A_GI 
+  d/dt(A_SI)     <- R_SI;
   
-  
-  
-  #Richly perfused Tissue_#
-  d/dt(A_RP)    <- Q_RP * (C_A - C_V_RP);             #Amount of Cinnamaldehyde in the RP tissue in umol 
+  #Richly perfused Tissue#
+  #Amount of Cinnamaldehyde in the RP tissue in umol 
+  d/dt(A_RP)     <- R_RP;           
   
   
   #-Slowly perfused Tissue-#
-  d/dt(A_SP)     <- Q_SP * (C_A - C_V_SP);             #Amount of Cinnamaldehyde in the SP tissue in umol 
+  d/dt(A_SP)     <- R_SP;         #Amount of Cinnamaldehyde in the SP tissue in umol 
   
   
 })
 
-print(PBK_Cinnamaldehyde)
 solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
 
+solve.pbk_nonpop <- solve.pbk_nonpop/70 * MW /1e+3
+mass_df <-solve.pbk_nonpop[,c(14:20)]
+mass_at_t <- data.frame(mass=as.numeric())
 
-mass_df <-solve.pbk_nonpop[,c(14:21)]
-mass_at_t <- rowSums(mass_df[5,])
-mass_at_t/70 * MW /1e+3 - DOSE/70 * MW /1e+3
 
+for (i in 1:nrow(mass_df)){
+  mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(solve.pbk_nonpop[i,])
+}
+
+
+
+plot(mass_at_t[,1])
