@@ -4,6 +4,27 @@
 #human rxode model
 #Human population model
 
+
+#Rxode data manipulation
+pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
+  geom_line() + 
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Amount of GSH in the liver")
+pL_GSH + scale_y_log10()
+
+pA_L = ggplot(solve.pbk_nonpop, aes(time, A_L )) + 
+  geom_line() + 
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Amount of Cinnamaldehyde in the liver")
+pA_L 
+
+pA_SP = ggplot(solve.pbk_nonpop, aes(time, A_SP )) + 
+  geom_line() + 
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Amount of Cinnamaldehyde in Slowely perfused tissue")
+pA_SP
+
+
 #Comparison between human desolve and rxode model
 
 combined_liver <- data.frame(solve.pbk_nonpop["time"],solve.pbk_nonpop["A_L"],df_pbk_results['A_L'])
