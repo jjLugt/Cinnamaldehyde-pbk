@@ -21,8 +21,8 @@ time.frame   <-0.01     #time steps of simulation
 Dose_in_mg   <-0     #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
 inhalation_dose_in_mg <- 100  #The inhaled dose in mg/kg
-DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+6     #The administered dose in umol 
-inhalation_dose <- (inhalation_dose_in_mg * 70)/ MW * 1e+6  #The inhaled dose in umol
+DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+3     #The administered dose in umol 
+inhalation_dose <- (inhalation_dose_in_mg * 70)/ MW * 1e+3  #The inhaled dose in umol
 
 RM_L_DA <- 0 
 RM_Lc_GSH  <- 0 
@@ -215,7 +215,6 @@ inits <- c("A_GI"         = 0 ,
            "A_X"          = 0,
            "A_OH_PU"     =0,
            "A_V"          = 0,
-           "AA_A"         = 0,
            "A_OH_V"       = 0,
            "A_F"          = 0,
            "A_OH_F"       = 0,
@@ -347,7 +346,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #-Amount of Cinnamaldehyde in Venous blood in umol 
   d/dt(A_V)           <- Q_F * C_V_F + (Q_L + Q_SI) * C_V_L + Q_RP * C_V_RP + Q_SP * C_V_SP + Q_PU * C_PU - Q_C*C_V;
-  d/dt(AA_A)          <- C_A;
+  #d/dt(AA_A)          <- 
   
   #-Amount of Cinnamyl alcOHol in venous blood in umol 
   d/dt(A_OH_V)        <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP + Q_PU * C_OH_V_PU - Q_C * C_OH_V; 
@@ -433,12 +432,12 @@ solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, co
 #pA_SP = ggplot(solve.pbk_nonpop, aes(time, A_SP )) + 
  # geom_line() + 
 #  labs(x = "Time in hours", y = "umol") +
- # ggtitle("Amount of Cinnamaldehyde in Slowely perfused tissue")
+ # ggtitle("Amount of Cinnamaldehyde in Slowly perfused tissue")
 #pA_SP
 
 #mass balance calculation
 #adding al compartments with cinnamaldehyde
-mass_df <-solve.pbk_nonpop[,c(1:24, 26:31, 33,34,36:50)]
+mass_df <-solve.pbk_nonpop[,c( 20,21, 23:24,30,31,33,34,36,37, 51:67,69:76,77:81)]
 
-mass_at_t <-rowSums(mass_df[800,])
-mass_at_t - inhalation_dose
+mass_at_t <-rowSums(mass_df[300,])
+mass_at_t/70 * MW /1e+3 - inhalation_dose/70 * MW /1e+3
