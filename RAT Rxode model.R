@@ -9,6 +9,7 @@ library(readr)
 library(shiny)
 library(truncnorm)
 library(reshape2)
+library(plotly)
 
 #Simulations
 set.seed(15204)         #to ensure a reproducible output
@@ -22,7 +23,7 @@ time.frame   <-0.01     #time steps of simulation
 #NF          <-1000     #Number of females
 Dose_in_mg   <-250      #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
-DOSE         <-(Dose_in_mg * 0.25)/ MW  * 1e+6     #The administered dose in umol 
+DOSE         <-(Dose_in_mg * 0.25)/ MW  * 1e+3     #The administered dose in umol 
 
 RM_L_DA <- 0 
 RM_Lc_GSH  <- 0 
@@ -407,18 +408,32 @@ pA_L = ggplot(solve.pbk, aes(time, A_L )) +
   ggtitle("Amount of Cinnamaldehyde in the liver")
 pA_L 
 
-pA_SP = ggplot(df_pbk_results, aes(time, A_SP )) + 
+pA_V = ggplot(solve.pbk, aes(time, A_V )) + 
   geom_line() + 
   labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of Cinnamaldehyde in Slowely perfused tissue")
-pA_SP
-
-combined_liver <- data.frame(solve.pbk["time"],solve.pbk["A_L"],df_pbk_results['A_L'])
-c_liver <- melt(data = combined_liver, id.vars="time", variable.name= "lever", variable.value = "concentratie")
+  ggtitle("Amount of Cinnamaldehyde blood")
+pA_V 
 
 
-Pcl <- ggplot(c_liver, aes(time, y = value, col=lever )) +
-    geom_line()+
+data_250mg <- read_excel("D:/Joris/Toxicology and Environmental Health/Master stage/Comparison data/data cnma in blood ug 250mg-kg dose .xlsx")
+
+blood_amount_total <- solve.pbk[,1]
+blood_amount_total <- cbind(blood_amount_total,(rowSums (solve.pbk[,44:45])))
+colnames(blood_amount_total) <- c("time","concentration")
+blood_amount_total <- as.data.frame(blood_amount_total)
+
+comparison_data <- merge.data.frame(blood_amount_total, data_250mg, by="time", all= "TRUE")
+
+pBlood = ggplot(blood_amount_total, aes(time, concentration )) + 
+  geom_line() + 
   labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of Cinnamaldehyde in the liver")
-Pcl+ scale_y_log10()
+  ggtitle("Amount of Cinnamaldehyde blood")
+pBlood  + scale_y_log10()
+
+fig_blood <- plot_ly(blood_amount_total, x=~time, y =~concentration , type = 'scatter', mode = 'lines')%>%
+  add_trace(blood_amount_total, x=~time, y =~"rat 1" , type = 'scatter', mode = 'markers')
+
+
+fig_blood 
+
+
