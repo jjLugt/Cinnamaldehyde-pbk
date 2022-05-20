@@ -172,7 +172,7 @@ var_m$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alc
 var_m$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h RAT value
 
 #---Dose male---#
-var_m$DOSE <- (Dose_in_mg * var_m$BW)/ MW  * 1e+6     #The administered dose in umol 
+var_m$DOSE <- (Dose_in_mg * var_m$BW)/ MW  * 1e+3     #The administered dose in umol 
 
 
 
