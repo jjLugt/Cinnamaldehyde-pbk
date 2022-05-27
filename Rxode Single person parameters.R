@@ -3,6 +3,13 @@
 #Single person rxode model parameters 
 #Simulations
 
+library(RxODE)
+library(tidyverse)
+library(readxl)
+library(readr)
+library(shiny)
+library(truncnorm)
+library(reshape2)
 
 set.seed(15204)         #to ensure a reproducible output
 amount.units <-"umol"
@@ -11,15 +18,9 @@ nbr.doses    <-1        #number of doses
 time.0       <-0        #time start dosing
 time.end     <-8        #time end of simulation
 time.frame   <-0.01     #time steps of simulation
-Dose_in_mg   <-100    #Dose in mg/kg-bw
+Dose_in_mg   <-300   #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
 DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+3     #The administered dose in umol 
-
-RM_L_DA <- 0 
-RM_Lc_GSH  <- 0 
-RM_SI_AG_GST <- 0
-RM_SI_AG_CHEM <- 0
-RM_SIc_GSH <- 0 
 
 
 #--Physico-chemical parameters--#
@@ -67,7 +68,7 @@ Q_SP     <- 24.8   #Slowly perfused (SP)
 #--GSH synthesis in umol/kg tissue/h--#
 
 G_SYN_L     <- 1122  #Liver 
-G_SYN_SI    <- 27    #Small intestine
+G_SYN_SI    <- 270    #Small intestine
 
 #-Apparent first order rate constant GSH turn over(RAT?) per h-#
 k_L_GLOS    <- 0.142 #Liver
@@ -123,98 +124,94 @@ Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol i
 Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Collection of all parameters so they can be entered in the function
-parameters=cbind(RM_L_DA=RM_L_DA,  
-                 RM_Lc_GSH=RM_Lc_GSH, 
-                 RM_SI_AG_GST=RM_SI_AG_GST,
-                 RM_SI_AG_CHEM=RM_SI_AG_CHEM,
-                 RM_SIc_GSH=RM_SIc_GSH,
-                 P_F=P_F,
-                 P_L=P_L,
-                 P_SI=P_SI,
-                 P_RP=P_RP,
-                 P_SP=P_SP,
-                 P_OH_F=P_OH_F,
-                 P_OH_L=P_OH_L,
-                 P_OH_SI=P_OH_SI,
-                 P_OH_RP=P_OH_RP,
-                 P_OH_SP=P_OH_SP,
-                 BW=BW,
-                 V_F=V_F,
-                 V_L=V_L,
-                 V_SI=V_SI,
-                 V_A=V_A,
-                 V_V=V_V,
-                 V_RP=V_RP,
-                 V_SP=V_SP,
-                 Q_C=Q_C,
-                 Q_F=Q_F,
-                 Q_L=Q_L,
-                 Q_SI=Q_SI,
-                 Q_RP=Q_RP,
-                 Q_SP=Q_SP,
-                 G_SYN_L=G_SYN_L,
-                 G_SYN_SI=G_SYN_SI,
-                 k_L_GLOS=k_L_GLOS,
-                 k_SI_GLOS=k_SI_GLOS,
-                 init_GSH_L=init_GSH_L,
-                 init_GSH_SI=init_GSH_SI,
-                 k_GSH=k_GSH,
-                 k_DNA=k_DNA,
-                 C_PRO_L=C_PRO_L,
-                 C_PRO_SI=C_PRO_SI,
-                 C_L_dG=C_L_dG,
-                 T_0.5=T_0.5,
-                 DOSE=DOSE,
-                 Ka=Ka,
-                 k_L_OH = k_L_OH,
-                 Km_L_CA=Km_L_CA,
-                 Km_L_AO=Km_L_AO,
-                 Km_L_GST=Km_L_GST,
-                 Km_L_GST_G=Km_L_GST_G,
-                 Vsmax_L_CA=Vsmax_L_CA,
-                 Vsmax_L_AO=Vsmax_L_AO,
-                 Vsmax_L_GST=Vsmax_L_GST,
-                 Km_SI_CA=Km_SI_CA,
-                 Km_SI_AO=Km_SI_AO,
-                 Km_SI_OH=Km_SI_OH,
-                 Km_SI_GST=Km_SI_GST,
-                 Km_SI_GST_G=Km_SI_GST_G,
-                 Vsmax_SI_CA=Vsmax_SI_CA,
-                 Vsmax_SI_AO=Vsmax_SI_AO,
-                 Vsmax_SI_OH=Vsmax_SI_OH,
-                 Vsmax_SI_GST=Vsmax_SI_GST)
+parameters=cbind(P_F,
+                 P_L,
+                 P_SI,
+                 P_RP,
+                 P_SP,
+                 P_OH_F,
+                 P_OH_L,
+                 P_OH_SI,
+                 P_OH_RP,
+                 P_OH_SP,
+                 BW,
+                 V_F,
+                 V_L,
+                 V_SI,
+                 V_A,
+                 V_V,
+                 V_RP,
+                 V_SP,
+                 Q_C,
+                 Q_F,
+                 Q_L,
+                 Q_SI,
+                 Q_RP,
+                 Q_SP,
+                 G_SYN_L,
+                 G_SYN_SI,
+                 k_L_GLOS,
+                 k_SI_GLOS,
+                 init_GSH_L,
+                 init_GSH_SI,
+                 k_GSH,
+                 k_DNA,
+                 C_PRO_L,
+                 C_PRO_SI,
+                 C_L_dG,
+                 T_0.5,
+                 DOSE,
+                 Ka,
+                 k_L_OH,
+                 Km_L_CA,
+                 Km_L_AO,
+                 Km_L_GST,
+                 Km_L_GST_G,
+                 Vsmax_L_CA,
+                 Vsmax_L_AO,
+                 Vsmax_L_GST,
+                 Km_SI_CA,
+                 Km_SI_AO,
+                 Km_SI_OH,
+                 Km_SI_GST,
+                 Km_SI_GST_G,
+                 Vsmax_SI_CA,
+                 Vsmax_SI_AO,
+                 Vsmax_SI_OH,
+                 Vsmax_SI_GST)
 
 
 #defining the begin situation of the model (in this case no chemical present in the organs)
-inits <- c("A_GI"         = 0 ,
+inits <- c("A_GI"         = 0,
            "A_V"          = 0,
-           "AA_A"         = 0,
            "A_OH_V"       = 0,
+           "A_A"          = 0,
+           "A_OH_A"       = 0,
            "A_F"          = 0,
            "A_OH_F"       = 0,
            "AM_L_CA"      = 0,
-           "AM_L_AO"      = 0,
-           "AM_L_AG_GST"  = 0,
-           "AM_L_AG_CHEM" = 0,
            "AM_L_AP"      = 0,
-           "AM_L_DA_FORM" = 0,
-           "AM_L_DA"      = 0,
+           "AM_L_AO"      = 0,
            "A_OH_M_L_C_A" = 0,
            "A_OH_L"       = 0,
            "A_L"          = 0,
-           "AM_Lc_GSH"    =init_GSH_L, 
-           "AM_SI_CA"     = 0,
+           "AM_Lc_GSH"    = init_GSH_L,
+           "AM_L_AG_GST"  = 0,
+           "AM_L_AG_CHEM" = 0,
+           "AM_L_DA_FORM" = 0,
+           "AM_L_DA"      = 0,
+           "A_OH_SI"      = 0,
            "AM_SI_AO"     = 0,
+           "A_OH_M_SI_C_A"= 0,
+           "A_SI"         = 0,
+           "AM_SI_CA"     = 0,
+           "AM_SI_AP"     = 0,
+           "AM_SIc_GSH"   = init_GSH_SI,
            "AM_SI_AG_GST" = 0,
            "AM_SI_AG_CHEM"= 0,
-           "AM_SI_AP"     = 0,
-           "A_OH_M_SI_C_A"= 0,
-           "A_OH_SI"      = 0,
-           "A_SI"         = 0,
-           "AM_SIc_GSH"   =init_GSH_SI,
            "A_RP"         = 0,
            "A_OH_RP"      = 0,
-           "A_SP"          = 0,
+           "A_SP"         = 0,
            "A_OH_SP"      = 0
 );
 
@@ -222,5 +219,5 @@ inits <- c("A_GI"         = 0 ,
 
 #Step 3 exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = DOSE, dur=0.001, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose = DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 

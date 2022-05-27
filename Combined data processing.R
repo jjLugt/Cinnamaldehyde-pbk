@@ -6,10 +6,10 @@
 
 
 #Rxode
-
+#cinnamaldehyde model 
 #Mass balance calculation rxode non metabolis
-solve.pbk_nonpop <- solve.pbk_nonpop/BW * MW /1e+3
-mass_df <-solve.pbk_nonpop[,c(26:37)]
+Mass_df <- solve.pbk_nonpop/BW * MW /1e+3
+mass_df <-Mass_df[,c(59:68,70:72,74:75, 77:81,84:89)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 
@@ -18,6 +18,20 @@ for (i in 1:nrow(mass_df)){
 }
 plot(mass_at_t[,1])
 
+
+
+#Cinnamylalcohol model
+
+#Mass balance calculation rxode non metabolis
+Mass_df <- solve.pbk_nonpop/BW * MW /1e+3
+mass_df <-Mass_df[,c(45:53,55,56,58:63)]
+mass_at_t <- data.frame(mass=as.numeric())
+
+
+for (i in 1:nrow(mass_df)){
+  mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(mass_df[i,])
+}
+plot(mass_at_t[,1])
 
 #Rxode data visualisation 
 pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
@@ -38,30 +52,12 @@ pA_SP = ggplot(solve.pbk_nonpop, aes(time, A_SP )) +
   ggtitle("Amount of Cinnamaldehyde in Slowely perfused tissue")
 pA_SP
 
-
-pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
+pA_GST = ggplot(solve.pbk_nonpop, aes(time, AM_L_AG_GST )) + 
   geom_line() + 
   labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of GSH in the liver")
-pL_GSH + scale_y_log10()
+  ggtitle("Amount of Cinnamaldehyde metabolised with GSH")
+pA_GST
 
-pA_L = ggplot(solve.pbk_nonpop, aes(time, A_L )) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of Cinnamaldehyde in the liver")
-pA_L 
-
-pA_SP = ggplot(solve.pbk_nonpop, aes(time, A_SP )) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of Cinnamaldehyde in Slowely perfused tissue")
-pA_SP
-
-mass_df <-solve.pbk_nonpop[,c(44:59,61:68,70:72)]
-mass_at_t <- rowSums(mass_df[30,])
-mass_at_t/ 1e+3 *MW / 70
-DOSE / 1e+3*MW / 70
-mass_at_t/ 1e+3 *MW / 70 - (DOSE / 1e+3*MW / 70)
 
 #Comparison between human desolve and rxode model
 
