@@ -68,6 +68,37 @@ pA_GST = ggplot(solve.pbk_nonpop, aes(time, AM_L_AG_GST )) +
   ggtitle("Amount of Cinnamaldehyde metabolised with GSH")
 pA_GST
 
+#Rxode
+#Tissue results 
+tissue_results <- solve.pbk_nonpop[,c(1,3,4,7,13,19,25,39)]
+pC_V = ggplot(tissue_results, aes(time, C_V )) + 
+  geom_line() +
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Cinnamaldehyde concentration in venous blood")
+pC_V
+
+pC_A = ggplot(tissue_results, aes(time, C_A )) + 
+  geom_line() +
+  labs(x = "Time in hours", y = "umol/L") +
+  ggtitle("Cinnamaldehyde concentration arterial blood")
+pC_A
+
+pC_L = ggplot(tissue_results, aes(time, C_L )) + 
+  geom_line() +
+labs(x = "Time in hours", y = "umol/L") +
+  ggtitle("Cinnamaldehyde concentration in the liver")
+pC_L
+
+pC_SI = ggplot(tissue_results, aes(time, C_SI )) + 
+  geom_line() +
+labs(x = "Time in hours", y = "umol/L") +
+  ggtitle("Cinnamaldehyde concentration in the small intestine")
+pC_SI
+pC_F = ggplot(tissue_results, aes(time, C_F )) + 
+  geom_line() +
+labs(x = "Time in hours", y = "umol/L") +
+  ggtitle("Cinnamaldehyde concentration in fat")
+pC_F
 
 #Comparison between human desolve and rxode model
 
