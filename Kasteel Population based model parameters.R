@@ -17,7 +17,7 @@ time.units   <-"h"
 nbr.doses    <-1        #number of doses
 time.0       <-0        #time start dosing
 time.end     <-8        #time end of simulation
-time.frame   <-0.01     #time steps of simulation
+time.frame   <-0.1     #time steps of simulation
 N           <-1000     #Number of males
 NF          <-1000     #Number of females
 Dose_in_mg   <-250      #Dose in mg/kg-bw
@@ -39,12 +39,6 @@ var_f <- matrix(NA, nrow = NF, ncol = par_var_f)
 colnames(var_f) <- colnames
 var_f <- as.data.frame(var_f)
 
-#----These amounts are defined in the PBK model itself but R is stupid and I have to define them before then or it wont work----#
-RM_L_DA <- 0 
-RM_Lc_GSH  <- 0 
-RM_SI_AG_GST <- 0
-RM_SI_AG_CHEM <- 0
-RM_SIc_GSH <- 0 
 
 
 #--Physico-chemical parameters--#
@@ -346,75 +340,70 @@ Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
 DOSE<- phys$DOSE 
 
-parameters=cbind(RM_L_DA,  
-                 RM_Lc_GSH, 
-                 RM_SI_AG_GST,
-                 RM_SI_AG_CHEM,
-                 RM_SIc_GSH,
-                 P_F,
+parameters=cbind(P_F,
                  P_L,
                  P_SI,
                  P_RP,
                  P_SP,
                  P_OH_F,
-                 P_OH_L=P_OH_L,
-                 P_OH_SI=P_OH_SI,
-                 P_OH_RP=P_OH_RP,
-                 P_OH_SP=P_OH_SP,
-                 Age = Age,
-                 Height_start = Height_start,
-                 Height_cv = Height_cv,
-                 Height = Height,
-                 BW_start = BW_start,
-                 BW_cv = BW_cv,
-                 BW=BW,
-                 BSA = BSA,
-                 V_L=V_L,
-                 V_F=V_F,
-                 V_F_min = V_F_min,
-                 V_B = V_B,
-                 V_A=V_A,
-                 V_V=V_V,
-                 V_SI=V_SI,
-                 V_RP=V_RP,
-                 V_SP=V_SP,
-                 Q_C=Q_C,
-                 Q_SI=Q_SI,
-                 Q_F=Q_F,
-                 Q_L=Q_L,
-                 Q_RP=Q_RP,
-                 Q_SP=Q_SP,
-                 G_SYN_L=G_SYN_L,
-                 G_SYN_SI=G_SYN_SI,
-                 k_L_GLOS=k_L_GLOS,
-                 k_SI_GLOS=k_SI_GLOS,
-                 init_GSH_L=init_GSH_L,
-                 init_GSH_SI=init_GSH_SI,
-                 k_GSH=k_GSH,
-                 k_DNA=k_DNA,
-                 C_PRO_L=C_PRO_L,
-                 C_PRO_SI=C_PRO_SI,
-                 C_L_dG=C_L_dG,
-                 T_0.5=T_0.5,
-                 Ka=Ka,
-                 k_L_OH = k_L_OH,
-                 Km_L_CA=Km_L_CA,
-                 Km_L_AO=Km_L_AO,
-                 Km_L_GST=Km_L_GST,
-                 Km_L_GST_G=Km_L_GST_G,
-                 Vsmax_L_CA=Vsmax_L_CA,
-                 Vsmax_L_AO=Vsmax_L_AO,
-                 Vsmax_L_GST=Vsmax_L_GST,
-                 Km_SI_CA=Km_SI_CA,
-                 Km_SI_AO=Km_SI_AO,
-                 Km_SI_OH=Km_SI_OH,
-                 Km_SI_GST=Km_SI_GST,
-                 Km_SI_GST_G=Km_SI_GST_G,
-                 Vsmax_SI_CA=Vsmax_SI_CA,
-                 Vsmax_SI_AO=Vsmax_SI_AO,
-                 Vsmax_SI_OH=Vsmax_SI_OH,
-                 Vsmax_SI_GST=Vsmax_SI_GST,
-                 DOSE=DOSE)
+                 P_OH_L,
+                 P_OH_SI,
+                 P_OH_RP,
+                 P_OH_SP,
+                 Age,
+                 Height_start,
+                 Height_cv,
+                 Height,
+                 BW_start,
+                 BW_cv,
+                 BW,
+                 BSA,
+                 V_L,
+                 V_F,
+                 V_F_min,
+                 V_B,
+                 V_A,
+                 V_V,
+                 V_SI,
+                 V_RP,
+                 V_SP,
+                 Q_C,
+                 Q_SI,
+                 Q_F,
+                 Q_L,
+                 Q_RP,
+                 Q_SP,
+                 G_SYN_L,
+                 G_SYN_SI,
+                 k_L_GLOS,
+                 k_SI_GLOS,
+                 init_GSH_L,
+                 init_GSH_SI,
+                 k_GSH,
+                 k_DNA,
+                 C_PRO_L,
+                 C_PRO_SI,
+                 C_L_dG,
+                 T_0.5,
+                 Ka,
+                 k_L_OH,
+                 Km_L_CA,
+                 Km_L_AO,
+                 Km_L_GST,
+                 Km_L_GST_G,
+                 Vsmax_L_CA,
+                 Vsmax_L_AO,
+                 Vsmax_L_GST,
+                 Km_SI_CA,
+                 Km_SI_AO,
+                 Km_SI_OH,
+                 Km_SI_GST,
+                 Km_SI_GST_G,
+                 Vsmax_SI_CA,
+                 Vsmax_SI_AO,
+                 Vsmax_SI_OH,
+                 Vsmax_SI_GST,
+                 DOSE)
 
 
 #defining the begin situation of the model (in this case no chemical present in the organs)
@@ -454,6 +443,6 @@ inits <- c("A_GI"         = 0 ,
 
 #Step 3 exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = phys$DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose = phys$DOSE, dur=0.1, cmt="A_GI", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
 

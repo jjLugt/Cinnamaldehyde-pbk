@@ -167,7 +167,7 @@ for(i in 1:length(t_A)){
     TI[,i]        = sa$T[,1]    #Total indices
     TI.borninf[,i] = sa$T[,4]   #Lower CL total indices
     TI.bornsup[,i] = sa$T[,5]   #Upper CL total indices
-    
+   
     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
 }
