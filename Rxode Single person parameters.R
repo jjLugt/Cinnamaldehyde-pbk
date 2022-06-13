@@ -18,7 +18,7 @@ nbr.doses    <-1        #number of doses
 time.0       <-0        #time start dosing
 time.end     <-8        #time end of simulation
 time.frame   <-0.01     #time steps of simulation
-Dose_in_mg   <-300   #Dose in mg/kg-bw
+Dose_in_mg   <-100   #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
 DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+3     #The administered dose in umol 
 
@@ -44,13 +44,13 @@ BW      <- 70    #Body weight in Kg
 
 #-Tissues volumes in % body weight-#
 
-V_F      <- 21.4  #Fat
-V_L      <- 2.6   #Liver
-V_SI     <- 0.9   #Small intestine
-V_A      <- 2.0   #Arterial Blood
-V_V      <- 5.9   #Venous Blood
-V_RP     <- 4.1   #Richly perfused 
-V_SP     <- 51.7  #Slowly perfused 
+V_F      <- 0.214 * BW  #Fat
+V_L      <- 0.026 * BW   #Liver
+V_SI     <- 0.009 * BW  #Small intestine
+V_A      <- 0.02  * BW #Arterial Blood
+V_V      <- 0.059 * BW  #Venous Blood
+V_RP     <- 0.052 * BW  #Richly perfused 
+V_SP     <- 0.6 * BW #Slowly perfused 
 
 #-Cardiac parameters-#
 
@@ -58,11 +58,11 @@ Q_C      <- 310    #Cardiac output in L/h
 
 #-Blood flow to tissues in % cardiac output-#
 
-Q_F      <- 5.2    #Fat
-Q_L      <- 14.1   #Liver
-Q_SI     <- 8.6    #Small intestine
-Q_RP     <- 47.3   #Richly perfused (RP)
-Q_SP     <- 24.8   #Slowly perfused (SP)
+Q_F      <- 0.052 * Q_C    #Fat
+Q_L      <- 0.141 * Q_C   #Liver
+Q_SI     <- 0.087 * Q_C    #Small intestine
+Q_RP     <- 0.472 * Q_C   #Richly perfused (RP)
+Q_SP     <- 0.248 * Q_C   #Slowly perfused (SP)
 
 #----GSH parameters----#
 #--GSH synthesis in umol/kg tissue/h--#
