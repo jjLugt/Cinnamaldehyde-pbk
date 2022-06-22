@@ -9,7 +9,7 @@
 #cinnamaldehyde model 
 #Mass balance calculation rxode inhalation complete
 mass_df <- solve.pbk_nonpop/BW * MW /1e+3
-mass_df <- mass_df[,c(69:82,84:86,88,89,91:95,98:103)]
+mass_df <- mass_df[,c(67:79,81:83,85,86,88:92,95:100)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 
@@ -43,6 +43,17 @@ for (i in 1:nrow(mass_df)){
 }
 plot(mass_at_t[,1])
 
+#Rxode 
+#Normal model
+mass_df <- solve.pbk_nonpop/BW * MW /1e+3
+mass_df <- mass_df[,c(59:68,70:74,77:81,83:89)]
+mass_at_t <- data.frame(mass=as.numeric())
+
+
+for (i in 1:nrow(mass_df)){
+  mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(mass_df[i,])
+}
+plot(mass_at_t[,1])
 #Rxode data visualisation 
 pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
   geom_line() + 
@@ -285,6 +296,45 @@ for (i in 1:(time.end/time.frame+1)) {
 colnames(tab_C_L)=c("time","C_L_P2.5","C_L_P50","C_L_P97.5")
 
 
+#Rat model calc
+pL_GSH = ggplot(solve.pbk, aes(time, AM_Lc_GSH)) + 
+  geom_line() + 
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Amount of GSH in the liver")
+pL_GSH + scale_y_log10()
 
+pA_L = ggplot(solve.pbk, aes(time, A_L )) + 
+  geom_line() + 
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Amount of Cinnamaldehyde in the liver")
+pA_L 
+
+pA_V = ggplot(solve.pbk, aes(time, A_V )) + 
+  geom_line() + 
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Amount of Cinnamaldehyde blood")
+pA_V 
+
+
+data_250mg <- read_excel("D:/Joris/Toxicology and Environmental Health/Master stage/Comparison data/data cnma in blood ug 250mg-kg dose .xlsx")
+
+blood_amount_total <- solve.pbk[,1]
+blood_amount_total <- cbind(blood_amount_total,(rowSums (solve.pbk[,44:45])))
+colnames(blood_amount_total) <- c("time","concentration")
+blood_amount_total <- as.data.frame(blood_amount_total)
+
+comparison_data <- merge.data.frame(blood_amount_total, data_250mg, by="time", all= "TRUE")
+
+pBlood = ggplot(blood_amount_total, aes(time, concentration )) + 
+  geom_line() + 
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Amount of Cinnamaldehyde blood")
+pBlood  + scale_y_log10()
+
+fig_blood <- plot_ly(blood_amount_total, x=~time, y =~concentration , type = 'scatter', mode = 'lines')%>%
+  add_trace(blood_amount_total, x=~time, y =~"rat 1" , type = 'scatter', mode = 'markers')
+
+
+fig_blood 
 
 

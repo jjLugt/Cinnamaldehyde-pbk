@@ -39,14 +39,6 @@ var_f <- matrix(NA, nrow = NF, ncol = par_var_f)
 colnames(var_f) <- colnames
 var_f <- as.data.frame(var_f)
 
-#----These amounts are defined in the PBK model itself but R is stupid and I have to define them before then or it wont work----#
-RM_L_DA <- 0 
-RM_Lc_GSH  <- 0 
-RM_SI_AG_GST <- 0
-RM_SI_AG_CHEM <- 0
-RM_SIc_GSH <- 0 
-
-
 #--Physico-chemical parameters--#
 #-Cinnamaldehyde-#
 

@@ -5,7 +5,7 @@
 PBK_Cinnamaldehyde <- RxODE({
   
   #--Defining the compartments of the model--#
-  
+  #--------------Ingestion-------------------#
   Rin            <- -Ka * A_GI;                         #Rate of change in cinnamaldehyde concentration in the GI cavity in umol/h
   
   #-------------------Blood------------------------#
@@ -61,6 +61,7 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_SI_AG_GST   <- Vsmax_SI_GST * C_V_SI * C_SIc_GSH / (Km_SI_GST_G * C_V_SI + Km_SI_GST * C_SIc_GSH + C_SIc_GSH * C_V_SI);  #-amount of cinnamaldehyde metabolized in the small intestine to GSH conjugate by GST in umol
   RM_SI_AG_CHEM  <- k_GSH * C_V_SI * C_SIc_GSH * V_SI;                                       #Rate of Cinnamaldehyde binding in the small intestine to GSH in umol/h
   RM_SIc_GSH     <- G_SYN_SI * V_SI * 0.9 - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * AM_SIc_GSH);         #Rate of  GSH concentration in the Smal intesinte cytosol umol/h
+  
   #Cinnamyl alchol#
   C_OH_SI        <- A_OH_SI   / V_SI;                                      #Concentration of Cinnamyl alcOHol in the Small intestine in umol/l
   C_OH_V_SI      <- C_OH_SI   / P_OH_SI;                                   #Concentration of Cinnamyl alcOHol in venous blood leaving the Small intestine  in umol/l
@@ -100,6 +101,7 @@ PBK_Cinnamaldehyde <- RxODE({
   #Cinnamaldehyde#
   R_V            <- Q_F * C_V_F + (Q_L + Q_SI) * C_V_L + Q_RP * C_V_RP + Q_SP * C_V_SP - Q_C * C_V; #Rate of change in Cinnamaldehyde concentration in the venous blood in umol
   R_A            <- Q_C * C_V - (Q_F * C_A + Q_L * C_A + Q_SI * C_A + Q_RP * C_A + Q_SP * C_A);     #Rate of change in Cinnamaldehyde concentratin in the arterial blood in umol 
+  
   #Cinnamyl alcohol
   R_OH_V         <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP - Q_C * C_OH_V; 
   R_OH_A         <- Q_C * C_OH_V - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A);
@@ -113,6 +115,7 @@ PBK_Cinnamaldehyde <- RxODE({
   #-Venous-#
   d/dt(A_V)      <- R_V;            #Amount of Cinnamaldehyde in Venous blood in umol 
   d/dt(A_OH_V)   <- R_OH_V;        #Amount of Cinnamyl alcohol in Venous blood in umol 
+  
   #-Arterial-#
   d/dt(A_A)      <- R_A;            #Amount of Cinnamaldehyde in Arterial blood in umol 
   d/dt(A_OH_A)   <- R_OH_A;        #Amount of Cinnamyl alcohol in Arterial blood in umol
