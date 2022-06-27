@@ -12,7 +12,7 @@ library(truncnorm)
 library(reshape2)
 
 set.seed(15204)         #to ensure a reproducible output
-amount.units <-"umol"
+amount.units <-"μmol"
 time.units   <-"h"
 nbr.doses    <-1        #number of doses
 time.0       <-0        #time start dosing
@@ -20,7 +20,7 @@ time.end     <-8        #time end of simulation
 time.frame   <-0.01     #time steps of simulation
 Dose_in_mg   <-100   #Dose in mg/kg-bw
 MW           <-132.16   #The molecular weight of Cinnamaldehyde
-DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+3     #The administered dose in umol 
+DOSE         <-(Dose_in_mg * 70)/ MW  * 1e+3     #The administered dose in μmol 
 
 
 #--Physico-chemical parameters--#
@@ -65,7 +65,7 @@ Q_RP     <- 0.472 * Q_C   #Richly perfused (RP)
 Q_SP     <- 0.248 * Q_C   #Slowly perfused (SP)
 
 #----GSH parameters----#
-#--GSH synthesis in umol/kg tissue/h--#
+#--GSH synthesis in μmol/kg tissue/h--#
 
 G_SYN_L     <- 1122  #Liver 
 G_SYN_SI    <- 270    #Small intestine
@@ -75,8 +75,8 @@ k_L_GLOS    <- 0.142 #Liver
 k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-init_GSH_L  <- 5639 * V_L   #initial amount of GSH in the liver in umol/kg
-init_GSH_SI <- 1250 * V_SI  #initial amount of GSH in the small intestine in umol/kg
+init_GSH_L  <- 5639 * V_L   #initial amount of GSH in the liver in μmol/kg
+init_GSH_SI <- 1250 * V_SI  #initial amount of GSH in the small intestine in μmol/kg
 
 k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
@@ -96,7 +96,7 @@ Ka <- 5.0  #Absorption rate constant for uptake in the Small intestine in per H
 #----Liver----#
 
 #-first rate order constants-#
-k_L_OH  <- 4.2e-02   #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
+k_L_OH  <- 4.2e-02   #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in μmol/h
 
 #--Michaelis menten constants--#
 Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
