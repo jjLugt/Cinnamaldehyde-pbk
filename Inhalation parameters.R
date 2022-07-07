@@ -17,12 +17,13 @@ nbr.doses               <-1        #number of doses
 time.0                  <-0        #time start dosing
 time.end                <-8        #time end of simulation
 time.frame              <-0.01     #time steps of simulation
-oral_dose_in_mg         <-100    #Dose in mg/kg-bw
-inhalation_dose_in_mg   <-100  #The inhaled dose in mg/kg
+oral_dose_in_mg         <-0    #Dose in mg/kg-bw
+inhalation_dose_in_mg   <-10 #The inhaled dose in mg/kg
 MW                      <-132.16   #The molecular weight of Cinnamaldehyde
 DOSE                    <-(oral_dose_in_mg * 70)/ MW  * 1e+3     #The administered dose in umol 
 INHALED_DOSE            <-(inhalation_dose_in_mg * 70)/ MW  * 1e+3 
 Volume_exposure_chamber <-10  #volume exposure chamber in L
+Inhaled_concentration   <-INHALED_DOSE/Volume_exposure_chamber
 
 #--Physico-chemical parameters--#
 #-Cinnamaldehyde-#
@@ -177,6 +178,7 @@ parameters=cbind(Volume_exposure_chamber,
                  T_0.5,
                  DOSE,
                  INHALED_DOSE,
+                 Inhaled_concentration,
                  Ka,
                  k_L_OH,
                  Km_L_CA,
@@ -238,5 +240,5 @@ inits <- c("A_GI"         =0,
 #inhalation exposure  exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(dose = DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(dose = INHALED_DOSE, dur = 0.01, cmt="C_inhaled", nbr.doses=nbr.doses)%>%
+  et(dose = Inhaled_concentration, dur = 0.01, cmt="C_Inhaled", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
