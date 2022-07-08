@@ -39,8 +39,11 @@ var_f <- matrix(NA, nrow = NF, ncol = par_var_f)
 colnames(var_f) <- colnames
 var_f <- as.data.frame(var_f)
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 1e6951ed478bf3a3975e173a4cd8650fc2c989a5
 #--Physico-chemical parameters--#
 #-Cinnamaldehyde-#
 

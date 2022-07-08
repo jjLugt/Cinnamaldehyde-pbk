@@ -9,9 +9,8 @@
 #cinnamaldehyde model 
 #Mass balance calculation rxode inhalation complete
 mass_df <- solve.pbk_nonpop/BW * MW /1e+3
-mass_df <- mass_df[,c(69:82,84:86,88,89,91:95,98:103)]
+mass_df <- mass_df[,c(70:82,84:89,91:95,97:103)]
 mass_at_t <- data.frame(mass=as.numeric())
-
 
 for (i in 1:nrow(mass_df)){
   mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(mass_df[i,])
@@ -24,7 +23,6 @@ mass_df <- solve.pbk_nonpop/BW * MW /1e+3
 mass_df <- mass_df[,c(65:76,78,79,80,82, 83,85:89,92:97)]
 mass_at_t <- data.frame(mass=as.numeric())
 
-
 for (i in 1:nrow(mass_df)){
   mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(mass_df[i,])
 }
@@ -32,7 +30,7 @@ plot(mass_at_t[,1])
 
 #Cinnamylalcohol model
 
-#Mass balance calculation rxode non metabolis
+#Mass balance calculation rxode non metabolism
 Mass_df <- solve.pbk_nonpop/BW * MW /1e+3
 mass_df <-Mass_df[,c(45:53,55,56,58:63)]
 mass_at_t <- data.frame(mass=as.numeric())
@@ -43,6 +41,17 @@ for (i in 1:nrow(mass_df)){
 }
 plot(mass_at_t[,1])
 
+#Rxode 
+#Normal model
+mass_df <- solve.pbk_nonpop/BW * MW /1e+3
+mass_df <- mass_df[,c(59:68,70:74,77:81,83:89)]
+mass_at_t <- data.frame(mass=as.numeric())
+
+
+for (i in 1:nrow(mass_df)){
+  mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(mass_df[i,])
+}
+plot(mass_at_t[,1])
 #Rxode data visualisation 
 pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
   geom_line() + 
@@ -285,14 +294,56 @@ for (i in 1:(time.end/time.frame+1)) {
 colnames(tab_C_L)=c("time","C_L_P2.5","C_L_P50","C_L_P97.5")
 
 
+#Rat model calc
+pL_GSH = ggplot(solve.pbk, aes(time, AM_Lc_GSH)) + 
+  geom_line() + 
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Amount of GSH in the liver")
+pL_GSH + scale_y_log10()
+
+pA_L = ggplot(solve.pbk, aes(time, A_L )) + 
+  geom_line() + 
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Amount of Cinnamaldehyde in the liver")
+pA_L 
+
+pA_V = ggplot(solve.pbk, aes(time, A_V )) + 
+  geom_line() + 
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Amount of Cinnamaldehyde blood")
+pA_V 
 
 
+<<<<<<< HEAD
 tab_solve_C_V=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
 for (i in 1:(N+NF)) {
   tab.i=solve.pbk[which(solve.pbk[,"sim.id"]==i),]                  #Put all individuals in data frame
   tab.i=as.data.frame(tab.i)
   tab_solve_C_V[,i]=tab.i$C_V
 }
+=======
+data_250mg <- read_excel("D:/Joris/Toxicology and Environmental Health/Master stage/Comparison data/data cnma in blood ug 250mg-kg dose .xlsx")
+
+blood_amount_total <- solve.pbk[,1]
+blood_amount_total <- cbind(blood_amount_total,(rowSums (solve.pbk[,44:45])))
+colnames(blood_amount_total) <- c("time","concentration")
+blood_amount_total <- as.data.frame(blood_amount_total)
+
+comparison_data <- merge.data.frame(blood_amount_total, data_250mg, by="time", all= "TRUE")
+
+pBlood = ggplot(blood_amount_total, aes(time, concentration )) + 
+  geom_line() + 
+  labs(x = "Time in hours", y = "umol") +
+  ggtitle("Amount of Cinnamaldehyde blood")
+pBlood  + scale_y_log10()
+
+fig_blood <- plot_ly(blood_amount_total, x=~time, y =~concentration , type = 'scatter', mode = 'lines')%>%
+  add_trace(blood_amount_total, x=~time, y =~"rat 1" , type = 'scatter', mode = 'markers')
+
+
+fig_blood 
+
+>>>>>>> 1e6951ed478bf3a3975e173a4cd8650fc2c989a5
 
 tab_C_V=as.data.frame(matrix(NA,time.end/time.frame+1,4))       #Create an empty data frame with amount of timepoints=amount of rows and 4 columns
 tab_C_V[,1]=c(seq(time.0,time.end,by=time.frame))               #Timepoints in first column
