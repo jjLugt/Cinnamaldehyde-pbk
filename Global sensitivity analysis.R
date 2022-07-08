@@ -28,7 +28,7 @@ Upper <- Mean + 0.2 * Mean
 
 
 #create data frames for population
-n_sim  <- 1000                #number of iterations
+n_sim  <- 2000               #number of iterations
 X1 <- matrix(NA, nrow = n_sim, ncol = par_var)
 colnames(X1) <- colnames
 X1 <- as.data.frame(X1)
@@ -123,8 +123,8 @@ DOSE<- phys$DOSE
 
 
 #Analysing the generated data set 
-solve.pbk$vec_t=rep(seq(0,8,0.1),times=66000)
-solve.pbk.sa=as.data.frame(matrix(NA,5346000,2))
+solve.pbk$vec_t=rep(seq(0,8,0.01),times=66000)
+solve.pbk.sa=as.data.frame(matrix(NA,1602000,2))
 colnames(solve.pbk.sa)=c("time","CV")
 solve.pbk.sa[,1]=solve.pbk$time
 solve.pbk.sa[,2]=solve.pbk$C_V
@@ -167,7 +167,7 @@ for(i in 1:length(t_A)){
     TI[,i]        = sa$T[,1]    #Total indices
     TI.borninf[,i] = sa$T[,4]   #Lower CL total indices
     TI.bornsup[,i] = sa$T[,5]   #Upper CL total indices
-    
+   
     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
 }
