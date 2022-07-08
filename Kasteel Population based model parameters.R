@@ -17,7 +17,7 @@ time.units   <-"h"
 nbr.doses    <-1        #number of doses
 time.0       <-0        #time start dosing
 time.end     <-8        #time end of simulation
-time.frame   <-0.1     #time steps of simulation
+time.frame   <-0.01     #time steps of simulation
 N           <-1000     #Number of males
 NF          <-1000     #Number of females
 Dose_in_mg   <-250      #Dose in mg/kg-bw
@@ -443,6 +443,6 @@ inits <- c("A_GI"         = 0 ,
 
 #Step 3 exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = phys$DOSE, dur=0.1, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose = phys$DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
 
