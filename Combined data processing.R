@@ -9,7 +9,7 @@
 #cinnamaldehyde model 
 #Mass balance calculation rxode inhalation complete
 mass_df <- solve.pbk_nonpop/BW * MW /1e+3
-mass_df <- mass_df[,c(70:82,84:89,91:95,97:103)]
+mass_df <- mass_df[,c(70:83,85:89,91:95,97:103)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 for (i in 1:nrow(mass_df)){
@@ -314,14 +314,14 @@ pA_V = ggplot(solve.pbk, aes(time, A_V )) +
 pA_V 
 
 
-<<<<<<< HEAD
+
 tab_solve_C_V=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
 for (i in 1:(N+NF)) {
   tab.i=solve.pbk[which(solve.pbk[,"sim.id"]==i),]                  #Put all individuals in data frame
   tab.i=as.data.frame(tab.i)
   tab_solve_C_V[,i]=tab.i$C_V
 }
-=======
+
 data_250mg <- read_excel("D:/Joris/Toxicology and Environmental Health/Master stage/Comparison data/data cnma in blood ug 250mg-kg dose .xlsx")
 
 blood_amount_total <- solve.pbk[,1]
@@ -343,7 +343,7 @@ fig_blood <- plot_ly(blood_amount_total, x=~time, y =~concentration , type = 'sc
 
 fig_blood 
 
->>>>>>> 1e6951ed478bf3a3975e173a4cd8650fc2c989a5
+
 
 tab_C_V=as.data.frame(matrix(NA,time.end/time.frame+1,4))       #Create an empty data frame with amount of timepoints=amount of rows and 4 columns
 tab_C_V[,1]=c(seq(time.0,time.end,by=time.frame))               #Timepoints in first column

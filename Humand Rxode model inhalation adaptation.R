@@ -28,18 +28,18 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #----Inhalation------#
   #Cinnamaldehyde
-  C_Alv_Air     <- A_P_Art/P_B
-  C_Exhaled     <-(Q_PV * C_Alv_Air)/ Q_PV
-  C_Inhaled     <- (Q_PV*(Inhaled_concentration - C_Exhaled))
-  C_V_P         <- C_V                             #Concentration of Cinnamaldehdye in venous blood entering the 
+  C_Alv_Air     <- A_P_Art/P_B;
+  C_Exhaled     <- C_Alv_Air;
+  C_V_P         <- C_V;                                         #Concentration of Cinnamaldehdye in venous blood entering the 
   
-
-  R_P_Art       <- (Q_C * C_V_P + Q_C * C_Inhaled)/(Q_C + Q_PV/P_B) #Cinnamaldehyde concentration in Arterial blood leaving the lung in  μmol/l 
+  R_Exposure   <- inhalation_dose_in_mg/Volume_exposure
+  R_Inhalation <- Q_PV *(R_Exposure - C_Alv_Air)
+  R_P_Art      <- (Q_C * C_V_P + Q_C * R_Inhalation)/(Q_C + Q_PV/P_B);  #Cinnamaldehyde concentration in Arterial blood leaving the lung in  μmol/h
   
   #----Pulmonary tissue 
   C_Pu           <- A_Pu / V_Pu;                          #Concentration in pulmonary tissue
-  C_A_Pu         <- C_Pu /P_Pu;                           #Concentration of Cinnamaldehyde in venous blood entering the lung in μmol/l
-  R_Pu           <- Q_C * (R_P_Art - C_A_Pu)
+  C_A_Pu         <- C_Pu / P_Pu;                           #Concentration of Cinnamaldehyde in venous blood entering the lung in μmol/l
+  R_Pu           <- Q_C * (R_P_Art - C_A_Pu);
   
   #Cinnamyl alcohol
   C_OH_Pu        <- A_OH_Pu    / V_Pu;                    #Concentration of Cinnamyl alcOHol in Fat in μmol/kg
@@ -152,7 +152,7 @@ PBK_Cinnamaldehyde <- RxODE({
   d/dt(A_P_Art)   <- R_P_Art;             #Amount of Cinnamaldehyde in the lung arterial blood chamber in μmol
   d/dt(A_Pu)      <- R_Pu;                #Amount of Cinnamaldehyde in the lung in μmol
   d/dt(A_OH_Pu)   <- R_OH_Pu;             #Amount of Cinnamyl alcohol in the lung in μmol
-  
+  d/dt(A_Inhalation)<- R_Inhalation         #Amount of cinnamaldehyde in the exposure chamber in μmol 
   #-Fat calculations-#
   d/dt(A_F)      <- R_F;                #Amount of Cinnamaldehyde in the Fat in μmol                      
   d/dt(A_OH_F)   <- R_OH_F;             #Amount of Cinnamyl alcOHol in Fat in μmol
