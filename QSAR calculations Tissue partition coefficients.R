@@ -65,6 +65,10 @@ Plw_Fat_Blood_Cinnamaldehyde <- Log_Kow_Cinnamaldehyde ^ Fat_Blood_A
 Plw_Liver_Blood_Benzaldehyde <- Log_Kow_Benzaldehyde ^ Liver_Blood_A
 Plw_Liver_Blood_Cinnamaldehyde <- Log_Kow_Cinnamaldehyde ^ Liver_Blood_A
 
+#Muscle/Slowely perfused tissue
+Plw_Muscle_Blood_Benzaldehyde <- Log_Kow_Benzaldehyde ^ Muscle_Blood_A
+Plw_Muscle_Blood_Cinnamaldehyde <- Log_Kow_Cinnamaldehyde ^ Muscle_Blood_A
+
 #----------------Partition coefficient 
 #Fat/Blood 
 P_F_Benzaldehyde   <-  (Adipose_Lipid_Fraction * Plw_Fat_Blood_Benzaldehyde + Adipose_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Fat_Blood_Benzaldehyde + Blood_Water_Fraction)+ Fat_Blood_B
@@ -73,4 +77,9 @@ P_F_Cinnamaldehyde <-  (Adipose_Lipid_Fraction * Plw_Fat_Blood_Cinnamaldehyde + 
 #Liver/Blood 
 P_L_Benzaldehyde   <-  (Liver_Lipid_Fraction * Plw_Liver_Blood_Benzaldehyde + Liver_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Liver_Blood_Benzaldehyde + Blood_Water_Fraction)+ Liver_Blood_B
 P_L_Cinnamaldehyde <-  (Liver_Lipid_Fraction * Plw_Liver_Blood_Cinnamaldehyde + Liver_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Liver_Blood_Cinnamaldehyde + Blood_Water_Fraction) + Liver_Blood_B
+
+#Muscle/Blood
+P_SP_Benzaldehyde   <-  (Muscle_Lipid_Fraction * Plw_Muscle_Blood_Benzaldehyde + Muscle_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Muscle_Blood_Benzaldehyde + Blood_Water_Fraction)+ Muscle_Blood_B
+P_SP_Cinnamaldehyde <-  (Muscle_Lipid_Fraction * Plw_Muscle_Blood_Cinnamaldehyde + Muscle_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Muscle_Blood_Cinnamaldehyde + Blood_Water_Fraction) + Muscle_Blood_B
+
 

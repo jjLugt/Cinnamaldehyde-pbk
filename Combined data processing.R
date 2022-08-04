@@ -9,7 +9,7 @@
 #cinnamaldehyde model 
 #Mass balance calculation rxode inhalation complete
 mass_df <- solve.pbk_nonpop/BW * MW /1e+3
-mass_df <- mass_df[,c(71:85,87:92,94:98,100:106)]
+mass_df <- mass_df[,c(70:84,86:91,93:97,99:105)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 for (i in 1:nrow(mass_df)){

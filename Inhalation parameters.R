@@ -17,8 +17,8 @@ nbr.doses               <-1        #number of doses
 time.0                  <-0        #time start dosing
 time.end                <-8        #time end of simulation
 time.frame              <-0.01     #time steps of simulation
-oral_dose_in_mg         <-100      #Dose in mg/kg-bw
-inhalation_dose_in_mg   <-0        #The inhaled dose in mg/kg
+oral_dose_in_mg         <-0      #Dose in mg/kg-bw
+inhalation_dose_in_mg   <-100       #The inhaled dose in mg/kg
 MW                      <-132.16   #The molecular weight of Cinnamaldehyde
 DOSE                    <-(oral_dose_in_mg * 70)/ MW  * 1e+3       #The administered dose in μmol
 INHALED_DOSE            <-(inhalation_dose_in_mg * 70)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -34,7 +34,7 @@ P_SI     <-  2.04   #Small intestine/Blood partition coefficients
 P_RP     <-  2.04   #Richly perfused tissues/Blood partition coefficients
 P_SP     <-  1.57   #Slowly perfused tissues/Blood partition coefficients
 P_B      <- 274.84  #Blood/Air Partition Coefficient 
-P_Pu      <-  2.04  #lung/Blood partition coefficient
+P_Pu     <- 2.04   #lung/Blood partition coefficient
 
 #-Cinnamyl Alcohol-#
 P_OH_F    <-  40.5  #Fat/Blood partition coefficient
