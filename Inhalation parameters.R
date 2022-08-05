@@ -1,5 +1,5 @@
 #author: Joris Jean van der Lugt
-#date: 23-06-2022
+#date: 05-08-2022
 #Inhalation parameters 
 library(RxODE)
 library(tidyverse)
@@ -26,23 +26,24 @@ Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 
 #--Physico-chemical parameters--#
+#Values calculated in Qsar calculations file
 #-Cinnamaldehyde-#
 
-P_F      <-  39.3   #Fat/Blood partition coefficient
-P_L      <-  2.04   #liver/Blood partition coefficient
-P_SI     <-  2.04   #Small intestine/Blood partition coefficients
-P_RP     <-  2.04   #Richly perfused tissues/Blood partition coefficients
-P_SP     <-  1.57   #Slowly perfused tissues/Blood partition coefficients
-P_B      <- 274.84  #Blood/Air Partition Coefficient 
-P_Pu     <- 2.04   #lung/Blood partition coefficient
+P_F      <-  1.62   #Fat/Blood partition coefficient
+P_L      <-  0.59   #liver/Blood partition coefficient
+P_SI     <-  0.59   #Small intestine/Blood partition coefficients
+P_RP     <-  0.59   #Richly perfused tissues/Blood partition coefficients
+P_SP     <-  0.78   #Slowly perfused tissues/Blood partition coefficients
+P_B      <-  1.25E5 #Blood/Air Partition Coefficient 
+P_Pu     <-  0.59   #lung/Blood partition coefficient
 
 #-Cinnamyl Alcohol-#
-P_OH_F    <-  40.5  #Fat/Blood partition coefficient
-P_OH_L    <-  2.09  #liver/Blood partition coefficient
-P_OH_SI   <-  2.09  #Small intestine/Blood partition coefficients
-P_OH_RP   <-  2.09  #Richly perfused tissues/Blood partition coefficients
-P_OH_SP   <-  1.60  #Slowly perfused tissues/Blood partition coefficients
-P_OH_Pu    <-  2.09 #Lung/Blood partition coefficients
+P_OH_F    <-  1.64 #Fat/Blood partition coefficient
+P_OH_L    <-  0.59  #liver/Blood partition coefficient
+P_OH_SI   <-  0.59  #Small intestine/Blood partition coefficients
+P_OH_RP   <-  0.59  #Richly perfused tissues/Blood partition coefficients
+P_OH_SP   <-  0.78 #Slowly perfused tissues/Blood partition coefficients
+P_OH_Pu   <-  0.59 #Lung/Blood partition coefficients
 
 #--Physiological Parameters--#
 BW        <- 70     #Body weight in Kg

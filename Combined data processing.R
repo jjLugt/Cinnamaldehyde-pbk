@@ -1,3 +1,5 @@
+#author: Joris Jean van der Lugt
+#date: 05-08-2022
 #Combined data processing of Human Cinnamaldehyde pbk models
 #Before running code first run all model associated with this data processing
 #Human desolve model
