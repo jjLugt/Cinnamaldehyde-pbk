@@ -17,11 +17,12 @@ nbr.doses               <-1        #number of doses
 time.0                  <-0        #time start dosing
 time.end                <-8        #time end of simulation
 time.frame              <-0.01     #time steps of simulation
-oral_dose_in_mg         <-0      #Dose in mg/kg-bw
-inhalation_dose_in_mg   <-100       #The inhaled dose in mg/kg
+Oral_dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Inhalation_dose_in_mg_bw   <-100       #The inhaled dose in mg/kg
 MW                      <-132.16   #The molecular weight of Cinnamaldehyde
-DOSE                    <-(oral_dose_in_mg * 70)/ MW  * 1e+3       #The administered dose in μmol
-INHALED_DOSE            <-(inhalation_dose_in_mg * 70)/ MW  * 1e+3 #The inhaled dose in μmol
+BW                      <- 70     #Body weight in Kg
+Oral_Dose               <-(Oral_dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
+Inhalation_Dose         <-(Inhalation_dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
 Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 
@@ -46,8 +47,6 @@ P_OH_SP   <-  0.78 #Slowly perfused tissues/Blood partition coefficients
 P_OH_Pu   <-  0.59 #Lung/Blood partition coefficients
 
 #--Physiological Parameters--#
-BW        <- 70     #Body weight in Kg
-
 #-Tissues volumes in % body weight-#
 
 V_F       <- 21.4  #Fat
@@ -70,10 +69,11 @@ Q_L      <- 14.1   #Liver
 Q_SI     <- 8.6    #Small intestine
 Q_RP     <- 47.3   #Richly perfused (RP)
 Q_SP     <- 24.8   #Slowly perfused (SP)
+Q_Pu     <- Q_C
 
 
 #inhalation parameters
-Q_PV     <- 300             #Alveolar ventilation l/h
+P_V     <- 300             #Alveolar ventilation l/h
 
 #----GSH parameters----#
 #--GSH synthesis in μmol/kg tissue/h--#
@@ -159,12 +159,13 @@ parameters=cbind(Volume_exposure_chamber,
                  V_SP,
                  V_Pu,
                  Q_C,
+                 Q_Pu,
                  Q_F,
                  Q_L,
                  Q_SI,
                  Q_RP,
                  Q_SP,
-                 Q_PV,
+                 P_V,
                  G_SYN_L,
                  G_SYN_SI,
                  k_L_GLOS,
@@ -177,8 +178,8 @@ parameters=cbind(Volume_exposure_chamber,
                  C_PRO_SI,
                  C_L_dG,
                  T_0.5,
-                 DOSE,
-                 INHALED_DOSE,
+                 Oral_Dose,
+                 Inhalation_Dose,
                  Volume_exposure_chamber,
                  Ka,
                  k_L_OH,
@@ -242,6 +243,6 @@ inits <- c("A_GI"         =0,
 
 #inhalation exposure  exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(dose = INHALED_DOSE, dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(dose = Oral_Dose, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose = Inhalation_Dose, dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
