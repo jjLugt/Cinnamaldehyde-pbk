@@ -12,17 +12,17 @@ library(reshape2)
 
 #Simulations
 set.seed(15204)                  #to ensure a reproducible output by setting a seed for random components of the parameters
-amount.units          <-"umol"
-time.units            <-"h"
-nbr.doses             <-1        #number of doses
-time.0                <-0        #time start dosing
-time.end              <-8        #time end of simulation
-time.frame            <-0.01     #time steps of simulation
-N                     <-1000     #Number of males
-NF                    <-1000     #Number of females
-Oral_dose_in_mg       <-250      #Dose in mg/kg-bw
-Inhalation_dose_in_mg <-0       #The inhaled dose in mg/kg
-MW                    <-132.16   #The molecular weight of Cinnamaldehyde
+amount.units             <-"umol"
+time.units               <-"h"
+nbr.doses                <-1        #number of doses
+time.0                   <-0        #time start dosing
+time.end                 <-8        #time end of simulation
+time.frame               <-0.01     #time steps of simulation
+N                        <-1000     #Number of males
+NF                       <-1000     #Number of females
+Oral_dose_in_mg_bw       <-250      #Dose in mg/kg-bw
+Inhalation_dose_in_mg_bw <-0        #The inhaled dose in mg/kg
+MW                       <-132.16   #The molecular weight of Cinnamaldehyde
 
 
 colnames <-c("Age","Height_start","Height_cv","Height","BW_start","BW_cv","BW","BSA","V_L","V_F","V_F_min",
@@ -111,7 +111,7 @@ var_m$Q_L      <-var_m$Q_C * 0.065                                        #Blood
 var_m$Q_RP     <-0.626 * var_m$Q_C - var_m$Q_SI - var_m$Q_L               #Blood flow to richly perfused tissue (L/h)
 var_m$Q_SP     <-0.374 * var_m$Q_C - var_m$Q_F                            #Blood flow to slowly perfused tissue (L/h)
 
-
+var_m$P_V      <-rnorm(N,mean=540,sd=3)                                   #Pulmonary ventilation (L/h)
 #----GSH parameters----#
 #--GSH synthesis in umol/kg tissue/h--#
 
@@ -172,8 +172,8 @@ var_m$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alc
 var_m$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h RAT value
 
 #---Dose male---#
-var_m$Oral_Dose <- (Dose_in_mg * var_m$BW)/ MW  * 1e+3     #The administered dose in umol 
-var_m$Inhalation_Dose <- (Inhalation_dose_in_mg * var_m$BW)/ MW  * 1e+3 #The inhaled dose in μmol
+var_m$Oral_Dose       <- (Dose_in_mg_bw * var_m$BW)/ MW  * 1e+3     #The administered dose in umol 
+var_m$Inhalation_Dose <- (Inhalation_dose_in_mg_bw * var_m$BW)/ MW  * 1e+3 #The inhaled dose in μmol
 
 
 
@@ -211,9 +211,10 @@ var_f$Q_L           <-var_f$Q_C * 0.065                                        #
 var_f$Q_RP          <-0.626 * var_f$Q_C - var_f$Q_SI - var_f$Q_L               #Blood flow to richly perfused tissue (L/h)
 var_f$Q_SP          <-0.374 * var_f$Q_C - var_f$Q_F    
 
+var_f$P_V           <-rnorm(N,mean=390,sd=3)  #Pulmonary ventilation
 
 #----GSH parameters female----#
-#--GSH synthesis in umol/kg tissue/h--#
+#--GSH synthesis in μmol/kg tissue/h--#
 
 var_f$G_SYN_L     <- 1122  #Liver 
 var_f$G_SYN_SI    <- 27    #Small intestine
@@ -272,8 +273,8 @@ var_f$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alc
 var_f$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #---Dose female---#
-var_f$Oral_Dose <- (Dose_in_mg * var_f$BW)/ MW  * 1e+3     #The administered dose in umol 
-var_f$Inhalation_Dose <- (Inhalation_dose_in_mg * var_f$BW)/ MW  * 1e+3 #The inhaled d
+var_f$Oral_Dose <- (Dose_in_mg_bw * var_f$BW)/ MW  * 1e+3     #The administered dose in umol 
+var_f$Inhalation_Dose <- (Inhalation_dose_in_mg_bw * var_f$BW)/ MW  * 1e+3 #The inhaled d
 
 
 #Combine datasets Male and Female for PBPK model
@@ -288,6 +289,7 @@ phys <- rbind(var_m,var_f)
 P_F<-phys$P_F
 P_L<-phys$P_L
 P_SI<-phys$P_SI
+P_B<-phys$P_B
 P_RP<-phys$P_RP
 P_SP<-phys$P_SP
 P_OH_F<-phys$P_OH_F
@@ -295,6 +297,7 @@ P_OH_L<-phys$P_OH_L
 P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
+P_OH_Pu<-phys$P_OH_Pu
 Age <- phys$Age
 Height_start <- phys$Height_start
 Height_cv <- phys$Height_cv
@@ -305,17 +308,19 @@ BW<-phys$BW
 BSA <- phys$BSA
 V_L<-phys$V_L
 V_F<-phys$V_F
-V_F_min <- phys$V_F_min
+V_F_min<-phys$V_F_min
 V_B <- phys$V_B
 V_A<-phys$V_A
 V_V<-phys$V_V
 V_SI<-phys$V_SI
+V_Pu<-phys$V_Pu
 V_RP<-phys$V_RP
 V_SP<-phys$V_SP
 Q_C<-phys$Q_C
 Q_SI<-phys$Q_SI
 Q_F<-phys$Q_F
 Q_L<-phys$Q_L
+Q_Pu<-phys$P_Pu
 Q_RP<-phys$Q_RP
 Q_SP<-phys$Q_SP
 G_SYN_L<-phys$G_SYN_L
@@ -348,7 +353,8 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-DOSE<- phys$DOSE 
+Oral_dose<- phys$Oral_Dose
+Inhalation_Dose<-phys$Inhalation_Dose
 
 #Collection of all parameters so they can be entered in the function
 parameters=cbind(Volume_exposure_chamber,
@@ -378,9 +384,9 @@ parameters=cbind(Volume_exposure_chamber,
                  Q_F,
                  Q_L,
                  Q_SI,
+                 Q_Pu,
                  Q_RP,
                  Q_SP,
-                 Q_PV,
                  G_SYN_L,
                  G_SYN_SI,
                  k_L_GLOS,
@@ -393,8 +399,8 @@ parameters=cbind(Volume_exposure_chamber,
                  C_PRO_SI,
                  C_L_dG,
                  T_0.5,
-                 DOSE,
-                 INHALED_DOSE,
+                 Oral_Dose,
+                 Inhalation_Dose,
                  Volume_exposure_chamber,
                  Ka,
                  k_L_OH,
@@ -454,6 +460,6 @@ inits <- c("A_GI"         =0,
 
 #inhalation exposure  exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = DOSE, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(dose = INHALED_DOSE, dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(dose = (Dose_in_mg_bw * phys$BW)/ MW  * 1e+3, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose = (Inhalation_dose_in_mg_bw * phys$BW)/ MW  * 1e+3, dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
