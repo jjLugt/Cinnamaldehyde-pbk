@@ -11,21 +11,22 @@ library(truncnorm)
 library(reshape2)
 
 #Simulations
-set.seed(15204)         #to ensure a reproducible output
-amount.units <-"umol"
-time.units   <-"h"
-nbr.doses    <-1        #number of doses
-time.0       <-0        #time start dosing
-time.end     <-8        #time end of simulation
-time.frame   <-0.01     #time steps of simulation
-N           <-1000     #Number of males
-NF          <-1000     #Number of females
-Dose_in_mg   <-250      #Dose in mg/kg-bw
-MW           <-132.16   #The molecular weight of Cinnamaldehyde
+set.seed(15204)                  #to ensure a reproducible output by setting a seed for random components of the parameters
+amount.units          <-"umol"
+time.units            <-"h"
+nbr.doses             <-1        #number of doses
+time.0                <-0        #time start dosing
+time.end              <-8        #time end of simulation
+time.frame            <-0.01     #time steps of simulation
+N                     <-1000     #Number of males
+NF                    <-1000     #Number of females
+Oral_dose_in_mg       <-250      #Dose in mg/kg-bw
+Inhalation_dose_in_mg <-0       #The inhaled dose in mg/kg
+MW                    <-132.16   #The molecular weight of Cinnamaldehyde
 
 
 colnames <-c("Age","Height_start","Height_cv","Height","BW_start","BW_cv","BW","BSA","V_L","V_F","V_F_min",
-             "V_B","V_A","V_V","V_SI","V_RP","V_SP","Q_C","Q_F","Q_L","Q_SI","Q_RP","Q_SP")
+             "V_B","V_A","V_V","V_SI","V_Pu","V_RP","V_SP","Q_C","Q_Pu","Q_F","Q_L","Q_SI","Q_RP","Q_SP")
 
 par_var_m <- length(colnames)
 par_var_f <- length(colnames)
@@ -42,36 +43,36 @@ var_f <- as.data.frame(var_f)
 
 #--Physico-chemical parameters--#
 #-Cinnamaldehyde-#
-var_m$P_F      <-  1.62   #Fat/Blood partition coefficient
-var_m$P_L      <-  0.59   #Fat/Blood partition coefficient
-var_m$P_SI     <-  0.59   #Small intestine/Blood partition coefficients
-var_m$P_RP     <-  0.59   #Richly perfused tissues/Blood partition coefficients
-var_m$P_B      <-  1.25E5 #Blood/Air Partition Coefficient 
-var_m$P_SP     <-  0.78   #Slowly perfused tissues/Blood partition coefficients
-var_m$P_Pu     <-  0.59   #Lung/Blood partition coefficients
+var_m$P_F      <-  1.62    #Fat/Blood partition coefficient
+var_m$P_L      <-  0.59    #Fat/Blood partition coefficient
+var_m$P_SI     <-  0.59    #Small intestine/Blood partition coefficients
+var_m$P_RP     <-  0.59    #Richly perfused tissues/Blood partition coefficients
+var_m$P_B      <-  1.25E5  #Blood/Air Partition Coefficient 
+var_m$P_SP     <-  0.78    #Slowly perfused tissues/Blood partition coefficients
+var_m$P_Pu     <-  0.59    #Lung/Blood partition coefficients
 
 #-Cinnamyl Alcohol-#
-var_m$P_OH_F    <-  1.64 #Fat/Blood partition coefficient
-var_m$P_OH_L    <-  0.59 #Fat/Blood partition coefficient
-var_m$P_OH_SI   <-  0.59 #Small intestine/Blood partition coefficients
-var_m$P_OH_RP   <-  0.59 #Richly perfused tissues/Blood partition coefficients
-var_m$P_OH_SP   <-  0.78 #Slowly perfused tissues/Blood partition coefficients
+var_m$P_OH_F    <-  1.64   #Fat/Blood partition coefficient
+var_m$P_OH_L    <-  0.59   #Fat/Blood partition coefficient
+var_m$P_OH_SI   <-  0.59   #Small intestine/Blood partition coefficients
+var_m$P_OH_RP   <-  0.59   #Richly perfused tissues/Blood partition coefficients
+var_m$P_OH_SP   <-  0.78   #Slowly perfused tissues/Blood partition coefficients
 var_m$P_OH_Pu   <-  0.59   #Lung/Blood partition coefficients
-
-var_f$P_F      <-  1.62 #Fat/Blood partition coefficient
-var_f$P_L      <-  0.59 #Fat/Blood partition coefficient
-var_f$P_SI     <-  0.59 #Small intestine/Blood partition coefficients
-var_f$P_RP     <-  0.59 #Richly perfused tissues/Blood partition coefficients
-var_f$P_B      <-  1.25E5 #Blood/Air Partition Coefficient 
-var_f$P_SP     <-  0.78 #Slowly perfused tissues/Blood partition coefficients
-var_f$P_Pu     <-  0.59   #Lung/Blood partition coefficients
+#---Cinnamaldehyde----#
+var_f$P_F       <-  1.62   #Fat/Blood partition coefficient
+var_f$P_L       <-  0.59   #Fat/Blood partition coefficient
+var_f$P_SI      <-  0.59   #Small intestine/Blood partition coefficients
+var_f$P_RP      <-  0.59   #Richly perfused tissues/Blood partition coefficients
+var_f$P_B       <-  1.25E5 #Blood/Air Partition Coefficient 
+var_f$P_SP      <-  0.78   #Slowly perfused tissues/Blood partition coefficients
+var_f$P_Pu      <-  0.59   #Lung/Blood partition coefficients
 
 #-Cinnamyl Alcohol-#
-var_f$P_OH_F    <-  40.5 #Fat/Blood partition coefficient
-var_f$P_OH_L    <-  2.09 #Fat/Blood partition coefficient
-var_f$P_OH_SI   <-  2.09 #Small intestine/Blood partition coefficients
-var_f$P_OH_RP   <-  2.09 #Richly perfused tissues/Blood partition coefficients
-var_f$P_OH_SP   <-  1.60 #Slowly perfused tissues/Blood partition coefficients
+var_f$P_OH_F    <-  40.5   #Fat/Blood partition coefficient
+var_f$P_OH_L    <-  2.09   #Fat/Blood partition coefficient
+var_f$P_OH_SI   <-  2.09   #Small intestine/Blood partition coefficients
+var_f$P_OH_RP   <-  2.09   #Richly perfused tissues/Blood partition coefficients
+var_f$P_OH_SP   <-  1.60   #Slowly perfused tissues/Blood partition coefficients
 var_f$P_OH_Pu   <-  0.59   #Lung/Blood partition coefficients
 
 #--Pyshiological Parameters--#
@@ -88,25 +89,27 @@ var_m$BSA              <- 0.007184 * var_m$Height^0.725 * var_m$BW^0.425       #
 
 #-Tissues volumes in % body weight-#
 
-var_m$V_L      <- (1072.8 * (var_m$BSA)-345.7) / 1000                              #Volume liver tissue (l)
-var_m$V_F      <- (1.36 * var_m$BW)/(var_m$Height/100)-42                          #Volume adipose tissue (L)
-var_m$V_F_min  <- 0.05 * var_m$BW                                                  #Minimum of adipose tissue should be at least 5% of body weight
-var_m$V_F      <- ifelse(var_m$V_F < var_m$V_F_min, var_m$V_F_min, var_m$V_F)      #To ensure that adipose tissue is at least 5% of body weight
+var_m$V_L      <-(1072.8 * (var_m$BSA)-345.7) / 1000                               #Volume liver tissue (l)
+var_m$V_F      <-(1.36 * var_m$BW)/(var_m$Height/100)-42                           #Volume adipose tissue (L)
+var_m$V_F_min  <-0.05 * var_m$BW                                                   #Minimum of adipose tissue should be at least 5% of body weight
+var_m$V_F      <-ifelse(var_m$V_F < var_m$V_F_min, var_m$V_F_min, var_m$V_F)       #To ensure that adipose tissue is at least 5% of body weight
 var_m$V_B      <-(((13.1 * var_m$Height + 18.05 * var_m$BW - 480) / 0.5723) / 1000)#Volume blood (L)
 var_m$V_A      <-var_m$V_B / 3                                                     #Volume arterial blood (L)
 var_m$V_V      <-var_m$V_B * (2/3)                                                 #Volume venous blood (L) 
-var_m$V_SI     <-0.021 * (var_m$BW - var_m$V_F * 0.92) / 1.05                      #Volume gut tissue (L)
+var_m$V_SI     <-0.021 * (var_m$BW - var_m$V_F * 0.92) / 1.05                      #Volume small intestine (L)
+var_m$V_Pu     <-
 var_m$V_RP     <-(2.331 * 10^-3 * var_m$Age + 0.1253 * var_m$BW^0.8477 + var_m$Height^0.3821 - 4.725) - var_m$V_SI - var_m$V_L   #Volume richly perfused tissue (L)
 var_m$V_SP     <-var_m$BW - var_m$V_B - var_m$V_RP -var_m$V_SI - var_m$V_L - var_m$V_F  #Volume slowly perfused tissue (L)
 
 #-Cardiac parameters-#
 
-var_m$Q_C           <- var_m$BSA * 60 * (3 - 0.01 * (var_m$Age - 20))           #Cardiac output (L/h)
-var_m$Q_SI          <- var_m$Q_C * 0.15                                         #Blood flow to the gut (L/h)
-var_m$Q_F           <- var_m$Q_C * 0.05                                         #Blood flow to adipose tissue (L/h)
-var_m$Q_L           <- var_m$Q_C * 0.065                                        #Blood flow to liver via hepatic artery (L/h)
-var_m$Q_RP          <- 0.626 * var_m$Q_C - var_m$Q_SI - var_m$Q_L               #Blood flow to richly perfused tissue (L/h)
-var_m$Q_SP          <- 0.374 * var_m$Q_C - var_m$Q_F                            #Blood flow to slowly perfused tissue (L/h)
+var_m$Q_C      <-var_m$BSA * 60 * (3 - 0.01 * (var_m$Age - 20))           #Cardiac output (L/h)
+var_m$Q_Pu     <-var_m$Q_C                                                #Blood flow to the Lungs (L/h)
+var_m$Q_SI     <-var_m$Q_C * 0.15                                         #Blood flow to the small intestine (L/h)
+var_m$Q_F      <-var_m$Q_C * 0.05                                         #Blood flow to adipose tissue (L/h)
+var_m$Q_L      <-var_m$Q_C * 0.065                                        #Blood flow to liver (L/h)
+var_m$Q_RP     <-0.626 * var_m$Q_C - var_m$Q_SI - var_m$Q_L               #Blood flow to richly perfused tissue (L/h)
+var_m$Q_SP     <-0.374 * var_m$Q_C - var_m$Q_F                            #Blood flow to slowly perfused tissue (L/h)
 
 
 #----GSH parameters----#
@@ -160,7 +163,7 @@ var_m$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinn
 var_m$Km_SI_AO    <- 90  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
 var_m$Km_SI_OH    <- 290 #Km for enzymatic oxidation of cinnamly alcOHol into cinnamaldehyde in the Small Intestine in μM
 var_m$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM RAT value
-var_m$Km_SI_GST_G <- 100 #Km toward cinnamaldehyde for enzymatic conjugation of cinnamaldehyde in the small intestine μM
+var_m$Km_SI_GST_G <- 0 #Km toward cinnamaldehyde for enzymatic conjugation of cinnamaldehyde in the small intestine μM
 
 #-Vmax values-#
 var_m$Vsmax_SI_CA    <- 21 #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
@@ -169,8 +172,8 @@ var_m$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alc
 var_m$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h RAT value
 
 #---Dose male---#
-var_m$DOSE <- (Dose_in_mg * var_m$BW)/ MW  * 1e+3     #The administered dose in umol 
-
+var_m$Oral_Dose <- (Dose_in_mg * var_m$BW)/ MW  * 1e+3     #The administered dose in umol 
+var_m$Inhalation_Dose <- (Inhalation_dose_in_mg * var_m$BW)/ MW  * 1e+3 #The inhaled dose in μmol
 
 
 
@@ -194,17 +197,19 @@ var_f$V_B       <-(((35.5 * var_f$Height + 2.27 * var_f$BW - 3382)/ 0.6178 )/ 10
 var_f$V_A       <-var_f$V_B / 3                                                     #Volume arterial blood (L)
 var_f$V_V       <-var_f$V_B * (2/3)                                                 #Volume venous blood (L) 
 var_f$V_SI      <-0.021 * (var_f$BW - var_f$V_F * 0.92) / 1.05                           #Volume gut tissue (L)
+var_f$V_Pu      <-
 var_f$V_RP      <-(2.331 * 10^-3 * var_f$Age + 0.1253 * var_f$BW^0.8477 + var_f$Height^0.3821 - 4.725) - var_f$V_SI - var_f$V_L   #Volume richly perfused tissue (L)
 var_f$V_SP      <-var_f$BW - var_f$V_B - var_f$V_RP -var_f$V_SI - var_f$V_L - var_f$V_F  #Volume slowly perfused tissue (L)
 
 #-Cardiac parameters-#
 
-var_f$Q_C           <- var_f$BSA * 60 * (3 - 0.01 * (var_f$Age - 20))           #Cardiac output (L/h)
-var_f$Q_SI          <- var_f$Q_C * 0.17                                         #Blood flow to the gut (L/h)
-var_f$Q_F           <- var_f$Q_C * 0.085                                        #Blood flow to adipose tissue (L/h)
-var_f$Q_L           <- var_f$Q_C * 0.065                                        #Blood flow to liver via hepatic artery (L/h)
-var_f$Q_RP          <- 0.626 * var_f$Q_C - var_f$Q_SI - var_f$Q_L               #Blood flow to richly perfused tissue (L/h)
-var_f$Q_SP          <- 0.374 * var_f$Q_C - var_f$Q_F    
+var_f$Q_C           <-var_f$BSA * 60 * (3 - 0.01 * (var_f$Age - 20))           #Cardiac output (L/h)
+var_f$Q_Pu          <-var_f$Q_C                                                #Blood flow to the Lung (L/h) 
+var_f$Q_SI          <-var_f$Q_C * 0.17                                         #Blood flow to the Small intestine (L/h)
+var_f$Q_F           <-var_f$Q_C * 0.085                                        #Blood flow to adipose tissue (L/h)
+var_f$Q_L           <-var_f$Q_C * 0.065                                        #Blood flow to liver (L/h)
+var_f$Q_RP          <-0.626 * var_f$Q_C - var_f$Q_SI - var_f$Q_L               #Blood flow to richly perfused tissue (L/h)
+var_f$Q_SP          <-0.374 * var_f$Q_C - var_f$Q_F    
 
 
 #----GSH parameters female----#
@@ -267,7 +272,9 @@ var_f$Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alc
 var_f$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #---Dose female---#
-var_f$DOSE <- (Dose_in_mg * var_f$BW)/ MW  * 1e+6     #The administered dose in umol 
+var_f$Oral_Dose <- (Dose_in_mg * var_f$BW)/ MW  * 1e+3     #The administered dose in umol 
+var_f$Inhalation_Dose <- (Inhalation_dose_in_mg * var_f$BW)/ MW  * 1e+3 #The inhaled d
+
 
 #Combine datasets Male and Female for PBPK model
 phys <- rbind(var_m,var_f)
@@ -444,9 +451,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
-
-
 
 #inhalation exposure  exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
