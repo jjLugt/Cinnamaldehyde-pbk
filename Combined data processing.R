@@ -8,7 +8,7 @@
 
 
 #Rxode
-#cinnamaldehyde model 
+#cinnamaldehyde model Human
 #Mass balance calculation rxode inhalation complete
 mass_df <- solve.pbk_nonpop/BW * MW /1e+3
 mass_df <- mass_df[,c(70:84,86:91,93:97,99:105)]
@@ -19,10 +19,10 @@ for (i in 1:nrow(mass_df)){
 }
 plot(mass_at_t[,1])
 
-#cinnamaldehyde model 
-#Mass balance calculation rxode inhalation incomplete
-mass_df <- solve.pbk_nonpop/BW * MW /1e+3
-mass_df <- mass_df[,c(65:76,78,79,80,82, 83,85:89,92:97)]
+#cinnamaldehyde model Rat
+#Mass balance calculation rxode inhalation complete
+mass_df <- solve.pbk_rat/BW * MW /1e+3
+mass_df <- mass_df[,c(70:84,86:91,93:97,99:105)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 for (i in 1:nrow(mass_df)){
@@ -30,18 +30,6 @@ for (i in 1:nrow(mass_df)){
 }
 plot(mass_at_t[,1])
 
-#Cinnamylalcohol model
-
-#Mass balance calculation rxode non metabolism
-Mass_df <- solve.pbk_nonpop/BW * MW /1e+3
-mass_df <-Mass_df[,c(45:53,55,56,58:63)]
-mass_at_t <- data.frame(mass=as.numeric())
-
-
-for (i in 1:nrow(mass_df)){
-  mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(mass_df[i,])
-}
-plot(mass_at_t[,1])
 
 #Rxode 
 #Normal model

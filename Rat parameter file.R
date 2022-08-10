@@ -12,48 +12,53 @@ library(reshape2)
 library(plotly)
 
 #Simulations
-set.seed(15204)         #to ensure a reproducible output
-amount.units <-"umol"
-time.units   <-"h"
-nbr.doses    <-1        #number of doses
-time.0       <-0        #time start dosing
-time.end     <-8        #time end of simulation
-time.frame   <-0.1     #time steps of simulation
-#N           <-1000     #Number of males
-#NF          <-1000     #Number of females
-Dose_in_mg   <-50     #Dose in mg/kg-bw
-MW           <-132.16   #The molecular weight of Cinnamaldehyde
-DOSE         <-(Dose_in_mg * 0.25)/ MW  * 1e+3     #The administered dose in umol 
+set.seed(15204)                       #to ensure a reproducible output
+amount.units               <-"umol"
+time.units                 <-"h"
+nbr.doses                  <-1        #number of doses
+time.0                     <-0        #time start dosing
+time.end                   <-8        #time end of simulation
+time.frame                 <-0.1      #time steps of simulation
+Oral_dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
+MW                         <-132.16   #The molecular weight of Cinnamaldehyde
+BW                         <- 0.25    #Body weight in Kg
+Oral_Dose                  <-(Oral_dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
+Inhalation_Dose            <-(Inhalation_dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
+Volume_exposure_chamber    <-10       #volume exposure chamber in L
 
 
-#--Physico-chemical parameters--#
+#--Physio-chemical parameters--#
 #-Cinnamaldehyde-#
 
-P_F      <-  14.2 #Fat/Blood partition coefficient
-P_L      <-  1.21 #Fat/Blood partition coefficient
-P_SI     <-  1.21 #Small intestine/Blood partition coefficients
-P_RP     <-  1.21 #Richly perfused tissues/Blood partition coefficients
-P_SP     <-  0.57 #Slowely perfused tissues/Blood partition coefficients
+P_F      <-  1.69 #Fat/Blood partition coefficient
+P_L      <-  0.81 #Fat/Blood partition coefficient
+P_SI     <-  0.81 #Small intestine/Blood partition coefficients
+P_RP     <-  0.81 #Richly perfused tissues/Blood partition coefficients
+P_SP     <-  0.39 #Slowly perfused tissues/Blood partition coefficients
+P_B      <- 1.25E5#Blood air partition coefficients
+P_Pu     <-  0.81 #Lung/Blood partition coefficients
 
-#-Cinnamyl AlcOHol-#
-P_OH_F    <-  14.6 #Fat/Blood partition coefficient
-P_OH_L    <-  1.22 #Fat/Blood partition coefficient
-P_OH_SI   <-  1.22 #Small intestine/Blood partition coefficients
-P_OH_RP   <-  1.22 #Richly perfused tissues/Blood partition coefficients
-P_OH_SP   <-  0.57 #Slowly perfused tissues/Blood partition coefficients
+#-Cinnamyl Alcohol-#
+P_OH_F    <-  1.71 #Fat/Blood partition coefficient
+P_OH_L    <-  0.81 #Fat/Blood partition coefficient
+P_OH_SI   <-  0.81 #Small intestine/Blood partition coefficients
+P_OH_RP   <-  0.81 #Richly perfused tissues/Blood partition coefficients
+P_OH_SP   <-  0.39 #Slowly perfused tissues/Blood partition coefficients
+P_OH_Pu   <-  0.81 #Lung/Blood partition coefficients
 
-#--Pyshiological Parameters--#
-BW      <- 0.25    #Body weight in Kg
+#--Physiological Parameters--#
 
 #-Tissues volumes in % body weight-#
 
-V_F      <- 7  #Fat
+V_F      <- 7     #Fat
 V_L      <- 3.4   #Liver
 V_SI     <- 1.4   #Small intestine
 V_A      <- 1.9   #Arterial Blood
 V_V      <- 5.6   #Venous Blood
-V_RP     <- 4.2   #Richly perfused 
-V_SP     <- 67.6  #Slowly perfused 
+V_RP     <- 3.7   #Richly perfused 
+V_SP     <- 67.6  #Slowly perfused
+V_Pu     <- 0.5   #Lung
 
 #-Cardiac parameters-#
 
@@ -61,11 +66,14 @@ Q_C      <- 5.4    #Cardiac output in L/h
 
 #-Blood flow to tissues in % cardiac output-#
 
-Q_F      <- 0.07    #Fat
+Q_F      <- 0.07   #Fat
 Q_L      <- 0.13   #Liver
-Q_SI     <- 0.12    #Small intestine
-Q_RP     <- 0.64   #Richly perfused (RP)
-Q_SP     <- 0.17   #Slowly perfused (SP)
+Q_SI     <- 0.12   #Small intestine
+Q_RP     <- 0.64   #Richly perfused
+Q_SP     <- 0.17   #Slowly perfused
+Q_Pu     <- Q_C    #Blood flow through the lung
+
+P_V      <- 3 * ((BW*1000)/100) #Pulmonary ventilation in L/h 
 
 #----GSH parameters----#
 #--GSH synthesis in umol/kg tissue/h--#
@@ -85,8 +93,8 @@ k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction 
 k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
 
 #----Protein reactive sites in μmol/kg tissue----#
-C_PRO_L     <- 3000  #Liver
-C_PRO_SI    <- 774   #Small intestine
+C_PRO_L     <- 5319  #Liver
+C_PRO_SI    <- 245   #Small intestine
 
 #----DNA parameters----#
 C_L_dG     <-  1.36 #Concentration of 2ʹ-dG in the liver μmol/kg liver
@@ -135,16 +143,20 @@ Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol i
 Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Collection of all parameters so they can be entered in the function
-parameters=cbind(P_F,
+parameters=cbind(Volume_exposure_chamber,
+                 P_F,
                  P_L,
                  P_SI,
                  P_RP,
                  P_SP,
+                 P_B,
+                 P_Pu,
                  P_OH_F,
                  P_OH_L,
                  P_OH_SI,
                  P_OH_RP,
                  P_OH_SP,
+                 P_OH_Pu,
                  BW,
                  V_F,
                  V_L,
@@ -153,12 +165,15 @@ parameters=cbind(P_F,
                  V_V,
                  V_RP,
                  V_SP,
+                 V_Pu,
                  Q_C,
+                 Q_Pu,
                  Q_F,
                  Q_L,
                  Q_SI,
                  Q_RP,
                  Q_SP,
+                 P_V,
                  G_SYN_L,
                  G_SYN_SI,
                  k_L_GLOS,
@@ -171,15 +186,17 @@ parameters=cbind(P_F,
                  C_PRO_SI,
                  C_L_dG,
                  T_0.5,
-                 DOSE,
+                 Oral_Dose,
+                 Inhalation_Dose,
+                 Volume_exposure_chamber,
                  Ka,
-                 k_L_CA,
                  k_L_GST,
+                 Km_L_OH,
                  Km_L_CA,
                  Km_L_AO,
                  Km_L_GST,
                  Km_L_GST_G,
-                 Km_L_OH,
+                 k_L_CA,
                  Vsmax_L_CA,
                  Vsmax_L_AO,
                  Vsmax_L_GST,
@@ -196,43 +213,48 @@ parameters=cbind(P_F,
                  Vsmax_SI_GST)
 
 
-#defining the begin situation of the model (in this case no chemical present in the organs)
-inits <- c("A_GI"         = 0,
-           "A_V"          = 0,
-           "AA_A"         = 0,
-           "A_OH_V"       = 0,
-           "A_F"          = 0,
-           "A_OH_F"       = 0,
-           "AM_L_CA"      = 0,
-           "AM_L_AO"      = 0,
-           "AM_L_AG_GST"  = 0,
-           "AM_L_AG_CHEM" = 0,
-           "AM_L_AP"      = 0,
-           "AM_L_DA_FORM" = 0,
-           "AM_L_DA"      = 0,
-           "A_OH_M_L_C_A" = 0,
-           "A_OH_L"       = 0,
-           "A_L"          = 0,
+#defining the begin situation of the model Inhalation variation 
+inits <- c("A_GI"         =0,
+           "A_P_Art"      =0,
+           "A_Inhalation" =0,
+           "A_Exhalation" =0,
+           "A_Pu"         =0,
+           "A_OH_Pu"      =0,
+           "A_V"          =0,
+           "A_OH_V"       =0,
+           "A_F"          =0,
+           "A_OH_F"       =0,
+           "AM_L_CA"      =0,
+           "AM_L_AO"      =0,
+           "AM_L_AG_GST"  =0,
+           "AM_L_AG_CHEM" =0,
+           "AM_L_AP"      =0,
+           "AM_L_DA_FORM" =0,
+           "AM_L_DA"      =0,
+           "A_OH_M_L_C_A" =0,
+           "A_OH_L"       =0,
+           "A_L"          =0,
            "AM_Lc_GSH"    =init_GSH_L, 
-           "AM_SI_CA"     = 0,
-           "AM_SI_AO"     = 0,
-           "AM_SI_AG_GST" = 0,
-           "AM_SI_AG_CHEM"= 0,
-           "AM_SI_AP"     = 0,
-           "A_OH_M_SI_C_A"= 0,
-           "A_OH_SI"      = 0,
-           "A_SI"         = 0,
+           "AM_SI_CA"     =0,
+           "AM_SI_AO"     =0,
+           "AM_SI_AG_GST" =0,
+           "AM_SI_AG_CHEM"=0,
+           "AM_SI_AP"     =0,
+           "A_OH_M_SI_C_A"=0,
+           "A_OH_SI"      =0,
+           "A_SI"         =0,
            "AM_SIc_GSH"   =init_GSH_SI,
-           "A_RP"         = 0,
-           "A_OH_RP"      = 0,
-           "A_SP"         = 0,
-           "A_OH_SP"      = 0
+           "A_RP"         =0,
+           "A_OH_RP"      =0,
+           "A_SP"         =0,
+           "A_OH_SP"      =0
 );
 
 
 
-#Step 3 exposure
-ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = DOSE, dur=0.1, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(seq(from = time.0, to = time.end, by = time.frame)) 
 
+#inhalation exposure  exposure
+ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
+  et(dose = Oral_Dose, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose = Inhalation_Dose, dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(seq(from = time.0, to = time.end, by = time.frame)) 
