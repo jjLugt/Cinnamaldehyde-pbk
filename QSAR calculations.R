@@ -30,7 +30,7 @@ Brain_Lipid_Fraction   <- 0.133
 #RAT
 Blood_Water_Fraction_R   <- 0.820
 Blood_Lipid_Fraction_R   <- 0.0036
-Adipose_Lipid_Fraction_R <- 0.200
+Adipose_Water_Fraction_R <- 0.200
 Adipose_Lipid_Fraction_R <- 0.800
 Liver_Water_Fraction_R   <- 0.740
 Liver_Lipid_Fraction_R   <- 0.065
@@ -64,50 +64,97 @@ Muscle_Blood_B_R  <- -0.55 #+- 0.06
 #--------------lipid/water partition coefficients
 
 #Fat/Blood
+#Human
 Plw_Fat_Blood_Benzaldehyde <- Log_Kow_Benzaldehyde ^ Fat_Blood_A
 Plw_Fat_Blood_Cinnamaldehyde <- Log_Kow_Cinnamaldehyde ^ Fat_Blood_A
 Plw_Fat_Blood_Cinnamylalcohol <- Log_Kow_Cinnamylalcohol ^ Fat_Blood_A
+#Rat
+Plw_Fat_Blood_Benzaldehyde_R <- Log_Kow_Benzaldehyde^Fat_Blood_A_R
+Plw_Fat_Blood_Cinnamaldehyde_R <-Log_Kow_Cinnamaldehyde^Fat_Blood_A_R
+Plw_Fat_Blood_Cinnamylalcohol_R <- Log_Kow_Cinnamylalcohol^Fat_Blood_A_R
 
 #Liver/Blood
+#Human
 Plw_Liver_Blood_Benzaldehyde <- Log_Kow_Benzaldehyde ^ Liver_Blood_A
 Plw_Liver_Blood_Cinnamaldehyde <- Log_Kow_Cinnamaldehyde ^ Liver_Blood_A
 Plw_Liver_Blood_Cinnamylalcohol <- Log_Kow_Cinnamylalcohol ^ Liver_Blood_A
+#Rat
+Plw_Liver_Blood_Benzaldehyde_R <- Log_Kow_Benzaldehyde ^ Liver_Blood_A_R
+Plw_Liver_Blood_Cinnamaldehyde_R <- Log_Kow_Cinnamaldehyde ^ Liver_Blood_A_R
+Plw_Liver_Blood_Cinnamylalcohol_R <- Log_Kow_Cinnamylalcohol ^ Liver_Blood_A_R
 
 #Muscle/Slowly perfused tissue
+#Human
 Plw_Muscle_Blood_Benzaldehyde <- Log_Kow_Benzaldehyde ^ Muscle_Blood_A
 Plw_Muscle_Blood_Cinnamaldehyde <- Log_Kow_Cinnamaldehyde ^ Muscle_Blood_A
 Plw_Muscle_Blood_Cinnamylalcohol <- Log_Kow_Cinnamylalcohol ^ Muscle_Blood_A
+#Rat
+Plw_Muscle_Blood_Benzaldehyde_R <- Log_Kow_Benzaldehyde ^ Muscle_Blood_A_R
+Plw_Muscle_Blood_Cinnamaldehyde_R <- Log_Kow_Cinnamaldehyde ^ Muscle_Blood_A_R
+Plw_Muscle_Blood_Cinnamylalcohol_R <- Log_Kow_Cinnamylalcohol ^ Muscle_Blood_A_R
 
-#Muscle/Slowly perfused tissue
+#Brain/Richly perfused tissue
+#Human
 Plw_Brain_Blood_Benzaldehyde <- Log_Kow_Benzaldehyde ^ Brain_Blood_A
 Plw_Brain_Blood_Cinnamaldehyde <- Log_Kow_Cinnamaldehyde ^ Brain_Blood_A
 Plw_Brain_Blood_Cinnamylalcohol <- Log_Kow_Cinnamylalcohol ^ Brain_Blood_A
-
+#Rat
+Plw_Brain_Blood_Benzaldehyde_R <- Log_Kow_Benzaldehyde ^ Brain_Blood_A_R
+Plw_Brain_Blood_Cinnamaldehyde_R <- Log_Kow_Cinnamaldehyde ^ Brain_Blood_A_R
+Plw_Brain_Blood_Cinnamylalcohol_R <- Log_Kow_Cinnamylalcohol ^ Brain_Blood_A_R
 
 #----------------Partition coefficient 
-#Fat/Blood 
+#Fat/Blood
+
+#Human
 P_F_Benzaldehyde   <-  (Adipose_Lipid_Fraction * Plw_Fat_Blood_Benzaldehyde + Adipose_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Fat_Blood_Benzaldehyde + Blood_Water_Fraction)+ Fat_Blood_B
 P_F_Cinnamaldehyde <-  (Adipose_Lipid_Fraction * Plw_Fat_Blood_Cinnamaldehyde + Adipose_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Fat_Blood_Cinnamaldehyde + Blood_Water_Fraction) + Fat_Blood_B
 P_F_Cinnamylalcohol <-  (Adipose_Lipid_Fraction * Plw_Fat_Blood_Cinnamylalcohol + Adipose_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Fat_Blood_Cinnamylalcohol + Blood_Water_Fraction) + Fat_Blood_B
 
-#Liver/Blood 
+#Rat
+P_F_Benzaldehyde_R   <-  (Adipose_Lipid_Fraction_R * Plw_Fat_Blood_Benzaldehyde_R + Adipose_Water_Fraction_R)/(Blood_Lipid_Fraction_R * Plw_Fat_Blood_Benzaldehyde_R + Blood_Water_Fraction_R)+ Fat_Blood_B_R
+P_F_Cinnamaldehyde_R <-  (Adipose_Lipid_Fraction_R * Plw_Fat_Blood_Cinnamaldehyde_R + Adipose_Water_Fraction_R)/(Blood_Lipid_Fraction_R * Plw_Fat_Blood_Cinnamaldehyde_R + Blood_Water_Fraction_R) + Fat_Blood_B_R
+P_F_Cinnamylalcohol_R <-  (Adipose_Lipid_Fraction_R * Plw_Fat_Blood_Cinnamylalcohol_R + Adipose_Water_Fraction_R)/(Blood_Lipid_Fraction_R * Plw_Fat_Blood_Cinnamylalcohol_R + Blood_Water_Fraction_R) + Fat_Blood_B_R
+
+
+#----------------Liver/Blood 
+#Human
 P_L_Benzaldehyde   <-  (Liver_Lipid_Fraction * Plw_Liver_Blood_Benzaldehyde + Liver_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Liver_Blood_Benzaldehyde + Blood_Water_Fraction)+ Liver_Blood_B
 P_L_Cinnamaldehyde <-  (Liver_Lipid_Fraction * Plw_Liver_Blood_Cinnamaldehyde + Liver_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Liver_Blood_Cinnamaldehyde + Blood_Water_Fraction) + Liver_Blood_B
 P_L_Cinnamylalcohol <-  (Liver_Lipid_Fraction * Plw_Liver_Blood_Cinnamylalcohol + Liver_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Liver_Blood_Cinnamylalcohol + Blood_Water_Fraction) + Liver_Blood_B
 
-#Muscle/Blood
+#Rat
+P_L_Benzaldehyde_R   <-  (Liver_Lipid_Fraction_R * Plw_Liver_Blood_Benzaldehyde_R + Liver_Water_Fraction_R)/(Blood_Lipid_Fraction_R * Plw_Liver_Blood_Benzaldehyde_R + Blood_Water_Fraction_R)+ Liver_Blood_B_R
+P_L_Cinnamaldehyde_R <-  (Liver_Lipid_Fraction_R * Plw_Liver_Blood_Cinnamaldehyde_R + Liver_Water_Fraction_R)/(Blood_Lipid_Fraction_R * Plw_Liver_Blood_Cinnamaldehyde_R + Blood_Water_Fraction_R) + Liver_Blood_B_R
+P_L_Cinnamylalcohol_R <-  (Liver_Lipid_Fraction_R * Plw_Liver_Blood_Cinnamylalcohol_R + Liver_Water_Fraction_R)/(Blood_Lipid_Fraction_R * Plw_Liver_Blood_Cinnamylalcohol_R + Blood_Water_Fraction_R) + Liver_Blood_B_R
+
+#----------------Muscle/Blood
+#Human
 P_SP_Benzaldehyde   <-  (Muscle_Lipid_Fraction * Plw_Muscle_Blood_Benzaldehyde + Muscle_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Muscle_Blood_Benzaldehyde + Blood_Water_Fraction)+ Muscle_Blood_B
 P_SP_Cinnamaldehyde <-  (Muscle_Lipid_Fraction * Plw_Muscle_Blood_Cinnamaldehyde + Muscle_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Muscle_Blood_Cinnamaldehyde + Blood_Water_Fraction) + Muscle_Blood_B
 P_SP_Cinnamylalcohol <-  (Muscle_Lipid_Fraction * Plw_Muscle_Blood_Cinnamylalcohol + Muscle_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Muscle_Blood_Cinnamylalcohol + Blood_Water_Fraction) + Muscle_Blood_B
 
-#Brain/Blood
+#Rat
+P_SP_Benzaldehyde_R   <-  (Muscle_Lipid_Fraction_R * Plw_Muscle_Blood_Benzaldehyde_R + Muscle_Water_Fraction_R)/(Blood_Lipid_Fraction_R * Plw_Muscle_Blood_Benzaldehyde_R + Blood_Water_Fraction_R)+ Muscle_Blood_B_R
+P_SP_Cinnamaldehyde_R <-  (Muscle_Lipid_Fraction_R * Plw_Muscle_Blood_Cinnamaldehyde_R + Muscle_Water_Fraction_R)/(Blood_Lipid_Fraction_R * Plw_Muscle_Blood_Cinnamaldehyde_R + Blood_Water_Fraction_R) + Muscle_Blood_B_R
+P_SP_Cinnamylalcohol_R <-  (Muscle_Lipid_Fraction_R * Plw_Muscle_Blood_Cinnamylalcohol_R + Muscle_Water_Fraction_R)/(Blood_Lipid_Fraction_R * Plw_Muscle_Blood_Cinnamylalcohol_R + Blood_Water_Fraction_R) + Muscle_Blood_B_R
+
+#-------------------Brain/Blood
+#Human
 P_Br_Benzaldehyde   <-  (Brain_Lipid_Fraction * Plw_Brain_Blood_Benzaldehyde + Brain_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Brain_Blood_Benzaldehyde + Blood_Water_Fraction)+ Brain_Blood_B
 P_Br_Cinnamaldehyde <-  (Brain_Lipid_Fraction * Plw_Brain_Blood_Cinnamaldehyde + Brain_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Brain_Blood_Cinnamaldehyde + Blood_Water_Fraction) + Brain_Blood_B
 P_Br_Cinnamylalcohol <-  (Brain_Lipid_Fraction * Plw_Brain_Blood_Cinnamylalcohol + Brain_Water_Fraction)/(Blood_Lipid_Fraction * Plw_Brain_Blood_Cinnamylalcohol + Blood_Water_Fraction) + Brain_Blood_B
 
+
 #Blood:air partition coefficient calculations based on ten Berge et al 2011
+#Human
 P_B_Cinnamaldehyde <- 0.4445/HL_Cinnamaldehyde + 0.005189 * Log_Koa_Cinnamaldehyde
 P_B_Benzaldehdye <- 0.4445/HL_Benzaldehyde + 0.005189 * Log_Koa_Benzaldehyde
+
+#Rat
+P_B_Cinnamaldehyde_R <- 0.4445/HL_Cinnamaldehyde + 0.005189 * Log_Koa_Cinnamaldehyde
+P_B_Benzaldehdye_R <- 0.4445/HL_Benzaldehyde + 0.005189 * Log_Koa_Benzaldehyde
+
 
 
 

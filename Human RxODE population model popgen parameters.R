@@ -21,7 +21,7 @@ time.frame              <-0.01     #time steps of simulation
 N                       <-1000     #Number of males
 NF                      <-1000     #Number of females
 Oral_Dose_in_mg_bw      <-250      #Dose in mg/kg-bw
-Inhalation_Dose_in_mg_bw<-0      #The inhaled dose in mg/kg
+Inhalation_Dose_in_mg_bw<-0        #The inhaled dose in mg/kg
 Volume_exposure_chamber <-10       #volume exposure chamber in L
 MW                      <-132.16   #The molecular weight of Cinnamaldehyde
 
@@ -195,7 +195,7 @@ var_m_pop$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into 
 var_m_pop$Km_SI_AO    <- 90  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
 var_m_pop$Km_SI_OH    <- 290 #Km for enzymatic oxidation of cinnamly alcOHol into cinnamaldehyde in the Small Intestine in μM
 var_m_pop$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM RAT value
-var_m_pop$Km_SI_GST_G <- 0 #Km toward cinnamaldehyde for enzymatic conjugation of cinnamaldehyde in the small intestine μM
+var_m_pop$Km_SI_GST_G <- 100 #Km toward cinnamaldehyde for enzymatic conjugation of cinnamaldehyde in the small intestine μM
 
 #-Vmax values-#
 var_m_pop$Vsmax_SI_CA    <- 21 #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
@@ -207,7 +207,7 @@ var_m_pop$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnama
 var_m_pop$Oral_Dose       <- (Oral_Dose_in_mg_bw * var_m_pop$BW)/ MW  * 1e+3     #The administered dose in umol 
 var_m_pop$Inhalation_Dose <- (Inhalation_dose_in_mg_bw * var_m_pop$BW)/ MW  * 1e+3 #The inhaled dose in μmol
 
-
+var_m_pop$Volume_exposure_chamber <-Volume_exposure_chamber
 ##------------Population specific parameters (female)--------------------##                                     
 var_f_pop$Age              <- pg_f_par$Age                                        #Age (years)   
 var_f_pop$Height           <- pg_f_par$Height                                     #Body height baseline (cm)
@@ -227,17 +227,17 @@ var_f_pop$V_SP      <-pg_f_par$`Slowly Perfused mass`   #Volume slowly perfused 
 
 #-Cardiac parameters-#
 
-var_f_pop$Q_C           <- pg_f_par$`Cardiac Output`           #Cardiac output (L/h)
-var_f_pop$Q_SI          <- pg_f_par$`Small intestine flow`                                         #Blood flow to the gut (L/h)
-var_f_pop$Q_F           <- pg_f_par$`Adipose flow`                                        #Blood flow to adipose tissue (L/h)
-var_f_pop$Q_L           <- pg_f_par$`Liver flow`                                        #Blood flow to liver via hepatic artery (L/h)
+var_f_pop$Q_C           <- pg_f_par$`Cardiac Output`                     #Cardiac output (L/h)
+var_f_pop$Q_SI          <- pg_f_par$`Small intestine flow`               #Blood flow to the gut (L/h)
+var_f_pop$Q_F           <- pg_f_par$`Adipose flow`                       #Blood flow to adipose tissue (L/h)
+var_f_pop$Q_L           <- pg_f_par$`Liver flow`                         #Blood flow to liver via hepatic artery (L/h)
 var_f_pop$Q_RP          <- pg_f_par$`Richly Perfused flow`               #Blood flow to richly perfused tissue (L/h)
-var_f_pop$Q_SP          <- pg_f_par$`Slowly Perfused flow`
-var_f_pop$Q_Pu          <- pg_f_par$`Lung flow`
-var_f_pop$check         <- var_f_pop$Q_SI + var_f_pop$Q_F + var_f_pop$Q_L + var_f_pop$Q_RP + var_f_pop$Q_SP + var_f_pop$Q_Pu
+var_f_pop$Q_SP          <- pg_f_par$`Slowly Perfused flow`               #Blood flow to Slowly perfused tissue (L/h)
+var_f_pop$Q_Pu          <- pg_f_par$`Lung flow`                          #Blood flow to Lung tissue (L/h)
+var_f_pop$check         <- var_f_pop$Q_SI + var_f_pop$Q_F + var_f_pop$Q_L + var_f_pop$Q_RP + var_f_pop$Q_SP + var_f_pop$Q_Pu  #check if total adds up to Q_C
 
 #Pulmonary ventilation
-var_f_pop$P_V           <-rnorm(N,mean=390,sd=3)
+var_f_pop$P_V           <-rnorm(N,mean=390,sd=3) #Pulmonary ventilation in L/h
 
 #----GSH parameters female----#
 #--GSH synthesis in umol/kg tissue/h--#
@@ -290,7 +290,7 @@ var_f_pop$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into 
 var_f_pop$Km_SI_AO    <- 90  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
 var_f_pop$Km_SI_OH    <- 290 #Km for enzymatic oxidation of cinnamly alcOHol into cinnamaldehyde in the Small Intestine in μM
 var_f_pop$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM (RAT value)
-var_f_pop$Km_SI_GST_G <- 0  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM)
+var_f_pop$Km_SI_GST_G <- 100  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM)
 
 #-Vmax values-#
 var_f_pop$Vsmax_SI_CA    <- 21 #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
@@ -302,7 +302,8 @@ var_f_pop$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnama
 var_f_pop$Oral_Dose       <-(Oral_Dose_in_mg_bw * var_f_pop$BW)/ MW  * 1e+3     #The administered dose in umol 
 var_f_pop$Inhalation_Dose <- (Inhalation_dose_in_mg_bw * var_f_pop$BW)/ MW  * 1e+3 #The inhaled dose in μmol
 
-#Combine datasets Male and Female for PBPK model
+var_f_pop$Volume_exposure_chamber <-Volume_exposure_chamber
+#Combine data sets Male and Female for PBK model
 phys <- rbind(var_m_pop,var_f_pop)
 
 #ONLY MALE
@@ -376,6 +377,7 @@ Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
 Oral_Dose<- phys$Oral_Dose 
 Inhalation_Dose<-phys$Inhalation_Dose
+Volume_exposure_chamber<-phys$Volume_exposure_chamber
 
 
 parameters=cbind(P_F,
@@ -444,7 +446,6 @@ parameters=cbind(P_F,
                  Oral_Dose,
                  Inhalation_Dose,
                  Volume_exposure_chamber)
-
 
 #defining the begin situation of the model Inhalation variation 
 inits <- c("A_GI"         =0,
