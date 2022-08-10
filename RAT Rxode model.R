@@ -18,6 +18,7 @@ PBK_Cinnamaldehyde <- RxODE({
    
     Rin            <- -Ka * A_GI;                         #Rate of change in cinnamaldehyde concentration in the GI cavity in umol/h
     
+   
     #-------------------Blood------------------------#
     #Cinnamaldehyde#
     C_V            <- A_V       / V_V ;                   #Concentration of Cinnamaldehyde in Venous blood in umol/l
@@ -27,11 +28,34 @@ PBK_Cinnamaldehyde <- RxODE({
     C_OH_V         <- A_OH_V    /  V_V;                   #Concentration of Cinnamyl alcOHol in venous Blood in umol/l
     C_OH_A         <- A_OH_A    /  V_A;                   #Concentration of Cinnamyl alcOHol in Arterial Blood in umol/l 
     
+    #----Inhalation------#
+    #Cinnamaldehyde
+    
+    C_Inhaled    <- A_Inhalation/Volume_exposure_chamber  #Concentration of Cinnamaldehyde inhaled in μmol/l                                          
+    R_P_Art      <- (Q_Pu * C_V + P_V * C_Inhaled)/(Q_Pu + P_V/P_B);  #Rate of change in the Cinnamaldehyde concentration in Arterial blood leaving the lung in  μmol/h
+    
+    R_Inhalation <- P_V *(R_P_Art/P_B - C_Inhaled)       #Rate of change in the concentration of Cinnamaldehyde inhaled in μmol/h
+    
+    C_Exhaled    <- R_P_Art/P_B;                          #Concentration of Cinnamaldehyde exhaled in μmol/l 
+    R_Exhalation <- P_V * C_Exhaled                      #Rate of change in the concentration of Cinnamaldehyde exhaled in μmol/h
+    
+    
+    #----Pulmonary tissue 
+    C_Pu           <- A_Pu / V_Pu;                        #Concentration in pulmonary tissue in μmol/l
+    C_A_Pu         <- C_Pu / P_Pu;                        #Concentration of Cinnamaldehyde in Arterial blood leaving the lung in μmol/l
+    R_Pu           <- Q_Pu * (R_P_Art - C_A_Pu);           #Rate of change in the concentration of Cinnamaldehyde  in μmol/h
+    
+    #Cinnamyl alcohol
+    C_OH_Pu        <- A_OH_Pu    / V_Pu;                  #Concentration of Cinnamyl alcOHol in Fat in μmol/kg
+    C_OH_V_Pu      <- C_OH_Pu   / P_OH_Pu;                #Concentration of Cinnamyl alcOHol in venous blood leaving the lung in μmol/l
+    R_OH_Pu        <- Q_Pu * (C_OH_A - C_OH_V_Pu);         #Rate of change in Cinnamyl alcOHol concentration in the lung in μmol/h
+    
     #-----------FAT---------------#
     #Cinnamaldehyde#
     C_F            <- A_F       / V_F;                    #Concentration in Fat in umol/kg
     C_V_F          <- C_F       / P_F;                    #Concentration of cinnamaldehyde in venous blood leaving Fat in umol/l
     R_F            <- Q_F * (C_A - C_V_F);                #rate of change in cinnamaldehyde concentration in the Fat in umol/h
+    
     #Cinnamyl alcohol# 
     C_OH_F         <- A_OH_F    / V_F;                    #Concentration of Cinnamyl alcOHol in Fat in umol/kg
     C_OH_V_F       <- C_OH_F    / P_OH_F;                 #Concentration of Cinnamyl alcOHol in venous blood leaving Fat in umol/l
@@ -108,10 +132,10 @@ PBK_Cinnamaldehyde <- RxODE({
     #----------------Blood------------------------#
     #Cinnamaldehyde#
     R_V            <- Q_F * C_V_F + (Q_L + Q_SI) * C_V_L + Q_RP * C_V_RP + Q_SP * C_V_SP - Q_C * C_V; #Rate of change in Cinnamaldehyde concentration in the venous blood in umol
-    R_A            <- Q_C * C_V - (Q_F * C_A + Q_L * C_A + Q_SI * C_A + Q_RP * C_A + Q_SP * C_A);     #Rate of change in Cinnamaldehyde concentratin in the arterial blood in umol 
+    R_A            <- Q_C * C_A_Pu - (Q_F * C_A + Q_L * C_A + Q_SI * C_A + Q_RP * C_A + Q_SP * C_A);     #Rate of change in Cinnamaldehyde concentratin in the arterial blood in umol 
     #Cinnamyl alcohol
     R_OH_V         <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP - Q_C * C_OH_V; 
-    R_OH_A         <- Q_C * C_OH_V - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A);
+    R_OH_A         <- Q_C * C_OH_V_Pu - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A);
     
     
     
@@ -124,18 +148,27 @@ PBK_Cinnamaldehyde <- RxODE({
     #-Venous-#
     d/dt(A_V)      <- R_V;            #Amount of Cinnamaldehyde in Venous blood in umol 
     d/dt(A_OH_V)   <- R_OH_V;        #Amount of Cinnamyl alcohol in Venous blood in umol 
+    
     #-Arterial-#
     d/dt(A_A)      <- R_A;            #Amount of Cinnamaldehyde in Arterial blood in umol 
     d/dt(A_OH_A)   <- R_OH_A;        #Amount of Cinnamyl alcohol in Arterial blood in umol
     
+    #-----Lung---#
+    d/dt(A_Inhalation)<- R_Inhalation     #Amount of Cinnamaldehyde in the exposure chamber in μmol
+    d/dt(A_Exhalation)<- R_Exhalation     #Amount of Cinnamaldehyde exhaled in μmol
+    d/dt(A_P_Art)   <- R_P_Art;           #Amount of Cinnamaldehyde in the lung arterial blood chamber in μmol
+    d/dt(A_Pu)      <- R_Pu;              #Amount of Cinnamaldehyde in the lung in μmol
+    d/dt(A_OH_Pu)   <- R_OH_Pu;           #Amount of Cinnamyl alcohol in the lung in μmol
+    
+    
     #-Fat calculations-#
-    d/dt(A_F)      <- R_F;           #Amount of Cinnamaldehyde in the Fat in umol                      
-    d/dt(A_OH_F)   <- R_OH_F;        #Amount of Cinnamyl alcOHol in Fat in umol
+    d/dt(A_F)       <- R_F;           #Amount of Cinnamaldehyde in the Fat in umol                      
+    d/dt(A_OH_F)    <- R_OH_F;        #Amount of Cinnamyl alcOHol in Fat in umol
     
     #--------------------Liver calculations-------------#
-    d/dt(A_L)           <- R_L;           #Amount of cinnamaldehyde in the liver in umol
-    d/dt(AM_L_CA)       <- RM_L_CA;       #Amount of Cinnamaldehyde oxidized to carboxylic acid in the liver in umol
-    d/dt(AM_L_AP)       <- RM_L_AP;       #Amount of Cinnamaldehyde proteins adducts in the liver in umol
+    d/dt(A_L)       <- R_L;           #Amount of cinnamaldehyde in the liver in umol
+    d/dt(AM_L_CA)   <- RM_L_CA;       #Amount of Cinnamaldehyde oxidized to carboxylic acid in the liver in umol
+    d/dt(AM_L_AP)   <- RM_L_AP;       #Amount of Cinnamaldehyde proteins adducts in the liver in umol
     
     #--GSH in the Liver cytosol--#
     
@@ -182,8 +215,7 @@ PBK_Cinnamaldehyde <- RxODE({
     
   })
 
-print(PBK_Cinnamaldehyde)
-solve.pbk <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
+solve.pbk_rat <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
 
 
