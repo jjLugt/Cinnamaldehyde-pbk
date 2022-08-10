@@ -10,7 +10,7 @@ library(truncnorm)
 library(reshape2)
 
 #Simulations
-set.seed(15204)                    #to ensure a reproducible output if random input is used
+set.seed(15204)                       #to ensure a reproducible output if random input is used
 amount.units               <-"umol"
 time.units                 <-"h"
 nbr.doses                  <-1        #number of doses
@@ -18,16 +18,16 @@ time.0                     <-0        #time start dosing
 time.end                   <-8        #time end of simulation
 time.frame                 <-0.01     #time steps of simulation
 Oral_dose_in_mg_bw         <-250      #Dose in mg/kg-bw
-Inhalation_dose_in_mg_bw   <-0       #The inhaled dose in mg/kg
+Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
-BW                         <- 70     #Body weight in Kg
+BW                         <- 70      #Body weight in Kg
 Oral_Dose                  <-(Oral_dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
 Volume_exposure_chamber    <-10       #volume exposure chamber in L
 
 
-#--Physico-chemical parameters--#
-#Values calculated in Qsar calculations file
+#--Physio-chemical parameters--#
+#Values calculated in QSAR calculations file
 #-Cinnamaldehyde-#
 
 P_F      <-  1.62   #Fat/Blood partition coefficient
@@ -49,18 +49,18 @@ P_OH_Pu   <-  0.59 #Lung/Blood partition coefficients
 #--Physiological Parameters--#
 #-Tissues volumes in % body weight-#
 
-V_F       <- 21.4  #Fat
-V_L       <- 2.6   #Liver
-V_SI      <- 0.9   #Small intestine
-V_A       <- 2.0   #Arterial Blood
-V_V       <- 5.9   #Venous Blood
-V_RP      <- 3.3   #Richly perfused 
-V_SP      <- 51.7  #Slowly perfused 
-V_Pu      <- 0.8   #Lung volume 
+V_F       <- 21.42  #Fat
+V_L       <- 2.57   #Liver
+V_SI      <- 0.91   #Small intestine
+V_A       <- 2.0    #Arterial Blood
+V_V       <- 5.9    #Venous Blood
+V_RP      <- 4.8    #Richly perfused 
+V_SP      <- 61.64  #Slowly perfused 
+V_Pu      <- 0.76   #Lung volume 
 
 #-Cardiac parameters-#
 
-Q_C       <- 310   #Cardiac output in L/h
+Q_C       <- 390   #Cardiac output in L/h
 
 #-Blood flow to tissues in % cardiac output-#
 
@@ -69,11 +69,11 @@ Q_L      <- 14.1   #Liver
 Q_SI     <- 8.6    #Small intestine
 Q_RP     <- 47.3   #Richly perfused (RP)
 Q_SP     <- 24.8   #Slowly perfused (SP)
-Q_Pu     <- Q_C
+Q_Pu     <- Q_C    #Lung
 
 
 #inhalation parameters
-P_V     <- 300             #Alveolar ventilation l/h
+P_V     <- 540             #Alveolar ventilation L/h
 
 #----GSH parameters----#
 #--GSH synthesis in μmol/kg tissue/h--#
@@ -121,12 +121,12 @@ Vsmax_L_AO    <-  73        #Scaled Vmax for enzymatic reduction of Cinnamaldehy
 Vsmax_L_GST   <-  37        #Scaled Vmax for enzymatic conjugation of Cinnamaldehyde with GSH in the liver in μmol/h
 
 #----Small intestines----#
-#--Michaelis menten constants--#
+#--Michaelis Menten constants--#
 Km_SI_CA    <- 70          #Km for enzymatic oxidation of Cinnamaldehyde into Cinnamic acid in the Small Intestine in μM
 Km_SI_AO    <- 90          #Km for enzymatic reduction of Cinnamaldehyde into Cinnamyl alcOHol in the Small Intestine in μM
 Km_SI_OH    <- 290         #Km for enzymatic oxidation of Cinnamly alcOHol into Cinnamaldehyde in the Small Intestine in μM
 Km_SI_GST   <- 600         #Km for enzymatic conjugation of Cinnamaldehye with GST in the Small Intestine in μM (RAT value)
-Km_SI_GST_G <- 0           #Km toward GSH for enzymatic conjugation of Cinnamaldehyde in the small intestine (μM)
+Km_SI_GST_G <- 100         #Km toward GSH for enzymatic conjugation of Cinnamaldehyde in the small intestine (μM)
 
 #-Vmax values-#
 Vsmax_SI_CA    <- 21       #Scaled Vmax for enzymatic oxidation of Cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
