@@ -44,7 +44,7 @@ PBK_Cinnamaldehyde <- RxODE({
   #Cinnamyl alcohol
   C_OH_Pu        <- A_OH_Pu    / V_Pu;                  #Concentration of Cinnamyl alcOHol in Fat in μmol/kg
   C_OH_V_Pu      <- C_OH_Pu   / P_OH_Pu;                #Concentration of Cinnamyl alcOHol in venous blood leaving the lung in μmol/l
-  R_OH_Pu        <- Q_Pu * (C_OH_A - C_OH_V_Pu);         #Rate of change in Cinnamyl alcOHol concentration in the lung in μmol/h
+  R_OH_Pu        <- Q_Pu * (C_OH_A - C_OH_V_Pu);        #Rate of change in Cinnamyl alcOHol concentration in the lung in μmol/h
   
 
   #-----------FAT---------------#
@@ -134,7 +134,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #Cinnamyl alcohol
   R_OH_V         <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP - Q_C * C_OH_V; 
-  R_OH_A         <- Q_C * C_OH_V - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A);
+  R_OH_A         <- Q_C * C_OH_V_Pu - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A);
   
   #----------------------------------------------Differential equations-------------------------------------------------------------------------------#
   
