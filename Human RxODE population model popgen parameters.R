@@ -9,6 +9,7 @@ library(readr)
 library(shiny)
 library(truncnorm)
 library(reshape2)
+library(PKNCA)
 
 #Simulations
 set.seed(15204)         #to ensure a reproducible output
@@ -17,11 +18,11 @@ time.units              <-"h"
 nbr.doses               <-1        #number of doses
 time.0                  <-0        #time start dosing
 time.end                <-8        #time end of simulation
-time.frame              <-0.01     #time steps of simulation
+time.frame              <-0.1     #time steps of simulation
 N                       <-1000     #Number of males
 NF                      <-1000     #Number of females
 Oral_Dose_in_mg_bw      <-250      #Dose in mg/kg-bw
-Inhalation_Dose_in_mg_bw<-0        #The inhaled dose in mg/kg
+Inhalation_Dose_in_mg_bw<-5        #The inhaled dose in mg/kg
 Volume_exposure_chamber <-10       #volume exposure chamber in L
 MW                      <-132.16   #The molecular weight of Cinnamaldehyde
 
@@ -205,7 +206,7 @@ var_m_pop$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnama
 
 #---Dose male---#
 var_m_pop$Oral_Dose       <- (Oral_Dose_in_mg_bw * var_m_pop$BW)/ MW  * 1e+3     #The administered dose in umol 
-var_m_pop$Inhalation_Dose <- (Inhalation_dose_in_mg_bw * var_m_pop$BW)/ MW  * 1e+3 #The inhaled dose in μmol
+var_m_pop$Inhalation_Dose <- (Inhalation_Dose_in_mg_bw * var_m_pop$BW)/ MW  * 1e+3 #The inhaled dose in μmol
 
 var_m_pop$Volume_exposure_chamber <-Volume_exposure_chamber
 ##------------Population specific parameters (female)--------------------##                                     
@@ -300,7 +301,7 @@ var_f_pop$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnama
 
 #---Dose female---#
 var_f_pop$Oral_Dose       <-(Oral_Dose_in_mg_bw * var_f_pop$BW)/ MW  * 1e+3     #The administered dose in umol 
-var_f_pop$Inhalation_Dose <- (Inhalation_dose_in_mg_bw * var_f_pop$BW)/ MW  * 1e+3 #The inhaled dose in μmol
+var_f_pop$Inhalation_Dose <- (Inhalation_Dose_in_mg_bw * var_f_pop$BW)/ MW  * 1e+3 #The inhaled dose in μmol
 
 var_f_pop$Volume_exposure_chamber <-Volume_exposure_chamber
 #Combine data sets Male and Female for PBK model
@@ -384,8 +385,8 @@ parameters=cbind(P_F,
                  P_L,
                  P_SI,
                  P_RP,
-                 P_B,
                  P_SP,
+                 P_B,
                  P_Pu,
                  P_OH_F,
                  P_OH_L,
@@ -396,20 +397,20 @@ parameters=cbind(P_F,
                  Age,
                  Height,
                  BW,
-                 V_L,
                  V_F,
+                 V_L,
+                 V_SI,
                  V_B,
                  V_A,
                  V_V,
-                 V_SI,
-                 V_Pu,
                  V_RP,
                  V_SP,
+                 V_Pu,
                  Q_C,
-                 Q_SI,
+                 Q_Pu,
                  Q_F,
                  Q_L,
-                 Q_Pu,
+                 Q_SI,
                  Q_RP,
                  Q_SP,
                  P_V,
@@ -486,8 +487,8 @@ inits <- c("A_GI"         =0,
 
 
 
-#inhalation exposure  exposure
+#inhalation exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = (Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(dose = (Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(id=1:2000, amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(id=1:2000, amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
