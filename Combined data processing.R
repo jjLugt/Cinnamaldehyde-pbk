@@ -95,7 +95,7 @@ summary(results_obj_manual)
 results_obj_manual$result
 
 
-#Rxode data visualisation 
+#Rxode data visualization 
 pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
   geom_line() + 
   labs(x = "Time in hours", y = "umol") +
