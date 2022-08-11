@@ -32,9 +32,9 @@ plot(mass_at_t[,1])
 
 
 #Rxode 
-#Normal model
+#population mass balance
 mass_df <- solve.pbk_nonpop/BW * MW /1e+3
-mass_df <- mass_df[,c(59:68,70:74,77:81,83:89)]
+mass_df <- mass_df[81,c(70:84,86:91,93:97,99:105)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 
@@ -42,6 +42,59 @@ for (i in 1:nrow(mass_df)){
   mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(mass_df[i,])
 }
 plot(mass_at_t[,1])
+
+
+
+#Rxode
+#AUC calculations
+#PKNCA
+#After running model
+#Extracting organ concentration, time and sim-id from simulation results
+
+#Lung compartment concentration
+
+#smaller subset for easier analysis
+sub_set_C_Pu <- solve.pbk_popgen[1:16200,]
+conc_C_Pu <- PKNCAconc(sub_set_C_Pu, C_Pu~time|id)
+
+
+#Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
+#these will be added.
+dose_extraction <- as.data.frame(parameters[,64])
+sim_extraction <- unique(solve.pbk_popgen[solve.pbk_popgen$time == 0,c("time", "id")])
+
+#Combining into 1 file that can be used
+d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 64]`)                       
+d_dose <- set_names(d_dose, c("time","id","dose"))                        
+
+#d_dose for 2000 results is to big for laptop so to see if it works smaller sample will be used
+d_dose <- d_dose[1:200,]
+dose_obj <- PKNCAdose(d_dose, dose~time|id)
+
+#Setting the end of the auc calculation at 8 hours
+intervals_manual <- data.frame(start=0,
+                               end=8,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+data_obj_manual <- PKNCAdata(conc_C_Pu, dose_obj,
+                             intervals=intervals_manual)
+
+#letting pknc chose the end time of the auc calc
+data_obj_automatic <- PKNCAdata(conc_C_Pu, dose_obj)
+
+#Computing the data both manual and automatic
+results_obj_automatic <- pk.nca(data_obj_automatic)
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+
 #Rxode data visualisation 
 pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
   geom_line() + 
