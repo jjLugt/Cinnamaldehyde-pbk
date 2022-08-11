@@ -208,11 +208,10 @@ PBK_Cinnamaldehyde <- RxODE({
   #Cinnamyl alcohol
   d/dt(A_OH_SP)       <- R_OH_SP;        #Amount of Cinnamyl alcOHol in the SP tissue in μmol
   
-  
 })
 
 #chose one depending on the input paramters 
-solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
+#solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
-#solve.pbk_popgen <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
+solve.pbk_popgen <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
