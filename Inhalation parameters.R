@@ -8,6 +8,7 @@ library(readr)
 library(shiny)
 library(truncnorm)
 library(reshape2)
+library(PKNCA)
 
 #Simulations
 set.seed(15204)                       #to ensure a reproducible output if random input is used
@@ -16,11 +17,11 @@ time.units                 <-"h"
 nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
 time.end                   <-8        #time end of simulation
-time.frame                 <-0.01     #time steps of simulation
+time.frame                 <-0.1     #time steps of simulation
 Oral_dose_in_mg_bw         <-250      #Dose in mg/kg-bw
 Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
-BW                         <- 70      #Body weight in Kg
+BW                         <-70      #Body weight in Kg
 Oral_Dose                  <-(Oral_dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
 Volume_exposure_chamber    <-10       #volume exposure chamber in L
@@ -135,8 +136,7 @@ Vsmax_SI_OH    <- 5.0      #Scaled Vmax for enzymatic Oxidation of Cinnamyl alco
 Vsmax_SI_GST   <- 63       #Scaled Vmax for enzymatic Conjugation of Cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Collection of all parameters so they can be entered in the function
-parameters=cbind(Volume_exposure_chamber,
-                 P_F,
+parameters=cbind(P_F,
                  P_L,
                  P_SI,
                  P_RP,
@@ -178,9 +178,6 @@ parameters=cbind(Volume_exposure_chamber,
                  C_PRO_SI,
                  C_L_dG,
                  T_0.5,
-                 Oral_Dose,
-                 Inhalation_Dose,
-                 Volume_exposure_chamber,
                  Ka,
                  k_L_OH,
                  Km_L_CA,
@@ -198,7 +195,10 @@ parameters=cbind(Volume_exposure_chamber,
                  Vsmax_SI_CA,
                  Vsmax_SI_AO,
                  Vsmax_SI_OH,
-                 Vsmax_SI_GST)
+                 Vsmax_SI_GST,
+                 Oral_Dose,
+                 Inhalation_Dose,
+                 Volume_exposure_chamber)
 
 
 #defining the begin situation of the model Inhalation variation 

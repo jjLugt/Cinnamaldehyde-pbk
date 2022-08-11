@@ -173,7 +173,7 @@ var_m$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldeh
 
 #---Dose male---#
 var_m$Oral_Dose       <- (Dose_in_mg_bw * var_m$BW)/ MW  * 1e+3     #The administered dose in umol 
-var_m$Inhalation_Dose <- (Inhalation_dose_in_mg_bw * var_m$BW)/ MW  * 1e+3 #The inhaled dose in μmol
+var_m$Inhalation_Dose <- (Inhalation_Dose_in_mg_bw * var_m$BW)/ MW  * 1e+3 #The inhaled dose in μmol
 
 
 
@@ -274,7 +274,7 @@ var_f$Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldeh
 
 #---Dose female---#
 var_f$Oral_Dose <- (Dose_in_mg_bw * var_f$BW)/ MW  * 1e+3     #The administered dose in umol 
-var_f$Inhalation_Dose <- (Inhalation_dose_in_mg_bw * var_f$BW)/ MW  * 1e+3 #The inhaled d
+var_f$Inhalation_Dose <- (Inhalation_Dose_in_mg_bw * var_f$BW)/ MW  * 1e+3 #The inhaled d
 
 
 #Combine datasets Male and Female for PBPK model
@@ -458,8 +458,8 @@ inits <- c("A_GI"         =0,
            "A_OH_SP"      =0
 );
 
-#inhalation exposure  exposure
+#exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = (Dose_in_mg_bw * phys$BW)/ MW  * 1e+3, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(dose = (Inhalation_dose_in_mg_bw * phys$BW)/ MW  * 1e+3, dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(id=1:2000, amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(id=1:2000, amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
