@@ -262,7 +262,7 @@ par(mfrow=c(1,1), las=3, cex=0.7)
 FOI          = TI          = TI.borninf           = TI.bornsup          = matrix(NA, nrow = par_var, ncol = length(t_A))  
 rownames(FOI)= rownames(TI)= rownames(TI.borninf) = rownames(TI.bornsup)= colnames
 
-t_SA <- 0.2
+t_SA <- 4
 
 for(i in 1:length(t_A)){
   print(i)
@@ -294,7 +294,7 @@ tempC    = t(cbind(FOI.L.t, TI.L.t))
 tempC2 <- as.data.frame(tempC[,c(54:63)])
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
-colnames(tempC2) <- c("P_F", "Q_L", "Q_RP", "V_SP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
+colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
 O_CV_0.2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1) )
 
-
+write.csv(SimRes, file = "SimRes_08-15-2022_inhalation_parameters_no_inhalation.csv")
