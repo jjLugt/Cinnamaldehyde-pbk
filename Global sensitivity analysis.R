@@ -1,8 +1,6 @@
 #author: Joris Jean van der Lugt
 #date: 20-05-2021
 #Global sensitivity analysis
-
-
 library(RxODE)
 library(tidyverse)
 library(readxl)
@@ -15,20 +13,21 @@ library(sensitivity)
 #Generate a population using a population data set either using Popgen or not
 
 #Generating a upper and lower bound for use in the analysis 
-colnames <- c(colnames(phys))
+colnames <- c(colnames(parameters))
 par_var <- length(colnames)
 
-Mean <- phys[1,]
+#this is stupid work on this!! mean for the data sets is trivial to calculate
+Mean <- parameters
 
 Lower <- Mean - 0.1 * Mean
 Upper <- Mean + 0.1 * Mean
 
-Lower <- Mean - 0.2 * Mean
-Upper <- Mean + 0.2 * Mean
+#Lower <- Mean - 0.2 * Mean
+#Upper <- Mean + 0.2 * Mean
 
 
 #create data frames for population
-n_sim  <- 1000               #number of iterations
+n_sim  <- 100               #number of iterations
 X1 <- matrix(NA, nrow = n_sim, ncol = par_var)
 colnames(X1) <- colnames
 X1 <- as.data.frame(X1)
@@ -45,10 +44,10 @@ for(i in 1:par_var){
   X2[,i] <- runif(n_sim, min = Lower[,i], max = Upper[,i])
 }
 
-n_boot <- 2000
+n_boot <- 1000
 
 #Sobol design
-sa <- soboljansen(model=PBK_Cinnamaldehyde, X1, X2, nboot = n_boot, conf = 0.95, events = ex)
+sa <- soboljansen(model=NULL, X1, X2, nboot = n_boot, conf = 0.95, events = ex)
 phys <- sa$X
 
 
@@ -117,13 +116,14 @@ Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
 Oral_Dose<- phys$Oral_Dose 
 Inhalation_Dose<-phys$Inhalation_Dose
+Volume_exposure_chamber<-phys$Volume_exposure_chamber
 
 parameters=cbind(P_F,
                  P_L,
                  P_SI,
                  P_RP,
-                 P_B,
                  P_SP,
+                 P_B,
                  P_Pu,
                  P_OH_F,
                  P_OH_L,
@@ -134,20 +134,20 @@ parameters=cbind(P_F,
                  Age,
                  Height,
                  BW,
-                 V_L,
                  V_F,
+                 V_L,
+                 V_SI,
                  V_B,
                  V_A,
                  V_V,
-                 V_SI,
-                 V_Pu,
                  V_RP,
                  V_SP,
+                 V_Pu,
                  Q_C,
-                 Q_SI,
+                 Q_Pu,
                  Q_F,
                  Q_L,
-                 Q_Pu,
+                 Q_SI,
                  Q_RP,
                  Q_SP,
                  P_V,
@@ -185,20 +185,58 @@ parameters=cbind(P_F,
                  Inhalation_Dose,
                  Volume_exposure_chamber)
 
+#defining the begin situation of the model Inhalation variation 
+inits <- c("A_GI"         =0,
+           "A_P_Art"      =0,
+           "A_Inhalation" =0,
+           "A_Exhalation" =0,
+           "A_Pu"         =0,
+           "A_OH_Pu"      =0,
+           "A_V"          =0,
+           "A_OH_V"       =0,
+           "A_F"          =0,
+           "A_OH_F"       =0,
+           "AM_L_CA"      =0,
+           "AM_L_AO"      =0,
+           "AM_L_AG_GST"  =0,
+           "AM_L_AG_CHEM" =0,
+           "AM_L_AP"      =0,
+           "AM_L_DA_FORM" =0,
+           "AM_L_DA"      =0,
+           "A_OH_M_L_C_A" =0,
+           "A_OH_L"       =0,
+           "A_L"          =0,
+           "AM_Lc_GSH"    =init_GSH_L, 
+           "AM_SI_CA"     =0,
+           "AM_SI_AO"     =0,
+           "AM_SI_AG_GST" =0,
+           "AM_SI_AG_CHEM"=0,
+           "AM_SI_AP"     =0,
+           "A_OH_M_SI_C_A"=0,
+           "A_OH_SI"      =0,
+           "A_SI"         =0,
+           "AM_SIc_GSH"   =init_GSH_SI,
+           "A_RP"         =0,
+           "A_OH_RP"      =0,
+           "A_SP"         =0,
+           "A_OH_SP"      =0
+);
+
+
 #Run the model after assigning the sobol dataset to the variables 
-solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
+solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=6) #Solve the PBPK model
 
 
 #Analysing the generated data set 
-solve.pbk_nonpop$vec_t=rep(seq(0,8,0.01),times=2000)
-solve.pbk.sa=as.data.frame(matrix(NA,1602000,2))
+solve.pbk_nonpop$vec_t=rep(seq(0,8,0.1),times=6500)
+solve.pbk.sa=as.data.frame(matrix(NA,526500,2))
 colnames(solve.pbk.sa)=c("time","C_V")
 solve.pbk.sa[,1]=solve.pbk_nonpop$time
 solve.pbk.sa[,2]=solve.pbk_nonpop$C_V
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
                                   solve.pbk.sa[,"time"]==2|solve.pbk.sa[,"time"]==3|solve.pbk.sa[,"time"]==4|
                                   solve.pbk.sa[,"time"]==8),]
-SimRes = as.data.frame(matrix(NA,66000,8))
+SimRes = as.data.frame(matrix(NA,6500,8))
 
 tab1=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2),]
 tab2=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.5),]
@@ -224,7 +262,7 @@ par(mfrow=c(1,1), las=3, cex=0.7)
 FOI          = TI          = TI.borninf           = TI.bornsup          = matrix(NA, nrow = par_var, ncol = length(t_A))  
 rownames(FOI)= rownames(TI)= rownames(TI.borninf) = rownames(TI.bornsup)= colnames
 
-t_SA <- 4
+t_SA <- 0.2
 
 for(i in 1:length(t_A)){
   print(i)
@@ -239,5 +277,24 @@ for(i in 1:length(t_A)){
   }
 }
 
+dev.off()
+FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  = as.matrix(TI[,1:length(t_A)])
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+
+sorting = order(TI.L.t, decreasing = F)
+TI.L.t  = TI.L.t[sorting]
+FOI.L.t = FOI.L.t[sorting]
+
+FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    = t(cbind(FOI.L.t, TI.L.t))
+
+tempC2 <- as.data.frame(tempC[,c(54:63)])
+
+par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
+colnames(tempC2) <- c("P_F", "Q_L", "Q_RP", "V_SP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
+O_CV_0.2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1) )
 
 
