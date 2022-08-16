@@ -18,12 +18,12 @@ nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
 time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
-Oral_dose_in_mg_bw         <-250      #Dose in mg/kg-bw
-Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Oral_Dose                  <-(Oral_dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
-Inhalation_Dose            <-(Inhalation_dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
+Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
+Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
 Volume_exposure_chamber    <-10       #volume exposure chamber in L
 
 
@@ -152,6 +152,9 @@ Vsmax_SI_AO    <- 30       #Scaled Vmax for enzymatic reduction of Cinnamaldehyd
 Vsmax_SI_OH    <- 5.0      #Scaled Vmax for enzymatic Oxidation of Cinnamyl alcohol into Cinnamaldehyde in the Small Intestine in μmol/h 
 Vsmax_SI_GST   <- 63       #Scaled Vmax for enzymatic Conjugation of Cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
+
+
+
 #Collection of all parameters so they can be entered in the function
 parameters=cbind(P_F,
                  P_L,
@@ -262,4 +265,10 @@ inits <- c("A_GI"         =0,
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(dose = Oral_Dose, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
   et(dose = Inhalation_Dose, dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(seq(from = time.0, to = time.end, by = time.frame)) 
+
+#exposure
+ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
+  et(id=1:6500, amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(id=1:6500, amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
