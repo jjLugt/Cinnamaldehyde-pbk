@@ -44,6 +44,10 @@ for(i in 1:par_var){
   X2[,i] <- runif(n_sim, min = Lower[,i], max = Upper[,i])
 }
 
+#Mass balance and blood flow check
+
+
+
 n_boot <- 1000
 
 #Sobol design
