@@ -48,30 +48,47 @@ P_OH_SP   <-  0.78 #Slowly perfused tissues/Blood partition coefficients
 P_OH_Pu   <-  0.59 #Lung/Blood partition coefficients
 
 #--Physiological Parameters--#
-#-Tissues volumes in % body weight-#
 
-V_F       <- 21.42  #Fat
-V_L       <- 2.57   #Liver
-V_SI      <- 0.91   #Small intestine
-V_A       <- 2.0    #Arterial Blood
-V_V       <- 5.9    #Venous Blood
-V_RP      <- 4.8    #Richly perfused 
-V_SP      <- 61.64  #Slowly perfused 
-V_Pu      <- 0.76   #Lung volume 
+fV_fat   <- 0.2142  #Unit less fraction of total tissue volume that consist of fat
+fV_liver <- 0.257  #Unit less fraction of total tissue volume that consist of  liver
+fV_si    <- 0.091  #Unit less fraction of total tissue volume that consist of Small intestine
+fV_a     <- 0.2  #Unit less fraction of total tissue volume that consist of arterial blood
+fV_v     <- 0.59  #Unit less fraction of total tissue volume that consist of venous blood
+fV_rp    <- 0.48  #Unit less fraction of total tissue volume that consist of Richly perfused tissue
+fV_sp    <- 0.6164  #Unit less fraction of total tissue volume that consist of Slowly perfused tissue
+fV_pu    <- 0.076  #Unit less fraction of total tissue volume that consist of
+
+V_adjust <- fV_fat + fV_liver + fV_si + fV_a + fV_v + fV_rp + fV_sp +fV_pu
+
+#-Tissues volumes in L #
+V_F      <- (fV_fat / V_adjust)* BW    #Fat
+V_L      <- (fV_liver / V_adjust)* BW  #Liver
+V_SI     <- (fV_si / V_adjust)* BW     #Small intestine
+V_A      <- (fV_a / V_adjust)* BW  #Arterial Blood
+V_V      <- (fV_sp / V_adjust)* BW  #Venous Blood
+V_RP     <- (fV_sp / V_adjust)* BW  #Richly perfused (RP)
+V_SP     <- (fV_sp / V_adjust)* BW   #Slowly perfused (SP)
+V_Pu     <- (fV_sp / V_adjust)* BW    #Lung
 
 #-Cardiac parameters-#
 
 Q_C       <- 390   #Cardiac output in L/h
 
+fQC_fat   <- 0.052  #Unit less fraction of total Cardiac output that goes to fat
+fQC_liver <- 0.141  #Unit less fraction of total Cardiac output that goes to the liver
+fQC_si    <- 0.086  #Unit less fraction of total Cardiac output that goes to the Small intestine
+fQC_rp    <- 0.473  #Unit less fraction of total Cardiac output that goes to the Richly perfused tissue
+fQC_sp    <- 0.248  #Unit less fraction of total Cardiac output that goes to the Slowly perfused tissue
+
+Q_adjust <- fQC_fat + fQC_liver + fQC_si + fQC_rp + fQC_sp
+
 #-Blood flow to tissues in % cardiac output-#
-
-Q_F      <- 5.2    #Fat
-Q_L      <- 14.1   #Liver
-Q_SI     <- 8.6    #Small intestine
-Q_RP     <- 47.3   #Richly perfused (RP)
-Q_SP     <- 24.8   #Slowly perfused (SP)
+Q_F      <- (fQC_fat / Q_adjust)* Q_C    #Fat
+Q_L      <- (fQC_liver / Q_adjust)* Q_C  #Liver
+Q_SI     <- (fQC_si / Q_adjust)* Q_C     #Small intestine
+Q_RP     <- (fQC_rp / Q_adjust)* Q_C  #Richly perfused (RP)
+Q_SP     <- (fQC_sp / Q_adjust)* Q_C   #Slowly perfused (SP)
 Q_Pu     <- Q_C    #Lung
-
 
 #inhalation parameters
 P_V     <- 540             #Alveolar ventilation L/h
