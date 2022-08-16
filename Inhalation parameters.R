@@ -52,8 +52,8 @@ P_OH_Pu   <-  0.59 #Lung/Blood partition coefficients
 fV_fat   <- 0.2142  #Unit less fraction of total tissue volume that consist of fat
 fV_liver <- 0.257  #Unit less fraction of total tissue volume that consist of  liver
 fV_si    <- 0.091  #Unit less fraction of total tissue volume that consist of Small intestine
-fV_a     <- 0.2  #Unit less fraction of total tissue volume that consist of arterial blood
-fV_v     <- 0.59  #Unit less fraction of total tissue volume that consist of venous blood
+fV_a     <- 0.02  #Unit less fraction of total tissue volume that consist of arterial blood
+fV_v     <- 0.059  #Unit less fraction of total tissue volume that consist of venous blood
 fV_rp    <- 0.48  #Unit less fraction of total tissue volume that consist of Richly perfused tissue
 fV_sp    <- 0.6164  #Unit less fraction of total tissue volume that consist of Slowly perfused tissue
 fV_pu    <- 0.076  #Unit less fraction of total tissue volume that consist of
@@ -152,9 +152,6 @@ Vsmax_SI_AO    <- 30       #Scaled Vmax for enzymatic reduction of Cinnamaldehyd
 Vsmax_SI_OH    <- 5.0      #Scaled Vmax for enzymatic Oxidation of Cinnamyl alcohol into Cinnamaldehyde in the Small Intestine in μmol/h 
 Vsmax_SI_GST   <- 63       #Scaled Vmax for enzymatic Conjugation of Cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
-
-
-
 #Collection of all parameters so they can be entered in the function
 parameters=cbind(P_F,
                  P_L,
@@ -170,6 +167,15 @@ parameters=cbind(P_F,
                  P_OH_SP,
                  P_OH_Pu,
                  BW,
+                 fV_fat,   
+                 fV_liver, 
+                 fV_si,    
+                 fV_a,     
+                 fV_v,     
+                 fV_rp,    
+                 fV_sp,    
+                 fV_pu,   
+                 V_adjust, 
                  V_F,
                  V_L,
                  V_SI,
@@ -179,6 +185,12 @@ parameters=cbind(P_F,
                  V_SP,
                  V_Pu,
                  Q_C,
+                 fQC_fat,   
+                 fQC_liver,
+                 fQC_si,    
+                 fQC_rp,    
+                 fQC_sp,    
+                 Q_adjust, 
                  Q_Pu,
                  Q_F,
                  Q_L,
@@ -216,8 +228,6 @@ parameters=cbind(P_F,
                  Vsmax_SI_AO,
                  Vsmax_SI_OH,
                  Vsmax_SI_GST,
-                 Oral_Dose,
-                 Inhalation_Dose,
                  Volume_exposure_chamber)
 
 
@@ -242,7 +252,7 @@ inits <- c("A_GI"         =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
-           "AM_Lc_GSH"    =init_GSH_L, 
+           "AM_Lc_GSH"    =0, 
            "AM_SI_CA"     =0,
            "AM_SI_AO"     =0,
            "AM_SI_AG_GST" =0,
@@ -251,7 +261,7 @@ inits <- c("A_GI"         =0,
            "A_OH_M_SI_C_A"=0,
            "A_OH_SI"      =0,
            "A_SI"         =0,
-           "AM_SIc_GSH"   =init_GSH_SI,
+           "AM_SIc_GSH"   =0,
            "A_RP"         =0,
            "A_OH_RP"      =0,
            "A_SP"         =0,
@@ -265,10 +275,8 @@ inits <- c("A_GI"         =0,
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(dose = Oral_Dose, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
   et(dose = Inhalation_Dose, dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(dose= init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(dose= init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
 
-#exposure
-ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(id=1:6500, amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(id=1:6500, amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
-  et(seq(from = time.0, to = time.end, by = time.frame)) 
+

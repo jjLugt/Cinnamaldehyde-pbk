@@ -469,7 +469,7 @@ inits <- c("A_GI"         =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
-           "AM_Lc_GSH"    =init_GSH_L, 
+           "AM_Lc_GSH"    =0, 
            "AM_SI_CA"     =0,
            "AM_SI_AO"     =0,
            "AM_SI_AG_GST" =0,
@@ -478,7 +478,7 @@ inits <- c("A_GI"         =0,
            "A_OH_M_SI_C_A"=0,
            "A_OH_SI"      =0,
            "A_SI"         =0,
-           "AM_SIc_GSH"   =init_GSH_SI,
+           "AM_SIc_GSH"   =0,
            "A_RP"         =0,
            "A_OH_RP"      =0,
            "A_SP"         =0,
@@ -489,6 +489,9 @@ inits <- c("A_GI"         =0,
 
 #exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(id=1:6500, amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(id=1:6500, amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
-  et(seq(from = time.0, to = time.end, by = time.frame)) 
+  et(id=1:nrow(phys),seq(from = time.0, to = time.end, by = time.frame))%>%
+  et(id=1:nrow(phys),amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(id=1:nrow(phys),amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(id=1:nrow(phys),amt=phys$init_GSH_SI, dur=00001, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(id=1:nrow(phys),amt=phys$init_GSH_L, dur=0.0001, cmt="AM_Lc_GSH", nbr.doses=1)
+  

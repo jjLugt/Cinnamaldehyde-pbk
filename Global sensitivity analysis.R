@@ -19,8 +19,8 @@ par_var <- length(colnames)
 #this is stupid work on this!! mean for the data sets is trivial to calculate
 Mean <- parameters
 
-Lower <- Mean - 0.1 * Mean
-Upper <- Mean + 0.1 * Mean
+Lower <- Mean - 0.01 * Mean
+Upper <- Mean + 0.01 * Mean
 
 #Lower <- Mean - 0.2 * Mean
 #Upper <- Mean + 0.2 * Mean
@@ -44,11 +44,64 @@ for(i in 1:par_var){
   X2[,i] <- runif(n_sim, min = Lower[,i], max = Upper[,i])
 }
 
-#Mass balance and blood flow check
 
-
+#Defining empty vectors to be used in the following calculations
+Flow_volumes <-c()
+Tissue_volumes<-c()
+Total_body_weight<-c()
+Total_QC<-c()
+#Based on the Changes in the volume or blood fractions recalculating blood flows and tissue volumes to ensure mass balance
+for(i in 1:nrow(X1)){
+  #Tissue volumes calculations
+    X1[i,23]<- sum(X1[i,15:22])
+    X1[i,24]<- (X1[i,15]/X1[i,23])* X1[i,14]
+    X1[i,25]<- (X1[i,16]/X1[i,23])* X1[i,14]
+    X1[i,26]<- (X1[i,17]/X1[i,23])* X1[i,14]
+    X1[i,27]<- (X1[i,18]/X1[i,23])* X1[i,14]
+    X1[i,28]<- (X1[i,19]/X1[i,23])* X1[i,14]
+    X1[i,29]<- (X1[i,20]/X1[i,23])* X1[i,14]
+    X1[i,30]<- (X1[i,21]/X1[i,23])* X1[i,14]
+    X1[i,31]<- (X1[i,22]/X1[i,23])* X1[i,14]
+    #Blood flow calculations
+    X1[i,38]<- sum(X1[i,33:37])
+    X1[i,39]<- X1[i,32]
+    X1[i,40]<- (X1[i,33]/X1[i,38])* X1[i,32]
+    X1[i,41]<- (X1[i,34]/X1[i,38])* X1[i,32]
+    X1[i,42]<- (X1[i,35]/X1[i,38])* X1[i,32]
+    X1[i,43]<- (X1[i,36]/X1[i,38])* X1[i,32]
+    X1[i,44]<- (X1[i,37]/X1[i,38])* X1[i,32]
+    Flow_volumes <-append(Flow_volumes,sum(X1[i,40:44]))
+    Tissue_volumes<-append(Tissue_volumes ,sum(X1[i,24:31]))
+    Total_body_weight <- append(Total_body_weight ,X1[i,14])
+    Total_QC<- append(Total_QC ,X1[i,32])
+    names<- c("total flow","QC","Total volume","BW")
+    Mass_check <- as.data.frame(cbind(Flow_volumes,Total_QC,Tissue_volumes,Total_body_weight), col.names = names)
+  }
+#Calculations for X2
+for(i in 1:nrow(X2)){
+  #Tissue volumes calculations
+  X2[i,23]<- sum(X2[i,15:22])
+  X2[i,24]<- (X2[i,15]/X2[i,23])* X2[i,14]
+  X2[i,25]<- (X2[i,16]/X2[i,23])* X2[i,14]
+  X2[i,26]<- (X2[i,17]/X2[i,23])* X2[i,14]
+  X2[i,27]<- (X2[i,18]/X2[i,23])* X2[i,14]
+  X2[i,28]<- (X2[i,19]/X2[i,23])* X2[i,14]
+  X2[i,29]<- (X2[i,20]/X2[i,23])* X2[i,14]
+  X2[i,30]<- (X2[i,21]/X2[i,23])* X2[i,14]
+  X2[i,31]<- (X2[i,22]/X2[i,23])* X2[i,14]
+  #Blood flow calculations
+  X2[i,38]<- sum(X2[i,33:37])
+  X2[i,39]<- X2[i,32]
+  X2[i,40]<- (X2[i,33]/X2[i,38])* X2[i,32]
+  X2[i,41]<- (X2[i,34]/X2[i,38])* X2[i,32]
+  X2[i,42]<- (X2[i,35]/X2[i,38])* X2[i,32]
+  X2[i,43]<- (X2[i,36]/X2[i,38])* X2[i,32]
+  X2[i,44]<- (X2[i,37]/X2[i,38])* X2[i,32]
+}
 
 n_boot <- 1000
+
+
 
 #Sobol design
 sa <- soboljansen(model=NULL, X1, X2, nboot = n_boot, conf = 0.95, events = ex)
@@ -68,8 +121,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-Age <- phys$Age
-Height <- phys$Height
 BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
@@ -118,9 +169,7 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Oral_Dose<- phys$Oral_Dose 
-Inhalation_Dose<-phys$Inhalation_Dose
-Volume_exposure_chamber<-phys$Volume_exposure_chamber
+Volume_exposure_chamber=phys$Volume_exposure_chamber
 
 parameters=cbind(P_F,
                  P_L,
@@ -135,8 +184,6 @@ parameters=cbind(P_F,
                  P_OH_RP,
                  P_OH_SP,
                  P_OH_Pu,
-                 Age,
-                 Height,
                  BW,
                  V_F,
                  V_L,
@@ -185,8 +232,6 @@ parameters=cbind(P_F,
                  Vsmax_SI_AO,
                  Vsmax_SI_OH,
                  Vsmax_SI_GST,
-                 Oral_Dose,
-                 Inhalation_Dose,
                  Volume_exposure_chamber)
 
 #defining the begin situation of the model Inhalation variation 
@@ -210,7 +255,7 @@ inits <- c("A_GI"         =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
-           "AM_Lc_GSH"    =init_GSH_L, 
+           "AM_Lc_GSH"    =0, 
            "AM_SI_CA"     =0,
            "AM_SI_AO"     =0,
            "AM_SI_AG_GST" =0,
@@ -219,12 +264,20 @@ inits <- c("A_GI"         =0,
            "A_OH_M_SI_C_A"=0,
            "A_OH_SI"      =0,
            "A_SI"         =0,
-           "AM_SIc_GSH"   =init_GSH_SI,
+           "AM_SIc_GSH"   =0,
            "A_RP"         =0,
            "A_OH_RP"      =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
+
+#exposure
+ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
+  et(id=1:nrow(phys),seq(from = time.0, to = time.end, by = time.frame))%>%
+  et(id=1:nrow(phys),amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(id=1:nrow(phys),amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(id=1:nrow(phys),amt=phys$init_GSH_SI, dur=00001, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(id=1:nrow(phys),amt=phys$init_GSH_L, dur=0.0001, cmt="AM_Lc_GSH", nbr.doses=1)
 
 
 #Run the model after assigning the sobol dataset to the variables 

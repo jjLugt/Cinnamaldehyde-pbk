@@ -163,7 +163,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #--------------------Liver calculations-------------#
   d/dt(A_L)      <- R_L;                #Amount of Cinnamaldehyde in the liver in μmol
-  d/dt(AM_L_CA)  <- RM_L_CA;            #Amount of Cinnamaldehyde oxidized to carboxylic acid in the liver in μmol
+  d/dt(AM_L_CA)  <- RM_L_CA;            #Amount of Cinnamaldehyde oxidized to cinnamic acid in the liver in μmol
   d/dt(AM_L_AP)  <- RM_L_AP;            #Amount of Cinnamaldehyde proteins adduct in the liver in μmol
   
   #--GSH in the Liver cytosol--#
@@ -192,8 +192,8 @@ PBK_Cinnamaldehyde <- RxODE({
   d/dt(AM_SIc_GSH)    <- RM_SIc_GSH;    #Amount of GSH in the small intestine cytosol
   
   #--Cinnamyl alcohol--#
-  d/dt(AM_SI_AO)      <- RM_SI_AO; 
-  d/dt(A_OH_M_SI_C_A) <- R_OH_M_SI_C_A; #Amount of Cinnamyl alcOHol enzymatically oxidized to Cinnamaldehyde in the small intestine in μmol  μmol 
+  d/dt(AM_SI_AO)      <- RM_SI_AO;      #Amount of Cinnamaldehyde reduced to cinnamyl alcOHol in the SI in μmol
+  d/dt(A_OH_M_SI_C_A) <- R_OH_M_SI_C_A; #Amount of Cinnamyl alcOHol enzymatically oxidized to Cinnamaldehyde in the small intestine in μmol 
   d/dt(A_OH_SI)       <- R_OH_SI;       #Amount of Cinnamyl alcOHol in the small intestine in μmol 
   
   #--------Richly perfused Tissue---------#
