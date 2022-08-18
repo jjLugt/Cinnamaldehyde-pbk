@@ -189,7 +189,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop1", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\\\solve.pbk_nonpop1", row.names = TRUE)
 
 
 phys <- read_csv("phys_inhalation")
@@ -383,7 +383,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop2", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\\\solve.pbk_nonpop2", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -576,7 +576,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop3", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop3", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -769,7 +769,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop4", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop4", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -962,7 +962,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop5", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop5", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -1155,7 +1155,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop6", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop6", row.names = TRUE)
 
 
 phys <- read_csv("phys_inhalation")
@@ -1349,7 +1349,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop7", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop7", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -1542,7 +1542,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop8", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop8", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -1735,7 +1735,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop9", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop9", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -1928,7 +1928,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop10", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop10", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -2121,7 +2121,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop12", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop12", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -2314,7 +2314,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop13", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop13", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -2507,7 +2507,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop14", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop14", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -2700,7 +2700,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop15", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop15", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -2893,7 +2893,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop16", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop16", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -3086,7 +3086,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop17", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop17", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -3279,7 +3279,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop18", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop18", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -3472,7 +3472,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop19", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop19", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -3665,7 +3665,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop20", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop20", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -3858,7 +3858,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop21", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop21", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -4051,7 +4051,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop22", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop22", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -4244,7 +4244,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop23", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop23", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -4437,7 +4437,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop24", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop24", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -4630,7 +4630,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop25", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop25", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -4823,7 +4823,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop26", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop26", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -5016,7 +5016,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop27", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop27", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -5209,7 +5209,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop28", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop28", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -5402,7 +5402,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop29", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop29", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -5595,7 +5595,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop30", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop30", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -5788,7 +5788,7 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop31", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop31", row.names = TRUE)
 
 phys <- read_csv("phys_inhalation")
 
@@ -5981,4 +5981,4 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
-write.csv(solve.pbk_nonpop1,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\solve.pbk_nonpop32", row.names = TRUE)
+write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop32", row.names = TRUE)
