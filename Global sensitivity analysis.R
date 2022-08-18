@@ -142,7 +142,7 @@ Vsmax_SI_AO    <- 30       #Scaled Vmax for enzymatic reduction of Cinnamaldehyd
 Vsmax_SI_OH    <- 5.0      #Scaled Vmax for enzymatic Oxidation of Cinnamyl alcohol into Cinnamaldehyde in the Small Intestine in μmol/h 
 Vsmax_SI_GST   <- 63       #Scaled Vmax for enzymatic Conjugation of Cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
-#Collection of all parameters so a distribution can be made with them later on in the file
+#Collection of all parameters so a distribution can be made with them later on in the file #Human
 dist_para <- cbind(P_F,
                  P_L,
                  P_SI,
@@ -249,7 +249,7 @@ for(i in 1:par_var){
   X2[,i] <- runif(n_sim, min = Lower[,i], max = Upper[,i])
 }
 
-#Defining empty vectors to be used in the following calculations
+#Defining empty vectors to be used in the following calculations #Human
 Flow_volumes <-c()
 Tissue_volumes<-c()
 Total_body_weight<-c()
@@ -303,6 +303,9 @@ for(i in 1:nrow(X2)){
   X2[i,44]<- (X2[i,37]/X2[i,38])* X2[i,32]
 }
 
+#Removing variation in volume exposure chamber as this is supposed to be fixed
+X1[,76]<- 10
+X2[,76]<- 10
 #the number of bootstrap replicates
 n_boot <- 1000
 
@@ -316,7 +319,8 @@ phys <- sa$X
 
 
 #Writing the result into a file so that the environment can be cleaned to conserve memory
-write.csv(phys,"~/PBK/Cinnamaldehyde-pbk\\phys.csv", row.names = TRUE)
+write.csv(phys,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\phys_inhalation", row.names = TRUE)
+
 
 phys <- read_csv("phys.csv")
 
@@ -455,8 +459,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
 
@@ -512,7 +516,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"~/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop32", row.names = TRUE)
 
 #importing created PBK results files
-solve <- read_csv("solve.pbk_nonpop1")
+solve <- read_csv("solve.pbk_nonpop1",row.names=1)
 
 solve.pbk.sa <-as.data.frame(solve$time)
 solve.pbk.sa <-cbind(solve.pbk.sa,solve$C_V)
