@@ -310,14 +310,18 @@ n_boot <- 1000
 
 #Sobol design
 sa <- soboljansen(model=NULL, X1, X2, nboot = n_boot, conf = 0.95, events = ex)
+
+
 phys <- sa$X
 
-write.csv(phys,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\phys.csv", row.names = TRUE)
+
+#Writing the result into a file so that the environment can be cleaned to conserve memory
+write.csv(phys,"~/PBK/Cinnamaldehyde-pbk\\phys.csv", row.names = TRUE)
 
 phys <- read_csv("phys.csv")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
-phys1<-phys[1:5000,]
+phys1<-phys[77501:78000,]
 P_F<-phys1$P_F
 P_L<-phys1$P_L
 P_SI<-phys1$P_SI
@@ -334,7 +338,6 @@ P_OH_Pu<-phys1$P_OH_Pu
 BW<-phys1$BW
 V_L<-phys1$V_L
 V_F<-phys1$V_F
-V_B <- phys1$V_B
 V_A<-phys1$V_A
 V_V<-phys1$V_V
 V_SI<-phys1$V_SI
@@ -398,7 +401,6 @@ parameters1 <- cbind(P_F,
                  V_F,
                  V_L,
                  V_SI,
-                 V_B,
                  V_A,
                  V_V,
                  V_RP,
@@ -460,11 +462,11 @@ Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The in
 
 
 ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(id=1:5000,seq(from = time.0, to = time.end, by = time.frame))%>%
-  et(id=1:5000,amt=(Oral_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(id=1:5000,amt=(Inhalation_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
-  et(id=1:5000,amt=phys1$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
-  et(id=1:5000,amt=phys1$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
+  et(id=77501:78000,seq(from = time.0, to = time.end, by = time.frame))%>%
+  et(id=77501:78000,amt=(Oral_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(id=77501:78000,amt=(Inhalation_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(id=77501:78000,amt=phys1$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(id=77501:78000,amt=phys1$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
            "A_P_Art"      =0,
@@ -507,17 +509,235 @@ inits <- c("A_GI"         =0,
 #Run the model after assigning the sobol dataset to the variables 
 solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
 
+write.csv(solve.pbk_nonpop1,"~/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop32", row.names = TRUE)
+
+#importing created PBK results files
+solve <- read_csv("solve.pbk_nonpop1")
+
+solve.pbk.sa <-as.data.frame(solve$time)
+solve.pbk.sa <-cbind(solve.pbk.sa,solve$C_V)
+colnames(solve.pbk.sa) <- c("time","C_V")
+
+solve2 <- read_csv("solve.pbk_nonpop2")
+solve.pbk.sa2 <-as.data.frame(solve2$time)
+solve.pbk.sa2 <-cbind(solve.pbk.sa2,solve2$C_V)
+colnames(solve.pbk.sa2) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa2)
+
+solve3 <- read_csv("solve.pbk_nonpop3")
+solve.pbk.sa3 <-as.data.frame(solve3$time)
+solve.pbk.sa3 <-cbind(solve.pbk.sa3,solve3$C_V)
+colnames(solve.pbk.sa3) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa3)
+
+
+solve4 <- read_csv("solve.pbk_nonpop4")
+solve.pbk.sa4 <-as.data.frame(solve4$time)
+solve.pbk.sa4 <-cbind(solve.pbk.sa4,solve4$C_V)
+colnames(solve.pbk.sa4) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa4)
+
+solve5 <- read_csv("solve.pbk_nonpop5")
+solve.pbk.sa5 <-as.data.frame(solve5$time)
+solve.pbk.sa5 <-cbind(solve.pbk.sa5,solve5$C_V)
+colnames(solve.pbk.sa5) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa5)
+
+solve6 <- read_csv("solve.pbk_nonpop6")
+solve.pbk.sa6 <-as.data.frame(solve6$time)
+solve.pbk.sa6 <-cbind(solve.pbk.sa6,solve6$C_V)
+colnames(solve.pbk.sa6) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa6)
+
+
+solve7 <- read_csv("solve.pbk_nonpop7")
+solve.pbk.sa7 <-as.data.frame(solve7$time)
+solve.pbk.sa7 <-cbind(solve.pbk.sa7,solve7$C_V)
+colnames(solve.pbk.sa7) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa7)
+
+
+solve8 <- read_csv("solve.pbk_nonpop8")
+solve.pbk.sa8 <-as.data.frame(solve8$time)
+solve.pbk.sa8 <-cbind(solve.pbk.sa8,solve8$C_V)
+colnames(solve.pbk.sa8) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa8)
+
+solve9 <- read_csv("solve.pbk_nonpop9")
+solve.pbk.sa9 <-as.data.frame(solve9$time)
+solve.pbk.sa9 <-cbind(solve.pbk.sa9,solve9$C_V)
+colnames(solve.pbk.sa9) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa9)
+
+
+solve10 <- read_csv("solve.pbk_nonpop10")
+solve.pbk.sa10 <-as.data.frame(solve10$time)
+solve.pbk.sa10 <-cbind(solve.pbk.sa10,solve10$C_V)
+colnames(solve.pbk.sa10) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa10)
+
+
+write.csv(solve.pbk.sa,"~/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
+
+
+
+solve.pbk.sa <- read.csv("~/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
+
+
+solve11 <- read_csv("solve.pbk_nonpop11")
+solve.pbk.sa11 <-as.data.frame(solve11$time)
+solve.pbk.sa11 <-cbind(solve.pbk.sa11,solve11$C_V)
+colnames(solve.pbk.sa11) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa11)
+
+solve12 <- read_csv("solve.pbk_nonpop12")
+solve.pbk.sa12 <-as.data.frame(solve12$time)
+solve.pbk.sa12 <-cbind(solve.pbk.sa12,solve12$C_V)
+colnames(solve.pbk.sa12) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa12)
+
+solve13 <- read_csv("solve.pbk_nonpop13")
+solve.pbk.sa13 <-as.data.frame(solve13$time)
+solve.pbk.sa13 <-cbind(solve.pbk.sa13,solve13$C_V)
+colnames(solve.pbk.sa13) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa13)
+
+solve14 <- read_csv("solve.pbk_nonpop14")
+solve.pbk.sa14 <-as.data.frame(solve14$time)
+solve.pbk.sa14 <-cbind(solve.pbk.sa14,solve14$C_V)
+colnames(solve.pbk.sa14) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa14)
+
+solve15 <- read_csv("solve.pbk_nonpop15")
+solve.pbk.sa15 <-as.data.frame(solve15$time)
+solve.pbk.sa15 <-cbind(solve.pbk.sa15,solve15$C_V)
+colnames(solve.pbk.sa15) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa15)
+
+solve16 <- read_csv("solve.pbk_nonpop16")
+solve.pbk.sa16 <-as.data.frame(solve16$time)
+solve.pbk.sa16 <-cbind(solve.pbk.sa16,solve16$C_V)
+colnames(solve.pbk.sa16) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa16)
+
+solve17 <- read_csv("solve.pbk_nonpop17")
+solve.pbk.sa17 <-as.data.frame(solve17$time)
+solve.pbk.sa17 <-cbind(solve.pbk.sa17,solve17$C_V)
+colnames(solve.pbk.sa17) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa17)
+
+write.csv(solve.pbk.sa,"~/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
+
+solve.pbk.sa <- read.csv("~/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
+
+solve18 <- read_csv("solve.pbk_nonpop18")
+solve.pbk.sa18 <-as.data.frame(solve18$time)
+solve.pbk.sa18 <-cbind(solve.pbk.sa18,solve18$C_V)
+colnames(solve.pbk.sa18) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa18)
+
+solve19 <- read_csv("solve.pbk_nonpop19")
+solve.pbk.sa19 <-as.data.frame(solve19$time)
+solve.pbk.sa19 <-cbind(solve.pbk.sa19,solve19$C_V)
+colnames(solve.pbk.sa19) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa19)
+
+solve20 <- read_csv("solve.pbk_nonpop20")
+solve.pbk.sa20 <-as.data.frame(solve20$time)
+solve.pbk.sa20 <-cbind(solve.pbk.sa20,solve20$C_V)
+colnames(solve.pbk.sa20) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa20)
+
+solve21 <- read_csv("solve.pbk_nonpop21")
+solve.pbk.sa21 <-as.data.frame(solve21$time)
+solve.pbk.sa21 <-cbind(solve.pbk.sa21,solve21$C_V)
+colnames(solve.pbk.sa21) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa21)
+
+solve22 <- read_csv("solve.pbk_nonpop22")
+solve.pbk.sa22 <-as.data.frame(solve22$time)
+solve.pbk.sa22 <-cbind(solve.pbk.sa22,solve22$C_V)
+colnames(solve.pbk.sa22) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa22)
+
+solve23 <- read_csv("solve.pbk_nonpop23")
+solve.pbk.sa23 <-as.data.frame(solve23$time)
+solve.pbk.sa23 <-cbind(solve.pbk.sa23,solve23$C_V)
+colnames(solve.pbk.sa23) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa23)
+
+solve24 <- read_csv("solve.pbk_nonpop24")
+solve.pbk.sa24 <-as.data.frame(solve24$time)
+solve.pbk.sa24 <-cbind(solve.pbk.sa24,solve24$C_V)
+colnames(solve.pbk.sa24) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa24)
+
+solve25 <- read_csv("solve.pbk_nonpop25")
+solve.pbk.sa25 <-as.data.frame(solve25$time)
+solve.pbk.sa25 <-cbind(solve.pbk.sa25,solve25$C_V)
+colnames(solve.pbk.sa25) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa25)
+
+write.csv(solve.pbk.sa,"~/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
+
+solve.pbk.sa <- read.csv("~/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
+
+solve26 <- read_csv("solve.pbk_nonpop26")
+solve.pbk.sa26 <-as.data.frame(solve26$time)
+solve.pbk.sa26 <-cbind(solve.pbk.sa26,solve26$C_V)
+colnames(solve.pbk.sa26) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa26)
+
+solve27 <- read_csv("solve.pbk_nonpop27")
+solve.pbk.sa27 <-as.data.frame(solve27$time)
+solve.pbk.sa27 <-cbind(solve.pbk.sa27,solve27$C_V)
+colnames(solve.pbk.sa27) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa27)
+
+solve28 <- read_csv("solve.pbk_nonpop28")
+solve.pbk.sa28 <-as.data.frame(solve28$time)
+solve.pbk.sa28 <-cbind(solve.pbk.sa28,solve28$C_V)
+colnames(solve.pbk.sa28) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa28)
+
+solve29 <- read_csv("solve.pbk_nonpop29")
+solve.pbk.sa29 <-as.data.frame(solve29$time)
+solve.pbk.sa29 <-cbind(solve.pbk.sa29,solve29$C_V)
+colnames(solve.pbk.sa29) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa29)
+
+solve30 <- read_csv("solve.pbk_nonpop30")
+solve.pbk.sa30 <-as.data.frame(solve30$time)
+solve.pbk.sa30 <-cbind(solve.pbk.sa30,solve30$C_V)
+colnames(solve.pbk.sa30) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa30)
+
+solve31 <- read_csv("solve.pbk_nonpop31")
+solve.pbk.sa31 <-as.data.frame(solve31$time)
+solve.pbk.sa31 <-cbind(solve.pbk.sa31,solve31$C_V)
+colnames(solve.pbk.sa31) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa31)
+
+solve32 <- read_csv("solve.pbk_nonpop32")
+solve.pbk.sa32 <-as.data.frame(solve32$time)
+solve.pbk.sa32 <-cbind(solve.pbk.sa32,solve32$C_V)
+colnames(solve.pbk.sa32) <- c("time","C_V")
+solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa32)
+
+write.csv(solve.pbk.sa,"~/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
+
+solve.pbk.sa <- read.csv("~/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
 
 #Analysing the generated data set 
-solve.pbk_nonpop$vec_t=rep(seq(0,8,0.1),times=78000)
-solve.pbk.sa=as.data.frame(matrix(NA,63180,2))
-colnames(solve.pbk.sa)=c("time","C_V")
-solve.pbk.sa[,1]=solve.pbk_nonpop$time
-solve.pbk.sa[,2]=solve.pbk_nonpop$C_V
+#solve.pbk_nonpop$vec_t=rep(seq(0,8,0.1),times=78000)
+#solve.pbk.sa=as.data.frame(matrix(NA,63180,2))
+#colnames(solve.pbk.sa)=c("time","C_V")
+#solve.pbk.sa[,1]=solve.pbk_nonpop$time
+#solve.pbk.sa[,2]=solve.pbk_nonpop$C_V
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
                                   solve.pbk.sa[,"time"]==2|solve.pbk.sa[,"time"]==3|solve.pbk.sa[,"time"]==4|
                                   solve.pbk.sa[,"time"]==8),]
-SimRes = as.data.frame(matrix(NA,780,8))
+SimRes = as.data.frame(matrix(NA,78000,8))
 
 tab1=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2),]
 tab2=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.5),]
@@ -537,13 +757,18 @@ SimRes[,6]=tab6[,2]
 SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
-#Sobol analysis plot blood
+write.csv(SimRes,"~/PBK/Cinnamaldehyde-pbk\\SimRes.complete.csv", row.names = TRUE)
+
+SimRes <- read.csv("~/PBK/Cinnamaldehyde-pbk\\SimRes.complete.csv", row.names=1)
+
+#Sobol analysis plot blood Nrow is the number of paramters in the model
 t_A<-(c(0.2,0.5,1,1.5,2,3,4,8))
 par(mfrow=c(1,1), las=3, cex=0.7)
 FOI          = TI          = TI.borninf           = TI.bornsup          = matrix(NA, nrow = par_var, ncol = length(t_A))  
 rownames(FOI)= rownames(TI)= rownames(TI.borninf) = rownames(TI.bornsup)= colnames
 
-t_SA <- 4
+t_SA <- 1
+
 
 for(i in 1:length(t_A)){
   print(i)
@@ -558,7 +783,7 @@ for(i in 1:length(t_A)){
   }
 }
 
-dev.off()
+
 FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
 TI.L  = as.matrix(TI[,1:length(t_A)])
 
@@ -572,10 +797,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(54:63)])
+tempC2 <- as.data.frame(tempC[,c(67:76)])
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
-colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
+#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
 O_CV_0.2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1) )
 
 write.csv(SimRes, file = "SimRes_08-15-2022_inhalation_parameters_no_inhalation.csv")
