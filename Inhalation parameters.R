@@ -5,9 +5,9 @@ library(RxODE)
 library(tidyverse)
 library(readxl)
 library(readr)
-library(shiny)
 library(truncnorm)
 library(reshape2)
+library(sensitivity)
 library(PKNCA)
 
 #Simulations
