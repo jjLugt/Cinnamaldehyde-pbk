@@ -43,9 +43,9 @@ PBK_Cinnamaldehyde <- RxODE({
   R_Pu           <- Q_Pu * (R_P_Art - C_A_Pu);           #Rate of change in the concentration of Cinnamaldehyde  in μmol/h
   
   #Cinnamyl alcohol
-  C_OH_Pu        <- A_OH_Pu    / V_Pu;                  #Concentration of Cinnamyl alcOHol in Fat in μmol/kg
+  C_OH_Pu        <- A_OH_Pu    / V_Pu;                  #Concentration of Cinnamyl alcOHol in lung in μmol/kg
   C_OH_V_Pu      <- C_OH_Pu   / P_OH_Pu;                #Concentration of Cinnamyl alcOHol in venous blood leaving the lung in μmol/l
-  R_OH_Pu        <- Q_Pu * (C_OH_A - C_OH_V_Pu);        #Rate of change in Cinnamyl alcOHol concentration in the lung in μmol/h
+  R_OH_Pu        <- Q_Pu * (C_OH_V - C_OH_A );        #Rate of change in Cinnamyl alcOHol concentration in the lung in μmol/h
   
 
   #-----------FAT---------------#
@@ -98,10 +98,10 @@ PBK_Cinnamaldehyde <- RxODE({
   C_OH_V_SI      <- C_OH_SI   / P_OH_SI;                                                     #Concentration of Cinnamyl alcOHol in venous blood leaving the small intestine  in μmol/l
   RM_SI_AO       <- Vsmax_SI_AO * C_V_SI / (Km_SI_AO + C_V_SI);                              #Amount of Cinnamaldehyde reduced to cinnamyl alcOHol in the small intestine in μmol
   R_OH_M_SI_C_A  <- Vsmax_SI_OH * C_OH_V_SI/(Km_SI_OH + C_OH_V_SI);                          #Rate of Cinnamyl alcOHol enzymatically oxidized to Cinnamaldehyde in the small intestine in μmol 
-  R_OH_SI        <- Q_SI * (C_OH_A - C_OH_V_SI) + RM_SI_AO - R_OH_M_SI_C_A;                  #Rate of Cinnamyl alcohol concentration change in the small intestine in μmol/h
+  R_OH_SI        <- Q_SI * (C_OH_A - C_OH_V_SI ) + RM_SI_AO - R_OH_M_SI_C_A;                  #Rate of Cinnamyl alcohol concentration change in the small intestine in μmol/h
   
   #Over all output small intestine#
-  R_SI           <- Q_SI * (C_A - C_V_SI) -Rin - (RM_SI_CA + RM_SI_AP + RM_SI_AG_GST + RM_SI_AG_CHEM + RM_SI_AO ) + R_OH_M_SI_C_A;        #Rate of change in Cinnamaldehyde concentration in the SI in μmol/h
+  R_SI           <- Q_SI * (C_A - C_V_SI) -Rin - (RM_SI_CA + RM_SI_AP + RM_SI_AG_GST + RM_SI_AG_CHEM + RM_SI_AO  + R_OH_M_SI_C_A);        #Rate of change in Cinnamaldehyde concentration in the SI in μmol/h
   
   #---------------Liver-----------------------------------#
   #-Cinnamaldehyde-#
@@ -123,10 +123,10 @@ PBK_Cinnamaldehyde <- RxODE({
   C_OH_V_L       <- C_OH_L   / P_OH_L;                                                        #Concentration of Cinnamyl alcOHol in venous blood leaving the Liver in μmol/l
   RM_L_AO        <- Vsmax_L_AO * C_V_L / (Km_L_AO + C_V_L );                                  #Rate of Cinnamaldehyde reduced to cinnamyl alcOHol in the liver in μmol/h
   R_OH_M_L_C_A   <- k_L_OH * C_OH_V_L;                                                        #Rate of Cinnamyl alcOHol oxidized to Cinnamaldehyde in the liver in μmol/h
-  R_OH_L         <- Q_L * C_OH_A + Q_SI * C_OH_V_SI + RM_L_AO - (Q_L + Q_SI) * C_OH_V_L - R_OH_M_L_C_A;#Rate of change in Cinnamyl alcOHol concentration in the liver in μmol
+  R_OH_L         <- Q_L * C_OH_A + Q_SI * C_OH_V_SI + RM_L_AO - ((Q_L + Q_SI) * C_OH_V_L + R_OH_M_L_C_A);#Rate of change in Cinnamyl alcOHol concentration in the liver in μmol
   
   #Over all output Liver#
-  R_L            <- Q_L * C_A + Q_SI * C_V_SI - (Q_L + Q_SI) * C_V_L - (RM_L_CA + RM_L_AP + RM_L_AG_GST + RM_L_AG_CHEM + RM_L_DA_FORM + RM_L_AO) + R_OH_M_L_C_A ; #Rate of change in Cinnamaldehyde concentration in the liver in μmol/h
+  R_L            <- Q_L * C_A + Q_SI * C_V_SI - (Q_L + Q_SI) * C_V_L - (RM_L_CA + RM_L_AP + RM_L_AG_GST + RM_L_AG_CHEM + RM_L_DA + RM_L_DA_FORM  + RM_L_AO + R_OH_M_L_C_A) ; #Rate of change in Cinnamaldehyde concentration in the liver in μmol/h
   
   #----------------Blood------------------------#
   #Cinnamaldehyde#
@@ -135,7 +135,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #Cinnamyl alcohol
   R_OH_V         <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP - Q_C * C_OH_V; 
-  R_OH_A         <- Q_C * C_OH_V - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A + Q_Pu * C_OH_V_Pu);
+  R_OH_A         <- Q_C * C_OH_V_Pu - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A);
   
   #----------------------------------------------Differential equations-------------------------------------------------------------------------------#
   
@@ -212,7 +212,7 @@ PBK_Cinnamaldehyde <- RxODE({
 })
 
 #chose one depending on the input parameters 
-#solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
+solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
 #solve.pbk_popgen <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
