@@ -306,6 +306,10 @@ for(i in 1:nrow(X2)){
 #Removing variation in volume exposure chamber as this is supposed to be fixed
 X1[,76]<- 10
 X2[,76]<- 10
+
+#Removing unnecessary variables 
+X1<- X1[-c(15:23,33:38)]
+X2<- X2[-c(15:23,33:38)]
 #the number of bootstrap replicates
 n_boot <- 1000
 
@@ -763,7 +767,7 @@ SimRes[,8]=tab8[,2]
 
 write.csv(SimRes,"~/PBK/Cinnamaldehyde-pbk\\SimRes.complete.csv", row.names = TRUE)
 
-SimRes <- read.csv("~/PBK/Cinnamaldehyde-pbk\\SimRes.complete.csv", row.names=1)
+SimRes <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\SimRes.oral_18-08.csv", row.names=1)
 
 #Sobol analysis plot blood Nrow is the number of paramters in the model
 t_A<-(c(0.2,0.5,1,1.5,2,3,4,8))
@@ -771,7 +775,7 @@ par(mfrow=c(1,1), las=3, cex=0.7)
 FOI          = TI          = TI.borninf           = TI.bornsup          = matrix(NA, nrow = par_var, ncol = length(t_A))  
 rownames(FOI)= rownames(TI)= rownames(TI.borninf) = rownames(TI.bornsup)= colnames
 
-t_SA <- 1
+t_SA <- 0.2
 
 
 for(i in 1:length(t_A)){
