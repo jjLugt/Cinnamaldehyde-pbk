@@ -319,208 +319,16 @@ n_boot <- 1000
 sa <- soboljansen(model=NULL, X1, X2, nboot = n_boot, conf = 0.95, events = ex)
 
 
+
 phys <- sa$X
 
 
 #Writing the result into a file so that the environment can be cleaned to conserve memory
-write.csv(phys,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\phys_inhalation", row.names = TRUE)
+write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\phys_oral", row.names = TRUE)
 
-
-phys <- read_csv("phys.csv")
-
-#Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
-phys1<-phys[77501:78000,]
-P_F<-phys1$P_F
-P_L<-phys1$P_L
-P_SI<-phys1$P_SI
-P_RP<-phys1$P_RP
-P_B<-phys1$P_B
-P_SP<-phys1$P_SP
-P_Pu<-phys1$P_Pu
-P_OH_F<-phys1$P_OH_F
-P_OH_L<-phys1$P_OH_L
-P_OH_SI<-phys1$P_OH_SI
-P_OH_RP<-phys1$P_OH_RP
-P_OH_SP<-phys1$P_OH_SP
-P_OH_Pu<-phys1$P_OH_Pu
-BW<-phys1$BW
-V_L<-phys1$V_L
-V_F<-phys1$V_F
-V_A<-phys1$V_A
-V_V<-phys1$V_V
-V_SI<-phys1$V_SI
-V_Pu<-phys1$V_Pu
-V_RP<-phys1$V_RP
-V_SP<-phys1$V_SP
-Q_C<-phys1$Q_C
-Q_SI<-phys1$Q_SI
-Q_F<-phys1$Q_F
-Q_L<-phys1$Q_L
-Q_Pu<-phys1$Q_Pu
-Q_RP<-phys1$Q_RP
-Q_SP<-phys1$Q_SP
-P_V<-phys1$P_V
-G_SYN_L<-phys1$G_SYN_L
-G_SYN_SI<-phys1$G_SYN_SI
-k_L_GLOS<-phys1$k_L_GLOS
-k_SI_GLOS<-phys1$k_SI_GLOS
-init_GSH_L<-phys1$init_GSH_L
-init_GSH_SI<-phys1$init_GSH_SI
-k_GSH<-phys1$k_GSH
-k_DNA<-phys1$k_DNA
-C_PRO_L<-phys1$C_PRO_L
-C_PRO_SI<-phys1$C_PRO_SI
-C_L_dG<-phys1$C_L_dG
-T_0.5<-phys1$T_0.5
-Ka<-phys1$Ka
-k_L_OH <- phys1$k_L_OH
-Km_L_CA<-phys1$Km_L_CA
-Km_L_AO<-phys1$Km_L_AO
-Km_L_GST<-phys1$Km_L_GST
-Km_L_GST_G<-phys1$Km_L_GST_G
-Vsmax_L_CA<-phys1$Vsmax_L_CA
-Vsmax_L_AO<-phys1$Vsmax_L_AO
-Vsmax_L_GST<-phys1$Vsmax_L_GST
-Km_SI_CA<-phys1$Km_SI_CA
-Km_SI_AO<-phys1$Km_SI_AO
-Km_SI_OH<-phys1$Km_SI_OH
-Km_SI_GST<-phys1$Km_SI_GST
-Km_SI_GST_G<-phys1$Km_SI_GST_G
-Vsmax_SI_CA<-phys1$Vsmax_SI_CA
-Vsmax_SI_AO<-phys1$Vsmax_SI_AO
-Vsmax_SI_OH<-phys1$Vsmax_SI_OH
-Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
-
-parameters1 <- cbind(P_F,
-                 P_L,
-                 P_SI,
-                 P_RP,
-                 P_SP,
-                 P_B,
-                 P_Pu,
-                 P_OH_F,
-                 P_OH_L,
-                 P_OH_SI,
-                 P_OH_RP,
-                 P_OH_SP,
-                 P_OH_Pu,
-                 BW,
-                 V_F,
-                 V_L,
-                 V_SI,
-                 V_A,
-                 V_V,
-                 V_RP,
-                 V_SP,
-                 V_Pu,
-                 Q_C,
-                 Q_Pu,
-                 Q_F,
-                 Q_L,
-                 Q_SI,
-                 Q_RP,
-                 Q_SP,
-                 P_V,
-                 G_SYN_L,
-                 G_SYN_SI,
-                 k_L_GLOS,
-                 k_SI_GLOS,
-                 init_GSH_L,
-                 init_GSH_SI,
-                 k_GSH,
-                 k_DNA,
-                 C_PRO_L,
-                 C_PRO_SI,
-                 C_L_dG,
-                 T_0.5,
-                 Ka,
-                 k_L_OH,
-                 Km_L_CA,
-                 Km_L_AO,
-                 Km_L_GST,
-                 Km_L_GST_G,
-                 Vsmax_L_CA,
-                 Vsmax_L_AO,
-                 Vsmax_L_GST,
-                 Km_SI_CA,
-                 Km_SI_AO,
-                 Km_SI_OH,
-                 Km_SI_GST,
-                 Km_SI_GST_G,
-                 Vsmax_SI_CA,
-                 Vsmax_SI_AO,
-                 Vsmax_SI_OH,
-                 Vsmax_SI_GST,
-                 Volume_exposure_chamber)
-
-#exposure
-amount.units               <-"umol"
-time.units                 <-"h"
-nbr.doses                  <-1        #number of doses
-time.0                     <-0        #time start dosing
-time.end                   <-8        #time end of simulation
-time.frame                 <-0.1     #time steps of simulation
-MW                         <-132.16   #The molecular weight of Cinnamaldehyde
-BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
-Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
-Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
-
-
-ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(id=77501:78000,seq(from = time.0, to = time.end, by = time.frame))%>%
-  et(id=77501:78000,amt=(Oral_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(id=77501:78000,amt=(Inhalation_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
-  et(id=77501:78000,amt=phys1$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
-  et(id=77501:78000,amt=phys1$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
-
-inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
-           "A_Exhalation" =0,
-           "A_Pu"         =0,
-           "A_OH_Pu"      =0,
-           "A_V"          =0,
-           "A_OH_V"       =0,
-           "A_F"          =0,
-           "A_OH_F"       =0,
-           "AM_L_CA"      =0,
-           "AM_L_AO"      =0,
-           "AM_L_AG_GST"  =0,
-           "AM_L_AG_CHEM" =0,
-           "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
-           "A_OH_M_L_C_A" =0,
-           "A_OH_L"       =0,
-           "A_L"          =0,
-           "AM_Lc_GSH"    =0, 
-           "AM_SI_CA"     =0,
-           "AM_SI_AO"     =0,
-           "AM_SI_AG_GST" =0,
-           "AM_SI_AG_CHEM"=0,
-           "AM_SI_AP"     =0,
-           "A_OH_M_SI_C_A"=0,
-           "A_OH_SI"      =0,
-           "A_SI"         =0,
-           "AM_SIc_GSH"   =0,
-           "A_RP"         =0,
-           "A_OH_RP"      =0,
-           "A_SP"         =0,
-           "A_OH_SP"      =0
-);
-
-
-
-#Run the model after assigning the sobol dataset to the variables 
-solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits) #Solve the PBPK model
-
-write.csv(solve.pbk_nonpop1,"~/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop32", row.names = TRUE)
 
 #importing created PBK results files
-solve <- read_csv("solve.pbk_nonpop1",row.names=1)
+solve <- read_csv("solve.pbk_nonpop1")
 
 solve.pbk.sa <-as.data.frame(solve$time)
 solve.pbk.sa <-cbind(solve.pbk.sa,solve$C_V)
@@ -585,11 +393,11 @@ colnames(solve.pbk.sa10) <- c("time","C_V")
 solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa10)
 
 
-write.csv(solve.pbk.sa,"~/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
+write.csv(solve.pbk.sa,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa")
 
 
 
-solve.pbk.sa <- read.csv("~/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
+solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk/solve.pbk.sa",row.names= 1)
 
 
 solve11 <- read_csv("solve.pbk_nonpop11")
@@ -634,9 +442,9 @@ solve.pbk.sa17 <-cbind(solve.pbk.sa17,solve17$C_V)
 colnames(solve.pbk.sa17) <- c("time","C_V")
 solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa17)
 
-write.csv(solve.pbk.sa,"~/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
+write.csv(solve.pbk.sa,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
 
-solve.pbk.sa <- read.csv("~/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
+solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
 
 solve18 <- read_csv("solve.pbk_nonpop18")
 solve.pbk.sa18 <-as.data.frame(solve18$time)
@@ -686,55 +494,15 @@ solve.pbk.sa25 <-cbind(solve.pbk.sa25,solve25$C_V)
 colnames(solve.pbk.sa25) <- c("time","C_V")
 solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa25)
 
-write.csv(solve.pbk.sa,"~/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
-
-solve.pbk.sa <- read.csv("~/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
-
 solve26 <- read_csv("solve.pbk_nonpop26")
 solve.pbk.sa26 <-as.data.frame(solve26$time)
 solve.pbk.sa26 <-cbind(solve.pbk.sa26,solve26$C_V)
 colnames(solve.pbk.sa26) <- c("time","C_V")
 solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa26)
 
-solve27 <- read_csv("solve.pbk_nonpop27")
-solve.pbk.sa27 <-as.data.frame(solve27$time)
-solve.pbk.sa27 <-cbind(solve.pbk.sa27,solve27$C_V)
-colnames(solve.pbk.sa27) <- c("time","C_V")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa27)
+write.csv(solve.pbk.sa,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
 
-solve28 <- read_csv("solve.pbk_nonpop28")
-solve.pbk.sa28 <-as.data.frame(solve28$time)
-solve.pbk.sa28 <-cbind(solve.pbk.sa28,solve28$C_V)
-colnames(solve.pbk.sa28) <- c("time","C_V")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa28)
-
-solve29 <- read_csv("solve.pbk_nonpop29")
-solve.pbk.sa29 <-as.data.frame(solve29$time)
-solve.pbk.sa29 <-cbind(solve.pbk.sa29,solve29$C_V)
-colnames(solve.pbk.sa29) <- c("time","C_V")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa29)
-
-solve30 <- read_csv("solve.pbk_nonpop30")
-solve.pbk.sa30 <-as.data.frame(solve30$time)
-solve.pbk.sa30 <-cbind(solve.pbk.sa30,solve30$C_V)
-colnames(solve.pbk.sa30) <- c("time","C_V")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa30)
-
-solve31 <- read_csv("solve.pbk_nonpop31")
-solve.pbk.sa31 <-as.data.frame(solve31$time)
-solve.pbk.sa31 <-cbind(solve.pbk.sa31,solve31$C_V)
-colnames(solve.pbk.sa31) <- c("time","C_V")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa31)
-
-solve32 <- read_csv("solve.pbk_nonpop32")
-solve.pbk.sa32 <-as.data.frame(solve32$time)
-solve.pbk.sa32 <-cbind(solve.pbk.sa32,solve32$C_V)
-colnames(solve.pbk.sa32) <- c("time","C_V")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa32)
-
-write.csv(solve.pbk.sa,"~/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
-
-solve.pbk.sa <- read.csv("~/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
+solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
 
 #Analysing the generated data set 
 #solve.pbk_nonpop$vec_t=rep(seq(0,8,0.1),times=78000)
@@ -745,7 +513,7 @@ solve.pbk.sa <- read.csv("~/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
                                   solve.pbk.sa[,"time"]==2|solve.pbk.sa[,"time"]==3|solve.pbk.sa[,"time"]==4|
                                   solve.pbk.sa[,"time"]==8),]
-SimRes = as.data.frame(matrix(NA,78000,8))
+SimRes = as.data.frame(matrix(NA,63000,8))
 
 tab1=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2),]
 tab2=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.5),]
@@ -765,9 +533,15 @@ SimRes[,6]=tab6[,2]
 SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
-write.csv(SimRes,"~/PBK/Cinnamaldehyde-pbk\\SimRes.complete.csv", row.names = TRUE)
+write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.oral-19-08.csv", row.names = TRUE)
 
-SimRes <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK\\SimRes.oral_18-08.csv", row.names=1)
+SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes.oral-19-08.csv", row.names=1)
+
+#Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
+#so using them here woul create an error.
+colnames <- colnames(X1)
+par_var <- length(colnames)
+
 
 #Sobol analysis plot blood Nrow is the number of paramters in the model
 t_A<-(c(0.2,0.5,1,1.5,2,3,4,8))
@@ -775,17 +549,17 @@ par(mfrow=c(1,1), las=3, cex=0.7)
 FOI          = TI          = TI.borninf           = TI.bornsup          = matrix(NA, nrow = par_var, ncol = length(t_A))  
 rownames(FOI)= rownames(TI)= rownames(TI.borninf) = rownames(TI.bornsup)= colnames
 
-t_SA <- 0.2
+t_SA <- 0.5
 
 
 for(i in 1:length(t_A)){
   print(i)
   if (t_A[i] %in% t_SA) {
-    tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
-    FOI[,i]       = sa$S[,1]    #First order indices
-    TI[,i]        = sa$T[,1]    #Total indices
-    TI.borninf[,i] = sa$T[,4]   #Lower CL total indices
-    TI.bornsup[,i] = sa$T[,5]   #Upper CL total indices
+    sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
+    FOI[,i]       <- sa$S[,1]    #First order indices
+    TI[,i]        <- sa$T[,1]    #Total indices
+    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
    
     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
@@ -805,10 +579,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(67:76)])
+tempC2 <- as.data.frame(tempC[,c(52:61)])
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
 #colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
 O_CV_0.2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1) )
 
-write.csv(SimRes, file = "SimRes_08-15-2022_inhalation_parameters_no_inhalation.csv")
+#write.csv(SimRes, file = "SimRes_08-15-2022_inhalation_parameters_no_inhalation.csv")
