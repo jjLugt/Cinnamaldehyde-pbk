@@ -45,7 +45,7 @@ PBK_Cinnamaldehyde <- RxODE({
   #Cinnamyl alcohol
   C_OH_Pu        <- A_OH_Pu    / V_Pu;                  #Concentration of Cinnamyl alcOHol in lung in μmol/kg
   C_OH_V_Pu      <- C_OH_Pu   / P_OH_Pu;                #Concentration of Cinnamyl alcOHol in venous blood leaving the lung in μmol/l
-  R_OH_Pu        <- Q_Pu * (C_OH_V - C_OH_A );        #Rate of change in Cinnamyl alcOHol concentration in the lung in μmol/h
+  R_OH_Pu        <- Q_Pu * (C_OH_V - C_OH_V_Pu);        #Rate of change in Cinnamyl alcOHol concentration in the lung in μmol/h
   
 
   #-----------FAT---------------#
@@ -212,7 +212,7 @@ PBK_Cinnamaldehyde <- RxODE({
 })
 
 #chose one depending on the input parameters 
-#solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
+solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 
 #solve.pbk_popgen <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
 

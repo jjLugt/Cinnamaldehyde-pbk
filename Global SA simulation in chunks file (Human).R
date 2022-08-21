@@ -388,7 +388,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\\\solve.pbk_nonpop2", ro
 phys <- read_csv("phys_oral")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
-phys1<-phys[5001:7500,]
+phys1<-phys[5001:6300,]
 P_F<-phys1$P_F
 P_L<-phys1$P_L
 P_SI<-phys1$P_SI
@@ -529,11 +529,11 @@ Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The in
 
 
 ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(id=5001:7500,seq(from = time.0, to = time.end, by = time.frame))%>%
-  et(id=5001:7500,amt=(Oral_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(id=5001:7500,amt=(Inhalation_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
-  et(id=5001:7500,amt=phys1$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
-  et(id=5001:7500,amt=phys1$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
+  et(id=5001:6300,seq(from = time.0, to = time.end, by = time.frame))%>%
+  et(id=5001:6300,amt=(Oral_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(id=5001:6300,amt=(Inhalation_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(id=5001:6300,amt=phys1$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(id=5001:6300,amt=phys1$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
            "A_P_Art"      =0,

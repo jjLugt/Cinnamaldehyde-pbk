@@ -232,7 +232,7 @@ Lower <- Mean - 0.01 * Mean
 Upper <- Mean + 0.01 * Mean
 
 #create data frames for population
-n_sim  <- 1000               #number of iterations
+n_sim  <- 100               #number of iterations
 X1 <- matrix(NA, nrow = n_sim, ncol = par_var)
 colnames(X1) <- colnames
 X1 <- as.data.frame(X1)
@@ -311,7 +311,7 @@ X2[,76]<- 10
 X1<- X1[-c(15:23,33:38)]
 X2<- X2[-c(15:23,33:38)]
 #the number of bootstrap replicates
-n_boot <- 1000
+n_boot <- 100
 
 
 
@@ -513,7 +513,7 @@ solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
                                   solve.pbk.sa[,"time"]==2|solve.pbk.sa[,"time"]==3|solve.pbk.sa[,"time"]==4|
                                   solve.pbk.sa[,"time"]==8),]
-SimRes = as.data.frame(matrix(NA,63000,8))
+SimRes = as.data.frame(matrix(NA,6300,8))
 
 tab1=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2),]
 tab2=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.5),]
@@ -533,9 +533,9 @@ SimRes[,6]=tab6[,2]
 SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
-write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.oral-19-08.csv", row.names = TRUE)
+write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.oral-21-08.csv", row.names = TRUE)
 
-SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes.oral-19-08.csv", row.names=1)
+SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes.oral-21-08.csv", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here woul create an error.
