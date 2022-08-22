@@ -232,7 +232,7 @@ Lower <- Mean - 0.01 * Mean
 Upper <- Mean + 0.01 * Mean
 
 #create data frames for population
-n_sim  <- 100               #number of iterations
+n_sim  <- 1000              #number of iterations
 X1 <- matrix(NA, nrow = n_sim, ncol = par_var)
 colnames(X1) <- colnames
 X1 <- as.data.frame(X1)
@@ -311,23 +311,21 @@ X2[,76]<- 10
 X1<- X1[-c(15:23,33:38)]
 X2<- X2[-c(15:23,33:38)]
 #the number of bootstrap replicates
-n_boot <- 100
-
+n_boot <- 1000
 
 
 #Sobol design
 sa <- soboljansen(model=NULL, X1, X2, nboot = n_boot, conf = 0.95, events = ex)
 
 
-
 phys <- sa$X
 
 
 #Writing the result into a file so that the environment can be cleaned to conserve memory
-write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\phys_oral", row.names = TRUE)
+write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\phys_inhalation", row.names = TRUE)
 
 
-#importing created PBK results files
+#importing created PBK results files and stripping both the time and C_V colum from them
 solve <- read_csv("solve.pbk_nonpop1")
 
 solve.pbk.sa <-as.data.frame(solve$time)
@@ -502,18 +500,13 @@ solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa26)
 
 write.csv(solve.pbk.sa,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
 
-solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
+solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names=1)
 
 #Analysing the generated data set 
-#solve.pbk_nonpop$vec_t=rep(seq(0,8,0.1),times=78000)
-#solve.pbk.sa=as.data.frame(matrix(NA,63180,2))
-#colnames(solve.pbk.sa)=c("time","C_V")
-#solve.pbk.sa[,1]=solve.pbk_nonpop$time
-#solve.pbk.sa[,2]=solve.pbk_nonpop$C_V
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
                                   solve.pbk.sa[,"time"]==2|solve.pbk.sa[,"time"]==3|solve.pbk.sa[,"time"]==4|
                                   solve.pbk.sa[,"time"]==8),]
-SimRes = as.data.frame(matrix(NA,6300,8))
+SimRes = as.data.frame(matrix(NA,63000,8))
 
 tab1=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2),]
 tab2=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.5),]
@@ -533,9 +526,9 @@ SimRes[,6]=tab6[,2]
 SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
-write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.oral-21-08.csv", row.names = TRUE)
+write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_V-22-08.csv", row.names = TRUE)
 
-SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes.oral-21-08.csv", row.names=1)
+SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_V-22-08.csv", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here woul create an error.
@@ -549,7 +542,7 @@ par(mfrow=c(1,1), las=3, cex=0.7)
 FOI          = TI          = TI.borninf           = TI.bornsup          = matrix(NA, nrow = par_var, ncol = length(t_A))  
 rownames(FOI)= rownames(TI)= rownames(TI.borninf) = rownames(TI.bornsup)= colnames
 
-t_SA <- 0.5
+t_SA <-1.5
 
 
 for(i in 1:length(t_A)){
@@ -583,6 +576,6 @@ tempC2 <- as.data.frame(tempC[,c(52:61)])
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
 #colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
-O_CV_0.2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1) )
+O_CV_0.2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
 
 #write.csv(SimRes, file = "SimRes_08-15-2022_inhalation_parameters_no_inhalation.csv")
