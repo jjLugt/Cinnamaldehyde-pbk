@@ -40,11 +40,11 @@ P_OH_Pu   <-  0.59 #Lung/Blood partition coefficients
 #--Physiological Parameters--#
 
 fV_fat   <- 0.2142  #Unit less fraction of total tissue volume that consist of fat
-fV_liver <- 0.257  #Unit less fraction of total tissue volume that consist of  liver
-fV_si    <- 0.091  #Unit less fraction of total tissue volume that consist of Small intestine
+fV_liver <- 0.0257  #Unit less fraction of total tissue volume that consist of  liver
+fV_si    <- 0.0091  #Unit less fraction of total tissue volume that consist of Small intestine
 fV_a     <- 0.02  #Unit less fraction of total tissue volume that consist of arterial blood
 fV_v     <- 0.059  #Unit less fraction of total tissue volume that consist of venous blood
-fV_rp    <- 0.48  #Unit less fraction of total tissue volume that consist of Richly perfused tissue
+fV_rp    <- 0.048  #Unit less fraction of total tissue volume that consist of Richly perfused tissue
 fV_sp    <- 0.6164  #Unit less fraction of total tissue volume that consist of Slowly perfused tissue
 fV_pu    <- 0.076  #Unit less fraction of total tissue volume that consist of
 
@@ -55,10 +55,10 @@ V_F      <- (fV_fat / V_adjust)* BW    #Fat
 V_L      <- (fV_liver / V_adjust)* BW  #Liver
 V_SI     <- (fV_si / V_adjust)* BW     #Small intestine
 V_A      <- (fV_a / V_adjust)* BW  #Arterial Blood
-V_V      <- (fV_sp / V_adjust)* BW  #Venous Blood
-V_RP     <- (fV_sp / V_adjust)* BW  #Richly perfused (RP)
+V_V      <- (fV_v / V_adjust)* BW  #Venous Blood
+V_RP     <- (fV_rp / V_adjust)* BW  #Richly perfused (RP)
 V_SP     <- (fV_sp / V_adjust)* BW   #Slowly perfused (SP)
-V_Pu     <- (fV_sp / V_adjust)* BW    #Lung
+V_Pu     <- (fV_pu / V_adjust)* BW    #Lung
 
 #-Cardiac parameters-#
 
