@@ -135,7 +135,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -329,7 +329,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -388,7 +388,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\\\solve.pbk_nonpop2", ro
 phys <- read_csv("phys_inhalation")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
-phys1<-phys[5001:7500,]
+phys1<-phys[5001:6300,]
 P_F<-phys1$P_F
 P_L<-phys1$P_L
 P_SI<-phys1$P_SI
@@ -522,18 +522,18 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
 
 
 ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(id=5001:7500,seq(from = time.0, to = time.end, by = time.frame))%>%
-  et(id=5001:7500,amt=(Oral_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(id=5001:7500,amt=(Inhalation_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
-  et(id=5001:7500,amt=phys1$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
-  et(id=5001:7500,amt=phys1$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
+  et(id=5001:6300,seq(from = time.0, to = time.end, by = time.frame))%>%
+  et(id=5001:6300,amt=(Oral_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(id=5001:6300,amt=(Inhalation_Dose_in_mg_bw) * phys1$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(id=5001:6300,amt=phys1$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(id=5001:6300,amt=phys1$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
            "A_P_Art"      =0,
@@ -715,7 +715,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100       #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -908,7 +908,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -1101,7 +1101,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100       #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -1295,7 +1295,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -1488,7 +1488,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -1681,7 +1681,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -1874,7 +1874,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -2067,7 +2067,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -2260,7 +2260,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -2453,7 +2453,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -2646,7 +2646,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -2839,7 +2839,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -3032,7 +3032,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -3225,7 +3225,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -3418,7 +3418,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -3611,7 +3611,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -3804,7 +3804,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -3997,7 +3997,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -4190,7 +4190,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -4383,7 +4383,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -4576,7 +4576,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -4769,7 +4769,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -4962,7 +4962,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -5156,7 +5156,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -5349,7 +5349,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -5542,7 +5542,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -5735,7 +5735,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -5928,7 +5928,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
@@ -6121,7 +6121,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
-Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-2.8        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol

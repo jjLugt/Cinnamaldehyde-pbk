@@ -232,7 +232,7 @@ Lower <- Mean - 0.01 * Mean
 Upper <- Mean + 0.01 * Mean
 
 #create data frames for population
-n_sim  <- 1000              #number of iterations
+n_sim  <- 100              #number of iterations
 X1 <- matrix(NA, nrow = n_sim, ncol = par_var)
 colnames(X1) <- colnames
 X1 <- as.data.frame(X1)
@@ -311,7 +311,7 @@ X2[,76]<- 10
 X1<- X1[-c(15:23,33:38)]
 X2<- X2[-c(15:23,33:38)]
 #the number of bootstrap replicates
-n_boot <- 1000
+n_boot <- 100
 
 
 #Sobol design
@@ -506,7 +506,7 @@ solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names=1)
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
                                   solve.pbk.sa[,"time"]==2|solve.pbk.sa[,"time"]==3|solve.pbk.sa[,"time"]==4|
                                   solve.pbk.sa[,"time"]==8),]
-SimRes = as.data.frame(matrix(NA,63000,8))
+SimRes = as.data.frame(matrix(NA,6300,8))
 
 tab1=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2),]
 tab2=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.5),]
@@ -542,7 +542,7 @@ par(mfrow=c(1,1), las=3, cex=0.7)
 FOI          = TI          = TI.borninf           = TI.bornsup          = matrix(NA, nrow = par_var, ncol = length(t_A))  
 rownames(FOI)= rownames(TI)= rownames(TI.borninf) = rownames(TI.bornsup)= colnames
 
-t_SA <-8
+t_SA <-0.2
 
 
 for(i in 1:length(t_A)){
