@@ -232,7 +232,7 @@ Lower <- Mean - 0.01 * Mean
 Upper <- Mean + 0.01 * Mean
 
 #create data frames for population
-n_sim  <- 100              #number of iterations
+n_sim  <- 1000              #number of iterations
 X1 <- matrix(NA, nrow = n_sim, ncol = par_var)
 colnames(X1) <- colnames
 X1 <- as.data.frame(X1)
@@ -311,7 +311,7 @@ X2[,76]<- 10
 X1<- X1[-c(15:23,33:38)]
 X2<- X2[-c(15:23,33:38)]
 #the number of bootstrap replicates
-n_boot <- 100
+n_boot <- 1000
 
 
 #Sobol design
@@ -526,9 +526,9 @@ SimRes[,6]=tab6[,2]
 SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
-write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.oral_C_Pu-22-08.csv", row.names = TRUE)
+write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu-24-08.csv", row.names = TRUE)
 
-SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes.oral_C_Pu-22-08.csv", row.names=1)
+SimRes <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK//SimRes.inhalation_C_Pu-24-08.csv", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here woul create an error.
@@ -574,8 +574,282 @@ tempC    = t(cbind(FOI.L.t, TI.L.t))
 
 tempC2 <- as.data.frame(tempC[,c(52:61)])
 
+#t_SA = 0.2
+sa.plot_0.2 <-as.data.frame(tempC[,c(52:61)])
+rownames(sa.plot_0.2 <- c("0.2h main","0.2h total"))
+
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
 #colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
-O_CV_0.2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
+plot_Pu_0.2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
 
-#write.csv(SimRes, file = "SimRes_08-15-2022_inhalation_parameters_no_inhalation.csv")
+t_SA <-0.5
+
+
+for(i in 1:length(t_A)){
+  print(i)
+  if (t_A[i] %in% t_SA) {
+    sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
+    FOI[,i]       <- sa$S[,1]    #First order indices
+    TI[,i]        <- sa$T[,1]    #Total indices
+    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    
+    plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
+  }
+}
+
+
+FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  = as.matrix(TI[,1:length(t_A)])
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+
+sorting = order(TI.L.t, decreasing = F)
+TI.L.t  = TI.L.t[sorting]
+FOI.L.t = FOI.L.t[sorting]
+
+FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    = t(cbind(FOI.L.t, TI.L.t))
+
+tempC2 <- as.data.frame(tempC[,c(52:61)])
+
+#t_SA = 0.5
+sa.plot_0.5 <-as.data.frame(tempC[,c(52:61)])
+rownames(sa.plot_0.5) <- c("0.5h main","0.5h total")
+
+par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
+#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
+plot_Pu_0.5 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
+
+t_SA <-1
+
+
+for(i in 1:length(t_A)){
+  print(i)
+  if (t_A[i] %in% t_SA) {
+    sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
+    FOI[,i]       <- sa$S[,1]    #First order indices
+    TI[,i]        <- sa$T[,1]    #Total indices
+    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    
+    plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
+  }
+}
+
+
+FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  = as.matrix(TI[,1:length(t_A)])
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+
+sorting = order(TI.L.t, decreasing = F)
+TI.L.t  = TI.L.t[sorting]
+FOI.L.t = FOI.L.t[sorting]
+
+FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    = t(cbind(FOI.L.t, TI.L.t))
+
+tempC2 <- as.data.frame(tempC[,c(52:61)])
+#t_SA = 1
+sa.plot_1 <-as.data.frame(tempC[,c(52:61)])
+rownames(sa.plot_1) <- c("1h main","1h total")
+
+
+par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
+#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
+plot_Pu_1 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
+
+t_SA <-1.5
+
+
+for(i in 1:length(t_A)){
+  print(i)
+  if (t_A[i] %in% t_SA) {
+    sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
+    FOI[,i]       <- sa$S[,1]    #First order indices
+    TI[,i]        <- sa$T[,1]    #Total indices
+    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    
+    plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
+  }
+}
+
+
+FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  = as.matrix(TI[,1:length(t_A)])
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+
+sorting = order(TI.L.t, decreasing = F)
+TI.L.t  = TI.L.t[sorting]
+FOI.L.t = FOI.L.t[sorting]
+
+FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    = t(cbind(FOI.L.t, TI.L.t))
+
+tempC2 <- as.data.frame(tempC[,c(52:61)])
+
+#t_SA = 1.5
+sa.plot_1.5 <-as.data.frame(tempC[,c(52:61)])
+rownames(sa.plot_1.5) <- c("1.5h main","1.5h total")
+
+par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
+#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
+plot_Pu_1.5 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
+
+t_SA <-2
+
+
+for(i in 1:length(t_A)){
+  print(i)
+  if (t_A[i] %in% t_SA) {
+    sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
+    FOI[,i]       <- sa$S[,1]    #First order indices
+    TI[,i]        <- sa$T[,1]    #Total indices
+    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    
+    plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
+  }
+}
+
+
+FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  = as.matrix(TI[,1:length(t_A)])
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+
+sorting = order(TI.L.t, decreasing = F)
+TI.L.t  = TI.L.t[sorting]
+FOI.L.t = FOI.L.t[sorting]
+
+FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    = t(cbind(FOI.L.t, TI.L.t))
+
+tempC2 <- as.data.frame(tempC[,c(52:61)])
+
+par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
+#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
+plot_Pu_2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
+
+#t_SA = 2
+sa.plot_2 <-as.data.frame(tempC[,c(52:61)])
+rownames(sa.plot_2) <- c("2h main","2h total")
+
+t_SA <-4
+
+
+for(i in 1:length(t_A)){
+  print(i)
+  if (t_A[i] %in% t_SA) {
+    sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
+    FOI[,i]       <- sa$S[,1]    #First order indices
+    TI[,i]        <- sa$T[,1]    #Total indices
+    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    
+    plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
+  }
+}
+
+
+FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  = as.matrix(TI[,1:length(t_A)])
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+
+sorting = order(TI.L.t, decreasing = F)
+TI.L.t  = TI.L.t[sorting]
+FOI.L.t = FOI.L.t[sorting]
+
+FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    = t(cbind(FOI.L.t, TI.L.t))
+
+tempC2 <- as.data.frame(tempC[,c(52:61)])
+
+par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
+#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
+plot_Pu_4 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
+
+#t_SA = 4
+sa.plot_4 <-as.data.frame(tempC[,c(52:61)])
+rownames(sa.plot_4) <- c("4h main","4h total")
+
+t_SA <-8
+
+
+for(i in 1:length(t_A)){
+  print(i)
+  if (t_A[i] %in% t_SA) {
+    sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
+    FOI[,i]       <- sa$S[,1]    #First order indices
+    TI[,i]        <- sa$T[,1]    #Total indices
+    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    
+    plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
+  }
+}
+
+
+FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  = as.matrix(TI[,1:length(t_A)])
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+
+sorting = order(TI.L.t, decreasing = F)
+TI.L.t  = TI.L.t[sorting]
+FOI.L.t = FOI.L.t[sorting]
+
+FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    = t(cbind(FOI.L.t,TI.L.t,))
+
+tempC2 <- as.data.frame(tempC[,c(52:61)])
+
+#t_SA = 8
+sa.plot_8 <-as.data.frame(tempC[,c(52:61)])
+rownames(sa.plot_8) <- c("8h total","8h main")
+
+par(mfrow=c(2,3),las=1, mar=c(3,5,3,3.5), mgp = c(3.5,0.5,0)) 
+mtext("Main and total sensitivity indexes", side=2, line=1)
+#barplot(as.matrix(sa.plot_0.2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="20 min", cex.lab=1.5 , xlim=c(0,1.1) )
+barplot(as.matrix(sa.plot_0.5), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="30 min", cex.lab=1.5 , xlim=c(0,1.1) )
+barplot(as.matrix(sa.plot_1), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="1 hour", cex.lab=1.5 , xlim=c(0,1.1) )
+barplot(as.matrix(sa.plot_1,5), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="1.5 hours", cex.lab=1.5 , xlim=c(0,1.1) )
+barplot(as.matrix(sa.plot_2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="2 hours", cex.lab=1.5 , xlim=c(0,1.1) )
+barplot(as.matrix(sa.plot_4), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="4 hours", cex.lab=1.5 , xlim=c(0,1.1) )
+barplot(as.matrix(sa.plot_8), col=c("firebrick4","firebrick1"), horiz =T , beside =T , main="8 hours", cex.lab=1.5 , xlim=c(0,1.1), xlab = "parameters")
+
+
+
+
+
+df_1<-melt(sa.plot_0.2)
+
+
+library(ggplot2)
+
+# create a dataset
+specie <- c(rep("sorgho" , 3) , rep("poacee" , 3) , rep("banana" , 3) , rep("triticum" , 3) )
+condition <- rep(c("normal" , "stress" , "Nitrogen") , 4)
+value <- abs(rnorm(12 , 0 , 15))
+data <- data.frame(specie,condition,value)
+
+# Grouped
+ggplot(data, aes(fill=condition, y=value, x=specie)) + 
+  geom_bar(position="dodge", stat="identity")
+
+
+ggplot(sa.plot_0.2, aes(fill=, y=value, x=specie)) + 
+  geom_bar(position="dodge", stat="identity")
+
+
+
