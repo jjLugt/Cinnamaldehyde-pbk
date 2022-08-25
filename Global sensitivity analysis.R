@@ -314,6 +314,13 @@ X2<- X2[-c(15:23,33:38)]
 n_boot <- 1000
 
 
+X1 <-var_f_pop
+X2 <-var_m_pop
+
+X1<- X1[-c(1:2,33,65,66)]
+X2<- X2[-c(1:2,33,65,66)]
+
+
 #Sobol design
 sa <- soboljansen(model=NULL, X1, X2, nboot = n_boot, conf = 0.95, events = ex)
 
@@ -391,13 +398,6 @@ colnames(solve.pbk.sa10) <- c("time","C_Pu")
 solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa10)
 
 
-write.csv(solve.pbk.sa,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa")
-
-
-
-solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk/solve.pbk.sa",row.names= 1)
-
-
 solve11 <- read_csv("solve.pbk_nonpop11")
 solve.pbk.sa11 <-as.data.frame(solve11$time)
 solve.pbk.sa11 <-cbind(solve.pbk.sa11,solve11$C_Pu)
@@ -440,9 +440,6 @@ solve.pbk.sa17 <-cbind(solve.pbk.sa17,solve17$C_Pu)
 colnames(solve.pbk.sa17) <- c("time","C_Pu")
 solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa17)
 
-write.csv(solve.pbk.sa,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
-
-solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk/solve.pbk.sa", row.names=1)
 
 solve18 <- read_csv("solve.pbk_nonpop18")
 solve.pbk.sa18 <-as.data.frame(solve18$time)
@@ -506,7 +503,7 @@ solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names=1)
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
                                   solve.pbk.sa[,"time"]==2|solve.pbk.sa[,"time"]==3|solve.pbk.sa[,"time"]==4|
                                   solve.pbk.sa[,"time"]==8),]
-SimRes = as.data.frame(matrix(NA,6300,8))
+SimRes = as.data.frame(matrix(NA,63000,8))
 
 tab1=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2),]
 tab2=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.5),]
@@ -829,27 +826,6 @@ barplot(as.matrix(sa.plot_4), col=c("firebrick1","firebrick4"), horiz = T, besid
 barplot(as.matrix(sa.plot_8), col=c("firebrick4","firebrick1"), horiz =T , beside =T , main="8 hours", cex.lab=1.5 , xlim=c(0,1.1), xlab = "parameters")
 
 
-
-
-
-df_1<-melt(sa.plot_0.2)
-
-
-library(ggplot2)
-
-# create a dataset
-specie <- c(rep("sorgho" , 3) , rep("poacee" , 3) , rep("banana" , 3) , rep("triticum" , 3) )
-condition <- rep(c("normal" , "stress" , "Nitrogen") , 4)
-value <- abs(rnorm(12 , 0 , 15))
-data <- data.frame(specie,condition,value)
-
-# Grouped
-ggplot(data, aes(fill=condition, y=value, x=specie)) + 
-  geom_bar(position="dodge", stat="identity")
-
-
-ggplot(sa.plot_0.2, aes(fill=, y=value, x=specie)) + 
-  geom_bar(position="dodge", stat="identity")
 
 
 
