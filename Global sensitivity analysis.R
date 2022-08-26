@@ -232,7 +232,7 @@ Lower <- Mean - 0.01 * Mean
 Upper <- Mean + 0.01 * Mean
 
 #create data frames for population
-n_sim  <- 1000              #number of iterations
+n_sim  <- 2000             #number of iterations
 X1 <- matrix(NA, nrow = n_sim, ncol = par_var)
 colnames(X1) <- colnames
 X1 <- as.data.frame(X1)
@@ -314,11 +314,11 @@ X2<- X2[-c(15:23,33:38)]
 n_boot <- 1000
 
 
-X1 <-var_f_pop
-X2 <-var_m_pop
+#X1 <-var_f_pop
+#X2 <-var_m_pop
 
-X1<- X1[-c(1:2,33,65,66)]
-X2<- X2[-c(1:2,33,65,66)]
+#X1<- X1[-c(1:2,33,65,66)]
+#X2<- X2[-c(1:2,33,65,66)]
 
 
 #Sobol design
@@ -329,181 +329,18 @@ phys <- sa$X
 
 
 #Writing the result into a file so that the environment can be cleaned to conserve memory
-write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\phys_inhalation", row.names = TRUE)
+write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\phys_inhalation_pop", row.names = TRUE)
 
 
-#importing created PBK results files and stripping both the time and C_V colum from them
-solve <- read_csv("solve.pbk_nonpop1")
 
-solve.pbk.sa <-as.data.frame(solve$time)
-solve.pbk.sa <-cbind(solve.pbk.sa,solve$C_Pu)
-colnames(solve.pbk.sa) <- c("time","C_Pu")
-
-solve2 <- read_csv("solve.pbk_nonpop2")
-solve.pbk.sa2 <-as.data.frame(solve2$time)
-solve.pbk.sa2 <-cbind(solve.pbk.sa2,solve2$C_Pu)
-colnames(solve.pbk.sa2) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa2)
-
-solve3 <- read_csv("solve.pbk_nonpop3")
-solve.pbk.sa3 <-as.data.frame(solve3$time)
-solve.pbk.sa3 <-cbind(solve.pbk.sa3,solve3$C_Pu)
-colnames(solve.pbk.sa3) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa3)
-
-
-solve4 <- read_csv("solve.pbk_nonpop4")
-solve.pbk.sa4 <-as.data.frame(solve4$time)
-solve.pbk.sa4 <-cbind(solve.pbk.sa4,solve4$C_Pu)
-colnames(solve.pbk.sa4) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa4)
-
-solve5 <- read_csv("solve.pbk_nonpop5")
-solve.pbk.sa5 <-as.data.frame(solve5$time)
-solve.pbk.sa5 <-cbind(solve.pbk.sa5,solve5$C_Pu)
-colnames(solve.pbk.sa5) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa5)
-
-solve6 <- read_csv("solve.pbk_nonpop6")
-solve.pbk.sa6 <-as.data.frame(solve6$time)
-solve.pbk.sa6 <-cbind(solve.pbk.sa6,solve6$C_Pu)
-colnames(solve.pbk.sa6) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa6)
-
-
-solve7 <- read_csv("solve.pbk_nonpop7")
-solve.pbk.sa7 <-as.data.frame(solve7$time)
-solve.pbk.sa7 <-cbind(solve.pbk.sa7,solve7$C_Pu)
-colnames(solve.pbk.sa7) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa7)
-
-
-solve8 <- read_csv("solve.pbk_nonpop8")
-solve.pbk.sa8 <-as.data.frame(solve8$time)
-solve.pbk.sa8 <-cbind(solve.pbk.sa8,solve8$C_Pu)
-colnames(solve.pbk.sa8) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa8)
-
-solve9 <- read_csv("solve.pbk_nonpop9")
-solve.pbk.sa9 <-as.data.frame(solve9$time)
-solve.pbk.sa9 <-cbind(solve.pbk.sa9,solve9$C_Pu)
-colnames(solve.pbk.sa9) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa9)
-
-
-solve10 <- read_csv("solve.pbk_nonpop10")
-solve.pbk.sa10 <-as.data.frame(solve10$time)
-solve.pbk.sa10 <-cbind(solve.pbk.sa10,solve10$C_Pu)
-colnames(solve.pbk.sa10) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa10)
-
-
-solve11 <- read_csv("solve.pbk_nonpop11")
-solve.pbk.sa11 <-as.data.frame(solve11$time)
-solve.pbk.sa11 <-cbind(solve.pbk.sa11,solve11$C_Pu)
-colnames(solve.pbk.sa11) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa11)
-
-solve12 <- read_csv("solve.pbk_nonpop12")
-solve.pbk.sa12 <-as.data.frame(solve12$time)
-solve.pbk.sa12 <-cbind(solve.pbk.sa12,solve12$C_Pu)
-colnames(solve.pbk.sa12) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa12)
-
-solve13 <- read_csv("solve.pbk_nonpop13")
-solve.pbk.sa13 <-as.data.frame(solve13$time)
-solve.pbk.sa13 <-cbind(solve.pbk.sa13,solve13$C_Pu)
-colnames(solve.pbk.sa13) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa13)
-
-solve14 <- read_csv("solve.pbk_nonpop14")
-solve.pbk.sa14 <-as.data.frame(solve14$time)
-solve.pbk.sa14 <-cbind(solve.pbk.sa14,solve14$C_Pu)
-colnames(solve.pbk.sa14) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa14)
-
-solve15 <- read_csv("solve.pbk_nonpop15")
-solve.pbk.sa15 <-as.data.frame(solve15$time)
-solve.pbk.sa15 <-cbind(solve.pbk.sa15,solve15$C_Pu)
-colnames(solve.pbk.sa15) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa15)
-
-solve16 <- read_csv("solve.pbk_nonpop16")
-solve.pbk.sa16 <-as.data.frame(solve16$time)
-solve.pbk.sa16 <-cbind(solve.pbk.sa16,solve16$C_Pu)
-colnames(solve.pbk.sa16) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa16)
-
-solve17 <- read_csv("solve.pbk_nonpop17")
-solve.pbk.sa17 <-as.data.frame(solve17$time)
-solve.pbk.sa17 <-cbind(solve.pbk.sa17,solve17$C_Pu)
-colnames(solve.pbk.sa17) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa17)
-
-
-solve18 <- read_csv("solve.pbk_nonpop18")
-solve.pbk.sa18 <-as.data.frame(solve18$time)
-solve.pbk.sa18 <-cbind(solve.pbk.sa18,solve18$C_Pu)
-colnames(solve.pbk.sa18) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa18)
-
-solve19 <- read_csv("solve.pbk_nonpop19")
-solve.pbk.sa19 <-as.data.frame(solve19$time)
-solve.pbk.sa19 <-cbind(solve.pbk.sa19,solve19$C_Pu)
-colnames(solve.pbk.sa19) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa19)
-
-solve20 <- read_csv("solve.pbk_nonpop20")
-solve.pbk.sa20 <-as.data.frame(solve20$time)
-solve.pbk.sa20 <-cbind(solve.pbk.sa20,solve20$C_Pu)
-colnames(solve.pbk.sa20) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa20)
-
-solve21 <- read_csv("solve.pbk_nonpop21")
-solve.pbk.sa21 <-as.data.frame(solve21$time)
-solve.pbk.sa21 <-cbind(solve.pbk.sa21,solve21$C_Pu)
-colnames(solve.pbk.sa21) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa21)
-
-solve22 <- read_csv("solve.pbk_nonpop22")
-solve.pbk.sa22 <-as.data.frame(solve22$time)
-solve.pbk.sa22 <-cbind(solve.pbk.sa22,solve22$C_Pu)
-colnames(solve.pbk.sa22) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa22)
-
-solve23 <- read_csv("solve.pbk_nonpop23")
-solve.pbk.sa23 <-as.data.frame(solve23$time)
-solve.pbk.sa23 <-cbind(solve.pbk.sa23,solve23$C_Pu)
-colnames(solve.pbk.sa23) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa23)
-
-solve24 <- read_csv("solve.pbk_nonpop24")
-solve.pbk.sa24 <-as.data.frame(solve24$time)
-solve.pbk.sa24 <-cbind(solve.pbk.sa24,solve24$C_Pu)
-colnames(solve.pbk.sa24) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa24)
-
-solve25 <- read_csv("solve.pbk_nonpop25")
-solve.pbk.sa25 <-as.data.frame(solve25$time)
-solve.pbk.sa25 <-cbind(solve.pbk.sa25,solve25$C_Pu)
-colnames(solve.pbk.sa25) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa25)
-
-solve26 <- read_csv("solve.pbk_nonpop26")
-solve.pbk.sa26 <-as.data.frame(solve26$time)
-solve.pbk.sa26 <-cbind(solve.pbk.sa26,solve26$C_Pu)
-colnames(solve.pbk.sa26) <- c("time","C_Pu")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa26)
-
-write.csv(solve.pbk.sa,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names = TRUE)
-
+#Loading extracted simulation data. 
 solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\solve.pbk.sa", row.names=1)
 
 #Analysing the generated data set 
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
                                   solve.pbk.sa[,"time"]==2|solve.pbk.sa[,"time"]==3|solve.pbk.sa[,"time"]==4|
                                   solve.pbk.sa[,"time"]==8),]
-SimRes = as.data.frame(matrix(NA,63000,8))
+
 
 tab1=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2),]
 tab2=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.5),]
@@ -514,6 +351,7 @@ tab6=solve.pbk.sa[which(solve.pbk.sa[,"time"]==3),]
 tab7=solve.pbk.sa[which(solve.pbk.sa[,"time"]==4),]
 tab8=solve.pbk.sa[which(solve.pbk.sa[,"time"]==8),]
 
+SimRes = as.data.frame(matrix(NA,126000,8))
 SimRes[,1]=tab1[,2]
 SimRes[,2]=tab2[,2]
 SimRes[,3]=tab3[,2]
@@ -523,19 +361,18 @@ SimRes[,6]=tab6[,2]
 SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
-write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu-24-08.csv", row.names = TRUE)
+write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu_pop-25-08_2000.csv", row.names = TRUE)
 
-SimRes <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK//SimRes.inhalation_C_Pu-24-08.csv", row.names=1)
+SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk//SimRes.inhalation_C_Pu_pop-25-08_2000.csv", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here woul create an error.
 colnames <- colnames(X1)
-par_var <- length(colnames)
+par_var <- length(X1)
 
 
 #Sobol analysis plot blood Nrow is the number of paramters in the model
 t_A<-(c(0.2,0.5,1,1.5,2,3,4,8))
-par(mfrow=c(1,1), las=3, cex=0.7)
 FOI          = TI          = TI.borninf           = TI.bornsup          = matrix(NA, nrow = par_var, ncol = length(t_A))  
 rownames(FOI)= rownames(TI)= rownames(TI.borninf) = rownames(TI.bornsup)= colnames
 
@@ -569,14 +406,13 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:61)])
+tempC2 <- as.data.frame(tempC[,c(52:62)])
 
 #t_SA = 0.2
-sa.plot_0.2 <-as.data.frame(tempC[,c(52:61)])
+sa.plot_0.2 <-as.data.frame(tempC[,c(52:62)])
 rownames(sa.plot_0.2 <- c("0.2h main","0.2h total"))
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
-#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
 plot_Pu_0.2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
 
 t_SA <-0.5
@@ -609,10 +445,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:61)])
+tempC2 <- as.data.frame(tempC[,c(52:62)])
 
 #t_SA = 0.5
-sa.plot_0.5 <-as.data.frame(tempC[,c(52:61)])
+sa.plot_0.5 <-as.data.frame(tempC[,c(52:62)])
 rownames(sa.plot_0.5) <- c("0.5h main","0.5h total")
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
@@ -649,9 +485,9 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:61)])
+tempC2 <- as.data.frame(tempC[,c(52:62)])
 #t_SA = 1
-sa.plot_1 <-as.data.frame(tempC[,c(52:61)])
+sa.plot_1 <-as.data.frame(tempC[,c(52:62)])
 rownames(sa.plot_1) <- c("1h main","1h total")
 
 
@@ -689,10 +525,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:61)])
+tempC2 <- as.data.frame(tempC[,c(52:62)])
 
 #t_SA = 1.5
-sa.plot_1.5 <-as.data.frame(tempC[,c(52:61)])
+sa.plot_1.5 <-as.data.frame(tempC[,c(52:62)])
 rownames(sa.plot_1.5) <- c("1.5h main","1.5h total")
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
@@ -729,14 +565,14 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:61)])
+tempC2 <- as.data.frame(tempC[,c(52:62)])
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
 #colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
 plot_Pu_2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
 
 #t_SA = 2
-sa.plot_2 <-as.data.frame(tempC[,c(52:61)])
+sa.plot_2 <-as.data.frame(tempC[,c(52:62)])
 rownames(sa.plot_2) <- c("2h main","2h total")
 
 t_SA <-4
@@ -769,14 +605,14 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:61)])
+tempC2 <- as.data.frame(tempC[,c(52:62)])
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
 #colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
 plot_Pu_4 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
 
 #t_SA = 4
-sa.plot_4 <-as.data.frame(tempC[,c(52:61)])
+sa.plot_4 <-as.data.frame(tempC[,c(52:62)])
 rownames(sa.plot_4) <- c("4h main","4h total")
 
 t_SA <-8
@@ -807,12 +643,12 @@ TI.L.t  = TI.L.t[sorting]
 FOI.L.t = FOI.L.t[sorting]
 
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
-tempC    = t(cbind(FOI.L.t,TI.L.t,))
+tempC    = t(cbind(FOI.L.t,TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:61)])
+tempC2 <- as.data.frame(tempC[,c(53:62)])
 
 #t_SA = 8
-sa.plot_8 <-as.data.frame(tempC[,c(52:61)])
+sa.plot_8 <-as.data.frame(tempC[,c(53:62)])
 rownames(sa.plot_8) <- c("8h total","8h main")
 
 par(mfrow=c(2,3),las=1, mar=c(3,5,3,3.5), mgp = c(3.5,0.5,0)) 
@@ -823,7 +659,7 @@ barplot(as.matrix(sa.plot_1), col=c("firebrick1","firebrick4"), horiz = T, besid
 barplot(as.matrix(sa.plot_1,5), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="1.5 hours", cex.lab=1.5 , xlim=c(0,1.1) )
 barplot(as.matrix(sa.plot_2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="2 hours", cex.lab=1.5 , xlim=c(0,1.1) )
 barplot(as.matrix(sa.plot_4), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="4 hours", cex.lab=1.5 , xlim=c(0,1.1) )
-barplot(as.matrix(sa.plot_8), col=c("firebrick4","firebrick1"), horiz =T , beside =T , main="8 hours", cex.lab=1.5 , xlim=c(0,1.1), xlab = "parameters")
+barplot(as.matrix(sa.plot_8), col=c("firebrick1","firebrick4"), horiz =T , beside =T , main="8 hours", cex.lab=1.5 , xlim=c(0,1.1))
 
 
 
