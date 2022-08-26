@@ -351,7 +351,11 @@ tab6=solve.pbk.sa[which(solve.pbk.sa[,"time"]==3),]
 tab7=solve.pbk.sa[which(solve.pbk.sa[,"time"]==4),]
 tab8=solve.pbk.sa[which(solve.pbk.sa[,"time"]==8),]
 
+<<<<<<< HEAD
 SimRes = as.data.frame(matrix(NA,126000,8))
+=======
+SimRes = as.data.frame(matrix(NA,64000,8))
+>>>>>>> 3497fb22d211462bd457dc1db0e2dec757a82441
 SimRes[,1]=tab1[,2]
 SimRes[,2]=tab2[,2]
 SimRes[,3]=tab3[,2]
@@ -361,9 +365,15 @@ SimRes[,6]=tab6[,2]
 SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
+<<<<<<< HEAD
 write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu_pop-25-08_2000.csv", row.names = TRUE)
 
 SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk//SimRes.inhalation_C_Pu_pop-25-08_2000.csv", row.names=1)
+=======
+write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu_pop-25-08_10000.csv", row.names = TRUE)
+
+SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk//SimRes.inhalation_C_Pu_pop-25-08_10000.csv", row.names=1)
+>>>>>>> 3497fb22d211462bd457dc1db0e2dec757a82441
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here woul create an error.
