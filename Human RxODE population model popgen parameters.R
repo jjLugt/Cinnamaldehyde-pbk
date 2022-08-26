@@ -222,7 +222,7 @@ var_f_pop$V_A       <-var_f_pop$V_B / 3                 #Volume arterial blood (
 var_f_pop$V_V       <-var_f_pop$V_B * (2/3)             #Volume venous blood (L) 
 var_f_pop$V_SI      <-pg_f_par$`Small intestine mass`   #Volume small intestine (L)
 var_f_pop$V_Pu      <-pg_f_par$`Lung mass`              #Volume lung (L)
-var_f_pop$V_RP      <-pg_f_par$`Richly Perfused flow`   #Volume richly perfused tissue (L)
+var_f_pop$V_RP      <-pg_f_par$`Richly Perfused mass`   #Volume richly perfused tissue (L)
 var_f_pop$V_SP      <-pg_f_par$`Slowly Perfused mass`   #Volume slowly perfused tissue (L)
 
 #-Cardiac parameters-#
