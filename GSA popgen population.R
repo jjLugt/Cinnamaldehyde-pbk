@@ -17,14 +17,31 @@ nbr.doses               <-1        #number of doses
 time.0                  <-0        #time start dosing
 time.end                <-8        #time end of simulation
 time.frame              <-0.1     #time steps of simulation
-N                       <-2000     #Number of males
+N                       <-4000     #Number of males
 Volume_exposure_chamber <-10       #volume exposure chamber in L
 MW                      <-132.16   #The molecular weight of Cinnamaldehyde
 
 
 
 #Importing the popgen data set 
-GSA_Base <- read_csv("Popgen GSA N=2000.csv", 
+#GSA_Base <- read_csv("Popgen GSA N=2000.csv", 
+ #                    col_types = cols(Age = col_number(), 
+  #                                    `Body Mass` = col_number(), Height = col_number(), 
+   #                                   `Cardiac Output` = col_number(), 
+    #                                  `Lung mass` = col_number(), `Lung flow` = col_number(), 
+     #                                 `Liver mass` = col_number(), `Liver flow` = col_number(), 
+      #                                `Small intestine mass` = col_number(), 
+       #                               `Small intestine flow` = col_number(), 
+        #                              `Adipose mass` = col_number(), `Adipose flow` = col_number(), 
+         #                             `Liver Total flow` = col_number(), 
+          #                            `Slowly Perfused mass` = col_number(), 
+           #                           `Slowly Perfused flow` = col_number(), 
+            #                          `Richly Perfused mass` = col_number(), 
+             #                         `Richly Perfused flow` = col_number(), 
+              #                        `Lung Bronchial flow` = col_number()))
+
+#Importing the popgen data set 
+GSA_Base <- GSA_popgen_n_4000 <- read_csv("GSA popgen n=4000.csv", 
                      col_types = cols(Age = col_number(), 
                                       `Body Mass` = col_number(), Height = col_number(), 
                                       `Cardiac Output` = col_number(), 
@@ -39,6 +56,8 @@ GSA_Base <- read_csv("Popgen GSA N=2000.csv",
                                       `Richly Perfused mass` = col_number(), 
                                       `Richly Perfused flow` = col_number(), 
                                       `Lung Bronchial flow` = col_number()))
+
+
 
 colnames <-c("Age","Height","BW","V_L","V_F",
              "V_B","V_A","V_V","V_SI","V_Pu","V_RP","V_SP","Q_C","Q_F","Q_L","Q_SI","Q_RP","Q_SP")
