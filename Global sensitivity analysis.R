@@ -314,11 +314,11 @@ X2<- X2[-c(15:23,33:38)]
 n_boot <- 1000
 
 
-#X1 <-var_f_pop
-#X2 <-var_m_pop
+X1 <-GSA_pop[1:1000,]
+X2 <-GSA_pop[1001:2000,]
 
-#X1<- X1[-c(1:2,33,65,66)]
-#X2<- X2[-c(1:2,33,65,66)]
+X1<- X1[-c(1:2,33)]
+X2<- X2[-c(1:2,33)]
 
 
 #Sobol design
@@ -329,7 +329,7 @@ phys <- sa$X
 
 
 #Writing the result into a file so that the environment can be cleaned to conserve memory
-write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\phys_inhalation_pop", row.names = TRUE)
+write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\GSA_phys", row.names = TRUE)
 
 
 
@@ -351,11 +351,8 @@ tab6=solve.pbk.sa[which(solve.pbk.sa[,"time"]==3),]
 tab7=solve.pbk.sa[which(solve.pbk.sa[,"time"]==4),]
 tab8=solve.pbk.sa[which(solve.pbk.sa[,"time"]==8),]
 
-<<<<<<< HEAD
+
 SimRes = as.data.frame(matrix(NA,126000,8))
-=======
-SimRes = as.data.frame(matrix(NA,64000,8))
->>>>>>> 3497fb22d211462bd457dc1db0e2dec757a82441
 SimRes[,1]=tab1[,2]
 SimRes[,2]=tab2[,2]
 SimRes[,3]=tab3[,2]
@@ -365,15 +362,10 @@ SimRes[,6]=tab6[,2]
 SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
-<<<<<<< HEAD
-write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu_pop-25-08_2000.csv", row.names = TRUE)
 
-SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk//SimRes.inhalation_C_Pu_pop-25-08_2000.csv", row.names=1)
-=======
 write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu_pop-25-08_10000.csv", row.names = TRUE)
 
-SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk//SimRes.inhalation_C_Pu_pop-25-08_10000.csv", row.names=1)
->>>>>>> 3497fb22d211462bd457dc1db0e2dec757a82441
+SimRes <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK//SimRes.inhalation_C_Pu_25-08_2000_100_nonadjusted.csv", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here woul create an error.
@@ -416,10 +408,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:62)])
+tempC2 <- as.data.frame(tempC[,c(51:61)])
 
 #t_SA = 0.2
-sa.plot_0.2 <-as.data.frame(tempC[,c(52:62)])
+sa.plot_0.2 <-as.data.frame(tempC[,c(51:61)])
 rownames(sa.plot_0.2 <- c("0.2h main","0.2h total"))
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
@@ -455,10 +447,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:62)])
+tempC2 <- as.data.frame(tempC[,c(51:61)])
 
 #t_SA = 0.5
-sa.plot_0.5 <-as.data.frame(tempC[,c(52:62)])
+sa.plot_0.5 <-as.data.frame(tempC[,c(51:61)])
 rownames(sa.plot_0.5) <- c("0.5h main","0.5h total")
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
@@ -495,9 +487,9 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:62)])
+tempC2 <- as.data.frame(tempC[,c(51:61)])
 #t_SA = 1
-sa.plot_1 <-as.data.frame(tempC[,c(52:62)])
+sa.plot_1 <-as.data.frame(tempC[,c(51:61)])
 rownames(sa.plot_1) <- c("1h main","1h total")
 
 
@@ -535,10 +527,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:62)])
+tempC2 <- as.data.frame(tempC[,c(51:61)])
 
 #t_SA = 1.5
-sa.plot_1.5 <-as.data.frame(tempC[,c(52:62)])
+sa.plot_1.5 <-as.data.frame(tempC[,c(51:61)])
 rownames(sa.plot_1.5) <- c("1.5h main","1.5h total")
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
@@ -575,14 +567,14 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:62)])
+tempC2 <- as.data.frame(tempC[,c(51:61)])
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
 #colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
 plot_Pu_2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
 
 #t_SA = 2
-sa.plot_2 <-as.data.frame(tempC[,c(52:62)])
+sa.plot_2 <-as.data.frame(tempC[,c(51:61)])
 rownames(sa.plot_2) <- c("2h main","2h total")
 
 t_SA <-4
@@ -615,14 +607,14 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(52:62)])
+tempC2 <- as.data.frame(tempC[,c(51:61)])
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
 #colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
 plot_Pu_4 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
 
 #t_SA = 4
-sa.plot_4 <-as.data.frame(tempC[,c(52:62)])
+sa.plot_4 <-as.data.frame(tempC[,c(51:61)])
 rownames(sa.plot_4) <- c("4h main","4h total")
 
 t_SA <-8
@@ -655,10 +647,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t,TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(53:62)])
+tempC2 <- as.data.frame(tempC[,c(51:61)])
 
 #t_SA = 8
-sa.plot_8 <-as.data.frame(tempC[,c(53:62)])
+sa.plot_8 <-as.data.frame(tempC[,c(51:61)])
 rownames(sa.plot_8) <- c("8h total","8h main")
 
 par(mfrow=c(2,3),las=1, mar=c(3,5,3,3.5), mgp = c(3.5,0.5,0)) 
