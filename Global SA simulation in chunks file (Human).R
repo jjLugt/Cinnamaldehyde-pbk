@@ -1,4 +1,4 @@
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[1:2500,]
@@ -62,7 +62,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -136,7 +136,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -192,7 +192,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\\\solve.pbk_nonpop1", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[2501:5000,]
@@ -256,7 +256,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -330,7 +330,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -385,7 +385,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\\\solve.pbk_nonpop2", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[5001:7500,]
@@ -449,7 +449,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -523,7 +523,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -578,7 +578,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop3", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[7501:10000,]
@@ -642,7 +642,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -716,7 +716,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -771,7 +771,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop4", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[10001:12500,]
@@ -835,7 +835,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -908,7 +908,7 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=10001:12500,seq(from = time.0, to = time.end, by = time.frame))%>%
@@ -960,7 +960,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop5", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[12501:15000,]
@@ -1024,7 +1024,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -1098,7 +1098,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -1154,7 +1154,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop6", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[15001:17500,]
@@ -1218,7 +1218,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -1292,7 +1292,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -1347,7 +1347,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop7", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[17501:20000,]
@@ -1411,7 +1411,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -1485,7 +1485,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -1540,7 +1540,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop8", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[20001:22500,]
@@ -1604,7 +1604,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -1678,7 +1678,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -1733,7 +1733,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop9", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[22501:25000,]
@@ -1797,7 +1797,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -1871,7 +1871,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -1926,7 +1926,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop10", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[25001:27500,]
@@ -1990,7 +1990,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -2064,7 +2064,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -2119,7 +2119,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop11", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[27501:30000,]
@@ -2183,7 +2183,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -2257,7 +2257,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -2312,7 +2312,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop12", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[30001:32500,]
@@ -2376,7 +2376,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -2450,7 +2450,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -2505,7 +2505,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop13", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[32501:35000,]
@@ -2569,7 +2569,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -2643,7 +2643,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -2698,7 +2698,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop14", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[35001:37500,]
@@ -2762,7 +2762,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -2836,7 +2836,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -2891,7 +2891,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop15", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[37501:40000,]
@@ -2955,7 +2955,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -3029,7 +3029,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -3084,7 +3084,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop16", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[40001:42500,]
@@ -3148,7 +3148,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -3222,7 +3222,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -3277,7 +3277,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop17", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[42501:45000,]
@@ -3341,7 +3341,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -3415,7 +3415,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -3470,7 +3470,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop18", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[45001:47500,]
@@ -3534,7 +3534,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -3608,7 +3608,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -3663,7 +3663,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop19", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[47501:50000,]
@@ -3727,7 +3727,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -3801,7 +3801,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -3856,7 +3856,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop20", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[50001:52500,]
@@ -3920,7 +3920,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -3994,7 +3994,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -4049,7 +4049,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop21", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[52501:55000,]
@@ -4113,7 +4113,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -4187,7 +4187,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -4242,7 +4242,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop22", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[55001:57500,]
@@ -4306,7 +4306,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -4380,7 +4380,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -4435,7 +4435,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop23", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[57501:60000,]
@@ -4499,7 +4499,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -4573,7 +4573,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -4628,7 +4628,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop24", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[60001:62500,]
@@ -4692,7 +4692,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -4766,7 +4766,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -4821,7 +4821,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop25", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[62501:65000,]
@@ -4885,7 +4885,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -4959,7 +4959,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -5016,7 +5016,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop26", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[65001:67500,]
@@ -5080,7 +5080,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -5154,7 +5154,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -5210,7 +5210,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop27", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[67501:70000,]
@@ -5274,7 +5274,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -5348,7 +5348,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -5404,7 +5404,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop28", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[70001:72500,]
@@ -5468,7 +5468,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -5542,7 +5542,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -5599,7 +5599,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop29", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[72501:75000,]
@@ -5663,7 +5663,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -5737,7 +5737,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -5793,7 +5793,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop30", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[75001:77500,]
@@ -5857,7 +5857,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -5931,7 +5931,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -5987,7 +5987,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop31", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[77501:80000,]
@@ -6051,7 +6051,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -6125,7 +6125,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -6182,7 +6182,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop32", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[80001:82500,]
@@ -6246,7 +6246,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -6320,7 +6320,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -6378,7 +6378,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop33", row
 
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[82501:85000,]
@@ -6442,7 +6442,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -6516,7 +6516,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -6572,7 +6572,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop34", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[85001:87500,]
@@ -6636,7 +6636,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -6710,7 +6710,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -6767,7 +6767,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop35", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[87501:90000,]
@@ -6831,7 +6831,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -6905,7 +6905,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -6963,7 +6963,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop36", row
 
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[90001:92500,]
@@ -7027,7 +7027,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -7101,7 +7101,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -7160,7 +7160,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop37", row
 
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[92501:95000,]
@@ -7224,7 +7224,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -7298,7 +7298,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -7355,7 +7355,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop38", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[95001:97500,]
@@ -7419,7 +7419,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -7493,7 +7493,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -7552,7 +7552,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop39", row
 
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[97501:100000,]
@@ -7616,7 +7616,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -7690,7 +7690,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -7749,7 +7749,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop40", row
 
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[100001:102500,]
@@ -7813,7 +7813,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -7887,7 +7887,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -7943,7 +7943,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop41", row.names = TRUE)
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[102501:105000,]
@@ -8007,7 +8007,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -8081,7 +8081,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -8139,7 +8139,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop42", row
 
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[105001:107500,]
@@ -8203,7 +8203,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -8277,7 +8277,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -8335,7 +8335,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop43", row
 
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[107501:110000,]
@@ -8399,7 +8399,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -8473,7 +8473,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -8530,7 +8530,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop44", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[110001:112500,]
@@ -8594,7 +8594,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -8668,7 +8668,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -8726,7 +8726,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop45", row
 
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[112501:115000,]
@@ -8790,7 +8790,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -8864,7 +8864,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -8921,7 +8921,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop46", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[115001:117500,]
@@ -8985,7 +8985,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -9059,7 +9059,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -9116,7 +9116,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop47", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[117501:120000,]
@@ -9180,7 +9180,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -9254,7 +9254,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -9311,7 +9311,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop48", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[120001:122500,]
@@ -9375,7 +9375,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -9449,7 +9449,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -9507,7 +9507,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop49", row
 
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[122501:125000,]
@@ -9571,7 +9571,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -9645,7 +9645,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
@@ -9702,7 +9702,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop50", row.names = TRUE)
 
 
-phys <- read_csv("phys_inhalation_pop")
+phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys1<-phys[125001:126000,]
@@ -9766,7 +9766,7 @@ Vsmax_SI_CA<-phys1$Vsmax_SI_CA
 Vsmax_SI_AO<-phys1$Vsmax_SI_AO
 Vsmax_SI_OH<-phys1$Vsmax_SI_OH
 Vsmax_SI_GST<-phys1$Vsmax_SI_GST
-Volume_exposure_chamber=phys1$Volume_exposure_chamber
+Volume_exposure_chamber <-10       #volume exposure chamber in L
 
 parameters1 <- cbind(P_F,
                      P_L,
@@ -9840,7 +9840,7 @@ time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 
 
