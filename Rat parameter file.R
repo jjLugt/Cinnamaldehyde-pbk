@@ -19,8 +19,8 @@ nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
 time.end                   <-8        #time end of simulation
 time.frame                 <-0.1      #time steps of simulation
-Oral_dose_in_mg_bw         <-250      #Dose in mg/kg-bw
-Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
+Oral_dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Inhalation_dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <- 0.25    #Body weight in Kg
 Oral_Dose                  <-(Oral_dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
@@ -234,7 +234,7 @@ inits <- c("A_GI"         =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
-           "AM_Lc_GSH"    =init_GSH_L, 
+           "AM_Lc_GSH"    =0, 
            "AM_SI_CA"     =0,
            "AM_SI_AO"     =0,
            "AM_SI_AG_GST" =0,
@@ -243,7 +243,7 @@ inits <- c("A_GI"         =0,
            "A_OH_M_SI_C_A"=0,
            "A_OH_SI"      =0,
            "A_SI"         =0,
-           "AM_SIc_GSH"   =init_GSH_SI,
+           "AM_SIc_GSH"   =0,
            "A_RP"         =0,
            "A_OH_RP"      =0,
            "A_SP"         =0,
@@ -256,5 +256,7 @@ inits <- c("A_GI"         =0,
 #inhalation exposure  exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(dose = Oral_Dose, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(dose = Inhalation_Dose, dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(dose = Inhalation_Dose, dur=0.01, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
+  et(dose= init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(dose= init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 

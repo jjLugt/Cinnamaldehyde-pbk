@@ -34,7 +34,7 @@ plot(mass_at_t[,1])
 #cinnamaldehyde model Rat
 #Mass balance calculation rxode inhalation complete
 mass_df <- solve.pbk_rat/BW * MW /1e+3
-mass_df <- mass_df[,c(70:84,86:91,93:97,99:105)]
+mass_df <- mass_df[,c(69:82,84,85,88:95,99:103)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 for (i in 1:nrow(mass_df)){

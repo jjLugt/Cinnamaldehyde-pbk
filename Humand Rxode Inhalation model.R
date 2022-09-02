@@ -34,7 +34,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   C_Alvair      <- C_P_Art/P_B;                                          #Concentration of Cinnamaldehyde exhaled in μmol/l 
   
-  R_Exhalation  <- C_Alvair;                                        #Rate of Cinnamaldehyde exhalation in μmol/h  MASS BALANCE ISSUE!!!!!
+  R_Exhalation  <- P_V * C_Alvair;                                        #Rate of Cinnamaldehyde exhalation in μmol/h  MASS BALANCE ISSUE!!!!!
   
   
   #----Pulmonary tissue 
