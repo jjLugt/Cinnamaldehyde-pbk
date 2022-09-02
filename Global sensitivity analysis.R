@@ -363,9 +363,9 @@ SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
 
-write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu_pop-25-08_10000.csv", row.names = TRUE)
+write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu_popgen-100mg_4000.csv", row.names = TRUE)
 
-SimRes <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK//SimRes.inhalation_C_Pu_25-08_2000_100_nonadjusted.csv", row.names=1)
+SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu_popgen-100mg_4000.csv", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here woul create an error.

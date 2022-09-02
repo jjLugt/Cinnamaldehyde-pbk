@@ -491,6 +491,6 @@ ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=1:nrow(phys),seq(from = time.0, to = time.end, by = time.frame))%>%
   et(id=1:nrow(phys),amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
   et(id=1:nrow(phys),amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
-  et(id=1:nrow(phys),amt=phys$init_GSH_SI, dur=00001, cmt="AM_SIc_GSH", nbr.doses=1)%>%
-  et(id=1:nrow(phys),amt=phys$init_GSH_L, dur=0.0001, cmt="AM_Lc_GSH", nbr.doses=1)
+  et(id=1:nrow(phys),amt=phys$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(id=1:nrow(phys),amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
   
