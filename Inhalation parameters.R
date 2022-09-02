@@ -18,8 +18,8 @@ nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
 time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0     #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-100      #The inhaled dose in mg/kg-bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
@@ -72,7 +72,7 @@ V_Pu     <- (fV_pu / V_adjust)* BW    #Lung
 
 #-Cardiac parameters-#
 
-Q_C       <- 390   #Cardiac output in L/h
+Q_C       <-   390   #Cardiac output in L/h
 
 fQC_fat   <- 0.052  #Unit less fraction of total Cardiac output that goes to fat
 fQC_liver <- 0.141  #Unit less fraction of total Cardiac output that goes to the liver
@@ -91,7 +91,7 @@ Q_SP     <- (fQC_sp / Q_adjust)* Q_C   #Slowly perfused (SP)
 Q_Pu     <- Q_C    #Lung
 
 #inhalation parameters
-P_V     <- 540             #Alveolar ventilation L/h
+P_V     <-   540             #Alveolar ventilation L/h
 
 #----GSH parameters----#
 #--GSH synthesis in μmol/kg tissue/h--#
@@ -233,10 +233,8 @@ parameters=cbind(P_F,
 
 #defining the begin situation of the model Inhalation variation 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -274,7 +272,7 @@ inits <- c("A_GI"         =0,
 #inhalation exposure  exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(dose = Oral_Dose, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(dose = Inhalation_Dose, dur=0.01, cmt="A_Inhalation", nbr.doses=nbr.doses)%>%
+  et(dose = Inhalation_Dose, dur=0.01, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
   et(dose= init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
   et(dose= init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
