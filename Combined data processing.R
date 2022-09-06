@@ -6,6 +6,14 @@
 #human rxode model
 #Human population model
 
+library(RxODE)
+library(tidyverse)
+library(readxl)
+library(readr)
+library(shiny)
+library(truncnorm)
+library(reshape2)
+library(plotly)
 
 #Rxode
 #cinnamaldehyde model Human
@@ -515,3 +523,46 @@ gL <- ggplot(tab_C_L_popgen)+
   theme_classic()
 
 gL
+
+
+#Generating a file for the comparison with in vivo data 
+blood_data <- as.data.frame(solve.pbk_rat[,c(1,3:4)])
+write.csv(blood_data,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK//Blood_Data.csv")
+
+
+
+Combined_data_file_for_graph_500mg <- read_delim("D:/Joris/Toxicology and Environmental Health/Master stage/Comparison data/Combined data file for graph 500mg.csv", 
+                                                 delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+
+p1 <- plot_ly(Combined_data_file_for_graph_500mg, x=~time, y=Combined_data_file_for_graph_500mg$`ug/ml`, 
+              color = ~ ID , 
+              colors = "Set2",
+              type= "scatter",
+              mode= "markers",
+              hovertext= ~sample)%>%
+  layout(title= 'Blood concentration comparison dose = 500mg/kg-bw',
+         xaxis= list(title= 'Time (hours)'),
+         yaxis= list(title= 'Cinnamaldehyde concentration in ug/ml', type="log"),
+         legend  =list(title= list(text='Type of Data')))
+p1
+
+
+Combined_data_file_for_graph_250mg <- read_delim("D:/Joris/Toxicology and Environmental Health/Master stage/Comparison data/Combined data file for graph 250mg.csv", 
+                                               delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+
+p1 <- plot_ly(Combined_data_file_for_graph_250mg, x=~time, y=Combined_data_file_for_graph_250mg$`ug/ml`, 
+              color = ~ ID , 
+              colors = "Set2",
+              type= "scatter",
+              mode= "markers",
+              hovertext= ~sample)%>%
+  layout(title= 'Blood concentration comparison dose = 250mg/kg-bw',
+         xaxis= list(title= 'Time (hours)'),
+         yaxis= list(title= 'Cinnamaldehyde concentration in ug/ml', type="log"),
+         legend  =list(title= list(text='Type of Data')))
+p1
+
+
+
