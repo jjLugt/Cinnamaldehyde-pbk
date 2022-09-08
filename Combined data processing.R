@@ -91,6 +91,9 @@ sub_set_C_Pu <- solve.pbk_popgen[1:16200,]
 conc_C_Pu <- PKNCAconc(sub_set_C_Pu, C_Pu~time|id)
 
 
+#whole dataset
+AUC_data <-PKNCAconc(solve.pbk_popgen, C_Pu~time|id)
+
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 dose_extraction <- as.data.frame(parameters[,64])
@@ -101,7 +104,7 @@ d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 64]`)
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 #d_dose for 2000 results is to big for laptop so to see if it works smaller sample will be used
-d_dose <- d_dose[1:200,]
+d_dose <- d_dose[1:2000,]
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
 #Setting the end of the auc calculation at 8 hours
@@ -128,62 +131,6 @@ summary(results_obj_manual)
 results_obj_manual$result
 
 
-#Rxode data visualization 
-pL_GSH = ggplot(solve.pbk_nonpop, aes(time, AM_Lc_GSH)) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of GSH in the liver")
-pL_GSH + scale_y_log10()
-
-pA_L = ggplot(solve.pbk_nonpop, aes(time, A_L )) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of Cinnamaldehyde in the liver")
-pA_L 
-
-pA_SP = ggplot(solve.pbk_nonpop, aes(time, A_SP )) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of Cinnamaldehyde in Slowely perfused tissue")
-pA_SP
-
-pA_GST = ggplot(solve.pbk_nonpop, aes(time, AM_L_AG_GST )) + 
-  geom_line() + 
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Amount of Cinnamaldehyde metabolised with GSH")
-pA_GST
-
-#Rxode
-#Tissue results 
-tissue_results <- solve.pbk_nonpop[,c(1,3,4,7,13,19,25,39)]
-pC_V = ggplot(tissue_results, aes(time, C_V )) + 
-  geom_line() +
-  labs(x = "Time in hours", y = "umol") +
-  ggtitle("Cinnamaldehyde concentration in venous blood")
-pC_V
-
-pC_A = ggplot(tissue_results, aes(time, C_A )) + 
-  geom_line() +
-  labs(x = "Time in hours", y = "umol/L") +
-  ggtitle("Cinnamaldehyde concentration arterial blood")
-pC_A
-
-pC_L = ggplot(solve.pbk_nonpop, aes(time, C_L )) + 
-  geom_line() +
-labs(x = "Time in hours", y = "umol/L") +
-  ggtitle("Cinnamaldehyde concentration in the liver")
-pC_L
-
-pC_SI = ggplot(tissue_results, aes(time, C_SI )) + 
-  geom_line() +
-labs(x = "Time in hours", y = "umol/L") +
-  ggtitle("Cinnamaldehyde concentration in the small intestine")
-pC_SI
-pC_F = ggplot(tissue_results, aes(time, C_F )) + 
-  geom_line() +
-labs(x = "Time in hours", y = "umol/L") +
-  ggtitle("Cinnamaldehyde concentration in fat")
-pC_F
 
 #Comparison between human desolve and rxode model
 
