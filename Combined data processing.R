@@ -478,27 +478,25 @@ blood_data <- as.data.frame(solve.pbk_rat[,c(1,3,4)])
 
 
 #going from umol/l to umol
-blood_data[2]<- blood_data[2] (5.6/100)*BW
-blood_data[3]<-blood_data[3] (1.9/100)*BW
+blood_data[2]<- blood_data[2] *(5.6/100)*BW
+blood_data[3]<-blood_data[3]  *(1.9/100)*BW
 
 #combining C_v + C_A to create a combined amount of cinnamaldehyde
-blood_data[3]<-blood_data[2]+blood_data[3]
+blood_data[3]<-blood_data[2]+ blood_data[3]
 
-#Dropping C_V
+#Dropping the second colum 
 blood_data<-blood_data[-c(2)]
 
-#Drop C_A
-blood_data<-blood_data[-c(3)]
 
 #going from umol to ug
-blood_data[2]<- blood_data[2] * MW
+blood_data[2]<- blood_data[2]
 
 
 #going back an amount to an amount per L
 blood_data[2]<- blood_data[2]/(7.5/100)*BW
 
-#Going form ug/l to ug/ml
-blood_data[2]<- blood_data[2]/1000
+#going back an amount to an amount per ml
+blood_data[2]<- blood_data[2]/ 1000
 
 
 write.csv(blood_data,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK//Blood_Data.csv")
@@ -509,7 +507,7 @@ write.csv(blood_data,"D:/Joris/Toxicology and Environmental Health/Master stage/
 Combined_data_file_for_graph_500mg <- read_delim("Combined data file for graph 500mg.csv", 
                                                  delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
-p1 <- plot_ly(Combined_data_file_for_graph_500mg, x=~time, y=Combined_data_file_for_graph_500mg$`ug/ml`, 
+p1 <- plot_ly(Combined_data_file_for_graph_500mg, x=~time, y=Combined_data_file_for_graph_500mg$'ug/ml', 
               color = ~ ID , 
               colors = "Set2",
               type= "scatter",
@@ -517,14 +515,13 @@ p1 <- plot_ly(Combined_data_file_for_graph_500mg, x=~time, y=Combined_data_file_
               hovertext= ~sample)%>%
   layout(title= 'Blood concentration comparison dose = 500mg/kg-bw',
          xaxis= list(title= 'Time (hours)'),
-         yaxis= list(title= 'Cinnamaldehyde concentration in ug/ml', type="log"),
+         yaxis= list(title= 'Cinnamaldehyde concentration in umol/l', type="log"),
          legend  =list(title= list(text='Type of Data')))
 p1
 
 
-Combined_data_file_for_graph_250mg <- read_delim("D:/Joris/Toxicology and Environmental Health/Master stage/Comparison data/Combined data PC and scaled 250mg.csv", 
-                                               delim = ";", escape_double = FALSE, trim_ws = TRUE)
-
+Combined_data_file_for_graph_250mg <- read_delim("Combined data file for graph 250mg.csv", 
+                                                 delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
 p1 <- plot_ly(Combined_data_file_for_graph_250mg, x=~time, y=Combined_data_file_for_graph_250mg$`ug/ml`, 
               color = ~ ID , 
@@ -534,7 +531,7 @@ p1 <- plot_ly(Combined_data_file_for_graph_250mg, x=~time, y=Combined_data_file_
               hovertext= ~sample)%>%
   layout(title= 'Blood concentration comparison dose = 250mg/kg-bw',
          xaxis= list(title= 'Time (hours)'),
-         yaxis= list(title= 'Cinnamaldehyde concentration in ug/ml', type="log"),
+         yaxis= list(title= 'Cinnamaldehyde concentration in umol/l', type="log"),
          legend  =list(title= list(text='Type of Data')))
 p1
 
@@ -545,7 +542,7 @@ Combined_data_file_for_graph <- read.csv("D:/Joris/Toxicology and Environmental 
 p1 <- plot_ly(Combined_data_file_for_graph, x=~Time, y=Combined_data_file_for_graph$`umol.L`, 
               color = ~ ID , 
               colors = "Set2",
-              type= "scatter",
+              type= "line",
               mode= "markers",
               hovertext= ~sample)%>%
   layout(title= 'Blood concentration comparison dose = 20mg/kg-bw IV',

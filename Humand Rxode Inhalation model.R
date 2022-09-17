@@ -137,6 +137,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #Cinnamyl alcohol
   R_OH_V         <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP - Q_C * C_OH_V; 
+  
   R_OH_A         <- Q_C * C_OH_V_Pu - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A);
   
   #----------------------------------------------Differential equations-------------------------------------------------------------------------------#
@@ -213,7 +214,7 @@ PBK_Cinnamaldehyde <- RxODE({
 })
 
 #chose one depending on the input parameters 
-#solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits) #Solve the PBPK model
+solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits) #Solve the PBPK model
 
-solve.pbk_popgen <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits, cores=4) #Solve the PBPK model
+#solve.pbk_popgen <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits) #Solve the PBPK model
 
