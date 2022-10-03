@@ -33,21 +33,21 @@ Volume_exposure_chamber    <-10       #volume exposure chamber in L
 #--Physio-chemical parameters--#
 #-Cinnamaldehyde-#
 
-P_F      <-  1.69 #Fat/Blood partition coefficient
-P_L      <-  0.81 #Fat/Blood partition coefficient
-P_SI     <-  0.81 #Small intestine/Blood partition coefficients
-P_RP     <-  0.81 #Richly perfused tissues/Blood partition coefficients
-P_SP     <-  0.39 #Slowly perfused tissues/Blood partition coefficients
+P_F      <-  39.3 #Fat/Blood partition coefficient
+P_L      <-  2.04 #Fat/Blood partition coefficient
+P_SI     <-  2.04 #Small intestine/Blood partition coefficients
+P_RP     <-  2.04 #Richly perfused tissues/Blood partition coefficients
+P_SP     <-  1.57 #Slowly perfused tissues/Blood partition coefficients
 P_B      <- 1.25E5#Blood air partition coefficients
-P_Pu     <-  0.81 #Lung/Blood partition coefficients
+P_Pu     <-  2.04 #Lung/Blood partition coefficients
 
 #-Cinnamyl Alcohol-#
-P_OH_F    <-  1.71 #Fat/Blood partition coefficient
-P_OH_L    <-  0.81 #Fat/Blood partition coefficient
-P_OH_SI   <-  0.81 #Small intestine/Blood partition coefficients
-P_OH_RP   <-  0.81 #Richly perfused tissues/Blood partition coefficients
-P_OH_SP   <-  0.39 #Slowly perfused tissues/Blood partition coefficients
-P_OH_Pu   <-  0.81 #Lung/Blood partition coefficients
+P_OH_F    <-  40.5 #Fat/Blood partition coefficient
+P_OH_L    <-  2.09 #Fat/Blood partition coefficient
+P_OH_SI   <-  2.09 #Small intestine/Blood partition coefficients
+P_OH_RP   <-  2.09 #Richly perfused tissues/Blood partition coefficients
+P_OH_SP   <-  1.60 #Slowly perfused tissues/Blood partition coefficients
+P_OH_Pu   <-  2.09 #Lung/Blood partition coefficients
 
 #--Physiological Parameters--#
 
@@ -120,15 +120,15 @@ Km_L_GST_G  <-  100  #Km for enzymatic conjugation of cinnamaldehyde with GST in
 Km_L_OH     <-  1300 #Km for enzymatic oxidation of cinnamyl alcohol to cinnamaldehyde in the liver in μM
 
 #--Vmax values--#
-Vsmax_L_AO    <- 29 *S9_scaling_L  #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
-Vsmax_L_GST_G <- 100 *S9_scaling_L #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the Liver (μM RAT value)
-Vsmax_L_OH    <- 15  *S9_scaling_L #Scaled Vmax for enzymatic oxidation of cinnamyl alcohol to cinnamaldehyde in the liver in μmol/h
+Vsmax_L_AO    <- 29 #*S9_scaling_L  #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
+Vsmax_L_GST_G <- 100 #*S9_scaling_L #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the Liver (μM RAT value)
+Vsmax_L_OH    <- 15  #*S9_scaling_L #Scaled Vmax for enzymatic oxidation of cinnamyl alcohol to cinnamaldehyde in the liver in μmol/h
 
 #----Small intestines----#
-S9_scaling_SI <- 11.4 * V_SI *1000 #scaling factor fraction S9 protein per g tissue
+S9_scaling_SI <- 11.4 #* V_SI *1000 #scaling factor fraction S9 protein per g tissue
 
 #First order rate constants
-k_SI_CA  <- 3.9*10^(-3) * S9_scaling_SI           #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the small intestine (μmol/h)
+k_SI_CA  <- 3.9*10^(-3)# * S9_scaling_SI           #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the small intestine (μmol/h)
 
 #--Michaelis menten constants SI--#
 Km_SI_CA    <- 0  #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
@@ -138,9 +138,9 @@ Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in th
 Km_SI_GST_G <- 100  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM)
 
 #-Vmax values-#
-Vsmax_SI_AO    <- 5.8 *S9_scaling_SI#Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
-Vsmax_SI_OH    <- 0 *S9_scaling_SI#Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
-Vsmax_SI_GST   <- 63  *S9_scaling_SI#Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
+Vsmax_SI_AO    <- 5.8# *S9_scaling_SI#Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
+Vsmax_SI_OH    <- 0 #*S9_scaling_SI#Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
+Vsmax_SI_GST   <- 63  #*S9_scaling_SI#Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Collection of all parameters so they can be entered in the function
 parameters=cbind(Volume_exposure_chamber,

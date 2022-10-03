@@ -51,7 +51,7 @@ P_OH_Pu   <-  0.81 #Lung/Blood partition coefficients
 
 #--Physiological Parameters--#
 
-#-Tissues volumes in % body weight-#
+#-Tissues volumes in L-#
 
 V_F      <- 0.07  * BW  #Fat
 V_L      <- 0.034 * BW  #Liver
@@ -78,35 +78,30 @@ Q_Pu     <- Q_C    #Blood flow through the lung
 P_V      <- 0.75 #Pulmonary ventilation in L/h 
 
 #----GSH parameters----#
-#--GSH synthesis in umol/kg tissue/h--#
+#--GSH synthesis in umol/per organ/h--#
 
-G_SYN_L     <- 6.6 * V_L #Liver 
-G_SYN_SI    <- 0.25 * V_SI  #Small intestine
+G_SYN_L     <- 869 * V_L * 0.9  #Liver 
+G_SYN_SI    <- 78 * V_SI * 0.9  #Small intestine
 
 #-Apparent first order rate constant GSH turn over(RAT?) per h-#
 k_L_GLOS    <- 0.142 #Liver
 k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-init_GSH_L  <- 6120   * V_L #initial GSH concentration in the liver in umol/kg
-init_GSH_SI <- 1780   * V_SI  #initial GSH concentration in the small intestine in umol/kg
+init_GSH_L  <- 4957 * V_L  #initial GSH concentration in the liver in umol/kg
+init_GSH_SI <- 1435 * V_SI #initial GSH concentration in the small intestine in umol/kg
 
 k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
-k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
 
 #----Protein reactive sites in μmol/kg tissue----#
 C_PRO_L     <- 5319  * V_L  #Liver
 C_PRO_SI    <- 245 * V_SI #Small intestine
 
-#----DNA parameters----#
-C_L_dG     <-  1.36  * V_L #Concentration of 2ʹ-dG in the liver μmol/kg liver
-T_0.5      <-  38.5   #Half-life of DNA adduct in the liver in hours
-
 #--Chemical parameters--#
 Ka <- 5.0  #Absorption rate constant for uptake in the Small intestine in per H
 
 #----Liver----#
-S9_scaling_L <- 143 * V_L *1000 #scaling factor for S9 fraction per g tissue
+S9_scaling_L <- 143 * (V_L * 1000) #scaling factor for S9 fraction per g tissue
 
 
 #First order rate constants
@@ -128,7 +123,7 @@ Vsmax_L_OH    <- 15  *S9_scaling_L #Scaled Vmax for enzymatic oxidation of cinna
 S9_scaling_SI <- 11.4 * V_SI *1000 #scaling factor fraction S9 protein per g tissue
 
 #First order rate constants
-k_SI_CA  <- 3.9*10^(-3) * S9_scaling_SI           #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the small intestine (μmol/h)
+k_SI_CA  <- 3.9*10^(-3) * S9_scaling_SI #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the small intestine (μmol/h)
 
 #--Michaelis menten constants SI--#
 Km_SI_CA    <- 0  #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
@@ -181,11 +176,8 @@ parameters=cbind(Volume_exposure_chamber,
                  init_GSH_L,
                  init_GSH_SI,
                  k_GSH,
-                 k_DNA,
                  C_PRO_L,
                  C_PRO_SI,
-                 C_L_dG,
-                 T_0.5,
                  Ka,
                  k_L_GST,
                  Km_L_OH,
@@ -209,35 +201,27 @@ parameters=cbind(Volume_exposure_chamber,
 
 #defining the begin situation of the model Inhalation variation 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
-           "A_Exhalation" =0,
-           "A_Pu"         =0,
-           "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
+           "A_A"          =0,
+           "A_OH_A"       =0,
            "A_F"          =0,
            "A_OH_F"       =0,
-           "AM_L_CA"      =0,
-           "AM_L_AO"      =0,
-           "AM_L_AG_GST"  =0,
-           "AM_L_AG_CHEM" =0,
-           "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
-           "A_OH_M_L_C_A" =0,
-           "A_OH_L"       =0,
            "A_L"          =0,
-           "AM_Lc_GSH"    =0, 
-           "AM_SI_CA"     =0,
-           "AM_SI_AO"     =0,
-           "AM_SI_AG_GST" =0,
-           "AM_SI_AG_CHEM"=0,
-           "AM_SI_AP"     =0,
-           "A_OH_M_SI_C_A"=0,
-           "A_OH_SI"      =0,
+           "A_OH_L"       =0,
+           "AM_L_GST"     =0,
+           "AM_L_CHEM"    =0,
+           "AM_L_CA"      =0,
+           "AM_L_AP"      =0,
+           "AM_Lc_GSH"    =0,
            "A_SI"         =0,
+           "A_OH_SI"      =0,
+           "AM_SI_GST"    =0,
+           "AM_SI_CHEM"   =0,
+           "AM_SI_CA"     =0,
+           "AM_SI_AP"     =0,
            "AM_SIc_GSH"   =0,
+           "AM_L_AO"      =0,
            "A_RP"         =0,
            "A_OH_RP"      =0,
            "A_SP"         =0,
@@ -250,8 +234,7 @@ inits <- c("A_GI"         =0,
 #inhalation exposure  exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(dose = Oral_Dose, dur=0.001, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(dose = Inhalation_Dose, dur=0.001, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
-  et(dose= init_GSH_SI, dur=0.0001, cmt="AM_SIc_GSH", nbr.doses=1)%>%
-  et(dose= init_GSH_L, dur=0.0001, cmt="AM_Lc_GSH", nbr.doses=1)%>%
   et(dose=iv_dose, dur=0.005,cmt="A_V",nbr.doses=1)%>%
+  et(dose= init_GSH_L, cmt="AM_Lc_GSH", nbr.doses=1)%>%
+  et(dose= init_GSH_SI, cmt="AM_SIc_GSH", nbr.doses=1)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 

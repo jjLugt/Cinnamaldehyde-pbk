@@ -86,45 +86,45 @@ PBK_Cinnamaldehyde <- RxODE({
   #Cinnamaldehyde#
   C_SI           <- A_SI      / V_SI;                                                        #Concentration Cinnamaldehyde in the Small intestine in umol/kg
   C_V_SI         <- C_SI      / P_SI;                                                        #Concentration of cinnamaldehyde in venous blood leaving the Small intestine in umol/l
-  RM_SI_CA       <- k_SI_CA * C_V_SI;                              #Rate of Cinnamaldehyde enzymatically oxidized cabroxylic acid in the small intestine in μmol/h
-  RM_SI_AP       <- k_GSH * C_V_SI * C_PRO_SI * V_SI;                                        #Rate of Cinnamaldehyde protein adducts in the small intestine in umol/h
+  RM_SI_CA       <- k_SI_CA * C_SI;                              #Rate of Cinnamaldehyde enzymatically oxidized to cabroxylic acid in the small intestine in μmol/h
+  RM_SI_AP       <- k_GSH * C_SI * C_PRO_SI * V_SI;                                        #Rate of Cinnamaldehyde protein adducts in the small intestine in umol/h
   
   #GSH#
   C_SIc_GSH      <- AM_SIc_GSH / V_SI;                                                       #Concentration of GSH in the Small Intestine in umol/l
-  RM_SI_AG_GST   <- Vsmax_SI_GST * C_V_SI * C_SIc_GSH / (Km_SI_GST_G * C_V_SI + Km_SI_GST * C_SIc_GSH + C_SIc_GSH * C_V_SI);  #-amount of cinnamaldehyde metabolized in the small intestine to GSH conjugate by GST in μmol
-  RM_SI_AG_CHEM  <- k_GSH * C_V_SI * C_SIc_GSH * V_SI;                                       #Rate of Cinnamaldehyde binding in the small intestine to GSH in umol/h
-  RM_SIc_GSH     <- G_SYN_SI * V_SI * 0.9 - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * AM_SIc_GSH);         #Rate of  GSH concentration in the Smal intesinte cytosol umol/h
+  RM_SI_AG_GST   <- Vsmax_SI_GST * C_SI * C_SIc_GSH / (Km_SI_GST_G * C_SI + Km_SI_GST * C_SIc_GSH + C_SIc_GSH * C_SI);  #-amount of cinnamaldehyde metabolized in the small intestine to GSH conjugate by GST in μmol
+  RM_SI_AG_CHEM  <- k_GSH * C_SI * C_SIc_GSH * V_SI;                                       #Rate of Cinnamaldehyde binding in the small intestine to GSH in umol/h
+  RM_SIc_GSH     <- G_SYN_SI * V_SI * 0.9 - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * AM_SIc_GSH);         #Rate of  GSH concentration in the Smal intestine cytosol umol/h
   
   #Cinnamyl alchol#
   C_OH_SI        <- A_OH_SI   / V_SI;                                      #Concentration of Cinnamyl alcOHol in the Small intestine in umol/l
   C_OH_V_SI      <- C_OH_SI   / P_OH_SI;                                   #Concentration of Cinnamyl alcOHol in venous blood leaving the Small intestine  in umol/l
-  RM_SI_AO       <- Vsmax_SI_AO * C_V_SI / (Km_SI_AO + C_V_SI);             #Amount of Cinnamaldehyde reduced to cinnamyl alcOHol in the small intestine in umol
-  R_OH_M_SI_C_A  <- Vsmax_SI_OH * C_OH_V_SI/(Km_SI_OH + C_OH_V_SI);         #Rate of Cinnamyl alcOHol enzymatically oxidized to cinnamaldehyde in the small intestine in umol 
-  R_OH_SI        <- Q_SI * (C_OH_A - C_OH_V_SI) + RM_SI_AO - R_OH_M_SI_C_A;  #Rate of Cinnamyl alcohol concentration change in the small intestine in umol/h
+  RM_SI_AO       <- Vsmax_SI_AO * C_SI / (Km_SI_AO + C_SI);            #Amount of Cinnamaldehyde reduced to cinnamyl alcOHol in the small intestine in umol
+  R_OH_M_SI_C_A  <- Vsmax_SI_OH * C_OH_SI/(Km_SI_OH + C_OH_SI);        #Rate of Cinnamyl alcOHol enzymaticly oxidized to cinnamaldehyde in the small intestine in umol 
+  R_OH_SI        <- Q_SI * (C_OH_A - C_OH_SI) + RM_SI_AO - R_OH_M_SI_C_A;#Rate of Cinnamyl alcohol concentration change in the small intestine in umol/h
   
   #Over all output small intestine#
-  R_SI           <- Q_SI * (C_A - C_V_SI) -Rin - (RM_SI_CA + RM_SI_AP + RM_SI_AG_GST + RM_SI_AG_CHEM + RM_SI_AO ) + R_OH_M_SI_C_A;        #Rate of change in cinnamaldehyde concentration in the SI in umol/h
+  R_SI           <- Q_SI * (C_A - C_V_SI) + R_OH_M_SI_C_A -Rin - (RM_SI_CA + RM_SI_AP + RM_SI_AG_GST + RM_SI_AG_CHEM + RM_SI_AO ) ;        #Rate of change in cinnamaldehyde concentration in the SI in umol/h
   
   #---------------Liver-----------------------------------#
   #-Cinnamaldehyde-#
-  C_L            <- A_L       / V_L;                                                         #Concentration Cinnamaldehyde in the Liver in umol/kg
-  C_V_L          <- C_L       / P_L;                                                         #Concentration of cinnamaldehyde in venous blood leaving the Liver in umol/l
-  RM_L_CA        <- k_L_CA * C_V_L;                                 #Rate of Cinnamaldehyde oxidation to carboxylic acid in the liver in μmol/h
-  RM_L_AP        <- k_GSH * C_V_L * C_PRO_L * V_L;                                           #Rate of Cinnamaldehyde proteins adducts formation in the liver in umol/h
+  C_L            <- A_L       / V_L;                                #Concentration Cinnamaldehyde in the Liver in umol/kg
+  C_V_L          <- C_L       / P_L;                                #Concentration of cinnamaldehyde in venous blood leaving the Liver in umol/l
+  RM_L_CA        <- k_L_CA * C_L;                                 #Rate of Cinnamaldehyde oxidation to carboxylic acid in the liver in μmol/h
+  RM_L_AP        <- k_GSH * C_L * C_PRO_L * V_L;                  #Rate of Cinnamaldehyde proteins adducts formation in the liver in umol/h
   
   #GSH#
   C_Lc_GSH       <- AM_Lc_GSH / V_L;                                                          #Concentration of GSH in the liver cytosol in umol/l  
-  RM_L_AG_GST    <- k_L_GST * C_V_L * C_Lc_GSH/(Km_L_GST_G + C_Lc_GSH); #Amount of cinnamaldehyde metabolized with GSH in the liver to conjugate GST   #KM_L_GST_G is stil unknown
-  RM_L_AG_CHEM   <- k_GSH * C_V_L * C_Lc_GSH * V_L;                                           #Amount of Cinnamaldehyde chemically bound in liver to GSH in umol
+  RM_L_AG_GST    <- k_L_GST * C_L * C_Lc_GSH/(Km_L_GST_G + C_Lc_GSH); #Amount of cinnamaldehyde metabolized with GSH in the liver to conjugate GST   #KM_L_GST_G is stil unknown
+  RM_L_AG_CHEM   <- k_GSH * C_L * C_Lc_GSH * V_L;                                           #Amount of Cinnamaldehyde chemically bound in liver to GSH in umol
   RM_Lc_GSH      <- G_SYN_L * V_L * 0.9 - (RM_L_AG_GST + RM_L_AG_CHEM + k_L_GLOS * AM_Lc_GSH);#Rate of change in GSH concentration in the liver cytosol umol/h
-  RM_L_DA_FORM   <- k_DNA * C_V_L * C_L_dG * V_L;                                             #Rate of DNA adduct formation in the liver 
+  RM_L_DA_FORM   <- k_DNA * C_L * C_L_dG * V_L;                                             #Rate of DNA adduct formation in the liver 
   RM_L_DA        <- RM_L_DA_FORM - AM_L_DA * (log(2)/T_0.5);                                  #Rate of DNA adduct removal in the liver
   
   #Cinnamyl alcohol
   C_OH_L         <- A_OH_L    / V_L;                    #Concentration of Cinnamyl alcOHol in the Liver in umol/kg
   C_OH_V_L       <- C_OH_L   / P_OH_L;                  #Concentration of Cinnamyl alcOHol in venous blood leaving the Liver in umol/l
-  RM_L_AO        <- Vsmax_L_AO * C_V_L / (Km_L_AO + C_V_L );        #Rate of Cinnamaldehyde reduced to cinnamyl alcOHol in the liver in umol/h
-  R_OH_M_L_C_A   <- Vsmax_L_OH *C_V_L/(Km_L_OH + C_V_L);                               #Rate of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in umo/h
+  RM_L_AO        <- (Vsmax_L_AO * C_L) / (Km_L_AO + C_L );        #Rate of Cinnamaldehyde reduced to cinnamyl alcOHol in the liver in umol/h
+  R_OH_M_L_C_A   <- (Vsmax_L_OH *C_OH_L) /(Km_L_OH + C_OH_L);            #Rate of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in umol/h
   
   R_OH_L         <- Q_L * C_OH_A + Q_SI * C_OH_V_SI + RM_L_AO - (Q_L + Q_SI) * C_OH_V_L - R_OH_M_L_C_A;#Rate of in  Cinnamyl alcOHol concentration in the liver in umol
   

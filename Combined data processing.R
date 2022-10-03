@@ -74,9 +74,26 @@ for (i in 1:nrow(mass_df)){
 }
 plot(mass_at_t[,1])
 
+#non inhalation Rat
+mass_df <- solve.pbk_rat/BW * MW /1e+3
+mass_df <- mass_df[,c(55:64,70:75,76:81)]
+mass_at_t <- data.frame(mass=as.numeric())
+
+for (i in 1:nrow(mass_df)){
+  mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(mass_df[i,])
+}
+plot(mass_at_t[,1])
 
 
+#non metabolism Rat
+mass_df <- solve.pbk_rat/BW * MW /1e+3
+mass_df <- mass_df[,c(54:69,71:75,77,79)]
+mass_at_t <- data.frame(mass=as.numeric())
 
+for (i in 1:nrow(mass_df)){
+  mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(mass_df[i,])
+}
+plot(mass_at_t[,1])
 
 #Rxode
 #AUC calculations
@@ -478,8 +495,8 @@ blood_data <- as.data.frame(solve.pbk_rat[,c(1,3,4)])
 
 
 #going from umol/l to umol
-blood_data[2]<- blood_data[2] *(5.6/100)*BW
-blood_data[3]<-blood_data[3]  *(1.9/100)*BW
+blood_data[2]<- blood_data[2] * V_V
+blood_data[3]<-blood_data[3]  * V_A
 
 #combining C_v + C_A to create a combined amount of cinnamaldehyde
 blood_data[3]<-blood_data[2]+ blood_data[3]
@@ -493,7 +510,7 @@ blood_data[2]<- blood_data[2]
 
 
 #going back an amount to an amount per L
-blood_data[2]<- blood_data[2]/(7.5/100)*BW
+blood_data[2]<- blood_data[2]/ (V_V + V_A)
 
 #going back an amount to an amount per ml
 blood_data[2]<- blood_data[2]/ 1000
