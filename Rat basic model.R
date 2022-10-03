@@ -68,7 +68,7 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_SIc_GSH     <- G_SYN_SI * 0.9 -(RM_SI_GST + RM_SI_CHEM + k_SI_GLOS * AM_SIc_GSH);      #Rate of  GSH concentration in the Smal intestine cytosol umol/h
   
   #Output small intestine#
-  R_OH_SI        <- Q_SI * (C_OH_A - C_OH_SI)      #Rate of Cinnamyl alcohol concentration change in the small intestine in umol/h
+  R_OH_SI        <- Q_SI * (C_OH_A - C_OH_V_SI)      #Rate of Cinnamyl alcohol concentration change in the small intestine in umol/h
   
   R_SI           <- Q_SI * (C_A - C_V_SI) - Rin - RM_SI_CA - RM_SI_AP - RM_SI_GST - RM_SI_CHEM # #Rate of change in cinnamaldehyde concentration in the SI in umol/h
  
@@ -95,7 +95,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   
   #Over all output Liver#
-  R_OH_L         <- Q_L * C_OH_A + Q_SI * C_OH_V_SI  - (Q_L + Q_SI) * C_OH_V_L + RM_L_AO;  #Rate of in  Cinnamyl alcOHol concentration in the liver in umol
+  R_OH_L         <- Q_L * C_OH_A + Q_SI * C_OH_V_SI  - (Q_L + Q_SI) * C_OH_V_L #+ RM_L_AO;  #Rate of in  Cinnamyl alcOHol concentration in the liver in umol
   
   R_L            <- Q_L * C_A + Q_SI * C_V_SI - (Q_L + Q_SI) * C_V_L - RM_L_CA - RM_L_AP - RM_L_GST - RM_L_CHEM #- RM_L_AO #Rate of change in Cinnamaldehyde concentration in the liver in umol/h
   
@@ -159,13 +159,13 @@ PBK_Cinnamaldehyde <- RxODE({
   d/dt(AM_L_CHEM)<- RM_L_CHEM;  #Amount of Cinnamaldehyde chemically bound in liver to GSH in μmol
   d/dt(AM_L_CA)  <- RM_L_CA;    #Amount of Cinnamaldehyde oxidized to cinnamic acid in the liver in μmol
   d/dt(AM_L_AP)  <- RM_L_AP;    #Amount of Cinnamaldehyde proteins adduct in the liver in μmol
-  d/dt(AM_L_AO)  <- RM_L_AO;    #Amount of Cinnamaldehyde reduced to cinnamyl alcOHol in the liver in μmol
+  #d/dt(AM_L_AO)  <- RM_L_AO;    #Amount of Cinnamaldehyde reduced to cinnamyl alcOHol in the liver in μmol
   
   d/dt(A_L)      <- R_L;        #Amount of Cinnamaldehyde in the liver in μmol
  
   #GSH
   d/dt(AM_Lc_GSH) <- RM_Lc_GSH; #Amount of GSH in the liver cytosol
-  d/dt(A_OH_L)   <- R_OH_L;     #Amount of Cinnamyl alcOHol in the liver in μmol 
+  d/dt(A_OH_L)    <- R_OH_L;    #Amount of Cinnamyl alcOHol in the liver in μmol 
 })
 
 solve.pbk_rat <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits) #Solve the PBPK model
