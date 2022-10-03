@@ -19,18 +19,7 @@ library(plotly)
 #cinnamaldehyde model Human
 #Mass balance calculation rxode inhalation complete
 mass_df <- solve.pbk_nonpop/BW * MW /1e+3
-mass_df <- mass_df[,c(69:82,84,85,88:95,99:103)]
-mass_at_t <- data.frame(mass=as.numeric())
-
-for (i in 1:nrow(mass_df)){
-  mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(mass_df[i,])
-}
-plot(mass_at_t[,1])
-
-
-#Without DNA binding
-mass_df <- solve.pbk_nonpop/BW * MW /1e+3
-mass_df <- mass_df[,c(64:75,77,78,82:88,92:96)]
+mass_df <- mass_df[,c(67:80,82,83,86:91,95:99)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 for (i in 1:nrow(mass_df)){
@@ -42,7 +31,7 @@ plot(mass_at_t[,1])
 #cinnamaldehyde model Rat
 #Mass balance calculation rxode inhalation complete
 mass_df <- solve.pbk_rat/BW * MW /1e+3
-mass_df <- mass_df[,c(69:82,84,85,88:95,99:103)]
+mass_df <- mass_df[,c(67:85,87,89,91:94,96,98)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 for (i in 1:nrow(mass_df)){
@@ -85,15 +74,6 @@ for (i in 1:nrow(mass_df)){
 plot(mass_at_t[,1])
 
 
-#non metabolism Rat
-mass_df <- solve.pbk_rat/BW * MW /1e+3
-mass_df <- mass_df[,c(57:71,73,75,77:80,82,84)]
-mass_at_t <- data.frame(mass=as.numeric())
-
-for (i in 1:nrow(mass_df)){
-  mass_at_t[nrow(mass_at_t) + 1,] <- rowSums(mass_df[i,])
-}
-plot(mass_at_t[,1])
 
 #Rxode
 #AUC calculations
