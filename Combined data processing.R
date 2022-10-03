@@ -87,7 +87,7 @@ plot(mass_at_t[,1])
 
 #non metabolism Rat
 mass_df <- solve.pbk_rat/BW * MW /1e+3
-mass_df <- mass_df[,c(54:69,71:75,77,79)]
+mass_df <- mass_df[,c(57:71,73,75,77:80,82,84)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 for (i in 1:nrow(mass_df)){
