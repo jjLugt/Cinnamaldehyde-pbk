@@ -91,7 +91,7 @@ PBK_Cinnamaldehyde <- RxODE({
   C_SIc_GSH      <- AM_SIc_GSH / V_SI;                                                       #Concentration of GSH in the Small Intestine in umol/l
   RM_SI_AG_GST   <- Vsmax_SI_GST * C_V_SI * C_SIc_GSH / (Km_SI_GST_G * C_V_SI + Km_SI_GST * C_SIc_GSH + C_SIc_GSH * C_V_SI);  #-amount of cinnamaldehyde metabolized in the small intestine to GSH conjugate by GST in umol
   RM_SI_AG_CHEM  <- k_GSH * C_V_SI * C_SIc_GSH;                                       #Rate of Cinnamaldehyde binding in the small intestine to GSH in umol/h
-  RM_SIc_GSH     <- G_SYN_SI * V_SI * 0.9 - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * AM_SIc_GSH);         #Rate of  GSH concentration in the Smal intesinte cytosol umol/h
+  RM_SIc_GSH     <- G_SYN_SI * 0.9 - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * AM_SIc_GSH);         #Rate of  GSH concentration in the Smal intesinte cytosol umol/h
   
   #Cinnamyl alchol#
   C_OH_SI        <- A_OH_SI   / V_SI;                                      #Concentration of Cinnamyl alcOHol in the Small intestine in umol/l

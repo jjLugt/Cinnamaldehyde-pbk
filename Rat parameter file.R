@@ -17,7 +17,7 @@ amount.units               <-"umol"
 time.units                 <-"h"
 nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
-time.end                   <-8        #time end of simulation
+time.end                   <-30        #time end of simulation
 time.frame                 <-0.1      #time steps of simulation
 Oral_dose_in_mg_bw         <-500      #Dose in mg/kg-bw
 Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw

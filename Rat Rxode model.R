@@ -65,7 +65,7 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_SI_CHEM     <- k_GSH * C_V_SI * C_SIc_GSH * V_SI;             #Rate of Cinnamaldehyde binding in the small intestine to GSH in μmol/h
   RM_SI_CA       <- k_SI_CA * C_V_SI;                              #Rate of Cinnamaldehyde enzymatically oxidized to carboxylic acid in the small intestine in μmol/h
   RM_SI_AP       <- k_GSH * C_V_SI * C_PRO_SI;                     #Rate of Cinnamaldehyde protein adducts in the small intestine in μmol/h
-  RM_SIc_GSH     <- G_SYN_SI * 0.9 -(RM_SI_GST + RM_SI_CHEM + k_SI_GLOS * AM_SIc_GSH);      #Rate of  GSH concentration in the small intestine cytosol μmol/h
+  RM_SIc_GSH     <- G_SYN_SI -(RM_SI_GST + RM_SI_CHEM + k_SI_GLOS * AM_SIc_GSH);      #Rate of  GSH concentration in the small intestine cytosol μmol/h
   RM_SI_AO       <- Vsmax_SI_AO * C_V_SI / (Km_SI_AO + C_V_SI);                             #Rate of Cinnamaldehyde reduction to cinnamyl alcOHol in the small intestine in μmol
   RM_OH_SI_C_A   <- Vsmax_SI_OH * C_OH_V_SI/(Km_SI_OH + C_OH_V_SI);                         #Rate of Cinnamyl alcohol enzymatically oxidized to cinnamaldehyde in the small intestine in μmol 
   
@@ -91,9 +91,9 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_L_CHEM      <- k_GSH * C_V_L * C_Lc_GSH * V_L;     #Rate of Cinnamaldehyde chemically binding to GSH in the liver in μmol/h
   RM_L_CA        <- k_L_CA * C_V_L;                     #Rate of Cinnamaldehyde oxidation to carboxylic acid in the liver in μmol/h
   RM_L_AP        <- k_GSH * C_V_L * C_PRO_L;            #Rate of Cinnamaldehyde proteins adducts formation in the liver in μmol/h
-  RM_Lc_GSH      <- G_SYN_L * 0.9 - (RM_L_GST + RM_L_CHEM + k_L_GLOS * AM_Lc_GSH);      #Rate of change in GSH concentration in the liver cytosol μmol/h
+  RM_Lc_GSH      <- G_SYN_L - (RM_L_GST + RM_L_CHEM + k_L_GLOS * AM_Lc_GSH);      #Rate of change in GSH concentration in the liver cytosol μmol/h
   RM_L_AO        <- (Vsmax_L_AO * C_V_L) / (Km_L_AO + C_V_L );                #Rate of Cinnamaldehyde reduced to cinnamyl alcOHol in the liver in μmol/h
-  RM_OH_L_C_A    <- (Vsmax_L_OH * C_OH_V_L) /(Km_L_OH + C_OH_V_L);            #Rate of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in μmol/h
+  RM_OH_L_C_A    <- (Vsmax_L_OH * C_V_L) /(Km_L_OH + C_V_L);            #Rate of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in μmol/h
   
   
   
