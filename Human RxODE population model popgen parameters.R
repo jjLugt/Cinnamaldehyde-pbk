@@ -169,12 +169,12 @@ var_m_pop$C_PRO_SI    <- 245  * var_m_pop$V_SI #Small intestine
 var_m_pop$Ka <- 5.0  #Absorption rate constant for uptake in the Small intestine in per H
 
 
-var_m_pop$S9_scaling_L <- 143 * (V_L * 1000) #scaling factor for S9 fraction per g tissue
+var_m_pop$S9_scaling_L <- 143 * (var_m_pop$V_L * 1000) #scaling factor for S9 fraction per g tissue
 
 #----Liver----#
 
 #-first rate order constants-#
-var_m_pop$k_L_OH  <- 4.2e-02   #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
+var_m_pop$k_L_OH  <- 4.2e-02 * 60/1000 * var_m_pop$S9_scaling_L  #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
 
 #--Michaelis menten constants--#
 var_m_pop$Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
@@ -183,13 +183,13 @@ var_m_pop$Km_L_GST    <-  100  #Km for enzymatic conjugation of cinnamaldehyde w
 var_m_pop$Km_L_GST_G  <-  1.7*10^3  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine μM
 
 #--Vmax values--#
-var_m_pop$Vsmax_L_CA    <-  9.7 * var_m_pop$S9_scaling_L #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
-var_m_pop$Vsmax_L_AO    <-  73  * var_m_pop$S9_scaling_L  #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
-var_m_pop$Vsmax_L_GST   <-  37  * var_m_pop$S9_scaling_L  #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
+var_m_pop$Vsmax_L_CA    <-  9.7* 60/1000 * var_m_pop$S9_scaling_L #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
+var_m_pop$Vsmax_L_AO    <-  73 * 60/1000 * var_m_pop$S9_scaling_L  #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
+var_m_pop$Vsmax_L_GST   <-  37 * 60/1000 * var_m_pop$S9_scaling_L  #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
 
 #----Small intestines----#
 
-var_m_pop$S9_scaling_SI <-  11.4 * (V_SI *1000) #scaling factor fraction S9 protein per g tissue
+var_m_pop$S9_scaling_SI <-  11.4 * (var_m_pop$V_SI *1000) #scaling factor fraction S9 protein per g tissue
 
 #--Michaelis menten constants--#
 var_m_pop$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
@@ -199,10 +199,10 @@ var_m_pop$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with
 var_m_pop$Km_SI_GST_G <- 100 #Km toward cinnamaldehyde for enzymatic conjugation of cinnamaldehyde in the small intestine μM
 
 #-Vmax values-#
-var_m_pop$Vsmax_SI_CA    <- 21  * var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
-var_m_pop$Vsmax_SI_AO    <- 30  * vvar_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
-var_m_pop$Vsmax_SI_OH    <- 5.0 * var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
-var_m_pop$Vsmax_SI_GST   <- 63  * var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h RAT value
+var_m_pop$Vsmax_SI_CA    <- 21 * 60/1000 * var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
+var_m_pop$Vsmax_SI_AO    <- 30  * 60/1000* vvar_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
+var_m_pop$Vsmax_SI_OH    <- 5.0 * 60/1000* var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
+var_m_pop$Vsmax_SI_GST   <- 63  * 60/1000* var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h RAT value
 
 #---Dose male---#
 var_m_pop$Oral_Dose       <- (Oral_Dose_in_mg_bw * var_m_pop$BW)/ MW  * 1e+3     #The administered dose in umol 
@@ -264,12 +264,12 @@ var_f_pop$C_PRO_SI    <- 245  * var_f_pop$V_SI #Small intestine
 var_f_pop$Ka <- 5.0  #Absorption rate constant for uptake in the Small intestine in per H
 
 #----Liver----#
-var_f_pop$S9_scaling_L <- 143 * (V_L * 1000)#scaling factor for S9 fraction per g tissue
+var_f_pop$S9_scaling_L <- 143 * (var_f_pop$V_L * 1000)#scaling factor for S9 fraction per g tissue
 
 #----Liver----#
 
 #-first rate order constants-#
-var_f_pop$k_L_OH  <- 4.2e-02   #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
+var_f_pop$k_L_OH  <- 4.2e-02 * 60/1000 * var_f_pop$S9_scaling_L  #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
 
 #--Michaelis menten constants--#
 var_f_pop$Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
@@ -278,12 +278,12 @@ var_f_pop$Km_L_GST    <-  100 #Km for enzymatic conjugation of cinnamaldehyde wi
 var_f_pop$Km_L_GST_G  <-  1.7*10^3 #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the liver (μM)
 
 #--Vmax values--#
-var_f_pop$Vsmax_L_CA    <-  9.7 *var_f_pop$S9_scaling_L #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
-var_f_pop$Vsmax_L_AO    <-  73  *var_f_pop$S9_scaling_L #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
-var_f_pop$Vsmax_L_GST   <-  37  *var_f_pop$S9_scaling_L #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
+var_f_pop$Vsmax_L_CA    <-  9.7 * 60/1000 * var_f_pop$S9_scaling_L #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
+var_f_pop$Vsmax_L_AO    <-  73  * 60/1000 *var_f_pop$S9_scaling_L #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
+var_f_pop$Vsmax_L_GST   <-  37 * 60/1000 * var_f_pop$S9_scaling_L #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
 
 #----Small intestines----#
-var_f_pop$S9_scaling_SI <-  11.4 * (V_SI *1000) #scaling factor fraction S9 protein per g tissue
+var_f_pop$S9_scaling_SI <-  11.4 * (var_f_pop$V_SIV_SI *1000) #scaling factor fraction S9 protein per g tissue
 
 #--Michaelis menten constants--#
 var_f_pop$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
@@ -293,10 +293,10 @@ var_f_pop$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with
 var_f_pop$Km_SI_GST_G <- 100  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM)
 
 #-Vmax values-#
-var_f_pop$Vsmax_SI_CA    <- 21  * var_f_pop$S9_scaling_SI#Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
-var_f_pop$Vsmax_SI_AO    <- 30  * var_f_pop$S9_scaling_SI #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
-var_f_pop$Vsmax_SI_OH    <- 5.0 * var_f_pop$S9_scaling_SI #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
-var_f_pop$Vsmax_SI_GST   <- 63  * var_f_pop$S9_scaling_SI#Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
+var_f_pop$Vsmax_SI_CA    <- 21 * 60/1000 * var_f_pop$S9_scaling_SI#Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
+var_f_pop$Vsmax_SI_AO    <- 30 * 60/1000 * var_f_pop$S9_scaling_SI #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
+var_f_pop$Vsmax_SI_OH    <- 5.0 * 60/1000* var_f_pop$S9_scaling_SI #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
+var_f_pop$Vsmax_SI_GST   <- 63 * 60/1000 * var_f_pop$S9_scaling_SI#Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #---Dose female---#
 var_f_pop$Oral_Dose       <-(Oral_Dose_in_mg_bw * var_f_pop$BW)/ MW  * 1e+3     #The administered dose in umol 
@@ -352,11 +352,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -420,11 +417,8 @@ parameters=cbind(P_F,
                  init_GSH_L,
                  init_GSH_SI,
                  k_GSH,
-                 k_DNA,
                  C_PRO_L,
                  C_PRO_SI,
-                 C_L_dG,
-                 T_0.5,
                  Ka,
                  k_L_OH,
                  Km_L_CA,

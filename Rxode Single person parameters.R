@@ -42,15 +42,15 @@ P_OH_SP   <-  1.60 #Slowly perfused tissues/Blood partition coefficients
 #--Pyshiological Parameters--#
 BW      <- 70    #Body weight in Kg
 
-#-Tissues volumes in % body weight-#
+#-Tissues volumes in kg
 
-V_F      <- 0.214 * BW  #Fat
-V_L      <- 0.026 * BW   #Liver
-V_SI     <- 0.009 * BW  #Small intestine
-V_A      <- 0.02  * BW #Arterial Blood
-V_V      <- 0.059 * BW  #Venous Blood
-V_RP     <- 0.052 * BW  #Richly perfused 
-V_SP     <- 0.6 * BW #Slowly perfused 
+V_F      <- 0.214* BW  #Fat
+V_L      <- 0.26 * BW   #Liver
+V_SI     <- 0.009* BW  #Small intestine
+V_A      <- 0.02 * BW #Arterial Blood
+V_V      <- 0.059* BW  #Venous Blood
+V_RP     <- 0.52 * BW  #Richly perfused 
+V_SP     <- 0.6  * BW #Slowly perfused 
 
 #-Cardiac parameters-#
 

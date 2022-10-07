@@ -91,13 +91,13 @@ PBK_Cinnamaldehyde <- RxODE({
   C_SIc_GSH      <- AM_SIc_GSH / V_SI;                                                       #Concentration of GSH in the Small Intestine in umol/l
   RM_SI_AG_GST   <- Vsmax_SI_GST * C_V_SI * C_SIc_GSH / (Km_SI_GST_G * C_V_SI + Km_SI_GST * C_SIc_GSH + C_SIc_GSH * C_V_SI);  #-amount of cinnamaldehyde metabolized in the small intestine to GSH conjugate by GST in umol
   RM_SI_AG_CHEM  <- k_GSH * C_V_SI * C_SIc_GSH;                                       #Rate of Cinnamaldehyde binding in the small intestine to GSH in umol/h
-  RM_SIc_GSH     <- G_SYN_SI * 0.9 - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * AM_SIc_GSH);         #Rate of  GSH concentration in the Smal intesinte cytosol umol/h
+  RM_SIc_GSH     <- G_SYN_SI - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * AM_SIc_GSH);         #Rate of  GSH concentration in the Smal intesinte cytosol umol/h
   
   #Cinnamyl alchol#
   C_OH_SI        <- A_OH_SI   / V_SI;                                      #Concentration of Cinnamyl alcOHol in the Small intestine in umol/l
   C_OH_V_SI      <- C_OH_SI   / P_OH_SI;                                   #Concentration of Cinnamyl alcOHol in venous blood leaving the Small intestine  in umol/l
-  RM_SI_AO       <- Vsmax_SI_AO * C_V_SI / (Km_SI_AO + C_V_SI);             #Ammount of Cinnamaldehyde reduced to cinnamyl alcOHol in the small intestine in umol
-  R_OH_M_SI_C_A  <- Vsmax_SI_OH * C_OH_V_SI/(Km_SI_OH + C_OH_V_SI);         #Rate of Cinnamyl alcOHol enzymatically oxidized to cinnamaldehyde in the small intestine in umol 
+  RM_SI_AO       <- (Vsmax_SI_AO * C_V_SI) / (Km_SI_AO + C_V_SI);             #Ammount of Cinnamaldehyde reduced to cinnamyl alcOHol in the small intestine in umol
+  R_OH_M_SI_C_A  <- (Vsmax_SI_OH * C_OH_V_SI)/(Km_SI_OH + C_OH_V_SI);         #Rate of Cinnamyl alcOHol enzymatically oxidized to cinnamaldehyde in the small intestine in umol 
   
   R_OH_SI        <- Q_SI * (C_OH_A - C_OH_V_SI) + RM_SI_AO - R_OH_M_SI_C_A;  #Rate of Cinnamyl alcohol concentration change in the small intestine in umol/h
   
@@ -106,20 +106,20 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #---------------Liver-----------------------------------#
   #-Cinnamaldehyde-#
-  C_L            <- A_L       / V_L;                                                         #Concentration Cinnamaldehyde in the Liver in umol/kg
-  C_V_L          <- C_L       / P_L;                                                         #Concentration of cinnamaldehyde in venous blood leaving the Liver in umol/l
-  RM_L_CA        <- Vsmax_L_CA * C_V_L / (Km_L_CA + C_V_L);                                  #Rate of Cinnamaldehyde oxidation to carboxylic acid in the liver in umol/h
-  RM_L_AP        <- k_GSH * C_V_L * C_PRO_L;                                           #Rate of Cinnamaldehyde proteins adducts formation in the liver in umol/h
+  C_L            <- A_L       / V_L;                                              #Concentration Cinnamaldehyde in the Liver in umol/kg
+  C_V_L          <- C_L       / P_L;                                              #Concentration of cinnamaldehyde in venous blood leaving the Liver in umol/l
+  RM_L_CA        <- Vsmax_L_CA * C_V_L / (Km_L_CA + C_V_L);                       #Rate of Cinnamaldehyde oxidation to carboxylic acid in the liver in umol/h
+  RM_L_AP        <- k_GSH * C_V_L * C_PRO_L;                                      #Rate of Cinnamaldehyde proteins adducts formation in the liver in umol/h
   
   #GSH#
-  C_Lc_GSH       <- AM_Lc_GSH / V_L;                                                          #Concentration of GSH in the liver cytosol in umol/l  
+  C_Lc_GSH       <- AM_Lc_GSH / V_L;                                              #Concentration of GSH in the liver cytosol in umol/l  
   RM_L_AG_GST    <- Vsmax_L_GST * C_V_L * C_Lc_GSH /(Km_L_GST_G * C_V_L + Km_L_GST * C_Lc_GSH + C_Lc_GSH * C_V_L); #Amount of cinnamaldehyde metabolized with GSH in the liver to conjugate GST   #KM_L_GST_G is stil unknown
-  RM_L_AG_CHEM   <- k_GSH * C_V_L * C_Lc_GSH;                                           #Amount of Cinnamaldehyde chemically bound in liver to GSH in umol
-  RM_Lc_GSH      <- G_SYN_L * 0.9 - (RM_L_AG_GST + RM_L_AG_CHEM + k_L_GLOS * AM_Lc_GSH);#Rate of change in GSH concentration in the liver cytosol umol/h
+  RM_L_AG_CHEM   <- k_GSH * C_V_L * C_Lc_GSH;                                     #Amount of Cinnamaldehyde chemically bound in liver to GSH in umol
+  RM_Lc_GSH      <- G_SYN_L - (RM_L_AG_GST + RM_L_AG_CHEM + k_L_GLOS * AM_Lc_GSH);#Rate of change in GSH concentration in the liver cytosol umol/h
  
   #Cinnamyl alcohol
-  C_OH_L         <- A_OH_L    / V_L;                    #Concentration of Cinnamyl alcOHol in the Liver in umol/kg
-  C_OH_V_L       <- C_OH_L   / P_OH_L;                  #Concentration of Cinnamyl alcOHol in venous blood leaving the Liver in umol/l
+  C_OH_L         <- A_OH_L    / V_L;                                #Concentration of Cinnamyl alcOHol in the Liver in umol/kg
+  C_OH_V_L       <- C_OH_L   / P_OH_L;                              #Concentration of Cinnamyl alcOHol in venous blood leaving the Liver in umol/l
   RM_L_AO        <- Vsmax_L_AO * C_V_L / (Km_L_AO + C_V_L );        #Rate of Cinnamaldehyde reduced to cinnamyl alcOHol in the liver in umol/h
   R_OH_M_L_C_A   <- k_L_OH * C_OH_V_L;                              #Rate of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in umo/h
   
@@ -135,9 +135,9 @@ PBK_Cinnamaldehyde <- RxODE({
   R_A            <- Q_C * C_A_Pu - (Q_F * C_A + Q_L * C_A + Q_SI * C_A + Q_RP * C_A + Q_SP * C_A );       #Rate of change in Cinnamaldehyde concentration in the arterial blood in μmol 
   
   #Cinnamyl alcohol
-  R_OH_V         <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP - Q_C * C_OH_V; 
+  R_OH_V         <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP - Q_C * C_OH_V; #Rate of change in Cinnamyl alcohol concentration in the venous blood in μmol
   
-  R_OH_A         <- Q_C * C_OH_V_Pu - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A);
+  R_OH_A         <- Q_C * C_OH_V_Pu - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A);#Rate of change in Cinnamyl alcohol concentration in the arterial blood in μmol
   
   #----------------------------------------------Differential equations-------------------------------------------------------------------------------#
   

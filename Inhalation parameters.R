@@ -16,9 +16,9 @@ amount.units               <-"umol"
 time.units                 <-"h"
 nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
-time.end                   <-8        #time end of simulation
+time.end                   <-100        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
-Oral_Dose_in_mg_bw         <-500     #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0     #Dose in mg/kg-bw
 Inhalation_Dose_in_mg_bw   <-0      #The inhaled dose in mg/kg-bw
 iv_dose_in_mg_bw           <-0       #IV administered dose in mg/kg/bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
@@ -98,16 +98,16 @@ P_V     <-   540             #Alveolar ventilation L/h
 #----GSH parameters----#
 #--GSH synthesis in μmol/kg tissue/h--#
 
-G_SYN_L     <- 1122 * V_L        #Liver 
-G_SYN_SI    <- 27   * V_L        #Small intestine
+G_SYN_L     <- 1122 * V_L * 0.9       #Liver 
+G_SYN_SI    <- 27   * V_L * 0.9        #Small intestine
 
 #-Apparent first order rate constant GSH turn over(RAT?) per h-#
 k_L_GLOS    <- 0.142        #Liver
 k_SI_GLOS   <- 0.044        #Small intestine
 
 #--Initial GSH concentration--#
-init_GSH_L  <- 5639 * V_L   #initial amount of GSH in the liver in μmol/kg
-init_GSH_SI <- 1250 * V_SI  #initial amount of GSH in the small intestine in μmol/kg
+init_GSH_L  <- 7111 * V_L   #initial amount of GSH in the liver in μmol
+init_GSH_SI <- 1555 * V_SI  #initial amount of GSH in the small intestine in μmol
 
 k_GSH <- 6.6 * 10^(-4)      #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 
@@ -124,7 +124,7 @@ S9_scaling_L <- 143 * (V_L * 1000) #scaling factor for S9 fraction per g tissue
 #----Liver----#
 
 #-first rate order constants-#
-k_L_OH  <- 4.2*10^-2 #* S9_scaling_L         #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
+k_L_OH  <- 4.2*10^-2 * 60 / 1000 * S9_scaling_L        #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
 
 #--Michaelis menten constants--#
 Km_L_CA     <-  8.5         #Km for enzymatic oxidation of Cinnamaldehyde into Cinnamic acid in the liver in μM
@@ -133,9 +133,9 @@ Km_L_GST    <-  1.7*10^3    #Km for enzymatic conjugation of Cinnamaldehyde with
 Km_L_GST_G  <-  100         #Km toward GSH for enzymatic conjugation of Cinnamaldehyde in the liver (μM)
 
 #--Vmax values--#
-Vsmax_L_CA    <-  9.7  * S9_scaling_L    #Scaled Vmax for enzymatic oxidation of Cinnamaldehyde in the liver in μmol/h 
-Vsmax_L_AO    <-  73   * S9_scaling_L        #Scaled Vmax for enzymatic reduction of Cinnamaldehyde in the liver in μmol/h
-Vsmax_L_GST   <-  37   * S9_scaling_L        #Scaled Vmax for enzymatic conjugation of Cinnamaldehyde with GSH in the liver in μmol/h
+Vsmax_L_CA    <-  9.7 * 60 / 1000 * S9_scaling_L   #Scaled Vmax for enzymatic oxidation of Cinnamaldehyde in the liver in μmol/h 
+Vsmax_L_AO    <-  73  * 60 / 1000 * S9_scaling_L      #Scaled Vmax for enzymatic reduction of Cinnamaldehyde in the liver in μmol/h
+Vsmax_L_GST   <-  37  * 60 / 1000 * S9_scaling_L       #Scaled Vmax for enzymatic conjugation of Cinnamaldehyde with GSH in the liver in μmol/h
 
 #----Small intestines----#
 S9_scaling_SI <-  11.4 * (V_SI *1000) #scaling factor fraction S9 protein per g tissue
@@ -148,10 +148,10 @@ Km_SI_GST   <- 0           #Km for enzymatic conjugation of Cinnamaldehye with G
 Km_SI_GST_G <- 100         #Km toward GSH for enzymatic conjugation of Cinnamaldehyde in the small intestine (μM)
 
 #-Vmax values-#
-Vsmax_SI_CA    <- 21   * S9_scaling_SI      #Scaled Vmax for enzymatic oxidation of Cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
-Vsmax_SI_AO    <- 30   * S9_scaling_SI    #Scaled Vmax for enzymatic reduction of Cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
-Vsmax_SI_OH    <- 5.0  * S9_scaling_SI    #Scaled Vmax for enzymatic Oxidation of Cinnamyl alcohol into Cinnamaldehyde in the Small Intestine in μmol/h 
-Vsmax_SI_GST   <- 0    * S9_scaling_SI   #Scaled Vmax for enzymatic Conjugation of Cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
+Vsmax_SI_CA    <- 21   * 60/1000 * S9_scaling_SI   #Scaled Vmax for enzymatic oxidation of Cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
+Vsmax_SI_AO    <- 30   * 60/1000 * S9_scaling_SI   #Scaled Vmax for enzymatic reduction of Cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
+Vsmax_SI_OH    <- 5.0  * 60/1000 * S9_scaling_SI   #Scaled Vmax for enzymatic Oxidation of Cinnamyl alcohol into Cinnamaldehyde in the Small Intestine in μmol/h 
+Vsmax_SI_GST   <- 0    * 60/1000 * S9_scaling_SI   #Scaled Vmax for enzymatic Conjugation of Cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Collection of all parameters so they can be entered in the function
 parameters=cbind(P_F,
@@ -228,8 +228,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,

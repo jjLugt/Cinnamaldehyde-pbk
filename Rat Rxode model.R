@@ -65,14 +65,13 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_SI_CHEM     <- k_GSH * C_V_SI * C_SIc_GSH * V_SI;             #Rate of Cinnamaldehyde binding in the small intestine to GSH in μmol/h
   RM_SI_CA       <- k_SI_CA * C_V_SI;                              #Rate of Cinnamaldehyde enzymatically oxidized to carboxylic acid in the small intestine in μmol/h
   RM_SI_AP       <- k_GSH * C_V_SI * C_PRO_SI;                     #Rate of Cinnamaldehyde protein adducts in the small intestine in μmol/h
-  RM_SIc_GSH     <- G_SYN_SI -(RM_SI_GST + RM_SI_CHEM + k_SI_GLOS * AM_SIc_GSH);      #Rate of  GSH concentration in the small intestine cytosol μmol/h
-  RM_SI_AO       <- Vsmax_SI_AO * C_V_SI / (Km_SI_AO + C_V_SI);                             #Rate of Cinnamaldehyde reduction to cinnamyl alcOHol in the small intestine in μmol
-  RM_OH_SI_C_A   <- Vsmax_SI_OH * C_OH_V_SI/(Km_SI_OH + C_OH_V_SI);                         #Rate of Cinnamyl alcohol enzymatically oxidized to cinnamaldehyde in the small intestine in μmol 
+  RM_SIc_GSH     <- G_SYN_SI -(RM_SI_GST + RM_SI_CHEM + k_SI_GLOS * AM_SIc_GSH);            #Rate of  GSH concentration in the small intestine cytosol μmol/h
+  RM_SI_AO       <- (Vsmax_SI_AO * C_V_SI) / (Km_SI_AO + C_V_SI);                             #Rate of Cinnamaldehyde reduction to cinnamyl alcOHol in the small intestine in μmol/h
   
   #Output small intestine#
-  R_OH_SI        <- Q_SI * (C_OH_A - C_OH_V_SI) + RM_SI_AO - RM_OH_SI_C_A       #Rate of Cinnamyl alcohol concentration change in the small intestine in μmol/h
+  R_OH_SI        <- Q_SI * (C_OH_A - C_OH_V_SI) + RM_SI_AO       #Rate of Cinnamyl alcohol concentration change in the small intestine in μmol/h
   
-  R_SI           <- Q_SI * (C_A - C_V_SI) + RM_OH_SI_C_A - Rin - RM_SI_CA - RM_SI_AP - RM_SI_GST - RM_SI_CHEM - RM_SI_AO # #Rate of change in cinnamaldehyde concentration in the SI in μmol/h
+  R_SI           <- Q_SI * (C_A - C_V_SI) - Rin - RM_SI_CA - RM_SI_AP - RM_SI_GST - RM_SI_CHEM - RM_SI_AO # #Rate of change in cinnamaldehyde concentration in the SI in μmol/h
  
   
    #---------------Liver-----------------------------------#
@@ -91,9 +90,9 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_L_CHEM      <- k_GSH * C_V_L * C_Lc_GSH * V_L;     #Rate of Cinnamaldehyde chemically binding to GSH in the liver in μmol/h
   RM_L_CA        <- k_L_CA * C_V_L;                     #Rate of Cinnamaldehyde oxidation to carboxylic acid in the liver in μmol/h
   RM_L_AP        <- k_GSH * C_V_L * C_PRO_L;            #Rate of Cinnamaldehyde proteins adducts formation in the liver in μmol/h
-  RM_Lc_GSH      <- G_SYN_L - (RM_L_GST + RM_L_CHEM + k_L_GLOS * AM_Lc_GSH);      #Rate of change in GSH concentration in the liver cytosol μmol/h
+  RM_Lc_GSH      <- G_SYN_L - (RM_L_GST + RM_L_CHEM + k_L_GLOS * AM_Lc_GSH);  #Rate of change in GSH concentration in the liver cytosol μmol/h
   RM_L_AO        <- (Vsmax_L_AO * C_V_L) / (Km_L_AO + C_V_L );                #Rate of Cinnamaldehyde reduced to cinnamyl alcOHol in the liver in μmol/h
-  RM_OH_L_C_A    <- (Vsmax_L_OH * C_V_L) /(Km_L_OH + C_V_L);            #Rate of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in μmol/h
+  RM_OH_L_C_A    <- (Vsmax_L_OH * C_OH_V_L) /(Km_L_OH + C_OH_V_L);                  #Rate of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in μmol/h
   
   
   
@@ -158,7 +157,6 @@ PBK_Cinnamaldehyde <- RxODE({
   #GSH
   d/dt(AM_SIc_GSH)<- RM_SIc_GSH;#Amount of GSH in the small intestine cytosol
   d/dt(A_OH_SI)   <- R_OH_SI;   #Amount of Cinnamyl alcohol in the small intestine in μmol 
-  d/dt(AM_OH_SI_C_A) <- RM_OH_SI_C_A; #Amount of Cinnamyl alcOHol enzymatically oxidized to Cinnamaldehyde in the small intestine in μmol 
   
   #--------------------Liver calculations-------------#
   d/dt(AM_L_GST) <- RM_L_GST;   #Amount of Cinnamaldehyde metabolized with GSH in the liver to conjugate GST 
