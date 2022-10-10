@@ -303,21 +303,16 @@ for(i in 1:nrow(X2)){
 
 
 #Removing variation in volume exposure chamber as this is supposed to be fixed
-X1[,76]<- 10
-X2[,76]<- 10
+X1[,73]<- 10
+X2[,73]<- 10
 
 #Removing unnecessary variables 
 X1<- X1[-c(15:23,33:38)]
 X2<- X2[-c(15:23,33:38)]
+
 #the number of bootstrap replicates
 n_boot <- 1000
 
-
-X1 <-GSA_pop[1:2000,]
-X2 <-GSA_pop[2001:4000,]
-
-X1<- X1[-c(1:2,33)]
-X2<- X2[-c(1:2,33)]
 
 
 #Sobol design
@@ -351,7 +346,7 @@ tab7=solve.pbk.sa[which(solve.pbk.sa[,"time"]==4),]
 tab8=solve.pbk.sa[which(solve.pbk.sa[,"time"]==8),]
 
 
-SimRes = as.data.frame(matrix(NA,126000,8))
+SimRes = as.data.frame(matrix(NA,124000,8))
 SimRes[,1]=tab1[,2]
 SimRes[,2]=tab2[,2]
 SimRes[,3]=tab3[,2]
@@ -407,10 +402,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(51:61)])
+tempC2 <- as.data.frame(tempC[,c(50:60)])
 
 #t_SA = 0.2
-sa.plot_0.2 <-as.data.frame(tempC[,c(51:61)])
+sa.plot_0.2 <-as.data.frame(tempC[,c(50:60)])
 rownames(sa.plot_0.2 <- c("0.2h main","0.2h total"))
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
@@ -446,10 +441,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(51:61)])
+tempC2 <- as.data.frame(tempC[,c(50:60)])
 
 #t_SA = 0.5
-sa.plot_0.5 <-as.data.frame(tempC[,c(51:61)])
+sa.plot_0.5 <-as.data.frame(tempC[,c(50:60)])
 rownames(sa.plot_0.5) <- c("0.5h main","0.5h total")
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
@@ -486,9 +481,9 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(51:61)])
+tempC2 <- as.data.frame(tempC[,c(50:60)])
 #t_SA = 1
-sa.plot_1 <-as.data.frame(tempC[,c(51:61)])
+sa.plot_1 <-as.data.frame(tempC[,c(50:60)])
 rownames(sa.plot_1) <- c("1h main","1h total")
 
 
@@ -526,10 +521,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(51:61)])
+tempC2 <- as.data.frame(tempC[,c(50:60)])
 
 #t_SA = 1.5
-sa.plot_1.5 <-as.data.frame(tempC[,c(51:61)])
+sa.plot_1.5 <-as.data.frame(tempC[,c(50:60)])
 rownames(sa.plot_1.5) <- c("1.5h main","1.5h total")
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
@@ -566,14 +561,14 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(51:61)])
+tempC2 <- as.data.frame(tempC[,c(50:60)])
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
 #colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
 plot_Pu_2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
 
 #t_SA = 2
-sa.plot_2 <-as.data.frame(tempC[,c(51:61)])
+sa.plot_2 <-as.data.frame(tempC[,c(50:60)])
 rownames(sa.plot_2) <- c("2h main","2h total")
 
 t_SA <-4
@@ -606,14 +601,14 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t, TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(51:61)])
+tempC2 <- as.data.frame(tempC[,c(50:60)])
 
 par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
 #colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
 plot_Pu_4 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
 
 #t_SA = 4
-sa.plot_4 <-as.data.frame(tempC[,c(51:61)])
+sa.plot_4 <-as.data.frame(tempC[,c(50:60)])
 rownames(sa.plot_4) <- c("4h main","4h total")
 
 t_SA <-8
@@ -646,10 +641,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t,TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(51:61)])
+tempC2 <- as.data.frame(tempC[,c(50:60)])
 
 #t_SA = 8
-sa.plot_8 <-as.data.frame(tempC[,c(51:61)])
+sa.plot_8 <-as.data.frame(tempC[,c(50:60)])
 rownames(sa.plot_8) <- c("8h total","8h main")
 
 par(mfrow=c(2,3),las=1, mar=c(3,5,3,3.5), mgp = c(3.5,0.5,0)) 

@@ -38,11 +38,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -61,71 +58,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-
-
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -152,10 +147,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=1:2500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -166,8 +159,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -212,7 +203,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -236,11 +226,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -259,69 +246,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -349,10 +336,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=2501:5000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -363,8 +348,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -408,7 +391,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -432,11 +414,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -455,69 +434,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -545,10 +524,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=5001:7500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -559,8 +536,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -604,7 +579,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -628,11 +602,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -651,69 +622,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -741,10 +712,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=7501:10000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -755,8 +724,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -800,7 +767,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -824,11 +790,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -847,69 +810,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -935,10 +898,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=10001:12500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -949,8 +910,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -994,7 +953,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -1018,11 +976,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -1041,70 +996,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -1131,10 +1085,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=12501:15000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -1145,8 +1097,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -1191,7 +1141,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -1215,11 +1164,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -1238,69 +1184,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -1328,10 +1274,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=15001:17500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -1342,8 +1286,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -1362,7 +1304,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -1387,7 +1328,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -1411,11 +1351,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -1434,70 +1371,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -1524,10 +1460,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=17501:20000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -1538,8 +1472,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -1583,7 +1515,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -1607,11 +1538,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -1630,70 +1558,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -1720,10 +1647,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=20001:22500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -1734,8 +1659,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -1779,7 +1702,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -1803,11 +1725,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -1826,69 +1745,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -1917,10 +1836,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=22501:25000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -1931,8 +1848,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -1951,7 +1866,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -1976,7 +1890,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -2000,11 +1913,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -2023,70 +1933,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -2114,10 +2023,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=25001:27500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -2128,8 +2035,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -2173,7 +2078,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -2197,11 +2101,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -2220,70 +2121,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -2310,10 +2210,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=27501:30000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -2324,8 +2222,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -2369,7 +2265,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -2393,11 +2288,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -2416,69 +2308,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -2506,10 +2398,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=30001:32500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -2520,8 +2410,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -2565,7 +2453,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -2589,11 +2476,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -2612,69 +2496,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -2703,10 +2587,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=32501:35000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -2717,8 +2599,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -2762,7 +2642,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -2786,11 +2665,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -2809,70 +2685,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -2899,10 +2774,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=35001:37500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -2913,8 +2786,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -2933,7 +2804,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -2958,7 +2828,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -2982,11 +2851,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -3005,69 +2871,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -3096,10 +2962,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=37501:40000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -3110,8 +2974,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -3130,7 +2992,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -3155,7 +3016,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -3179,11 +3039,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -3202,69 +3059,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -3292,10 +3149,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=40001:42500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -3306,8 +3161,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -3351,7 +3204,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -3375,11 +3227,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -3398,69 +3247,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -3488,10 +3337,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=42501:45000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -3502,8 +3349,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -3522,7 +3367,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -3547,7 +3391,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -3571,11 +3414,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -3594,69 +3434,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -3684,10 +3524,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=45001:47500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -3698,8 +3536,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -3718,7 +3554,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -3743,7 +3578,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -3767,11 +3601,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -3790,70 +3621,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -3880,10 +3710,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=47501:50000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -3894,8 +3722,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -3939,7 +3765,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -3963,11 +3788,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -3986,69 +3808,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -4076,10 +3898,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=50001:52500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -4090,8 +3910,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -4110,7 +3928,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -4135,7 +3952,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -4159,11 +3975,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -4182,70 +3995,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -4272,10 +4084,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=52501:55000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -4286,8 +4096,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -4306,7 +4114,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -4331,7 +4138,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -4355,11 +4161,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -4378,70 +4181,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -4468,10 +4270,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=55001:57500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -4482,8 +4282,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -4502,7 +4300,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -4527,7 +4324,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -4551,11 +4347,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -4574,70 +4367,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -4664,10 +4456,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=57501:60000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -4678,8 +4468,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -4698,7 +4486,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -4723,7 +4510,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -4747,11 +4533,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -4770,70 +4553,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -4860,10 +4642,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=60001:62500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -4874,8 +4654,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -4919,7 +4697,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -4943,11 +4720,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -4966,69 +4740,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -5056,10 +4830,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=62501:65000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -5070,8 +4842,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -5090,7 +4860,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -5117,7 +4886,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -5141,11 +4909,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -5164,69 +4929,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -5254,10 +5019,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=65001:67500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -5268,8 +5031,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -5314,7 +5075,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -5338,11 +5098,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -5361,69 +5118,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -5451,10 +5208,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=67501:70000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -5465,8 +5220,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -5485,7 +5238,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -5511,7 +5263,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -5535,11 +5286,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -5558,69 +5306,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -5648,10 +5396,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=70001:72500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -5662,8 +5408,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -5682,7 +5426,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -5709,7 +5452,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -5733,11 +5475,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -5756,69 +5495,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -5846,10 +5585,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=72501:75000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -5860,8 +5597,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -5906,7 +5641,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -5930,11 +5664,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -5953,69 +5684,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -6043,10 +5774,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=75001:77500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -6057,8 +5786,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -6103,7 +5830,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -6127,11 +5853,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -6150,69 +5873,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -6240,10 +5963,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=77501:80000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -6254,8 +5975,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -6301,7 +6020,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -6325,11 +6043,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -6348,69 +6063,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -6438,10 +6153,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=80001:82500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -6452,8 +6165,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -6472,7 +6183,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -6500,7 +6210,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -6524,11 +6233,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -6547,69 +6253,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -6638,10 +6344,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=82501:85000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -6652,8 +6356,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -6672,7 +6374,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -6698,7 +6399,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -6722,11 +6422,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -6745,69 +6442,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -6835,10 +6532,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=85001:87500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -6849,8 +6544,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -6869,7 +6562,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -6896,7 +6588,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -6920,11 +6611,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -6943,69 +6631,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -7033,10 +6721,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=87501:90000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -7047,8 +6733,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -7095,7 +6779,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -7119,11 +6802,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -7142,69 +6822,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -7232,10 +6912,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=90001:92500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -7246,8 +6924,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -7295,7 +6971,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -7319,11 +6994,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -7342,69 +7014,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -7433,10 +7105,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=92501:95000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -7447,8 +7117,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -7494,7 +7162,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -7518,11 +7185,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -7541,70 +7205,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -7631,10 +7294,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=95001:97500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -7645,8 +7306,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -7675,8 +7334,6 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop39", row.names = TRUE)
 
 
-
-
 phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
@@ -7694,7 +7351,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -7718,11 +7374,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -7741,69 +7394,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -7831,10 +7484,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=97501:100000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -7845,8 +7496,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -7894,7 +7543,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -7918,11 +7566,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -7941,70 +7586,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -8031,10 +7675,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=100001:102500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -8045,8 +7687,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -8091,7 +7731,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -8115,11 +7754,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -8138,70 +7774,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -8228,10 +7863,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=102501:105000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -8242,8 +7875,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -8290,7 +7921,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -8314,11 +7944,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -8337,69 +7964,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -8427,10 +8054,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=105001:107500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -8441,8 +8066,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -8489,7 +8112,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -8513,11 +8135,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -8536,69 +8155,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -8627,10 +8246,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=107501:110000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -8641,8 +8258,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -8688,7 +8303,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -8712,11 +8326,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -8735,69 +8346,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -8825,10 +8436,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=110001:112500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -8839,8 +8448,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -8859,7 +8466,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
@@ -8887,7 +8493,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -8911,11 +8516,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -8934,69 +8536,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -9024,10 +8626,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=112501:115000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -9038,8 +8638,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -9085,7 +8683,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -9109,11 +8706,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -9132,70 +8726,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -9222,10 +8815,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=115001:117500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -9236,8 +8827,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -9269,7 +8858,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop47", row
 phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
-phys<-phys[117501:118000,]
+phys<-phys[117501:120000,]
 P_F<-phys$P_F
 P_L<-phys$P_L
 P_SI<-phys$P_SI
@@ -9283,7 +8872,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -9307,11 +8895,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -9330,69 +8915,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -9407,24 +8992,22 @@ Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
-Data_BW<-as.data.frame(c(117501:118000))
+Data_BW<-as.data.frame(c(117501:120000))
 Data_BW[,2]<-phys[,15]+phys[,16]+phys[,17]+phys[,18]+phys[,19]+phys[,20]+phys[,21]+phys[,22]
 colnames(Data_BW)<- c("id","BW")
 
 
 
 ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(id=117501:118000,seq(from = time.0, to = time.end, by = time.frame))%>%
-  et(id=117501:118000,amt=(Oral_Dose_in_mg_bw) * Data_BW$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(id=117501:118000,amt=(Inhalation_Dose_in_mg_bw) * Data_BW$BW/ MW  * 1e+3 , dur=0.01, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
-  et(id=117501:118000,amt=phys$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
-  et(id=117501:118000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
+  et(id=117501:120000,seq(from = time.0, to = time.end, by = time.frame))%>%
+  et(id=117501:120000,amt=(Oral_Dose_in_mg_bw) * Data_BW$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(id=117501:120000,amt=(Inhalation_Dose_in_mg_bw) * Data_BW$BW/ MW  * 1e+3 , dur=0.01, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
+  et(id=117501:120000,amt=phys$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(id=117501:120000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -9435,8 +9018,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -9482,7 +9063,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -9506,11 +9086,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -9529,69 +9106,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -9605,7 +9182,10 @@ MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
-
+#generating a bodyweight data frame for adjusting the dose 
+Data_BW<-as.data.frame(c(120001:122500))
+Data_BW[,2]<-phys[,15]+phys[,16]+phys[,17]+phys[,18]+phys[,19]+phys[,20]+phys[,21]+phys[,22]
+colnames(Data_BW)<- c("id","BW")
 
 
 ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
@@ -9616,10 +9196,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=120001:122500,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -9630,8 +9208,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -9664,7 +9240,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop49", row
 phys <- read_csv("GSA_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
-phys<-phys[122501:125000,]
+phys<-phys[122501:124000,]
 P_F<-phys$P_F
 P_L<-phys$P_L
 P_SI<-phys$P_SI
@@ -9678,7 +9254,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -9702,11 +9277,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -9725,70 +9297,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
-
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 #exposure
 amount.units               <-"umol"
 time.units                 <-"h"
@@ -9801,21 +9372,22 @@ MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 Inhalation_Dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
 Oral_Dose_in_mg_bw         <-0.00001      #Dose in mg/kg-bw
 
-
+#generating a bodyweight data frame for adjusting the dose 
+Data_BW<-as.data.frame(c(122501:124000))
+Data_BW[,2]<-phys[,15]+phys[,16]+phys[,17]+phys[,18]+phys[,19]+phys[,20]+phys[,21]+phys[,22]
+colnames(Data_BW)<- c("id","BW")
 
 
 ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(id=122501:125000,seq(from = time.0, to = time.end, by = time.frame))%>%
-  et(id=122501:125000,amt=(Oral_Dose_in_mg_bw) * Data_BW$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(id=122501:125000,amt=(Inhalation_Dose_in_mg_bw) * Data_BW$BW/ MW  * 1e+3 , dur=0.01, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
-  et(id=122501:125000,amt=phys$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
-  et(id=122501:125000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
+  et(id=122501:124000,seq(from = time.0, to = time.end, by = time.frame))%>%
+  et(id=122501:124000,amt=(Oral_Dose_in_mg_bw) * Data_BW$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(id=122501:124000,amt=(Inhalation_Dose_in_mg_bw) * Data_BW$BW/ MW  * 1e+3 , dur=0.01, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
+  et(id=122501:124000,amt=phys$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(id=122501:124000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -9826,8 +9398,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -9873,7 +9443,6 @@ P_OH_SI<-phys$P_OH_SI
 P_OH_RP<-phys$P_OH_RP
 P_OH_SP<-phys$P_OH_SP
 P_OH_Pu<-phys$P_OH_Pu
-BW<-phys$BW
 V_L<-phys$V_L
 V_F<-phys$V_F
 V_A<-phys$V_A
@@ -9897,11 +9466,8 @@ k_SI_GLOS<-phys$k_SI_GLOS
 init_GSH_L<-phys$init_GSH_L
 init_GSH_SI<-phys$init_GSH_SI
 k_GSH<-phys$k_GSH
-k_DNA<-phys$k_DNA
 C_PRO_L<-phys$C_PRO_L
 C_PRO_SI<-phys$C_PRO_SI
-C_L_dG<-phys$C_L_dG
-T_0.5<-phys$T_0.5
 Ka<-phys$Ka
 k_L_OH <- phys$k_L_OH
 Km_L_CA<-phys$Km_L_CA
@@ -9920,69 +9486,69 @@ Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber <-10       #volume exposure chamber in L
+Volume_exposure_chamber<- phys$Volume_exposure_chamber
+S9_scaling_SI<-phys$S9_scaling_SI
+S9_scaling_L<-phys$S9_scaling_L
 
-parameters1 <- cbind(P_F,
-                     P_L,
-                     P_SI,
-                     P_RP,
-                     P_SP,
-                     P_B,
-                     P_Pu,
-                     P_OH_F,
-                     P_OH_L,
-                     P_OH_SI,
-                     P_OH_RP,
-                     P_OH_SP,
-                     P_OH_Pu,
-                     BW,
-                     V_F,
-                     V_L,
-                     V_SI,
-                     V_A,
-                     V_V,
-                     V_RP,
-                     V_SP,
-                     V_Pu,
-                     Q_C,
-                     Q_Pu,
-                     Q_F,
-                     Q_L,
-                     Q_SI,
-                     Q_RP,
-                     Q_SP,
-                     P_V,
-                     G_SYN_L,
-                     G_SYN_SI,
-                     k_L_GLOS,
-                     k_SI_GLOS,
-                     init_GSH_L,
-                     init_GSH_SI,
-                     k_GSH,
-                     k_DNA,
-                     C_PRO_L,
-                     C_PRO_SI,
-                     C_L_dG,
-                     T_0.5,
-                     Ka,
-                     k_L_OH,
-                     Km_L_CA,
-                     Km_L_AO,
-                     Km_L_GST,
-                     Km_L_GST_G,
-                     Vsmax_L_CA,
-                     Vsmax_L_AO,
-                     Vsmax_L_GST,
-                     Km_SI_CA,
-                     Km_SI_AO,
-                     Km_SI_OH,
-                     Km_SI_GST,
-                     Km_SI_GST_G,
-                     Vsmax_SI_CA,
-                     Vsmax_SI_AO,
-                     Vsmax_SI_OH,
-                     Vsmax_SI_GST,
-                     Volume_exposure_chamber)
+parameters1 <- cbind(   P_F,
+                        P_L,
+                        P_SI,
+                        P_RP,
+                        P_SP,
+                        P_B,
+                        P_Pu,
+                        P_OH_F,
+                        P_OH_L,
+                        P_OH_SI,
+                        P_OH_RP,
+                        P_OH_SP,
+                        P_OH_Pu,
+                        V_F,
+                        V_L,
+                        V_SI,
+                        V_A,
+                        V_V,
+                        V_RP,
+                        V_SP,
+                        V_Pu,
+                        Q_C,
+                        Q_Pu,
+                        Q_F,
+                        Q_L,
+                        Q_SI,
+                        Q_RP,
+                        Q_SP,
+                        P_V,
+                        G_SYN_L,
+                        G_SYN_SI,
+                        k_L_GLOS,
+                        k_SI_GLOS,
+                        init_GSH_L,
+                        init_GSH_SI,
+                        k_GSH,
+                        C_PRO_L,
+                        C_PRO_SI,
+                        Ka,
+                        k_L_OH,
+                        Km_L_CA,
+                        Km_L_AO,
+                        Km_L_GST,
+                        Km_L_GST_G,
+                        Vsmax_L_CA,
+                        Vsmax_L_AO,
+                        Vsmax_L_GST,
+                        Km_SI_CA,
+                        Km_SI_AO,
+                        Km_SI_OH,
+                        Km_SI_GST,
+                        Km_SI_GST_G,
+                        Vsmax_SI_CA,
+                        Vsmax_SI_AO,
+                        Vsmax_SI_OH,
+                        Vsmax_SI_GST,
+                        Volume_exposure_chamber,
+                        S9_scaling_SI,
+                        S9_scaling_L)
 
 #exposure
 amount.units               <-"umol"
@@ -10007,10 +9573,8 @@ ex1 <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=125001:126000,amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
            "A_Exhalation" =0,
-           "A_Pu"         =0,
+           "A_inhalation_Dose" =0,
            "A_OH_Pu"      =0,
            "A_V"          =0,
            "A_OH_V"       =0,
@@ -10021,8 +9585,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -10041,7 +9603,6 @@ inits <- c("A_GI"         =0,
            "A_SP"         =0,
            "A_OH_SP"      =0
 );
-
 
 
 #Run the model after assigning the sobol dataset to the variables 
