@@ -17,14 +17,16 @@ amount.units               <-"umol"
 time.units                 <-"h"
 nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
-time.end                   <-8        #time end of simulation
+time.end                   <-4        #time end of simulation
 time.frame                 <-0.1      #time steps of simulation
 Oral_dose_in_mg_bw         <-0      #Dose in mg/kg-bw
-Inhalation_dose_in_mg_bw   <-100        #The inhaled dose in mg/kg-bw
+Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
+iv_dose_in_mg_bw           <-20       #IV administered dose in mg/kg/bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <- 0.25    #Body weight in Kg
 Oral_Dose                  <-(Oral_dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
+iv_dose                    <-(iv_dose_in_mg_bw * BW)/ MW  * 1e+3         #the administered IV dose 
 Volume_exposure_chamber    <-10       #volume exposure chamber in L
 
 
@@ -49,16 +51,16 @@ P_OH_Pu   <-  0.81 #Lung/Blood partition coefficients
 
 #--Physiological Parameters--#
 
-#-Tissues volumes in % body weight-#
+#-Tissues volumes in L-#
 
-V_F      <- 7     #Fat
-V_L      <- 3.4   #Liver
-V_SI     <- 1.4   #Small intestine
-V_A      <- 1.9   #Arterial Blood
-V_V      <- 5.6   #Venous Blood
-V_RP     <- 3.7   #Richly perfused 
-V_SP     <- 67.6  #Slowly perfused
-V_Pu     <- 0.5   #Lung
+V_F      <- 0.07  * BW  #Fat
+V_L      <- 0.034 * BW  #Liver
+V_SI     <- 0.014 * BW  #Small intestine
+V_A      <- 0.019 * BW  #Arterial Blood
+V_V      <- 0.059 * BW  #Venous Blood
+V_RP     <- 0.037 * BW  #Richly perfused 
+V_SP     <- 0.676 * BW  #Slowly perfused
+V_Pu     <- 0.005 * BW  #Lung
 
 #-Cardiac parameters-#
 
@@ -66,81 +68,72 @@ Q_C      <- 5.4    #Cardiac output in L/h
 
 #-Blood flow to tissues in % cardiac output-#
 
-Q_F      <- 0.07   #Fat
-Q_L      <- 0.13   #Liver
-Q_SI     <- 0.12   #Small intestine
-Q_RP     <- 0.64   #Richly perfused
-Q_SP     <- 0.17   #Slowly perfused
+Q_F      <- 0.07 * Q_C   #Fat
+Q_L      <- 0.13 * Q_C #Liver
+Q_SI     <- 0.12 * Q_C  #Small intestine
+Q_RP     <- 0.64 * Q_C  #Richly perfused
+Q_SP     <- 0.17 * Q_C  #Slowly perfused
 Q_Pu     <- Q_C    #Blood flow through the lung
 
-P_V      <- 3 * ((BW*1000)/100) #Pulmonary ventilation in L/h 
+P_V      <- 0.75 #Pulmonary ventilation in L/h 
 
 #----GSH parameters----#
-#--GSH synthesis in umol/kg tissue/h--#
+#--GSH synthesis in umol/per organ/h--#
 
-G_SYN_L     <- 6.6  #Liver 
-G_SYN_SI    <- 0.25    #Small intestine
+G_SYN_L     <- 869 * V_L * 0.9  #Liver 
+G_SYN_SI    <- 78  * V_SI * 0.9  #Small intestine
 
 #-Apparent first order rate constant GSH turn over(RAT?) per h-#
 k_L_GLOS    <- 0.142 #Liver
 k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-init_GSH_L  <- 6120   #initial GSH concentration in the liver in umol/kg
-init_GSH_SI <- 1780   #initial GSH concentration in the small intestine in umol/kg
+init_GSH_L  <- 6120 * V_L  #initial GSH concentration in the liver in umol
+init_GSH_SI <- 1780 * V_SI #initial GSH concentration in the small intestine in umol
 
 k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
-k_DNA <- 1.6 * 10^(-8) #The second-order rate constant of the reaction between cinnamaldehyde and 2ʹ-dG in μmol/h
 
 #----Protein reactive sites in μmol/kg tissue----#
-C_PRO_L     <- 5319  #Liver
-C_PRO_SI    <- 245   #Small intestine
-
-#----DNA parameters----#
-C_L_dG     <-  1.36 #Concentration of 2ʹ-dG in the liver μmol/kg liver
-T_0.5      <-  38.5   #Half-life of DNA adduct in the liver in hours
+C_PRO_L     <- 5319  * V_L  #Liver
+C_PRO_SI    <- 245   * V_SI #Small intestine
 
 #--Chemical parameters--#
 Ka <- 5.0  #Absorption rate constant for uptake in the Small intestine in per H
 
 #----Liver----#
+S9_scaling_L <- 143 * (V_L * 1000) #scaling factor for S9 fraction per g tissue
+
 
 #First order rate constants
-k_L_CA   <-  7.4*10^(-4)  #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the liver (μmol/h)
-k_L_GST  <-  6.2*10^(-2)  #Scaled first-order rate constant for enzymatic conjugation of cinnamaldehyde with GSH in the liver (μmol/h)
+k_L_CA   <-  7.4*10^(-3)* 60 / 1000 * S9_scaling_L   #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the liver (L/h)
+k_L_GST  <-  6.2*10^(-2)* 60 / 1000 * S9_scaling_L  #Scaled first-order rate constant for enzymatic conjugation of cinnamaldehyde with GSH in the liver (L/h)
 
 #--Michaelis menten constants--#
 
-Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
 Km_L_AO     <-  120  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the liver in μM
-Km_L_GST    <-  100  #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM  
 Km_L_GST_G  <-  100  #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM 
-Km_L_OH     <-  1300 #Km for enzymatic oxidationf of cinnamyl alcohol to cinnamaldehyde in the liver in umol
+Km_L_OH     <-  1300 #Km for enzymatic oxidation of cinnamyl alcohol to cinnamaldehyde in the liver in μM
 
 #--Vmax values--#
-
-Vsmax_L_CA    <- 9.7  #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
-Vsmax_L_AO    <- 29   #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
-Vsmax_L_GST   <- 37   #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
-Vsmax_L_GST_G <- 100  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the Liver (μM RAT value)
-Vsmax_L_OH    <- 15   #Scaled Vmax for enzymatic oxidation of cinnamyl alcohol to cinnamaldehyde in the liver in umol/h
+Vsmax_L_AO    <- 29  * 60 / 1000 * S9_scaling_L      #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
+Vsmax_L_GST_G <- 100  *60 / 1000 * S9_scaling_L      #Scaled Vmax toward GSH for enzymatic conjugation of cinnamaldehyde in the Liver (μM RAT value)
+Vsmax_L_OH    <- 15   *60 / 1000 * S9_scaling_L      #Scaled Vmax for enzymatic oxidation of cinnamyl alcohol to cinnamaldehyde in the liver in μmol/h
 
 #----Small intestines----#
+S9_scaling_SI <- 11.4 * V_SI *1000      #scaling factor fraction S9 protein per g tissue
+
 #First order rate constants
-k_SI_CA  <- 3.9*10^(-3)            #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the small intestine (μmol/h)
+k_SI_CA  <- 3.9*10^(-3) * 60/1000 * S9_scaling_SI #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the small intestine (μmol/h)
 
 #--Michaelis menten constants SI--#
-Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
+Km_SI_CA    <- 0   #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
 Km_SI_AO    <- 75  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
-Km_SI_OH    <- 290 #Km for enzymatic oxidation of cinnamly alcOHol into cinnamaldehyde in the Small Intestine in μM
 Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM (RAT value)
-Km_SI_GST_G <- 100  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM
+Km_SI_GST_G <- 100 #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM)
 
 #-Vmax values-#
-Vsmax_SI_CA    <- 21 #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
-Vsmax_SI_AO    <- 5.8 #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
-Vsmax_SI_OH    <- 5.0 #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
-Vsmax_SI_GST   <- 63 #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
+Vsmax_SI_AO    <- 5.8 * 60 / 1000 * S9_scaling_SI  #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
+Vsmax_SI_GST   <- 63  * 60 / 1000 * S9_scaling_SI  #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Collection of all parameters so they can be entered in the function
 parameters=cbind(Volume_exposure_chamber,
@@ -181,69 +174,56 @@ parameters=cbind(Volume_exposure_chamber,
                  init_GSH_L,
                  init_GSH_SI,
                  k_GSH,
-                 k_DNA,
                  C_PRO_L,
                  C_PRO_SI,
-                 C_L_dG,
-                 T_0.5,
-                 Oral_Dose,
-                 Inhalation_Dose,
-                 Volume_exposure_chamber,
                  Ka,
                  k_L_GST,
                  Km_L_OH,
-                 Km_L_CA,
                  Km_L_AO,
-                 Km_L_GST,
                  Km_L_GST_G,
                  k_L_CA,
-                 Vsmax_L_CA,
                  Vsmax_L_AO,
-                 Vsmax_L_GST,
                  Vsmax_L_OH,
                  k_SI_CA,
                  Km_SI_CA,
                  Km_SI_AO,
-                 Km_SI_OH,
                  Km_SI_GST,
                  Km_SI_GST_G,
-                 Vsmax_SI_CA,
                  Vsmax_SI_AO,
-                 Vsmax_SI_OH,
-                 Vsmax_SI_GST)
+                 Vsmax_SI_GST,
+                 S9_scaling_L,
+                 S9_scaling_SI)
 
 
 #defining the begin situation of the model Inhalation variation 
 inits <- c("A_GI"         =0,
-           "A_P_Art"      =0,
-           "A_Inhalation" =0,
+           "A_V"          =0,
+           "A_OH_V"       =0,
+           "A_A"          =0,
+           "A_OH_A"       =0,
+           "A_inhalation_dose" =0,
            "A_Exhalation" =0,
            "A_Pu"         =0,
            "A_OH_Pu"      =0,
-           "A_V"          =0,
-           "A_OH_V"       =0,
            "A_F"          =0,
            "A_OH_F"       =0,
-           "AM_L_CA"      =0,
-           "AM_L_AO"      =0,
-           "AM_L_AG_GST"  =0,
-           "AM_L_AG_CHEM" =0,
-           "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
-           "A_OH_M_L_C_A" =0,
-           "A_OH_L"       =0,
            "A_L"          =0,
-           "AM_Lc_GSH"    =0, 
-           "AM_SI_CA"     =0,
-           "AM_SI_AO"     =0,
-           "AM_SI_AG_GST" =0,
-           "AM_SI_AG_CHEM"=0,
-           "AM_SI_AP"     =0,
-           "A_OH_M_SI_C_A"=0,
-           "A_OH_SI"      =0,
+           "A_OH_L"       =0,
+           "AM_L_GST"     =0,
+           "AM_L_CHEM"    =0,
+           "AM_L_CA"      =0,
+           "AM_L_AP"      =0,
+           "AM_Lc_GSH"    =0,
+           "AM_L_AO"      =0,
+           "AM_OH_L_C_A"  =0,
            "A_SI"         =0,
+           "A_OH_SI"      =0,
+           "AM_SI_GST"    =0,
+           "AM_SI_CHEM"   =0,
+           "AM_SI_CA"     =0,
+           "AM_SI_AP"     =0,
            "AM_SIc_GSH"   =0,
+           "AM_SI_AO"     =0,
            "A_RP"         =0,
            "A_OH_RP"      =0,
            "A_SP"         =0,
@@ -255,8 +235,9 @@ inits <- c("A_GI"         =0,
 
 #inhalation exposure  exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = Oral_Dose, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(dose = Inhalation_Dose, dur=0.01, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
-  et(dose= init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
-  et(dose= init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)%>%
+  et(dose = Oral_Dose, dur=0.001, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  et(dose=iv_dose, dur=0.005,cmt="A_V",nbr.doses=1)%>%
+  et(dose= init_GSH_L, cmt="AM_Lc_GSH", nbr.doses=1)%>%
+  et(dose= init_GSH_SI, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(dose = Inhalation_Dose, dur=0.001, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 

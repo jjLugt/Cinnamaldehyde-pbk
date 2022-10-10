@@ -16,29 +16,6 @@ PBK_Cinnamaldehyde <- RxODE({
   C_OH_V         <- A_OH_V    /  V_V;             #Concentration of Cinnamyl alcOHol in venous Blood in μmol/l
   C_OH_A         <- A_OH_A    /  V_A;             #Concentration of Cinnamyl alcOHol in Arterial Blood in μmol/l 
   
-  #----Inhalation------#
-  #Cinnamaldehyde
-  
-  R_Inhalation  <- -P_V *(A_inhalation_Dose/Volume_exposure_chamber);   #Rate of Cinnamaldehyde inhalation in μmol/h
-  
-  C_P_Art       <-(Q_Pu * C_V + -R_Inhalation )/(Q_Pu + P_V/P_B);        #Concentration of Cinnamaldehyde  in Arterial blood leaving the lung in  μmol/l
-  
-  C_Alvair      <- C_P_Art/P_B;                                          #Concentration of Cinnamaldehyde exhaled in μmol/l 
-  
-  R_Exhalation  <- P_V * C_Alvair;                                        #Rate of Cinnamaldehyde exhalation in μmol/h
-  
-  
-  #----Pulmonary tissue 
-  C_Pu           <- A_Pu / V_Pu;                         #Concentration in pulmonary tissue in μmol/l
-  C_A_Pu         <- C_Pu / P_Pu;                         #Concentration of Cinnamaldehyde in Arterial blood leaving the lung in μmol/l
-  R_Pu           <- Q_Pu * (C_P_Art - C_A_Pu);           #Rate of change in the concentration of Cinnamaldehyde  in μmol/h
-  
-  #Cinnamyl alcohol
-  C_OH_Pu        <- A_OH_Pu    / V_Pu;                  #Concentration of Cinnamyl alcOHol in lung in μmol/kg
-  C_OH_V_Pu      <- C_OH_Pu   / P_OH_Pu;                #Concentration of Cinnamyl alcOHol in venous blood leaving the lung in μmol/l
-  R_OH_Pu        <- Q_Pu * (C_OH_V - C_OH_V_Pu);        #Rate of change in Cinnamyl alcOHol concentration in the lung in μmol/h
-  
-  
   #-----------FAT---------------#
   #Cinnamaldehyde#
   C_F            <- A_F       / V_F;              #Concentration in Fat in μmol/kg
@@ -88,11 +65,11 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_SI_CHEM     <- k_GSH * C_V_SI * C_SIc_GSH * V_SI;             #Rate of Cinnamaldehyde binding in the small intestine to GSH in μmol/h
   RM_SI_CA       <- k_SI_CA * C_V_SI;                              #Rate of Cinnamaldehyde enzymatically oxidized to carboxylic acid in the small intestine in μmol/h
   RM_SI_AP       <- k_GSH * C_V_SI * C_PRO_SI;                     #Rate of Cinnamaldehyde protein adducts in the small intestine in μmol/h
-  RM_SIc_GSH     <- G_SYN_SI -(RM_SI_GST + RM_SI_CHEM + k_SI_GLOS * AM_SIc_GSH);      #Rate of  GSH concentration in the small intestine cytosol μmol/h
-  RM_SI_AO       <- (Vsmax_SI_AO * C_V_SI) / (Km_SI_AO + C_V_SI);                             #Rate of Cinnamaldehyde reduction to cinnamyl alcOHol in the small intestine in μmol
+  RM_SIc_GSH     <- G_SYN_SI -(RM_SI_GST + RM_SI_CHEM + k_SI_GLOS * AM_SIc_GSH);            #Rate of  GSH concentration in the small intestine cytosol μmol/h
+  RM_SI_AO       <- (Vsmax_SI_AO * C_V_SI) / (Km_SI_AO + C_V_SI);                             #Rate of Cinnamaldehyde reduction to cinnamyl alcOHol in the small intestine in μmol/h
   
   #Output small intestine#
-  R_OH_SI        <- Q_SI * (C_OH_A - C_OH_V_SI) + RM_SI_AO        #Rate of Cinnamyl alcohol concentration change in the small intestine in μmol/h
+  R_OH_SI        <- Q_SI * (C_OH_A - C_OH_V_SI) + RM_SI_AO       #Rate of Cinnamyl alcohol concentration change in the small intestine in μmol/h
   
   R_SI           <- Q_SI * (C_A - C_V_SI) - Rin - RM_SI_CA - RM_SI_AP - RM_SI_GST - RM_SI_CHEM - RM_SI_AO # #Rate of change in cinnamaldehyde concentration in the SI in μmol/h
  
@@ -113,9 +90,9 @@ PBK_Cinnamaldehyde <- RxODE({
   RM_L_CHEM      <- k_GSH * C_V_L * C_Lc_GSH * V_L;     #Rate of Cinnamaldehyde chemically binding to GSH in the liver in μmol/h
   RM_L_CA        <- k_L_CA * C_V_L;                     #Rate of Cinnamaldehyde oxidation to carboxylic acid in the liver in μmol/h
   RM_L_AP        <- k_GSH * C_V_L * C_PRO_L;            #Rate of Cinnamaldehyde proteins adducts formation in the liver in μmol/h
-  RM_Lc_GSH      <- G_SYN_L - (RM_L_GST + RM_L_CHEM + k_L_GLOS * AM_Lc_GSH);      #Rate of change in GSH concentration in the liver cytosol μmol/h
+  RM_Lc_GSH      <- G_SYN_L - (RM_L_GST + RM_L_CHEM + k_L_GLOS * AM_Lc_GSH);  #Rate of change in GSH concentration in the liver cytosol μmol/h
   RM_L_AO        <- (Vsmax_L_AO * C_V_L) / (Km_L_AO + C_V_L );                #Rate of Cinnamaldehyde reduced to cinnamyl alcOHol in the liver in μmol/h
-  RM_OH_L_C_A    <- (Vsmax_L_OH * C_OH_V_L) /(Km_L_OH + C_OH_V_L);            #Rate of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in μmol/h
+  RM_OH_L_C_A    <- (Vsmax_L_OH * C_OH_V_L) /(Km_L_OH + C_OH_V_L);                  #Rate of Cinnamyl alcOHol oxidized to cinnamaldehyde in the liver in μmol/h
   
   
   
@@ -128,12 +105,12 @@ PBK_Cinnamaldehyde <- RxODE({
   #Cinnamyl alcohol
   R_OH_V         <- Q_F * C_OH_V_F + (Q_L + Q_SI) * C_OH_V_L + Q_RP * C_OH_V_RP + Q_SP * C_OH_V_SP - Q_C * C_OH_V; 
   
-  R_OH_A         <- Q_C * C_OH_V_Pu - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A);
+  R_OH_A         <- Q_C * C_OH_V - (Q_F * C_OH_A + Q_L * C_OH_A + Q_SI * C_OH_A + Q_RP * C_OH_A + Q_SP * C_OH_A);
   
   #Cinnamaldehyde#
   R_V            <- Q_F * C_V_F + (Q_L + Q_SI) * C_V_L + Q_RP * C_V_RP + Q_SP * C_V_SP - Q_C * C_V;    #Rate of change in Cinnamaldehyde concentration in the venous blood in μmol
   
-  R_A            <- Q_C * C_A_Pu - (Q_F * C_A + Q_L * C_A + Q_SI * C_A + Q_RP * C_A + Q_SP * C_A );       #Rate of change in Cinnamaldehyde concentration in the arterial blood in μmol 
+  R_A            <- Q_C * C_V - (Q_F * C_A + Q_L * C_A + Q_SI * C_A + Q_RP * C_A + Q_SP * C_A );       #Rate of change in Cinnamaldehyde concentration in the arterial blood in μmol 
   
  
   #----------------------------------------------Differential equations-------------------------------------------------------------------------------#
@@ -150,12 +127,6 @@ PBK_Cinnamaldehyde <- RxODE({
   d/dt(A_A)        <- R_A;      #Amount of Cinnamaldehyde in Arterial blood in μmol 
   #Cinnamyl alcohol
   d/dt(A_OH_A)     <- R_OH_A;   #Amount of Cinnamyl alcohol in Arterial blood in μmol
-  
-  #-----Lung---#
-  d/dt(A_inhalation_Dose) <- R_Inhalation       #Amount of Cinnamaldehyde in the exposure chamber in μmol
-  d/dt(A_Exhalation)      <- R_Exhalation       #Amount of Cinnamaldehyde exhaled in μmol
-  d/dt(A_Pu)              <- R_Pu;              #Amount of Cinnamaldehyde in the lung in μmol
-  d/dt(A_OH_Pu)           <- R_OH_Pu;           #Amount of Cinnamyl alcohol in the lung in μmol
   
   #-Fat calculations-#
   d/dt(A_F)        <- R_F;      #Amount of Cinnamaldehyde in the Fat in μmol                      
