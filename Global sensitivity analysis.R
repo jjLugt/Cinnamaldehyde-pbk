@@ -86,33 +86,33 @@ P_V     <-   540             #Alveolar ventilation L/h
 #----GSH parameters----#
 #--GSH synthesis in μmol/kg tissue/h--#
 
-G_SYN_L     <- 1122        #Liver 
-G_SYN_SI    <- 27           #Small intestine
+G_SYN_L     <- 1122 * V_L        #Liver 
+G_SYN_SI    <- 27   * V_SI        #Small intestine
 
 #-Apparent first order rate constant GSH turn over(RAT?) per h-#
 k_L_GLOS    <- 0.142        #Liver
 k_SI_GLOS   <- 0.044        #Small intestine
 
 #--Initial GSH concentration--#
-init_GSH_L  <- 7111    #initial amount of GSH in the liver in μmol
-init_GSH_SI <- 1555  #initial amount of GSH in the small intestine in μmol
+init_GSH_L  <- 7111 * V_L   #initial amount of GSH in the liver in μmol
+init_GSH_SI <- 1555  * V_SI #initial amount of GSH in the small intestine in μmol
 
 k_GSH <- 6.6 * 10^(-4)      #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 
 #----Protein reactive sites in μmol/kg tissue----#
-C_PRO_L     <- 5319       #Liver
-C_PRO_SI    <- 245         #Small intestine
+C_PRO_L     <- 5319   * V_L     #Liver
+C_PRO_SI    <- 245    * V_SI      #Small intestine
 
 #--Chemical parameters--#
 Ka <- 5.0                   #Absorption rate constant for uptake in the Small intestine in per H
 
 #----Liver----#
-S9_scaling_L <- 143  #scaling factor for S9 fraction per g tissue
+S9_scaling_L <- 143  * (V_L * 1000) #scaling factor for S9 fraction per g tissue
 
 #----Liver----#
 
 #-first rate order constants-#
-k_L_OH  <- 4.2*10^-2 *        #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
+k_L_OH  <- 4.2*10^-2 *  60 / 1000 * S9_scaling_L        #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
 
 #--Michaelis menten constants--#
 Km_L_CA     <-  8.5         #Km for enzymatic oxidation of Cinnamaldehyde into Cinnamic acid in the liver in μM
@@ -121,12 +121,12 @@ Km_L_GST    <-  1.7*10^3    #Km for enzymatic conjugation of Cinnamaldehyde with
 Km_L_GST_G  <-  100         #Km toward GSH for enzymatic conjugation of Cinnamaldehyde in the liver (μM)
 
 #--Vmax values--#
-Vsmax_L_CA    <-  9.7   #Scaled Vmax for enzymatic oxidation of Cinnamaldehyde in the liver in μmol/h 
-Vsmax_L_AO    <-  73        #Scaled Vmax for enzymatic reduction of Cinnamaldehyde in the liver in μmol/h
-Vsmax_L_GST   <-  37         #Scaled Vmax for enzymatic conjugation of Cinnamaldehyde with GSH in the liver in μmol/h
+Vsmax_L_CA    <-  9.7  * 60 / 1000 * S9_scaling_L  #Scaled Vmax for enzymatic oxidation of Cinnamaldehyde in the liver in μmol/h 
+Vsmax_L_AO    <-  73   * 60 / 1000 * S9_scaling_L      #Scaled Vmax for enzymatic reduction of Cinnamaldehyde in the liver in μmol/h
+Vsmax_L_GST   <-  37    * 60 / 1000 * S9_scaling_L      #Scaled Vmax for enzymatic conjugation of Cinnamaldehyde with GSH in the liver in μmol/h
 
 #----Small intestines----#
-S9_scaling_SI <-  11.4 #scaling factor fraction S9 protein per g tissue
+S9_scaling_SI <-  11.4 * (V_SI *1000) #scaling factor fraction S9 protein per g tissue
 
 #--Michaelis Menten constants--#
 Km_SI_CA    <- 70          #Km for enzymatic oxidation of Cinnamaldehyde into Cinnamic acid in the Small Intestine in μM
@@ -136,10 +136,10 @@ Km_SI_GST   <- 0           #Km for enzymatic conjugation of Cinnamaldehye with G
 Km_SI_GST_G <- 100         #Km toward GSH for enzymatic conjugation of Cinnamaldehyde in the small intestine (μM)
 
 #-Vmax values-#
-Vsmax_SI_CA    <- 21      #Scaled Vmax for enzymatic oxidation of Cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
-Vsmax_SI_AO    <- 30      #Scaled Vmax for enzymatic reduction of Cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
-Vsmax_SI_OH    <- 5.0    #Scaled Vmax for enzymatic Oxidation of Cinnamyl alcohol into Cinnamaldehyde in the Small Intestine in μmol/h 
-Vsmax_SI_GST   <- 0      #Scaled Vmax for enzymatic Conjugation of Cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
+Vsmax_SI_CA    <- 21    * 60/1000 * S9_scaling_SI   #Scaled Vmax for enzymatic oxidation of Cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
+Vsmax_SI_AO    <- 30   * 60/1000 * S9_scaling_SI    #Scaled Vmax for enzymatic reduction of Cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
+Vsmax_SI_OH    <- 5.0  * 60/1000 * S9_scaling_SI   #Scaled Vmax for enzymatic Oxidation of Cinnamyl alcohol into Cinnamaldehyde in the Small Intestine in μmol/h 
+Vsmax_SI_GST   <- 0    * 60/1000 * S9_scaling_SI   #Scaled Vmax for enzymatic Conjugation of Cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #Collection of all parameters so a distribution can be made with them later on in the file #Human
 dist_para <- cbind(P_F,
@@ -300,35 +300,6 @@ for(i in 1:nrow(X2)){
   X2[i,43]<- (X2[i,36]/X2[i,38])* X2[i,32]
   X2[i,44]<- (X2[i,37]/X2[i,38])* X2[i,32]
 }
-
-#Scaling of the different parameters to bodyweight since that is now corrected 
-for(i in 1:nrow(X1)){
-  #Tissue volumes calculations
-  X1[i,46]<- sum(X1[i,15:22])
-  X1[i,24]<- (X1[i,15]/X1[i,23])* X1[i,14]
-  X1[i,25]<- (X1[i,16]/X1[i,23])* X1[i,14]
-  X1[i,26]<- (X1[i,17]/X1[i,23])* X1[i,14]
-  X1[i,27]<- (X1[i,18]/X1[i,23])* X1[i,14]
-  X1[i,28]<- (X1[i,19]/X1[i,23])* X1[i,14]
-  X1[i,29]<- (X1[i,20]/X1[i,23])* X1[i,14]
-  X1[i,30]<- (X1[i,21]/X1[i,23])* X1[i,14]
-  X1[i,31]<- (X1[i,22]/X1[i,23])* X1[i,14]
-  #Blood flow calculations
-  X1[i,38]<- sum(X1[i,33:37])
-  X1[i,39]<- X1[i,32]
-  X1[i,40]<- (X1[i,33]/X1[i,38])* X1[i,32]
-  X1[i,41]<- (X1[i,34]/X1[i,38])* X1[i,32]
-  X1[i,42]<- (X1[i,35]/X1[i,38])* X1[i,32]
-  X1[i,43]<- (X1[i,36]/X1[i,38])* X1[i,32]
-  X1[i,44]<- (X1[i,37]/X1[i,38])* X1[i,32]
-  Flow_volumes <-append(Flow_volumes,sum(X1[i,40:44]))
-  Tissue_volumes<-append(Tissue_volumes ,sum(X1[i,24:31]))
-  Total_body_weight <- append(Total_body_weight ,X1[i,14])
-  Total_QC<- append(Total_QC ,X1[i,32])
-  names<- c("total flow","QC","Total volume","BW")
-  Mass_check <- as.data.frame(cbind(Flow_volumes,Total_QC,Tissue_volumes,Total_body_weight), col.names = names)
-}
-
 
 
 #Removing variation in volume exposure chamber as this is supposed to be fixed
