@@ -17,11 +17,11 @@ amount.units               <-"umol"
 time.units                 <-"h"
 nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
-time.end                   <-4        #time end of simulation
+time.end                   <-12        #time end of simulation
 time.frame                 <-0.1      #time steps of simulation
-Oral_dose_in_mg_bw         <-0      #Dose in mg/kg-bw
+Oral_dose_in_mg_bw         <-50     #Dose in mg/kg-bw
 Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-iv_dose_in_mg_bw           <-20       #IV administered dose in mg/kg/bw
+iv_dose_in_mg_bw           <-0       #IV administered dose in mg/kg/bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <- 0.25    #Body weight in Kg
 Oral_Dose                  <-(Oral_dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
@@ -34,7 +34,7 @@ Volume_exposure_chamber    <-10       #volume exposure chamber in L
 #-Cinnamaldehyde-#
 
 P_F      <-  1.69 #Fat/Blood partition coefficient
-P_L      <-  0.81 #Fat/Blood partition coefficient
+P_L      <-  0.81 #Fat/Blood partition coefficient 
 P_SI     <-  0.81 #Small intestine/Blood partition coefficients
 P_RP     <-  0.81 #Richly perfused tissues/Blood partition coefficients
 P_SP     <-  0.39 #Slowly perfused tissues/Blood partition coefficients
@@ -48,6 +48,7 @@ P_OH_SI   <-  0.81 #Small intestine/Blood partition coefficients
 P_OH_RP   <-  0.81 #Richly perfused tissues/Blood partition coefficients
 P_OH_SP   <-  0.39 #Slowly perfused tissues/Blood partition coefficients
 P_OH_Pu   <-  0.81 #Lung/Blood partition coefficients
+
 
 #--Physiological Parameters--#
 
