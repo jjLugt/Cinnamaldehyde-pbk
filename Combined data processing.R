@@ -83,14 +83,42 @@ plot(mass_at_t[,1])
 #Extracting organ concentration, time and sim-id from simulation results
 
 #Lung compartment concentration
+sub_set <- solve.pbk_popgen[1:162000,c(1,2,12)]
 
-#smaller subset for easier analysis
-sub_set_C_Pu <- solve.pbk_popgen[1:16200,]
-conc_C_Pu <- PKNCAconc(sub_set_C_Pu, C_Pu~time|id)
+#Blood compartment concentration
+sub_set <- solve.pbk_popgen[1:162000,c(1,2,4,5)]
+
+#Combining Arterial and venous blood into one general blood compartment
+sub_set[3]<- sub_set[3]+sub_set[4]
+
+#Dropping column as data is already added to column 3
+sub_set[4] <- NULL
+#Renamning the columns
+colnames(sub_set) <- c("id","time","C_B")
+
+#Liver compartment concentration
+sub_set <- solve.pbk_popgen[1:162000,c(1,2,50)]
+
+#Slowly perfused compartment
+sub_set <- solve.pbk_popgen[1:162000,c(1,2,30)]
+
+#richly perfused compartment
+sub_set <- solve.pbk_popgen[1:162000,c(1,2,24)]
+
+#Fat compartment
+sub_set <- solve.pbk_popgen[1:162000,c(1,2,18)]
+
+#sI compartment
+sub_set <- solve.pbk_popgen[1:162000,c(1,2,36)]
+
+
+
+
+conc_C <- PKNCAconc(sub_set, C_SI~time|id)
 
 
 #whole dataset
-AUC_data <-PKNCAconc(solve.pbk_popgen, C_Pu~time|id)
+#AUC_data <-PKNCAconc(solve.pbk_popgen, C_L~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
@@ -102,7 +130,7 @@ d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 64]`)
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 #d_dose for 2000 results is to big for laptop so to see if it works smaller sample will be used
-#d_dose <- d_dose[1:2000,]
+#d_dose <- d_dose[1:400,]
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
 #Setting the end of the auc calculation at 8 hours
@@ -110,24 +138,428 @@ intervals_manual <- data.frame(start=0,
                                end=8,
                                cmax=TRUE,
                                tmax=TRUE,
-                               aucinf.obs=TRUE,
+                               aucinf.obs=FALSE,
                                auclast=TRUE)
-data_obj_manual <- PKNCAdata(AUC_data, dose_obj,
-                             intervals=intervals_manual)
+
+#Use this when evaluating the whole dataset 
+#data_obj_manual <- PKNCAdata(AUC_data, dose_obj,
+#intervals=intervals_manual)
+
+data_obj_manual<- PKNCAdata(conc_C, dose_obj,
+                            intervals=intervals_manual)
 
 #letting pknc chose the end time of the auc calc
-data_obj_automatic <- PKNCAdata(conc_C_Pu, dose_obj)
+#data_obj_automatic <- PKNCAdata(conc_C_Pu, dose_obj)
 
 #Computing the data both manual and automatic
-results_obj_automatic <- pk.nca(data_obj_automatic)
+#results_obj_automatic <- pk.nca(data_obj_automatic)
 results_obj_manual <- pk.nca(data_obj_manual)
 
 #look at the data to get an impression
 knitr::kable(head(as.data.frame(results_obj_manual)))
 
 summary(results_obj_manual)
-results_obj_manual$result
 
+
+
+#Wrting the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250_inhalation_C_SI.csv")
+
+
+#C_Pu data extraction
+#Loading data back in
+results_250_oral_C_Pu <- read_csv("results_250_oral_C_Pu.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_Oral_C_Pu <- unique(results_250_oral_C_Pu[results_250_oral_C_Pu$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_Pu <- unique(results_250_oral_C_Pu[results_250_oral_C_Pu$PPTESTCD == "cmax",c("id","PPORRES")])
+
+
+#Lung AUC
+#Loading data back in
+results_250_oral_C_Pu <- read_csv("results_250_oral_C_Pu.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_Oral__C_Pu <- unique(results_250_oral_C_Pu[results_250_oral_C_Pu$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_Pu <- unique(results_250_oral_C_Pu[results_250_oral_C_Pu$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_Oral__C_Pu$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_Oral__C_Pu$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_Oral__C_Pu$PPORRES[1001:2000])
+
+
+
+
+#---------------BLOOD------------------#
+#Loading data back in
+results_250_oral_C_B <- read_csv("results_250_oral_C_B.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_Oral__C_B <- unique(results_250_oral_C_B[results_250_oral_C_B$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_B <- unique(results_250_oral_C_B[results_250_oral_C_B$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_Oral__C_B$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_Oral__C_B$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_Oral__C_B$PPORRES[1001:2000])
+
+
+
+
+#--------------------FAT--------------------------#
+#Loading data back in
+results_250_oral_C_F <- read_csv("results_250_oral_C_F.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_Oral__C_F <- unique(results_250_oral_C_F[results_250_oral_C_F$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_F <- unique(results_250_oral_C_F[results_250_oral_C_F$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_Oral__C_F$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_Oral__C_F$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_Oral__C_F$PPORRES[1001:2000])
+
+
+
+
+#----------------------Richly perfused--------------------------#
+#Loading data back in
+results_250_oral_C_RP <- read_csv("results_250_oral_C_RP.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_Oral__C_RP <- unique(results_250_oral_C_RP[results_250_oral_C_RP$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_RP <- unique(results_250_oral_C_RP[results_250_oral_C_RP$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_Oral__C_RP$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_Oral__C_RP$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_Oral__C_RP$PPORRES[1001:2000])
+
+
+#-----------------------------Slowly perfused----------------------#
+#Loading data back in
+results_250_oral_C_SP <- read_csv("results_250_oral_C_SP.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_Oral__C_SP <- unique(results_250_oral_C_SP[results_250_oral_C_SP$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_SP <- unique(results_250_oral_C_SP[results_250_oral_C_SP$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_Oral__C_SP$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_Oral__C_SP$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_Oral__C_SP$PPORRES[1001:2000])
+
+
+
+#-----------------------------Small intestine----------------------#
+#Loading data back in
+results_250_oral_C_SI <- read_csv("results_250_oral_C_SI.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_Oral__C_SI <- unique(results_250_oral_C_SI[results_250_oral_C_SI$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_SI <- unique(results_250_oral_C_SI[results_250_oral_C_SI$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_Oral__C_SI$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_Oral__C_SI$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_Oral__C_SI$PPORRES[1001:2000])
+
+
+
+#-----------------------------Liver----------------------#
+#Loading data back in
+results_250_oral_C_L <- read_csv("results_250_oral_C_L.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_Oral__C_L <- unique(results_250_oral_C_L[results_250_oral_C_L$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_L <- unique(results_250_oral_C_L[results_250_oral_C_L$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_Oral__C_L$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_Oral__C_L$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_Oral__C_L$PPORRES[1001:2000])
+
+
+boxplot(AUC_extraction_250_Oral__C_Pu$PPORRES[1:1000], AUC_extraction_250_Oral__C_Pu$PPORRES[1001:2000],AUC_extraction_250_Oral__C_B$PPORRES[1:1000],AUC_extraction_250_Oral__C_B$PPORRES[1001:2000],AUC_extraction_250_Oral__C_F$PPORRES[1:1000],AUC_extraction_250_Oral__C_F$PPORRES[1001:2000],
+        AUC_extraction_250_Oral__C_RP$PPORRES[1:1000],AUC_extraction_250_Oral__C_RP$PPORRES[1001:2000],AUC_extraction_250_Oral__C_SP$PPORRES[1:1000],AUC_extraction_250_Oral__C_SP$PPORRES[1001:2000],AUC_extraction_250_Oral__C_SI$PPORRES[1:1000],AUC_extraction_250_Oral__C_SI$PPORRES[1001:2000],
+        AUC_extraction_250_Oral__C_L$PPORRES[1:1000],AUC_extraction_250_Oral__C_L$PPORRES[1001:2000],
+        Main= "Area under the curve Concentration of Cinnamaldehyde",
+        ylab= "umol/l",
+        names= c("Male Lung", "Female Lung", "Male Blood", "Female Blood", "male Fat","Female Fat", "Male Richly perfused", "Femal Richly perfused","Male slowly perfused", "Femal slowly perfused","Male SI","Female SI",
+                 "Male Liver","Female Liver"),
+        col="orange",
+        las=2)
+
+#Combinded box plot 
+boxplot(AUC_extraction_250_Oral__C_Pu$PPORRES, AUC_extraction_250_Oral__C_B$PPORRES,AUC_extraction_250_Oral__C_F$PPORRES,
+        AUC_extraction_250_Oral__C_RP$PPORRES,AUC_extraction_250_Oral__C_SP$PPORRES,AUC_extraction_250_Oral__C_SI$PPORRES,
+        AUC_extraction_250_Oral__C_L$PPORRES,
+        Main= "Area under the curve Concentration of Cinnamaldehyde",
+        ylab= "umol/l",
+        names= c("Lung","Blood", "Fat", "Richly perfused","slowly perfused","SI",
+                 "Liver"),
+        col="orange",
+        las=2)
+
+#AUC and C max box plot
+boxplot(AUC_extraction_250_Oral__C_Pu$PPORRES,Cmax_extraction_C_Pu$PPORRES, AUC_extraction_250_Oral__C_B$PPORRES,Cmax_extraction_C_B$PPORRES, AUC_extraction_250_Oral__C_F$PPORRES,Cmax_extraction_C_F$PPORRES,
+        AUC_extraction_250_Oral__C_RP$PPORRES,Cmax_extraction_C_RP$PPORRES, AUC_extraction_250_Oral__C_SP$PPORRES,Cmax_extraction_C_SP$PPORRES, AUC_extraction_250_Oral__C_SI$PPORRES,Cmax_extraction_C_SI$PPORRES,
+        AUC_extraction_250_Oral__C_L$PPORRES,Cmax_extraction_C_L$PPORRES,
+        Main= "Area under the curve Concentration of Cinnamaldehyde",
+        ylab= "umol/l",
+        names= c("Lung AUC","Lung Cmax", "Blood AUC","Blood Cmax", "Fat AUC", "Fat Cmax", "Richly perfused AUC","RP Cmax", "slowly perfused AUC","SP cmax", "SI AUC", "SI Cmax",
+                 "Liver AUC","liver Cmax"),
+        col="orange",
+        las=2)
+
+
+
+#Lung AUC
+#Loading data back in
+results_250_inhalation_C_Pu <- read_csv("results_250_inhalation_C_Pu.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_inhalation__C_Pu <- unique(results_250_inhalation_C_Pu[results_250_inhalation_C_Pu$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_Pu <- unique(results_250_inhalation_C_Pu[results_250_inhalation_C_Pu$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_inhalation__C_Pu$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_inhalation__C_Pu$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_inhalation__C_Pu$PPORRES[1001:2000])
+
+
+
+#---------------BLOOD------------------#
+#Loading data back in
+results_250_inhalation_C_B <- read_csv("results_250_inhalation_C_B.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_inhalation__C_B <- unique(results_250_inhalation_C_B[results_250_inhalation_C_B$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_B <- unique(results_250_inhalation_C_B[results_250_inhalation_C_B$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_inhalation__C_B$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_inhalation__C_B$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_inhalation__C_B$PPORRES[1001:2000])
+
+
+
+#-----------------------------Liver----------------------#
+#Loading data back in
+results_250_inhalation_C_L <- read_csv("results_250_inhalation_C_L.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_inhalation__C_L <- unique(results_250_inhalation_C_L[results_250_inhalation_C_L$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_L <- unique(results_250_inhalation_C_L[results_250_inhalation_C_L$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_inhalation__C_L$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_inhalation__C_L$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_inhalation__C_L$PPORRES[1001:2000])
+
+
+#-----------------------------Slowly perfused----------------------#
+#Loading data back in
+results_250_inhalation_C_SP <- read_csv("results_250_inhalation_C_SP.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_inhalation__C_SP <- unique(results_250_inhalation_C_SP[results_250_inhalation_C_SP$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_SP <- unique(results_250_inhalation_C_SP[results_250_inhalation_C_SP$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_inhalation__C_SP$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_inhalation__C_SP$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_inhalation__C_SP$PPORRES[1001:2000])
+
+
+
+
+#----------------------Richly perfused--------------------------#
+#Loading data back in
+results_250_inhalation_C_RP <- read_csv("results_250_inhalation_C_RP.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_inhalation__C_RP <- unique(results_250_inhalation_C_RP[results_250_inhalation_C_RP$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_RP <- unique(results_250_inhalation_C_RP[results_250_inhalation_C_RP$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_inhalation__C_RP$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_inhalation__C_RP$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_inhalation__C_RP$PPORRES[1001:2000])
+
+
+#--------------------FAT--------------------------#
+#Loading data back in
+results_250_inhalation_C_F <- read_csv("results_250_inhalation_C_F.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_inhalation__C_F <- unique(results_250_inhalation_C_F[results_250_inhalation_C_F$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_F <- unique(results_250_inhalation_C_F[results_250_inhalation_C_F$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_inhalation__C_F$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_inhalation__C_F$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_inhalation__C_F$PPORRES[1001:2000])
+
+
+#-----------------------------Small intestine----------------------#
+#Loading data back in
+results_250_inhalation_C_SI <- read_csv("results_250_inhalation_C_SI.csv")
+
+#Extracting AUC data for data visualization
+AUC_extraction_250_inhalation__C_SI <- unique(results_250_inhalation_C_SI[results_250_inhalation_C_SI$PPTESTCD == "auclast",c("id","PPORRES")])
+
+#Extracting Cmax data for data visualization
+Cmax_extraction_C_SI <- unique(results_250_inhalation_C_SI[results_250_inhalation_C_SI$PPTESTCD == "cmax",c("id","PPORRES")])
+
+#Histogram of AUC values
+hist(AUC_extraction_250_inhalation__C_SI$PPORRES)
+
+#Histogram of male AUC values
+hist(AUC_extraction_250_inhalation__C_SI$PPORRES[1:1000])
+
+#Histogram of female AUC values
+hist(AUC_extraction_250_inhalation__C_SI$PPORRES[1001:2000])
+
+
+
+
+
+
+
+
+
+
+#All compartments plot
+boxplot(AUC_extraction_250_inhalation__C_Pu$PPORRES[1:1000], AUC_extraction_250_inhalation__C_Pu$PPORRES[1001:2000],AUC_extraction_250_inhalation__C_B$PPORRES[1:1000],AUC_extraction_250_inhalation__C_B$PPORRES[1001:2000],AUC_extraction_250_inhalation__C_F$PPORRES[1:1000],AUC_extraction_250_inhalation__C_F$PPORRES[1001:2000],
+        AUC_extraction_250_inhalation__C_RP$PPORRES[1:1000],AUC_extraction_250_inhalation__C_RP$PPORRES[1001:2000],AUC_extraction_250_inhalation__C_SP$PPORRES[1:1000],AUC_extraction_250_inhalation__C_SP$PPORRES[1001:2000],AUC_extraction_250_inhalation__C_SI$PPORRES[1:1000],AUC_extraction_250_inhalation__C_SI$PPORRES[1001:2000],
+        AUC_extraction_250_inhalation__C_L$PPORRES[1:1000],AUC_extraction_250_inhalation__C_L$PPORRES[1001:2000],
+        Main= "Area under the curve Concentration of Cinnamaldehyde",
+        ylab= "umol/l",
+        names= c("Male Lung", "Female Lung", "Male Blood", "Female Blood", "male Fat","Female Fat", "Male Richly perfused", "Femal Richly perfused","Male slowly perfused", "Femal slowly perfused","Male SI","Female SI",
+                 "Male Liver","Female Liver"),
+        col="orange",
+        las=2)
+
+
+
+#Combinded box plot 
+boxplot(AUC_extraction_250_inhalation__C_Pu$PPORRES, AUC_extraction_250_inhalation__C_B$PPORRES,AUC_extraction_250_inhalation__C_F$PPORRES,
+        AUC_extraction_250_inhalation__C_RP$PPORRES,AUC_extraction_250_inhalation__C_SP$PPORRES,AUC_extraction_250_inhalation__C_SI$PPORRES,
+        AUC_extraction_250_inhalation__C_L$PPORRES,
+        Main= "Area under the curve Concentration of Cinnamaldehyde",
+        ylab= "umol/l",
+        names= c("Lung","Blood", "Fat", "Richly perfused","slowly perfused","SI",
+                 "Liver"),
+        col="orange",
+        las=2)
+
+#AUC and C max box plot
+boxplot(AUC_extraction_250_inhalation__C_Pu$PPORRES,Cmax_extraction_C_Pu$PPORRES, AUC_extraction_250_inhalation__C_B$PPORRES,Cmax_extraction_C_B$PPORRES, AUC_extraction_250_inhalation__C_F$PPORRES,Cmax_extraction_C_F$PPORRES,
+        AUC_extraction_250_inhalation__C_RP$PPORRES,Cmax_extraction_C_RP$PPORRES, AUC_extraction_250_inhalation__C_SP$PPORRES,Cmax_extraction_C_SP$PPORRES, AUC_extraction_250_inhalation__C_SI$PPORRES,Cmax_extraction_C_SI$PPORRES,
+        AUC_extraction_250_inhalation__C_L$PPORRES,Cmax_extraction_C_L$PPORRES,
+        Main= "Area under the curve Concentration of Cinnamaldehyde",
+        ylab= "umol/l",
+        names= c("Lung AUC","Lung Cmax", "Blood AUC","Blood Cmax", "Fat AUC", "Fat Cmax", "Richly perfused AUC","RP Cmax", "slowly perfused AUC","SP cmax", "SI AUC", "SI Cmax",
+                 "Liver AUC","liver Cmax"),
+        col="orange",
+        las=2)
+
+
+
+
+#Combined oral and inhalation box plot 
+boxplot(AUC_extraction_250_Oral__C_Pu$PPORRES,AUC_extraction_250_inhalation__C_Pu$PPORRES, AUC_extraction_250_Oral__C_B$PPORRES, AUC_extraction_250_inhalation__C_B$PPORRES,
+        AUC_extraction_250_Oral__C_F$PPORRES, AUC_extraction_250_inhalation__C_F$PPORRES, AUC_extraction_250_Oral__C_RP$PPORRES, AUC_extraction_250_inhalation__C_RP$PPORRES,
+        AUC_extraction_250_Oral__C_SP$PPORRES, AUC_extraction_250_inhalation__C_SP$PPORRES, AUC_extraction_250_Oral__C_SI$PPORRES, AUC_extraction_250_inhalation__C_SI$PPORRES,
+        AUC_extraction_250_Oral__C_L$PPORRES, AUC_extraction_250_inhalation__C_L$PPORRES,
+        Main= "Area under the curve Concentration of Cinnamaldehyde",
+        ylab= "umol/l",
+        names= c("Lung oral", "Lung inhalation","Blood oral","Blood inhalation", "Fat oral","Fat inhalation", "RP oral","RP inhalation", "SP oral", "SP inhalation", "SI oral", "SI inhalation",
+                 "Liver oral", "SI inhalation"),
+        col="orange",
+        las=2)
 
 
 #Comparison between human desolve and rxode model
