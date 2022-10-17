@@ -16,12 +16,13 @@ amount.units            <-"umol"
 time.units              <-"h"
 nbr.doses               <-1        #number of doses
 time.0                  <-0        #time start dosing
-time.end                <-8        #time end of simulation
+time.end                <-24        #time end of simulation
 time.frame              <-0.1     #time steps of simulation
 N                       <-1000     #Number of males
 NF                      <-1000     #Number of females
-Oral_Dose_in_mg_bw      <-250      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw      <-0.7      #Dose in mg/kg-bw
 Inhalation_Dose_in_mg_bw<-0        #The inhaled dose in mg/kg
+iv_dose_in_mg_bw        <-0       #IV administered dose in mg/kg/bw
 Volume_exposure_chamber <-10       #volume exposure chamber in L
 MW                      <-132.16   #The molecular weight of Cinnamaldehyde
 
@@ -79,38 +80,39 @@ var_f_pop <- as.data.frame(var_f_pop)
 
 #--Physico-chemical parameters--#
 #-Cinnamaldehyde-#
-var_m_pop$P_F      <-  1.62    #Fat/Blood partition coefficient
-var_m_pop$P_L      <-  0.59    #Fat/Blood partition coefficient
-var_m_pop$P_SI     <-  0.59    #Small intestine/Blood partition coefficients
-var_m_pop$P_RP     <-  0.59    #Richly perfused tissues/Blood partition coefficients
-var_m_pop$P_B      <-  1.25E5  #Blood/Air Partition Coefficient 
-var_m_pop$P_SP     <-  0.78    #Slowly perfused tissues/Blood partition coefficients
-var_m_pop$P_Pu     <-  0.59    #Lung/Blood partition coefficients
+var_m_pop$P_F      <-  47.75    #Fat/Blood partition coefficient
+var_m_pop$P_L      <-  1.83   #Fat/Blood partition coefficient
+var_m_pop$P_SI     <-  1.83   #Small intestine/Blood partition coefficients
+var_m_pop$P_RP     <-  1.83    #Richly perfused tissues/Blood partition coefficients
+var_m_pop$P_B      <-  130754  #Blood/Air Partition Coefficient 
+var_m_pop$P_SP     <-  1.50    #Slowly perfused tissues/Blood partition coefficients
+var_m_pop$P_Pu     <-  1.83    #Lung/Blood partition coefficients
 
 #-Cinnamyl Alcohol-#
-var_m_pop$P_OH_F    <-  1.64   #Fat/Blood partition coefficient
-var_m_pop$P_OH_L    <-  0.59   #Fat/Blood partition coefficient
-var_m_pop$P_OH_SI   <-  0.59   #Small intestine/Blood partition coefficients
-var_m_pop$P_OH_RP   <-  0.59   #Richly perfused tissues/Blood partition coefficients
-var_m_pop$P_OH_SP   <-  0.78   #Slowly perfused tissues/Blood partition coefficients
-var_m_pop$P_OH_Pu   <-  0.59   #Lung/Blood partition coefficients
+var_m_pop$P_OH_F    <-  49.26  #Fat/Blood partition coefficient
+var_m_pop$P_OH_L    <-  1.18   #Fat/Blood partition coefficient
+var_m_pop$P_OH_SI   <-  1.18   #Small intestine/Blood partition coefficients
+var_m_pop$P_OH_RP   <-  1.18   #Richly perfused tissues/Blood partition coefficients
+var_m_pop$P_OH_SP   <-  1.53  #Slowly perfused tissues/Blood partition coefficients
+var_m_pop$P_OH_Pu   <-  1.18   #Lung/Blood partition coefficients
 
-#-----Cinnamaldehyde----#
-var_f_pop$P_F       <-  1.62   #Fat/Blood partition coefficient
-var_f_pop$P_L       <-  0.59   #Fat/Blood partition coefficient
-var_f_pop$P_SI      <-  0.59   #Small intestine/Blood partition coefficients
-var_f_pop$P_RP      <-  0.59   #Richly perfused tissues/Blood partition coefficients
-var_f_pop$P_B       <-  1.25E5 #Blood/Air Partition Coefficient 
-var_f_pop$P_SP      <-  0.78   #Slowly perfused tissues/Blood partition coefficients
-var_f_pop$P_Pu      <-  0.59   #Lung/Blood partition coefficients
+
+#-Cinnamaldehyde-#
+var_f_pop$P_F      <-  47.75    #Fat/Blood partition coefficient
+var_f_pop$P_L      <-  1.83   #Fat/Blood partition coefficient
+var_f_pop$P_SI     <-  1.83   #Small intestine/Blood partition coefficients
+var_f_pop$P_RP     <-  1.83    #Richly perfused tissues/Blood partition coefficients
+var_f_pop$P_B      <-  130754  #Blood/Air Partition Coefficient 
+var_f_pop$P_SP     <-  1.50    #Slowly perfused tissues/Blood partition coefficients
+var_f_pop$P_Pu     <-  1.83    #Lung/Blood partition coefficients
 
 #-Cinnamyl Alcohol-#
-var_f_pop$P_OH_F    <-  1.64   #Fat/Blood partition coefficient
-var_f_pop$P_OH_L    <-  0.59   #Fat/Blood partition coefficient
-var_f_pop$P_OH_SI   <-  0.59   #Small intestine/Blood partition coefficients
-var_f_pop$P_OH_RP   <-  0.59   #Richly perfused tissues/Blood partition coefficients
-var_f_pop$P_OH_SP   <-  0.78   #Slowly perfused tissues/Blood partition coefficients
-var_f_pop$P_OH_Pu   <-  0.59   #Lung/Blood partition coefficients
+var_f_pop$P_OH_F    <-  49.26  #Fat/Blood partition coefficient
+var_f_pop$P_OH_L    <-  1.18   #Fat/Blood partition coefficient
+var_f_pop$P_OH_SI   <-  1.18   #Small intestine/Blood partition coefficients
+var_f_pop$P_OH_RP   <-  1.18   #Richly perfused tissues/Blood partition coefficients
+var_f_pop$P_OH_SP   <-  1.53  #Slowly perfused tissues/Blood partition coefficients
+var_f_pop$P_OH_Pu   <-  1.18   #Lung/Blood partition coefficients
 
 #--Physiological Parameters--#
 
@@ -132,13 +134,13 @@ var_m_pop$V_RP     <-pg_m_par$`Richly Perfused mass`    #Volume richly perfused 
 var_m_pop$V_SP     <-pg_m_par$`Slowly Perfused mass`    #Volume slowly perfused tissue (L)
 
 #-Cardiac parameters-#
-var_m_pop$Q_C           <- pg_m_par$`Cardiac Output`           #Cardiac output (L/h)
-var_m_pop$Q_SI          <- pg_m_par$`Small intestine flow`                                         #Blood flow to the gut (L/h)
-var_m_pop$Q_F           <- pg_m_par$`Adipose flow`                                         #Blood flow to adipose tissue (L/h)
-var_m_pop$Q_L           <- pg_m_par$`Liver flow`                                        #Blood flow to liver(L/h)
-var_m_pop$Q_Pu          <- pg_m_par$`Lung flow`
+var_m_pop$Q_C           <- pg_m_par$`Cardiac Output`                   #Cardiac output (L/h)
+var_m_pop$Q_SI          <- pg_m_par$`Small intestine flow`             #Blood flow to the gut (L/h)
+var_m_pop$Q_F           <- pg_m_par$`Adipose flow`                     #Blood flow to adipose tissue (L/h)
+var_m_pop$Q_L           <- pg_m_par$`Liver flow`                       #Blood flow to liver(L/h)
+var_m_pop$Q_Pu          <- pg_m_par$`Lung flow`                        #Blood flow to lungs(L/h)
 var_m_pop$Q_RP          <- pg_m_par$`Richly Perfused flow`             #Blood flow to richly perfused tissue (L/h)
-var_m_pop$Q_SP          <- pg_m_par$`Slowly Perfused flow`                            #Blood flow to slowly perfused tissue (L/h)
+var_m_pop$Q_SP          <- pg_m_par$`Slowly Perfused flow`             #Blood flow to slowly perfused tissue (L/h)
 var_m_pop$check         <- var_m_pop$Q_SI + var_m_pop$Q_F + var_m_pop$Q_L + var_m_pop$Q_RP + var_m_pop$Q_SP
 
 #Pulmonary ventilation
@@ -166,7 +168,7 @@ var_m_pop$C_PRO_SI    <- 245  * var_m_pop$V_SI #Small intestine
 
 
 #--Chemical parameters--#
-var_m_pop$Ka <- 5.0  #Absorption rate constant for uptake in the Small intestine in per H
+var_m_pop$Ka <- 0.62  #Absorption rate constant for uptake in the Small intestine in per H
 
 
 var_m_pop$S9_scaling_L <- 143 * (var_m_pop$V_L * 1000) #scaling factor for S9 fraction per g tissue
@@ -200,7 +202,7 @@ var_m_pop$Km_SI_GST_G <- 100 #Km toward cinnamaldehyde for enzymatic conjugation
 
 #-Vmax values-#
 var_m_pop$Vsmax_SI_CA    <- 21 * 60/1000 * var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
-var_m_pop$Vsmax_SI_AO    <- 30  * 60/1000* vvar_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
+var_m_pop$Vsmax_SI_AO    <- 30  * 60/1000* var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
 var_m_pop$Vsmax_SI_OH    <- 5.0 * 60/1000* var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
 var_m_pop$Vsmax_SI_GST   <- 63  * 60/1000* var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h RAT value
 
@@ -235,7 +237,7 @@ var_f_pop$Q_L           <- pg_f_par$`Liver flow`                         #Blood 
 var_f_pop$Q_RP          <- pg_f_par$`Richly Perfused flow`               #Blood flow to richly perfused tissue (L/h)
 var_f_pop$Q_SP          <- pg_f_par$`Slowly Perfused flow`               #Blood flow to Slowly perfused tissue (L/h)
 var_f_pop$Q_Pu          <- pg_f_par$`Lung flow`                          #Blood flow to Lung tissue (L/h)
-var_f_pop$check         <- var_f_pop$Q_SI + var_f_pop$Q_F + var_f_pop$Q_L + var_f_pop$Q_RP + var_f_pop$Q_SP + var_f_pop$Q_Pu  #check if total adds up to Q_C
+var_f_pop$check         <- var_f_pop$Q_SI + var_f_pop$Q_F + var_f_pop$Q_L + var_f_pop$Q_RP + var_f_pop$Q_SP #check if total adds up to Q_C
 
 #Pulmonary ventilation
 var_f_pop$P_V           <-rnorm(N,mean=390,sd=3) #Pulmonary ventilation in L/h
@@ -261,7 +263,7 @@ var_f_pop$C_PRO_L     <- 5319 * var_f_pop$V_L  #Liver
 var_f_pop$C_PRO_SI    <- 245  * var_f_pop$V_SI #Small intestine
 
 #--Chemical parameters--#
-var_f_pop$Ka <- 5.0  #Absorption rate constant for uptake in the Small intestine in per H
+var_f_pop$Ka <- 0.62  #Absorption rate constant for uptake in the Small intestine in per H
 
 #----Liver----#
 var_f_pop$S9_scaling_L <- 143 * (var_f_pop$V_L * 1000)#scaling factor for S9 fraction per g tissue
@@ -283,7 +285,7 @@ var_f_pop$Vsmax_L_AO    <-  73  * 60/1000 *var_f_pop$S9_scaling_L #Scaled Vmax f
 var_f_pop$Vsmax_L_GST   <-  37 * 60/1000 * var_f_pop$S9_scaling_L #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
 
 #----Small intestines----#
-var_f_pop$S9_scaling_SI <-  11.4 * (var_f_pop$V_SIV_SI *1000) #scaling factor fraction S9 protein per g tissue
+var_f_pop$S9_scaling_SI <-  11.4 * (var_f_pop$V_SI *1000) #scaling factor fraction S9 protein per g tissue
 
 #--Michaelis menten constants--#
 var_f_pop$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
@@ -457,8 +459,6 @@ inits <- c("A_GI"         =0,
            "AM_L_AG_GST"  =0,
            "AM_L_AG_CHEM" =0,
            "AM_L_AP"      =0,
-           "AM_L_DA_FORM" =0,
-           "AM_L_DA"      =0,
            "A_OH_M_L_C_A" =0,
            "A_OH_L"       =0,
            "A_L"          =0,
@@ -485,6 +485,8 @@ ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=1:nrow(phys),seq(from = time.0, to = time.end, by = time.frame))%>%
   et(id=1:nrow(phys),amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
   et(id=1:nrow(phys),amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.01, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
-  et(id=1:nrow(phys),amt=phys$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
+  et(id=1:nrow(phys),amt=phys$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=nbr.doses)%>%
+  et(id=1:nrow(phys),amt=(iv_dose_in_mg_bw) * phys$BW/ MW  * 1e+3, dur=0.005,cmt="A_V",nbr.doses=nbr.doses)%>%
   et(id=1:nrow(phys),amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
   
+

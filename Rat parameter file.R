@@ -17,9 +17,9 @@ amount.units               <-"umol"
 time.units                 <-"h"
 nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
-time.end                   <-12        #time end of simulation
+time.end                   <-30        #time end of simulation
 time.frame                 <-0.1      #time steps of simulation
-Oral_dose_in_mg_bw         <-50     #Dose in mg/kg-bw
+Oral_dose_in_mg_bw         <-425     #Dose in mg/kg-bw
 Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
 iv_dose_in_mg_bw           <-0       #IV administered dose in mg/kg/bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
@@ -33,21 +33,21 @@ Volume_exposure_chamber    <-10       #volume exposure chamber in L
 #--Physio-chemical parameters--#
 #-Cinnamaldehyde-#
 
-P_F      <-  1.69 #Fat/Blood partition coefficient
-P_L      <-  0.81 #Fat/Blood partition coefficient 
-P_SI     <-  0.81 #Small intestine/Blood partition coefficients
-P_RP     <-  0.81 #Richly perfused tissues/Blood partition coefficients
+P_F      <-  17.42#Fat/Blood partition coefficient
+P_L      <-  1.18 #Fat/Blood partition coefficient 
+P_SI     <-  1.18 #Small intestine/Blood partition coefficients
+P_RP     <-  1.18 #Richly perfused tissues/Blood partition coefficients
 P_SP     <-  0.39 #Slowly perfused tissues/Blood partition coefficients
-P_B      <- 1.25E5#Blood air partition coefficients
-P_Pu     <-  0.81 #Lung/Blood partition coefficients
+P_B      <- 130754#Blood air partition coefficients
+P_Pu     <-  0.49 #Lung/Blood partition coefficients
 
 #-Cinnamyl Alcohol-#
-P_OH_F    <-  1.71 #Fat/Blood partition coefficient
-P_OH_L    <-  0.81 #Fat/Blood partition coefficient
-P_OH_SI   <-  0.81 #Small intestine/Blood partition coefficients
-P_OH_RP   <-  0.81 #Richly perfused tissues/Blood partition coefficients
-P_OH_SP   <-  0.39 #Slowly perfused tissues/Blood partition coefficients
-P_OH_Pu   <-  0.81 #Lung/Blood partition coefficients
+P_OH_F    <- 17.65 #Fat/Blood partition coefficient
+P_OH_L    <-  1.18 #Fat/Blood partition coefficient
+P_OH_SI   <-  1.18 #Small intestine/Blood partition coefficients
+P_OH_RP   <-  1.18 #Richly perfused tissues/Blood partition coefficients
+P_OH_SP   <-  0.49 #Slowly perfused tissues/Blood partition coefficients
+P_OH_Pu   <-  1.18 #Lung/Blood partition coefficients
 
 
 #--Physiological Parameters--#
@@ -99,7 +99,7 @@ C_PRO_L     <- 5319  * V_L  #Liver
 C_PRO_SI    <- 245   * V_SI #Small intestine
 
 #--Chemical parameters--#
-Ka <- 5.0  #Absorption rate constant for uptake in the Small intestine in per H
+Ka <- 1.37  #Absorption rate constant for uptake in the Small intestine in per H
 
 #----Liver----#
 S9_scaling_L <- 143 * (V_L * 1000) #scaling factor for S9 fraction per g tissue
