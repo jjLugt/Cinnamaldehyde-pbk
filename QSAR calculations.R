@@ -13,8 +13,9 @@ Kow_Cinnamylalcohol     <- 1*10^1.84
 #EPIsuite Log Koa QSAR
 Log_Koa_Benzaldehyde    <- 4.79
 Koa_Benzaldehyde        <- 1*10^4.79
-Log_Koa_Cinnamaldehyde  <- 6
-Koa_Cinnamaldehyde      <- 1*10^6
+Log_Koa_Cinnamaldehyde  <- 1.119928             #calculated using Log_Kow_Cinnamaldehyde - log(Cinnamaldehyde_Henry_DL)
+Koa_Cinnamaldehyde      <- 1*10^Log_Koa_Cinnamaldehyde
+
 #EPIsuite Henry law constant
 HL_Benzaldehyde   <- 2.67E-05 #atm-m3/mole
 HL_Cinnamaldehyde <- 3.54E-06 #atm-m3/mole
@@ -152,11 +153,24 @@ P_Br_Cinnamylalcohol <- (Brain_Lipid_Fraction * Plw_Brain_Blood_Cinnamylalcohol 
 
 #Blood:air partition coefficient calculations based on ten Berge et al 2011
 #Human
-P_B_Cinnamaldehyde <- 0.4445/HL_Cinnamaldehyde + 0.005189 * Koa_Cinnamaldehyde
+
+#Henry coefficient calculations
+Cinnamaldehyde_vapour_pressure  <- 0.0337 #mm Hg
+Cinnamaldehyde_Molecular_weight <- 132.16 #unitless 
+Cinnamaldehyde_water_solubility <- 2.15E3 #mg\l
+Cinnamaldehyde_gas_constant     <- 3.45E-6 #atm-m3/mole
+temperature                      <- 298.15 #kelvin
+
+
+Cinnamaldehyde_Henry_DL<- (Cinnamaldehyde_vapour_pressure * Cinnamaldehyde_Molecular_weight)/(Cinnamaldehyde_water_solubility * Cinnamaldehyde_gas_constant * temperature)
+
+
+
+P_B_Cinnamaldehyde <- 0.4445/Cinnamaldehyde_Henry_DL + 0.005189 * Koa_Cinnamaldehyde   
 P_B_Benzaldehdye <- 0.4445/HL_Benzaldehyde + 0.005189 * Koa_Benzaldehyde
 
 #Rat
-P_B_Cinnamaldehyde_R <- 0.4445/HL_Cinnamaldehyde + 0.005189 * Koa_Cinnamaldehyde
+P_B_Cinnamaldehyde_R <- 0.4445/Cinnamaldehyde_Henry_DL + 0.005189 * Koa_Cinnamaldehyde
 P_B_Benzaldehdye_R <- 0.4445/HL_Benzaldehyde + 0.005189 * Koa_Benzaldehyde
 
 

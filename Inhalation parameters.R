@@ -38,7 +38,7 @@ P_L      <-  1.83   #liver/Blood partition coefficient
 P_SI     <-  1.81   #Small intestine/Blood partition coefficients
 P_RP     <-  1.81   #Richly perfused tissues/Blood partition coefficients
 P_SP     <-  1.50   #Slowly perfused tissues/Blood partition coefficients
-P_B      <-  130754 #Blood/Air Partition Coefficient 
+P_B      <-  0.29  #Blood/Air Partition Coefficient 
 P_Pu     <-  1.81   #lung/Blood partition coefficient
 
 #-Cinnamyl Alcohol-#
