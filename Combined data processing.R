@@ -609,6 +609,33 @@ g + geom_point()+ scale_y_continuous(trans='log10')+
        caption="PBK model")
 
 
+RAT_data_obs_1 <- Combined_data_file_for_graph_500mg[1:15,]
+RAT_data_obs_2 <- Combined_data_file_for_graph_500mg[16:30,]
+RAT_data_obs_3 <- Combined_data_file_for_graph_500mg[31:46,]
+RAT_data_Zao   <- Combined_data_file_for_graph_500mg[47:57,]
+SIM_data_pred    <-Combined_data_file_for_graph_500mg[c(79,89,100,114,124,132,150,169,190,210,231,252,273,302,322),]
+SIM_data_pred_fa <- Combined_data_file_for_graph_500mg[c(380,390,401,415,425,433,451,470,491,511,532,553,574,603,623),]
+
+
+#SIM_data_pred[,4]<-  as.data.frame(SIM_data_pred_fa[,2])
+
+SIM_data_pred[,4]<- as.data.frame(RAT_data_obs_1[,2])
+SIM_data_pred[,5]<- as.data.frame(RAT_data_obs_2[,2])
+SIM_data_pred[,6]<- as.data.frame(RAT_data_obs_3[1:15,2])
+SIM_data_pred[,7]<- as.data.frame(RAT_data_Zao[,2])
+
+colnames(SIM_data_pred)<- c("Time","sim","ID","rat_1", "rat_2","rat_3")
+
+ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$rat_1)) +
+  geom_point() +
+  geom_abline(intercept=0, slope=1) +
+  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values')+
+  ylim(0,140)+
+  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_2))+
+  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_3))
+
+
+
 #Calculating AUC values vor the comparison graphs made above  
 
 AUC_data <-PKNCAconc(Combined_data_file_for_graph_500mg, umol.l~time|ID)
@@ -619,18 +646,11 @@ d_dose <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/
 
 dose_obj <- PKNCAdose(d_dose, dose~time|ID)
 
-
-
-
 #letting pknc chose the end time of the auc calc
 data_obj_automatic <- PKNCAdata(AUC_data, dose_obj)
 
-
-
 #Computing the data both manual and automatic
 results_obj_automatic <- pk.nca(data_obj_automatic)
-
-
 
 #look at the data to get an impression
 knitr::kable(head(as.data.frame(results_obj_automatic)))
@@ -686,7 +706,7 @@ write.csv(blood_data,"D:/Joris/Toxicology and Environmental Health/Master stage/
 Combined_data_file_for_graph_250mg <- read_delim("Combined data file for graph 250mg.csv", 
                                                  delim = ";", escape_double = FALSE, trim_ws = TRUE)
 
-p1 <- plot_ly(Combined_data_file_for_graph_250mg, x=~time, y=Combined_data_file_for_graph_250mg$`ug/ml`, 
+p1 <- plot_ly(Combined_data_file_for_graph_250mg, x=~time, y=Combined_data_file_for_graph_250mg$`ug.ml`, 
               color = ~ ID , 
               colors = "Set2",
               type= "scatter",
@@ -706,6 +726,29 @@ g + geom_point()+ scale_y_continuous(trans='log10')+
        x="Time in Hours", 
        title="Cinnamaldehyde concentration in blood", 
        caption="Cinnamaldehyde PBK model")
+
+RAT_data_obs_1 <- Combined_data_file_for_graph_250mg[21:36,]
+RAT_data_obs_2 <- Combined_data_file_for_graph_250mg[37:52,]
+RAT_data_obs_3 <- Combined_data_file_for_graph_250mg[53:68,]
+RAT_data_Zao   <- Combined_data_file_for_graph_250mg[1:8,]
+SIM_data_pred   <-Combined_data_file_for_graph_250mg[c(70,71,74,80,84,89,94,104,114,124,134,144,154,164,179,189),]
+
+SIM_data_pred[,4]<- as.data.frame(RAT_data_obs_1[,2])
+SIM_data_pred[,5]<- as.data.frame(RAT_data_obs_2[,2])
+SIM_data_pred[,6]<- as.data.frame(RAT_data_obs_3[,2])
+SIM_data_pred[,7]<- as.data.frame(RAT_data_Zao[,2])
+
+colnames(SIM_data_pred)<- c("Time","sim","ID","rat_1", "rat_2","rat_3")
+
+ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$rat_1)) +
+  geom_point() +
+  geom_abline(intercept=0, slope=1) +
+  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 250mg oral Yuan data')+
+  ylim(0,20)+
+  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_2))+
+  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_3))
+
+
 #Calculating AUC values for the comparison graphs made above  
 
 AUC_data <-PKNCAconc(Combined_data_file_for_graph_250mg, ug.ml~time|ID)
@@ -810,6 +853,38 @@ g + geom_point()+ scale_y_continuous(trans='log10')+
        x="Time in Hours", 
        title="Cinnamaldehyde concentration in blood", 
        caption="PBK model")
+
+
+KIWA_data <- Combined_data_file_for_graph[9:27,]
+SIM_data_pred <-Combined_data_file_for_graph[c(29,30,31,32,33,34,35,36,37,38,40,43,46,49,52,55,58,61,63),]
+
+
+SIM_data_pred[,4]<- as.data.frame(KIWA_data[,2])
+
+
+colnames(SIM_data_pred)<- c("Time","sim","ID","KIWA")
+
+ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$KIWA)) +
+  geom_point() +
+  geom_abline(intercept=0, slope=1) +
+  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 20mg IV dose Kiwa')
+
+ZAO_data_2014 <- Combined_data_file_for_graph[1:8,]
+ZAO_data_2015 <- Combined_data_file_for_graph[70:77,]
+SIM_data_kiwa    <-Combined_data_file_for_graph[c(29,30,31,33,38,43,48,58),]
+
+SIM_data_kiwa[,4]<- as.data.frame(ZAO_data_2014[,2])
+SIM_data_kiwa[,5]<- as.data.frame(ZAO_data_2015[,2])
+
+colnames(SIM_data_kiwa)<- c("Time","sim","ID","ZAO_2014","ZAO_2015")
+
+ggplot(SIM_data_kiwa, aes(x=SIM_data_kiwa$sim, y=SIM_data_kiwa$ZAO_2014)) +
+  geom_point() +
+  geom_abline(intercept=0, slope=1) +
+  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 20mg IV dose ZAO data')+
+  geom_point(aes(x=SIM_data_kiwa$sim,y=SIM_data_kiwa$ZAO_2015))+
+  ylim(0,5)
+
 
 
 
