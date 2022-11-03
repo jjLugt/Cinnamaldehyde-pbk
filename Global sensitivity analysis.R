@@ -362,7 +362,7 @@ write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu_popgen-100mg
 SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes.inhalation_C_Pu_popgen-100mg_4000.csv", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
-#so using them here woul create an error.
+#so using them here would create an error.
 colnames <- colnames(X1)
 par_var <- length(X1)
 
