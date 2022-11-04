@@ -21,21 +21,22 @@ Volume_exposure_chamber    <-10       #volume exposure chamber in L
 #Values calculated in QSAR calculations file
 #-Cinnamaldehyde-#
 
-P_F      <-  1.62   #Fat/Blood partition coefficient
-P_L      <-  0.59   #liver/Blood partition coefficient
-P_SI     <-  0.59   #Small intestine/Blood partition coefficients
-P_RP     <-  0.59   #Richly perfused tissues/Blood partition coefficients
-P_SP     <-  0.78   #Slowly perfused tissues/Blood partition coefficients
-P_B      <-  1.25E5 #Blood/Air Partition Coefficient 
-P_Pu     <-  0.59   #lung/Blood partition coefficient
+P_F      <-  47.75  #Fat/Blood partition coefficient
+P_L      <-  1.83   #liver/Blood partition coefficient
+P_SI     <-  1.81   #Small intestine/Blood partition coefficients
+P_RP     <-  1.81   #Richly perfused tissues/Blood partition coefficients
+P_SP     <-  1.50   #Slowly perfused tissues/Blood partition coefficients
+P_B      <-  0.29  #Blood/Air Partition Coefficient 
+P_Pu     <-  1.81   #lung/Blood partition coefficient
 
 #-Cinnamyl Alcohol-#
-P_OH_F    <-  1.64 #Fat/Blood partition coefficient
-P_OH_L    <-  0.59  #liver/Blood partition coefficient
-P_OH_SI   <-  0.59  #Small intestine/Blood partition coefficients
-P_OH_RP   <-  0.59  #Richly perfused tissues/Blood partition coefficients
-P_OH_SP   <-  0.78 #Slowly perfused tissues/Blood partition coefficients
-P_OH_Pu   <-  0.59 #Lung/Blood partition coefficients
+P_OH_F    <-  49.26 #Fat/Blood partition coefficient
+P_OH_L    <-  1.18  #liver/Blood partition coefficient
+P_OH_SI   <-  1.18  #Small intestine/Blood partition coefficients
+P_OH_RP   <-  1.18  #Richly perfused tissues/Blood partition coefficients
+P_OH_SP   <-  1.53  #Slowly perfused tissues/Blood partition coefficients
+P_OH_Pu   <-  1.18  #Lung/Blood partition coefficients
+
 
 #--Physiological Parameters--#
 
@@ -104,7 +105,7 @@ C_PRO_L     <- 5319   * V_L     #Liver
 C_PRO_SI    <- 245    * V_SI      #Small intestine
 
 #--Chemical parameters--#
-Ka <- 5.0                   #Absorption rate constant for uptake in the Small intestine in per H
+Ka <- 0.62                   #Absorption rate constant for uptake in the Small intestine in per H
 
 #----Liver----#
 S9_scaling_L <- 143  * (V_L * 1000) #scaling factor for S9 fraction per g tissue
