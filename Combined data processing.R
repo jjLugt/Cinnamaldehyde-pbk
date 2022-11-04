@@ -629,7 +629,7 @@ colnames(SIM_data_pred)<- c("Time","sim","ID","rat_1", "rat_2","rat_3")
 ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$rat_1)) +
   geom_point() +
   geom_abline(intercept=0, slope=1) +
-  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values')+
+  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 500mg oral dose Yuan data ')+
   ylim(0,140)+
   geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_2))+
   geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_3))
@@ -731,22 +731,64 @@ RAT_data_obs_1 <- Combined_data_file_for_graph_250mg[21:36,]
 RAT_data_obs_2 <- Combined_data_file_for_graph_250mg[37:52,]
 RAT_data_obs_3 <- Combined_data_file_for_graph_250mg[53:68,]
 RAT_data_Zao   <- Combined_data_file_for_graph_250mg[1:8,]
-SIM_data_pred   <-Combined_data_file_for_graph_250mg[c(70,71,74,80,84,89,94,104,114,124,134,144,154,164,179,189),]
+SIM_data_pred  <-Combined_data_file_for_graph_250mg[c(70,71,74,80,84,89,94,104,114,124,134,144,154,164,179,189),]
+SIM_data_Ka    <-Combined_data_file_for_graph_250mg[c(312,313,316,322,326,331,336,346,356,366,376,387,396,411,421,431),]
+
 
 SIM_data_pred[,4]<- as.data.frame(RAT_data_obs_1[,2])
 SIM_data_pred[,5]<- as.data.frame(RAT_data_obs_2[,2])
 SIM_data_pred[,6]<- as.data.frame(RAT_data_obs_3[,2])
-SIM_data_pred[,7]<- as.data.frame(RAT_data_Zao[,2])
+SIM_data_pred[,7]<- as.data.frame(SIM_data_Ka[,2])
 
-colnames(SIM_data_pred)<- c("Time","sim","ID","rat_1", "rat_2","rat_3")
 
-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$rat_1)) +
+#Calculating residual values
+SIM_data_pred[,8] <- SIM_data_pred[,2]-SIM_data_pred[,4]
+SIM_data_pred[,9] <- SIM_data_pred[,4]-SIM_data_pred[,7]
+SIM_data_pred[,10] <- SIM_data_pred[,5]-SIM_data_pred[,7]
+
+
+colnames(SIM_data_pred)<- c("Time","sim","ID","rat_1", "rat_2","rat_3","SIM_ka","Residual_Rat_1","Residual_Rat1_ka","Residual_Rat2_ka")
+
+predvsout_250mg <- ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$rat_1)) +
   geom_point() +
   geom_abline(intercept=0, slope=1) +
   labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 250mg oral Yuan data')+
   ylim(0,20)+
-  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_2))+
+  xlim(0,20)+
+  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_2))
   geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_3))
+
+predvsout_250mg
+
+predvsout_250mg_ka <- ggplot(SIM_data_pred, aes(x=SIM_data_pred$SIM_ka, y=SIM_data_pred$rat_1)) +
+  geom_point() +
+  geom_abline(intercept=0, slope=1) +
+  labs(x='Predicted Values', y='Actual Values', title='Predicted_ka vs. Actual Values 250mg oral Yuan data')+
+  ylim(0,20)+
+  xlim(0,20)+
+  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_2))
+geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_3))
+
+predvsout_250mg_ka
+  
+  
+#plotting residual rat 1
+ggplot(SIM_data_pred, aes(x=SIM_data_pred$Time, y=SIM_data_pred$Residual_Rat_1)) +
+  geom_point() +
+  geom_abline(slope = 0,intercept = 0)+ 
+labs(x= "Time", y='Residual values', title='Residual Values 250mg oral Yuan data')
+
+#plotting residual rat 1  vs ka
+ggplot(SIM_data_pred, aes(x=SIM_data_pred$Time, y=SIM_data_pred$Residual_Rat1_ka)) +
+  geom_point() +
+  geom_abline(slope = 0,intercept = 0)+ 
+  labs(x= "Time", y='Residual values', title='Residual Values 250mg oral Yuan data')
+
+#plotting residual rat 2  vs ka
+ggplot(SIM_data_pred, aes(x=SIM_data_pred$Time, y=SIM_data_pred$Residual_Rat2_ka)) +
+  geom_point() +
+  geom_abline(slope = 0,intercept = 0)+ 
+  labs(x= "Time", y='Residual values', title='Residual Values 250mg oral Yuan data')
 
 
 #Calculating AUC values for the comparison graphs made above  
@@ -883,9 +925,7 @@ ggplot(SIM_data_kiwa, aes(x=SIM_data_kiwa$sim, y=SIM_data_kiwa$ZAO_2014)) +
   geom_abline(intercept=0, slope=1) +
   labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 20mg IV dose ZAO data')+
   geom_point(aes(x=SIM_data_kiwa$sim,y=SIM_data_kiwa$ZAO_2015))+
-  ylim(0,5)
-
-
+  ylim(0,50)
 
 
 #Generating a file for the comparison with in vivo data 
