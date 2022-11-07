@@ -331,5 +331,5 @@ solve.pbk.sa51 <-cbind(solve.pbk.sa51,solve51$C_V)
 colnames(solve.pbk.sa51) <- c("time","C_V")
 solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa51)
 
-write.csv(solve.pbk.sa,"D:/PBK/Cinnamaldehyde-pbk\\SA_RAT_250mg_oral_CV", row.names = TRUE)
+write.csv(solve.pbk.sa,"D:/PBK/Cinnamaldehyde-pbk\\SA_human_250mg_oral_CV_corrected", row.names = TRUE)
 
