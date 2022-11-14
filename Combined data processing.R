@@ -2,9 +2,8 @@
 #date: 05-08-2022
 #Combined data processing of Human Cinnamaldehyde pbk models
 #Before running code first run all model associated with this data processing
-#Human desolve model
 #human rxode model
-#Human population model
+
 
 library(RxODE)
 library(tidyverse)
@@ -20,7 +19,7 @@ library(MESS)
 #Rxode
 #cinnamaldehyde model Human
 #Mass balance calculation rxode inhalation complete
-mass_df <- solve.pbk_nonpop/BW * MW /1e+3
+mass_df <- solve.pbk/BW * MW /1e+3
 mass_df <- mass_df[,c(67:80,82,83,86:91,95:99)]
 mass_at_t <- data.frame(mass=as.numeric())
 
@@ -44,7 +43,7 @@ plot(mass_at_t[,1])
 
 #Rxode 
 #population mass balance
-mass_df <- solve.pbk_popgen/phys[1,3] * MW /1e+3
+mass_df <- solve.pbk/phys[1,3] * MW /1e+3
 mass_df <- mass_df[1:81,c(71:85,87,88,91:98,102:106)]
 mass_at_t <- data.frame(mass=as.numeric())
 
@@ -77,17 +76,330 @@ plot(mass_at_t[,1])
 
 
 
-#Rxode
 #AUC calculations
-#PKNCA
-#After running model
+#single Human model
+#Making a dataframe for the calculations
+AUC_single_human<- solve.pbk[,c(1,11,17,23,29,35,49)]
+
+#Combining Arterial and venous blood into one general blood compartment
+AUC_single_human[,8]<- solve.pbk[,3]+ solve.pbk[,4]
+
+colnames(AUC_single_human)<-c("time","C_Pu","C_F","C_RP","C_SP","C_SI","C_L","C_B")
+
+#passing the concentration data frame to PKNCA
+single_human_conc <- PKNCAconc(AUC_single_human, C_B~time)
+
+#Generating a Dose data frame which includes time and dose
+single_human_dose <-as.data.frame(solve.pbk[,1])
+#Grabbing an easy empty colum of the correct length
+single_human_dose[2] <-solve.pbk[,7]
+#Adding the dose to the first time point in the dose data frame 
+single_human_dose[1,2] <-ex[2,6]
+colnames(single_human_dose)<-c("time","dose")
+
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_human_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_human_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_B_AUC")
+
+
+#250mg dose Rat AUC values 
+#AUC calculations
+#single Human model
+#Making a dataframe for the calculations
+AUC_single_rat<- solve.pbk_rat[,c(1,11,17,23,29,35,48)]
+
+#Combining Arterial and venous blood into one general blood compartment
+AUC_single_rat[,8]<- solve.pbk_rat[,3]+ solve.pbk_rat[,4]
+
+colnames(AUC_single_rat)<-c("time","C_Pu","C_F","C_RP","C_SP","C_SI","C_L","C_B")
+
+#Generating a Dose data frame which includes time and dose
+single_rat_dose <-as.data.frame(solve.pbk_rat[,1])
+#Grabbing an easy empty colum of the correct length
+single_rat_dose[2] <-solve.pbk_rat[,7]
+#Adding the dose to the first time point in the dose data frame 
+single_rat_dose[1,2] <-ex[2,6]
+colnames(single_rat_dose)<-c("time","dose")
+
+
+#---------Calculating Blood auc values--------------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_B~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_oral_single_rat_C_B_AUC")
+
+#------------------calculating Lung auc values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_Pu~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_oral_single_rat_C_Pu_AUC")
+
+#------------------calculating SP tissue auc values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_SP~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_oral_single_rat_C_SP_AUC")
+
+#------------------calculating RP auc values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_RP~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_oral_single_rat_C_RP_AUC")
+
+
+#------------------calculating si auc values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_SI~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_oral_single_rat_C_SI_AUC")
+
+#------------------calculating Liver auc values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_L~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_oral_single_rat_C_L_AUC")
+
+#------------------calculating Lung FAT values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_Pu~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_oral_single_rat_C_F_AUC")
+
+
+#Plotting rat and human results of the auc calculations
+results_250mg_oral_single_human_C_B_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_B_AUC")
+results_250mg_oral_single_human_C_L_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_L_AUC")
+results_250mg_oral_single_human_C_SI_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_SI_AUC")
+results_250mg_oral_single_human_C_SP_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_SP_AUC")
+results_250mg_oral_single_human_C_RP_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_RP_AUC")
+results_250mg_oral_single_human_C_F_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_F_AUC")
+results_250mg_oral_single_human_C_Pu_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_Pu_AUC")
+
+#Plotting rat and human results of the auc calculations
+results_250mg_oral_single_rat_C_B_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_rat_C_B_AUC")
+results_250mg_oral_single_rat_C_L_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_rat_C_L_AUC")
+results_250mg_oral_single_rat_C_SI_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_rat_C_SI_AUC")
+results_250mg_oral_single_rat_C_SP_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_rat_C_SP_AUC")
+results_250mg_oral_single_rat_C_RP_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_rat_C_RP_AUC")
+results_250mg_oral_single_rat_C_F_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_rat_C_F_AUC")
+results_250mg_oral_single_rat_C_Pu_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_rat_C_Pu_AUC")
+
+
+
+
+
+
+
+#Rxode
+#After running population model
 #Extracting organ concentration, time and sim-id from simulation results
 
 #Lung compartment concentration
-sub_set <- solve.pbk_popgen[1:162000,c(1,2,12)]
+sub_set <- solve.pbk[1:482000,c(1,2,12)]
+
+conc_C <- PKNCAconc(sub_set, C_Pu~time|id)
 
 #Blood compartment concentration
-sub_set <- solve.pbk_popgen[1:162000,c(1,2,4,5)]
+sub_set <- solve.pbk[1:482000,c(1,2,4,5)]
 
 #Combining Arterial and venous blood into one general blood compartment
 sub_set[3]<- sub_set[3]+sub_set[4]
@@ -96,64 +408,53 @@ sub_set[3]<- sub_set[3]+sub_set[4]
 sub_set[4] <- NULL
 #Renamning the columns
 colnames(sub_set) <- c("id","time","C_B")
+conc_C <- PKNCAconc(sub_set, C_B~time|id)
 
 #Liver compartment concentration
-sub_set <- solve.pbk_popgen[1:162000,c(1,2,50)]
-
+sub_set <- solve.pbk[1:482000,c(1,2,50)]
+onc_C <- PKNCAconc(sub_set, C_L~time|id)
 #Slowly perfused compartment
-sub_set <- solve.pbk_popgen[1:162000,c(1,2,30)]
-
+sub_set <- solve.pbk[1:482000,c(1,2,30)]
+onc_C <- PKNCAconc(sub_set, C_SP~time|id)
 #richly perfused compartment
-sub_set <- solve.pbk_popgen[1:162000,c(1,2,24)]
-
+sub_set <- solve.pbk[1:482000,c(1,2,24)]
+onc_C <- PKNCAconc(sub_set, C_RP~time|id)
 #Fat compartment
-sub_set <- solve.pbk_popgen[1:162000,c(1,2,18)]
-
+sub_set <- solve.pbk[1:482000,c(1,2,18)]
+onc_C <- PKNCAconc(sub_set, C_F~time|id)
 #sI compartment
-sub_set <- solve.pbk_popgen[1:162000,c(1,2,36)]
+sub_set <- solve.pbk[1:482000,c(1,2,36)]
+onc_C <- PKNCAconc(sub_set, C_SI~time|id)
 
 
 
-
-conc_C <- PKNCAconc(sub_set, C_SI~time|id)
-
-
-#whole dataset
-#AUC_data <-PKNCAconc(solve.pbk_popgen, C_L~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
-dose_extraction <- as.data.frame(parameters[,64])
-sim_extraction <- unique(solve.pbk_popgen[solve.pbk_popgen$time == 0,c("time", "id")])
+
+
+#Oral dose extraction
+dose_extraction <- as.data.frame(parameters[,61])
+sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 64]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 61]`)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
-#d_dose for 2000 results is to big for laptop so to see if it works smaller sample will be used
-#d_dose <- d_dose[1:400,]
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
 #Setting the end of the auc calculation at 8 hours
 intervals_manual <- data.frame(start=0,
-                               end=8,
+                               end=24,
                                cmax=TRUE,
                                tmax=TRUE,
-                               aucinf.obs=FALSE,
+                               aucinf.obs=TRUE,
                                auclast=TRUE)
 
-#Use this when evaluating the whole dataset 
-#data_obj_manual <- PKNCAdata(AUC_data, dose_obj,
-#intervals=intervals_manual)
 
 data_obj_manual<- PKNCAdata(conc_C, dose_obj,
                             intervals=intervals_manual)
 
-#letting pknc chose the end time of the auc calc
-#data_obj_automatic <- PKNCAdata(conc_C_Pu, dose_obj)
-
-#Computing the data both manual and automatic
-#results_obj_automatic <- pk.nca(data_obj_automatic)
 results_obj_manual <- pk.nca(data_obj_manual)
 
 #look at the data to get an impression
@@ -163,8 +464,8 @@ summary(results_obj_manual)
 
 
 
-#Wrting the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250_inhalation_C_SI.csv")
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250_oral_C_B.csv")
 
 
 #C_Pu data extraction
@@ -219,6 +520,8 @@ hist(AUC_extraction_250_Oral__C_B$PPORRES[1:1000])
 #Histogram of female AUC values
 hist(AUC_extraction_250_Oral__C_B$PPORRES[1001:2000])
 
+#boxplot
+boxplot(AUC_extraction_250_Oral__C_B$PPORRES[1:1000])
 
 
 
@@ -566,7 +869,7 @@ blood_data <- as.data.frame(solve.pbk_rat[,c(1,3,4)])
 blood_data[2]<- blood_data[2] * V_V
 blood_data[3]<-blood_data[3]  * V_A
 
-#combining C_v + C_A to create a combined amount of cinnamaldehyde
+#combining C_V + C_A to create a combined amount of cinnamaldehyde
 blood_data[3]<-blood_data[2]+ blood_data[3]
 
 #Dropping the second colum 
@@ -577,10 +880,7 @@ blood_data<-blood_data[-c(2)]
 blood_data[2]<- blood_data[2]/ (V_V + V_A)
 
 
-
 write.csv(blood_data,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK//Blood_Data.csv")
-
-
 
 
 Combined_data_file_for_graph_500mg <- read_delim("Combined data file for graph 500mg.csv", 
@@ -614,27 +914,69 @@ RAT_data_obs_2 <- Combined_data_file_for_graph_500mg[16:30,]
 RAT_data_obs_3 <- Combined_data_file_for_graph_500mg[31:46,]
 RAT_data_Zao   <- Combined_data_file_for_graph_500mg[47:57,]
 SIM_data_pred    <-Combined_data_file_for_graph_500mg[c(79,89,100,114,124,132,150,169,190,210,231,252,273,302,322),]
-SIM_data_pred_fa <- Combined_data_file_for_graph_500mg[c(380,390,401,415,425,433,451,470,491,511,532,553,574,603,623),]
-
-
-#SIM_data_pred[,4]<-  as.data.frame(SIM_data_pred_fa[,2])
+SIM_data_pred_kiwa <- Combined_data_file_for_graph_500mg[c(380,390,401,415,425,433,451,470,491,511,532,553,574,603,623),]
+SIM_data_ka    <-Combined_data_file_for_graph_500mg[c(681,691,702,716,726,734,752,771,792,812,833,854,875,904,924),]
 
 SIM_data_pred[,4]<- as.data.frame(RAT_data_obs_1[,2])
 SIM_data_pred[,5]<- as.data.frame(RAT_data_obs_2[,2])
 SIM_data_pred[,6]<- as.data.frame(RAT_data_obs_3[1:15,2])
-SIM_data_pred[,7]<- as.data.frame(RAT_data_Zao[,2])
+SIM_data_pred[,7]<- as.data.frame(SIM_data_pred_kiwa[,2])
+SIM_data_pred[,8]<- as.data.frame(SIM_data_ka[,2])
+colnames(SIM_data_pred)<- c("Time","sim","ID","rat_1","rat_2","rat_3","SIM-Kiwa","ka")
 
-colnames(SIM_data_pred)<- c("Time","sim","ID","rat_1", "rat_2","rat_3")
-
-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$rat_1)) +
+p<-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$rat_1)) +
   geom_point() +
   geom_abline(intercept=0, slope=1) +
   labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 500mg oral dose Yuan data ')+
-  ylim(0,140)+
+  ylim(0,50)+
   geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_2))+
-  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_3))
+  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_3))+
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+ggsave(plot=p,"Pred vs actual 500mg oral Yuan data.png",
+       width= 11.69, height= 8.3, dpi= 250)
+
+#plotting new plot with adjusted parameters for ka and k_l_ca
+p<-ggplot(SIM_data_pred, aes(x=SIM_data_pred$ka, y=SIM_data_pred$rat_1)) +
+  geom_point() +
+  geom_abline(intercept=0, slope=1) +
+  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 500mg oral dose Yuan data ka ')+
+  xlim(0,20)+
+  ylim(0,20)+
+  geom_point(aes(x=SIM_data_pred$ka,y=SIM_data_pred$rat_2))+
+  geom_point(aes(x=SIM_data_pred$ka,y=SIM_data_pred$rat_3))+
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+ggsave(plot=p,"Pred vs actual 500mg oral Yuan data ka .png",
+       width= 11.69, height= 8.3, dpi= 250)
 
 
+#Making a pred vs pred plot
+
+Kiwa_data      <-Combined_data_file_for_graph_500mg[c(58,60:72),]
+SIM_data_pred  <-Combined_data_file_for_graph_500mg[c(374,375,376,379,384,401,427,468,505,538,574,607,640,667),]
+SIM_data_pred[2,2]  <-blood_data[6,2]
+SIM_data_pred[3,2]  <-blood_data[16,2]
+SIM_data_pred[4,3]<- blood_data[47,2]
+
+colnames(SIM_data_pred)<- c("Time","sim","kiwa")
+p<-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$kiwa)) +
+  geom_point() +
+  geom_abline(intercept=0, slope=1) +
+  labs(x='Predicted Values R', y='Predicted values Kiwa', title='Predicted vs. Predicted Values 500mg oral dose')+
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+ggsave(plot=p,"Pred vs pred 500mg oral.png",
+       width= 11.69, height= 8.3, dpi= 250)
 
 #Calculating AUC values vor the comparison graphs made above  
 
@@ -763,11 +1105,18 @@ predvsout_250mg
 predvsout_250mg_ka <- ggplot(SIM_data_pred, aes(x=SIM_data_pred$SIM_ka, y=SIM_data_pred$rat_1)) +
   geom_point() +
   geom_abline(intercept=0, slope=1) +
-  labs(x='Predicted Values', y='Actual Values', title='Predicted_ka vs. Actual Values 250mg oral Yuan data')+
-  ylim(0,20)+
-  xlim(0,20)+
-  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_2))
-geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_3))
+  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 250mg oral Yuan data')+
+  ylim(0,15)+
+  xlim(0,10)+
+  geom_point(aes(x=SIM_data_pred$SIM_ka,y=SIM_data_pred$rat_2))+
+  geom_point(aes(x=SIM_data_pred$SIM_ka,y=SIM_data_pred$rat_3))+
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+ggsave(plot=p,"Pred vs actual 250mg oral Yuan data.png",
+       width= 11.69, height= 8.3, dpi= 250)
 
 predvsout_250mg_ka
   
@@ -782,7 +1131,7 @@ labs(x= "Time", y='Residual values', title='Residual Values 250mg oral Yuan data
 ggplot(SIM_data_pred, aes(x=SIM_data_pred$Time, y=SIM_data_pred$Residual_Rat1_ka)) +
   geom_point() +
   geom_abline(slope = 0,intercept = 0)+ 
-  labs(x= "Time", y='Residual values', title='Residual Values 250mg oral Yuan data')
+  labs(x= "Time", y='Residual values', title='Residual Values 250mg oral Yuan data ka')
 
 #plotting residual rat 2  vs ka
 ggplot(SIM_data_pred, aes(x=SIM_data_pred$Time, y=SIM_data_pred$Residual_Rat2_ka)) +
@@ -802,11 +1151,8 @@ d_dose <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/
 dose_obj <- PKNCAdose(d_dose, dose~time|ID)
 
 
-
-
 #letting pknc chose the end time of the auc calc
 data_obj_automatic <- PKNCAdata(AUC_data, dose_obj)
-
 
 
 #Computing the data both manual and automatic
@@ -906,26 +1252,41 @@ SIM_data_pred[,4]<- as.data.frame(KIWA_data[,2])
 
 colnames(SIM_data_pred)<- c("Time","sim","ID","KIWA")
 
-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$KIWA)) +
-  geom_point() +
+p <-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$KIWA)) +
+  geom_point(size=3) +
   geom_abline(intercept=0, slope=1) +
-  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 20mg IV dose Kiwa')
+  labs(x='Predicted Values R', y='Predicted values Kiwa', title='Predicted vs. predicted Values 20mg IV dose Kiwa')+
+  xlim(0,45)+
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+ggsave(plot=p,"Pred vs pred 20mg iv.png",
+       width= 11.69, height= 8.3, dpi= 250)
+
 
 ZAO_data_2014 <- Combined_data_file_for_graph[1:8,]
-ZAO_data_2015 <- Combined_data_file_for_graph[70:77,]
 SIM_data_kiwa    <-Combined_data_file_for_graph[c(29,30,31,33,38,43,48,58),]
 
 SIM_data_kiwa[,4]<- as.data.frame(ZAO_data_2014[,2])
-SIM_data_kiwa[,5]<- as.data.frame(ZAO_data_2015[,2])
 
-colnames(SIM_data_kiwa)<- c("Time","sim","ID","ZAO_2014","ZAO_2015")
 
-ggplot(SIM_data_kiwa, aes(x=SIM_data_kiwa$sim, y=SIM_data_kiwa$ZAO_2014)) +
-  geom_point() +
+colnames(SIM_data_kiwa)<- c("Time","sim","ID","ZAO_2014")
+
+p <-ggplot(SIM_data_kiwa, aes(x=SIM_data_kiwa$sim, y=SIM_data_kiwa$ZAO_2014)) +
+  geom_point(size=3) +
   geom_abline(intercept=0, slope=1) +
   labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 20mg IV dose ZAO data')+
-  geom_point(aes(x=SIM_data_kiwa$sim,y=SIM_data_kiwa$ZAO_2015))+
-  ylim(0,50)
+  ylim(0,10)+
+  xlim(x,10)+
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+ggsave(plot=p,"Pred vs actual 20mg iv.png",
+       width= 11.69, height= 8.3, dpi= 250)
 
 
 #Generating a file for the comparison with in vivo data 
@@ -1139,7 +1500,7 @@ g + geom_point()+ scale_y_continuous(trans='log10')+
 #Checking proportions of urinary metabolites
 #Urinary metabolites are all ultimately derived from the oxidation of Cinnamaldehyde.
 
-data_urinary_metabolites <- solve.pbk_popgen[,c(1,79,88)]
+data_urinary_metabolites <- solve.pbk[,c(1,79,88)]
 
 total_dose <- Oral_Dose
 
@@ -1150,12 +1511,12 @@ percentage_metabolised <- total_urinary_metabolites_24h/total_dose *100
 
 #Similar data extraction but now for the population model
 
-meta_extraction <- unique(solve.pbk_popgen[solve.pbk_popgen$time == 24,c("time", "id","AM_L_CA","AM_SI_CA")])
+meta_extraction <- unique(solve.pbk[solve.pbk$time == 24,c("time", "id","AM_L_CA","AM_SI_CA")])
 
 dose_extraction <- unique(ex[ex$cmt == "A_GI",c("id","amt")])
 
 for (id in meta_extraction){
-  total <- meta_extraction[id,2] + meta_extraction[id,3]
+  total <- meta_extraction[id,3] + meta_extraction[id,4]
   dose  <- dose_extraction[id,2]
   metabolised <- total/dose *100
   percentage_metabolised_popgen <- metabolised
@@ -1171,17 +1532,8 @@ boxplot(male_metabolised_data,female_metabolised_data,
         ylab= "%",
         names= c("Male", "Female"),
         col="orange",
-        las=2)
+        las=2,
+        title="Amount metabolized to carboxylic acid")
 hist(male_metabolised_data)
 hist(female_metabolised_data)
 
-set.seed(101)
-dd <- data.frame(x=rnorm(100),y=rnorm(100),
-                 z=rnorm(100))
-dd$w <- with(dd,
-             rnorm(100,mean=x+2*y+z,sd=0.5))
-
-m <- lm(w~x+y+z,dd)
-plot(predict(m),dd$w,
-     xlab="predicted",ylab="actual")
-abline(a=0,b=1)

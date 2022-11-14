@@ -99,7 +99,7 @@ C_PRO_L     <- 5319  * V_L  #Liver
 C_PRO_SI    <- 245   * V_SI #Small intestine
 
 #--Chemical parameters--#
-Ka <- 1.37  #Absorption rate constant for uptake in the Small intestine in per H
+Ka <- 1.37 #Absorption rate constant for uptake in the Small intestine in per H
 
 #----Liver----#
 S9_scaling_L <- 143 * (V_L * 1000) #scaling factor for S9 fraction per g tissue

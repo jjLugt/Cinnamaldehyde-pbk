@@ -20,7 +20,7 @@ time.end                <-24        #time end of simulation
 time.frame              <-0.1     #time steps of simulation
 N                       <-1000     #Number of males
 NF                      <-1000     #Number of females
-Oral_Dose_in_mg_bw      <-0.7      #Dose in mg/kg-bw
+Oral_Dose_in_mg_bw      <-250      #Dose in mg/kg-bw
 Inhalation_Dose_in_mg_bw<-0        #The inhaled dose in mg/kg
 iv_dose_in_mg_bw        <-0       #IV administered dose in mg/kg/bw
 Volume_exposure_chamber <-10       #volume exposure chamber in L
@@ -82,11 +82,11 @@ var_f_pop <- as.data.frame(var_f_pop)
 #-Cinnamaldehyde-#
 var_m_pop$P_F      <-  47.75    #Fat/Blood partition coefficient
 var_m_pop$P_L      <-  1.83   #Fat/Blood partition coefficient
-var_m_pop$P_SI     <-  1.83   #Small intestine/Blood partition coefficients
-var_m_pop$P_RP     <-  1.83    #Richly perfused tissues/Blood partition coefficients
-var_m_pop$P_B      <-  130754  #Blood/Air Partition Coefficient 
+var_m_pop$P_SI     <-  1.81   #Small intestine/Blood partition coefficients
+var_m_pop$P_RP     <-  1.81    #Richly perfused tissues/Blood partition coefficients
+var_m_pop$P_B      <-  0.29  #Blood/Air Partition Coefficient 
 var_m_pop$P_SP     <-  1.50    #Slowly perfused tissues/Blood partition coefficients
-var_m_pop$P_Pu     <-  1.83    #Lung/Blood partition coefficients
+var_m_pop$P_Pu     <-  1.81    #Lung/Blood partition coefficients
 
 #-Cinnamyl Alcohol-#
 var_m_pop$P_OH_F    <-  49.26  #Fat/Blood partition coefficient
@@ -100,11 +100,11 @@ var_m_pop$P_OH_Pu   <-  1.18   #Lung/Blood partition coefficients
 #-Cinnamaldehyde-#
 var_f_pop$P_F      <-  47.75    #Fat/Blood partition coefficient
 var_f_pop$P_L      <-  1.83   #Fat/Blood partition coefficient
-var_f_pop$P_SI     <-  1.83   #Small intestine/Blood partition coefficients
-var_f_pop$P_RP     <-  1.83    #Richly perfused tissues/Blood partition coefficients
-var_f_pop$P_B      <-  130754  #Blood/Air Partition Coefficient 
+var_f_pop$P_SI     <-  1.81   #Small intestine/Blood partition coefficients
+var_f_pop$P_RP     <-  1.81    #Richly perfused tissues/Blood partition coefficients
+var_f_pop$P_B      <-  0.29  #Blood/Air Partition Coefficient 
 var_f_pop$P_SP     <-  1.50    #Slowly perfused tissues/Blood partition coefficients
-var_f_pop$P_Pu     <-  1.83    #Lung/Blood partition coefficients
+var_f_pop$P_Pu     <-  1.81    #Lung/Blood partition coefficients
 
 #-Cinnamyl Alcohol-#
 var_f_pop$P_OH_F    <-  49.26  #Fat/Blood partition coefficient

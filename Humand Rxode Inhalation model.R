@@ -154,7 +154,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #-----Lung---#
   d/dt(A_inhalation_Dose) <- R_Inhalation  #Amount of Cinnamaldehyde in the exposure chamber in μmol
-  d/dt(A_Exhalation)      <- R_Exhalation        #Amount of Cinnamaldehyde exhaled in μmol
+  d/dt(A_Exhalation)      <- R_Exhalation       #Amount of Cinnamaldehyde exhaled in μmol
   d/dt(A_Pu)              <- R_Pu;              #Amount of Cinnamaldehyde in the lung in μmol
   d/dt(A_OH_Pu)           <- R_OH_Pu;           #Amount of Cinnamyl alcohol in the lung in μmol
   
@@ -181,7 +181,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #-----------Si calculations--------------#
   d/dt(A_SI)          <- R_SI;          #Amount of Cinnamaldehyde in the small intestine-#
-  d/dt(AM_SI_CA)      <- RM_SI_CA;      #Amount of Cinnamaldehyde enzymatically oxidized Cinnamic acid in the small intestine in μmol
+  d/dt(AM_SI_CA)      <- RM_SI_CA;      #Amount of Cinnamaldehyde enzymatically oxidized into Cinnamic acid in the small intestine in μmol
   d/dt(AM_SI_AP)      <- RM_SI_AP;      #Amount of Cinnamaldehyde protein adducts in the small intestine in μmol
   
   #-GSH in the small intestine cytosol-#
@@ -209,7 +209,5 @@ PBK_Cinnamaldehyde <- RxODE({
 })
 
 #chose one depending on the input parameters 
-#solve.pbk_nonpop <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits) #Solve the PBPK model
-
-solve.pbk_popgen <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits) #Solve the PBPK model
+solve.pbk <- solve(PBK_Cinnamaldehyde, parameters, events = ex, inits) #Solve the PBPK model
 
