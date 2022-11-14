@@ -37,7 +37,7 @@ P_OH_RP   <-  1.18  #Richly perfused tissues/Blood partition coefficients
 P_OH_SP   <-  1.53  #Slowly perfused tissues/Blood partition coefficients
 P_OH_Pu   <-  1.18  #Lung/Blood partition coefficients
 
-#-Apparent first order rate constant GSH turn over(RAT?) per h-#
+#-Apparent first order rate constant GSH turn over per h-#
 k_L_GLOS    <- 0.142        #Liver
 k_SI_GLOS   <- 0.044        #Small intestine
 
@@ -69,8 +69,8 @@ Km_SI_GST_G <- 100         #Km toward GSH for enzymatic conjugation of Cinnamald
 #1 can only be defined after x has been defined. the factor a should also have its one distrubtion to see the impact of this term. so this is seperately done
 S9_scaling_SI_Factor <- 11.4
 
-G_SYN_L_factor <- 1122
-G_SYN_SI_factor<-27  
+G_SYN_L_Factor <- 1122
+G_SYN_SI_Factor<-27  
 
 init_GSH_L_Factor  <- 7111
 init_GSH_SI_Factor <- 1555 
@@ -200,8 +200,8 @@ dist_para <- cbind(P_F,
                    Km_SI_GST,
                    Km_SI_GST_G,
                    S9_scaling_SI_Factor,
-                   G_SYN_L_factor,
-                   G_SYN_SI_factor,  
+                   G_SYN_L_Factor,
+                   G_SYN_SI_Factor,  
                    init_GSH_L_Factor,
                    init_GSH_SI_Factor, 
                    C_PRO_L_Factor,       
@@ -388,14 +388,14 @@ phys <- sa$X
 
 
 #Writing the result into a file so that the environment can be cleaned to conserve memory
-write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\GSA_phys_human_250mg_corrected", row.names = TRUE)
+write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\GSA_phys_human_2.8mg_inhalation_corrected", row.names = TRUE)
 
 
 
 #Loading extracted simulation data. 
-solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SA_human_250mg_oral_CV_corrected", row.names=1)
+solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SA_human_2.8mg_inhalation_C_Pu_corrected", row.names=1)
 
-#Analysing the generated data set 
+#Analyzing the generated data set 
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
                                   solve.pbk.sa[,"time"]==2|solve.pbk.sa[,"time"]==3|solve.pbk.sa[,"time"]==4|
                                   solve.pbk.sa[,"time"]==8),]
@@ -422,9 +422,9 @@ SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
 
-write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes_oral_Human_250g_corrected", row.names = TRUE)
+write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes_inhalation_Human_2.8mg_C_Pu_corrected", row.names = TRUE)
 
-SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes_oral_Human_250g_corrected_10%", row.names=1)
+SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes_inhalation_Human_250mg_CV_corrected", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here would create an error.

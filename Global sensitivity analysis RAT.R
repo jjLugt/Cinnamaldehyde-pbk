@@ -37,64 +37,61 @@ P_OH_SP   <-  0.49 #Slowly perfused tissues/Blood partition coefficients
 P_OH_Pu   <-  1.18 #Lung/Blood partition coefficients
 
 
+#-Apparent first order rate constant GSH turn over(RAT?) per h-#
+k_L_GLOS    <- 0.142 #Liver
+k_SI_GLOS   <- 0.044 #Small intestine
+
 #--Physiological Parameters--#
 
-#-Tissues volumes in L-#
+#-Unitless fraction of body weight consisting of a specific compartment-#
 
-V_F      <- 0.07  * BW  #Fat
-V_L      <- 0.034 * BW  #Liver
-V_SI     <- 0.014 * BW  #Small intestine
-V_A      <- 0.019 * BW  #Arterial Blood
-V_V      <- 0.059 * BW  #Venous Blood
-V_RP     <- 0.037 * BW  #Richly perfused 
-V_SP     <- 0.676 * BW  #Slowly perfused
-V_Pu     <- 0.005 * BW  #Lung
+fV_F      <- 0.07   #Fat
+fV_L      <- 0.034 #Liver
+fV_SI     <- 0.014 #Small intestine
+fV_A      <- 0.019 #Arterial Blood
+fV_V      <- 0.059 #Venous Blood
+fV_RP     <- 0.037 #Richly perfused 
+fV_SP     <- 0.676  #Slowly perfused
+fV_Pu     <- 0.005  #Lung
+
+
+V_adjust <- fV_F + fV_L + fV_SI + fV_A + fV_V + fV_RP + fV_SP +fV_Pu
+
+
+#-Tissues volumes in L #
+V_F      <- (fV_F / V_adjust)* BW    #Fat
+V_L      <- (fV_L / V_adjust)* BW  #Liver
+V_SI     <- (fV_SI / V_adjust)* BW     #Small intestine
+V_A      <- (fV_A / V_adjust)* BW  #Arterial Blood
+V_V      <- (fV_V / V_adjust)* BW  #Venous Blood
+V_RP     <- (fV_RP / V_adjust)* BW  #Richly perfused (RP)
+V_SP     <- (fV_SP / V_adjust)* BW   #Slowly perfused (SP)
+V_Pu     <- (fV_Pu / V_adjust)* BW    #Lung
 
 #-Cardiac parameters-#
 
 Q_C      <- 5.4    #Cardiac output in L/h
 
-#-Blood flow to tissues in % cardiac output-#
+#-Unitless fraction of cardiac output-#
 
-Q_F      <- 0.07 * Q_C   #Fat
-Q_L      <- 0.13 * Q_C #Liver
-Q_SI     <- 0.12 * Q_C  #Small intestine
-Q_RP     <- 0.64 * Q_C  #Richly perfused
-Q_SP     <- 0.17 * Q_C  #Slowly perfused
-Q_Pu     <- Q_C    #Blood flow through the lung
+fQ_F      <- 0.07  #Fat
+fQ_L      <- 0.13  #Liver
+fQ_SI     <- 0.12  #Small intestine
+fQ_RP     <- 0.64  #Richly perfused
+fQ_SP     <- 0.17  #Slowly perfused
+
+
+Q_adjust <- fQ_F + fQ_L + fQ_SI + fQ_RP + fQ_SP
+
+#-Blood flow to tissues in % cardiac output-#
+Q_F      <- (fQ_F / Q_adjust)* Q_C    #Fat
+Q_L      <- (fQ_L / Q_adjust)* Q_C  #Liver
+Q_SI     <- (fQ_SI / Q_adjust)* Q_C     #Small intestine
+Q_RP     <- (fQ_RP / Q_adjust)* Q_C  #Richly perfused (RP)
+Q_SP     <- (fQ_SP / Q_adjust)* Q_C   #Slowly perfused (SP)
+Q_Pu     <- Q_C   #Blood flow through the lung
 
 P_V      <- 0.75 #Pulmonary ventilation in L/h 
-
-#----GSH parameters----#
-#--GSH synthesis in umol/per organ/h--#
-
-G_SYN_L     <- 869 * V_L * 0.9  #Liver 
-G_SYN_SI    <- 78  * V_SI * 0.9  #Small intestine
-
-#-Apparent first order rate constant GSH turn over(RAT?) per h-#
-k_L_GLOS    <- 0.142 #Liver
-k_SI_GLOS   <- 0.044 #Small intestine
-
-#--Initial GSH concentration--#
-init_GSH_L  <- 6120 * V_L  #initial GSH concentration in the liver in umol
-init_GSH_SI <- 1780 * V_SI #initial GSH concentration in the small intestine in umol
-
-k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
-
-#----Protein reactive sites in μmol/kg tissue----#
-C_PRO_L     <- 5319  * V_L  #Liver
-C_PRO_SI    <- 245   * V_SI #Small intestine
-
-#--Chemical parameters--#
-Ka <- 1.37  #Absorption rate constant for uptake in the Small intestine in per H
-
-#----Liver----#
-S9_scaling_L <- 143 * (V_L * 1000) #scaling factor for S9 fraction per g tissue
-
-
-#First order rate constants
-k_L_CA   <-  7.4*10^(-3)* 60 / 1000 * S9_scaling_L   #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the liver (L/h)
-k_L_GST  <-  6.2*10^(-2)* 60 / 1000 * S9_scaling_L  #Scaled first-order rate constant for enzymatic conjugation of cinnamaldehyde with GSH in the liver (L/h)
 
 #--Michaelis menten constants--#
 
@@ -102,86 +99,119 @@ Km_L_AO     <-  120  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl
 Km_L_GST_G  <-  100  #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM 
 Km_L_OH     <-  1300 #Km for enzymatic oxidation of cinnamyl alcohol to cinnamaldehyde in the liver in μM
 
-#--Vmax values--#
-Vsmax_L_AO    <- 29  * 60 / 1000 * S9_scaling_L      #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
-Vsmax_L_GST_G <- 100  *60 / 1000 * S9_scaling_L      #Scaled Vmax toward GSH for enzymatic conjugation of cinnamaldehyde in the Liver (μM RAT value)
-Vsmax_L_OH    <- 15   *60 / 1000 * S9_scaling_L      #Scaled Vmax for enzymatic oxidation of cinnamyl alcohol to cinnamaldehyde in the liver in μmol/h
-
-#----Small intestines----#
-S9_scaling_SI <- 11.4 * V_SI *1000      #scaling factor fraction S9 protein per g tissue
-
-#First order rate constants
-k_SI_CA  <- 3.9*10^(-3) * 60/1000 * S9_scaling_SI #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the small intestine (μmol/h)
-
 #--Michaelis menten constants SI--#
 Km_SI_CA    <- 0   #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
 Km_SI_AO    <- 75  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
 Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM (RAT value)
 Km_SI_GST_G <- 100 #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM)
 
-#-Vmax values-#
-Vsmax_SI_AO    <- 5.8 * 60 / 1000 * S9_scaling_SI  #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
-Vsmax_SI_GST   <- 63  * 60 / 1000 * S9_scaling_SI  #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
+k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 
-#Collection of all parameters so they can be entered in the function
-dist_para <- cbind(Volume_exposure_chamber,
-                 P_F,
-                 P_L,
-                 P_SI,
-                 P_RP,
-                 P_SP,
-                 P_B,
-                 P_Pu,
-                 P_OH_F,
-                 P_OH_L,
-                 P_OH_SI,
-                 P_OH_RP,
-                 P_OH_SP,
-                 P_OH_Pu,
-                 BW,
-                 V_F,
-                 V_L,
-                 V_SI,
-                 V_A,
-                 V_V,
-                 V_RP,
-                 V_SP,
-                 V_Pu,
-                 Q_C,
-                 Q_Pu,
-                 Q_F,
-                 Q_L,
-                 Q_SI,
-                 Q_RP,
-                 Q_SP,
-                 P_V,
-                 G_SYN_L,
-                 G_SYN_SI,
-                 k_L_GLOS,
-                 k_SI_GLOS,
-                 init_GSH_L,
-                 init_GSH_SI,
-                 k_GSH,
-                 C_PRO_L,
-                 C_PRO_SI,
-                 Ka,
-                 k_L_GST,
-                 Km_L_OH,
-                 Km_L_AO,
-                 Km_L_GST_G,
-                 k_L_CA,
-                 Vsmax_L_AO,
-                 Vsmax_L_OH,
-                 k_SI_CA,
-                 Km_SI_CA,
-                 Km_SI_AO,
-                 Km_SI_GST,
-                 Km_SI_GST_G,
-                 Vsmax_SI_AO,
-                 Vsmax_SI_GST,
-                 S9_scaling_L,
-                 S9_scaling_SI)
+Ka <- 1.37  #Absorption rate constant for uptake in the Small intestine in per H
 
+#Al parameters that have a body weight component can only be defined after a distribution of bodyweight valus has been made. parameters that consist of a body weight term
+#multiplied by a factor should also have a distribution. this is defined below. 
+#example 
+#1<- a * x(tissue volume)
+
+#1 can only be defined after x has been defined. the factor a should also have its one distrubtion to see the impact of this term. so this is seperately done
+
+
+G_SYN_L_Factor     <- 869
+G_SYN_SI_Factor   <- 78
+init_GSH_L_Factor   <- 6120
+init_GSH_SI_Factor <- 1780
+
+C_PRO_L_Factor     <- 5319
+C_PRO_SI_Factor   <- 245
+
+
+S9_scaling_L_Factor <- 143
+
+k_L_CA_Factor   <-  7.4*10^(-3)
+k_L_GST_Factor  <-  6.2*10^(-2)
+
+Vsmax_L_AO_Factor    <- 29
+Vsmax_L_GST_G_Factor <- 100
+Vsmax_L_OH_Factor    <- 15
+S9_scaling_SI_Factor <- 11.4
+k_SI_CA_Factor  <- 3.9*10^(-3)
+Vsmax_SI_AO_Factor    <- 5.8
+Vsmax_SI_GST_Factor   <- 63
+
+#Collection of all parameters so a distribution can be made with them later on in the file #Human
+dist_para <- cbind(P_F,
+                   P_L,
+                   P_SI,
+                   P_RP,
+                   P_SP,
+                   P_B,
+                   P_Pu,
+                   P_OH_F,
+                   P_OH_L,
+                   P_OH_SI,
+                   P_OH_RP,
+                   P_OH_SP,
+                   P_OH_Pu,
+                   k_L_GLOS,
+                   k_SI_GLOS,
+                   BW,
+                   fV_F,   
+                   fV_L, 
+                   fV_SI,    
+                   fV_A,    
+                   fV_V,    
+                   fV_RP,    
+                   fV_SP,    
+                   fV_Pu,   
+                   V_adjust,
+                   V_F,
+                   V_L,
+                   V_SI,
+                   V_A,
+                   V_V,
+                   V_RP,
+                   V_SP,
+                   V_Pu,
+                   Q_C,
+                   fQ_F,   
+                   fQ_L,
+                   fQ_SI,    
+                   fQ_RP,    
+                   fQ_SP,    
+                   Q_adjust,
+                   Q_Pu,
+                   Q_F,
+                   Q_L,
+                   Q_SI,
+                   Q_RP,
+                   Q_SP,
+                   P_V,
+                   Km_L_AO,
+                   Km_L_GST_G,
+                   Km_L_OH,
+                   Km_SI_CA,
+                   Km_SI_AO,
+                   Km_SI_GST,
+                   Km_SI_GST_G,
+                   k_GSH,
+                   Ka,
+                   G_SYN_L_Factor,
+                   G_SYN_SI_Factor,  
+                   init_GSH_L_Factor,
+                   init_GSH_SI_Factor, 
+                   C_PRO_L_Factor,       
+                   C_PRO_SI_Factor,
+                   S9_scaling_L_Factor, 
+                   k_L_CA_Factor,
+                   k_L_GST_Factor,
+                   Vsmax_L_AO_Factor,    
+                   Vsmax_L_GST_G_Factor,
+                   Vsmax_L_OH_Factor,
+                   S9_scaling_SI_Factor,
+                   k_SI_CA_Factor,        
+                   Vsmax_SI_AO_Factor,       
+                   Vsmax_SI_GST_Factor)
 
 
 #Creating empty vectors for use later
@@ -213,10 +243,135 @@ for(i in 1:par_var){
 }
 
 
+for(i in 1:nrow(X1)){
+  X1[i,73] <-X1[i,27]*X1[i,57]
+  colnames(X1)[73] <- "G_SYN_L"
+  X1[i,74] <-X1[i,28]*X1[i,58]
+  colnames(X1)[74] <- "G_SYN_SI"
+  X1[i,75] <-X1[i,27]*X1[i,59]
+  colnames(X1)[75] <- "init_GSH_L"
+  X1[i,76] <-X1[i,28]*X1[i,60]
+  colnames(X1)[76] <- "init_GSH_SI"
+  X1[i,77] <-X1[i,27]*X1[i,61]
+  colnames(X1)[77] <- "C_PRO_L"
+  X1[i,78] <-X1[i,28]*X1[i,62]
+  colnames(X1)[78] <- "C_PRO_SI"
+  X1[i,79] <-(X1[i,63]*1000)*X1[i,27]
+  colnames(X1)[79] <- "S9_scaling_L"
+  X1[i,80] <-(X1[i,64]*60/1000)*X1[i,79]
+  colnames(X1)[80] <- "k_L_CA"
+  X1[i,81] <-(X1[i,65]*60/1000)*X1[i,79]
+  colnames(X1)[81] <- "k_L_GST"
+  X1[i,82] <-(X1[i,66]*60/1000)*X1[i,79]
+  colnames(X1)[82] <- "Vsmax_L_AO"
+  X1[i,83] <-(X1[i,67]*60/1000)*X1[i,79]
+  colnames(X1)[83] <- "Vsmax_L_GST"
+  X1[i,84] <-(X1[i,68]*1000)*X1[i,79]
+  colnames(X1)[84] <- "Vsmax_L_OH"
+  X1[i,85] <-(X1[i,69]*1000)*X1[i,28]
+  colnames(X1)[85] <- "S9_scaling_SI"
+  X1[i,86] <-(X1[i,70]*60/1000)*X1[i,85]
+  colnames(X1)[86] <- "k_SI_CA"
+  X1[i,87] <-(X1[i,71]*60/1000)*X1[i,85]
+  colnames(X1)[87] <- "Vsmax_SI_AO"
+  X1[i,88] <-(X1[i,72]*60/1000)*X1[i,85]
+  colnames(X1)[88] <- "Vsmax_SI_GST"
+} 
 
-#Removing variation in volume exposure chamber as this is supposed to be fixed
-X1[,1]<- 10
-X2[,1]<- 10
+for(i in 1:nrow(X2)){
+  X2[i,73] <-X2[i,27]*X2[i,57]
+  colnames(X2)[73] <- "G_SYN_L" #GSH synthesis in umol/in the liver/h
+  X2[i,74] <-X2[i,28]*X2[i,58]
+  colnames(X2)[74] <- "G_SYN_SI"   #GSH synthesis in umol/in the SI/h
+  X2[i,75] <-X2[i,27]*X2[i,59]
+  colnames(X2)[75] <- "init_GSH_L"  #initial GSH concentration in the liver in umol
+  X2[i,76] <-X2[i,28]*X2[i,60]
+  colnames(X2)[76] <- "init_GSH_SI" #initial GSH concentration in the small intestine in umol
+  X2[i,77] <-X2[i,27]*X2[i,61]
+  colnames(X2)[77] <- "C_PRO_L" #Protein reactive sites in μmol/kg LIVER
+  X2[i,78] <-X2[i,28]*X2[i,62]
+  colnames(X2)[78] <- "C_PRO_SI" #Protein reactive sites in μmol/kg SI
+  X2[i,79] <-(X2[i,63]*1000)*X2[i,27]
+  colnames(X2)[79] <- "S9_scaling_L"   #scaling factor for S9 fraction per g L
+  X2[i,80] <-(X2[i,64]*60/1000)*X2[i,79]
+  colnames(X2)[80] <- "k_L_CA"            #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the liver (L/h)
+  X2[i,81] <-(X2[i,65]*60/1000)*X2[i,79]
+  colnames(X2)[81] <- "k_L_GST"             #Scaled first-order rate constant for enzymatic conjugation of cinnamaldehyde with GSH in the liver (L/h)
+  X2[i,82] <-(X2[i,66]*60/1000)*X2[i,79]
+  colnames(X2)[82] <- "Vsmax_L_AO"        #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
+  X2[i,83] <-(X2[i,67]*60/1000)*X2[i,79]
+  colnames(X2)[83] <- "Vsmax_L_GST"      #Scaled Vmax toward GSH for enzymatic conjugation of cinnamaldehyde in the Liver 
+  X2[i,84] <-(X2[i,68]*1000)*X2[i,79]
+  colnames(X2)[84] <- "Vsmax_L_OH"       #Scaled Vmax for enzymatic oxidation of cinnamyl alcohol to cinnamaldehyde in the liver in μmol/h
+  X2[i,85] <-(X2[i,69]*1000)*X2[i,28]
+  colnames(X2)[85] <- "S9_scaling_SI"   #scaling factor fraction S9 protein per g SI
+  X2[i,86] <-(X2[i,70]*60/1000)*X2[i,85]
+  colnames(X2)[86] <- "k_SI_CA"         #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the small intestine (μmol/h)
+  X2[i,87] <-(X2[i,71]*60/1000)*X2[i,85]
+  colnames(X2)[87] <- "Vsmax_SI_AO"      #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
+  X2[i,88] <-(X2[i,72]*60/1000)*X2[i,85]
+  colnames(X2)[88] <- "Vsmax_SI_GST"     #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
+}
+
+
+#Defining empty vectors to be used in the following calculations #Human
+Flow_volumes <-c()
+Tissue_volumes<-c()
+Total_body_weight<-c()
+Total_QC<-c()
+#Based on the Changes in the volume or blood fractions recalculating blood flows and tissue volumes to ensure mass balance
+for(i in 1:nrow(X1)){
+  #Tissue volumes calculations
+  X1[i,25]<- sum(X1[i,17:24])
+  X1[i,26]<- (X1[i,17]/X1[i,25])* X1[i,16]
+  X1[i,27]<- (X1[i,18]/X1[i,25])* X1[i,16]
+  X1[i,28]<- (X1[i,19]/X1[i,25])* X1[i,16]
+  X1[i,29]<- (X1[i,20]/X1[i,25])* X1[i,16]
+  X1[i,30]<- (X1[i,21]/X1[i,25])* X1[i,16]
+  X1[i,31]<- (X1[i,22]/X1[i,25])* X1[i,16]
+  X1[i,32]<- (X1[i,23]/X1[i,25])* X1[i,16]
+  X1[i,33]<- (X1[i,24]/X1[i,25])* X1[i,16]
+  #Blood flow calculations
+  X1[i,40]<- sum(X1[i,35:39])
+  X1[i,41]<- X1[i,34]
+  X1[i,42]<- (X1[i,35]/X1[i,40])* X1[i,34]
+  X1[i,43]<- (X1[i,36]/X1[i,40])* X1[i,34]
+  X1[i,44]<- (X1[i,37]/X1[i,40])* X1[i,34]
+  X1[i,45]<- (X1[i,38]/X1[i,40])* X1[i,34]
+  X1[i,46]<- (X1[i,39]/X1[i,40])* X1[i,34]
+  Flow_volumes <-append(Flow_volumes,sum(X1[i,42:46]))
+  Tissue_volumes<-append(Tissue_volumes ,sum(X1[i,26:33]))
+  Total_body_weight <- append(Total_body_weight ,X1[i,16])
+  Total_QC<- append(Total_QC ,X1[i,34])
+  names<- c("total flow","QC","Total volume","BW")
+  Mass_check <- as.data.frame(cbind(Flow_volumes,Total_QC,Tissue_volumes,Total_body_weight), col.names = names)
+}
+#Calculations for X2
+for(i in 1:nrow(X2)){
+  #Tissue volumes calculations
+  X2[i,25]<- sum(X2[i,17:24])
+  X2[i,26]<- (X2[i,17]/X2[i,25])* X2[i,16]
+  X2[i,27]<- (X2[i,18]/X2[i,25])* X2[i,16]
+  X2[i,28]<- (X2[i,19]/X2[i,25])* X2[i,16]
+  X2[i,29]<- (X2[i,20]/X2[i,25])* X2[i,16]
+  X2[i,30]<- (X2[i,21]/X2[i,25])* X2[i,16]
+  X2[i,31]<- (X2[i,22]/X2[i,25])* X2[i,16]
+  X2[i,32]<- (X2[i,23]/X2[i,25])* X2[i,16]
+  X2[i,33]<- (X2[i,24]/X2[i,25])* X2[i,16]
+  #Blood flow calculations
+  X2[i,40]<- sum(X2[i,35:39])
+  X2[i,41]<- X2[i,34]
+  X2[i,42]<- (X2[i,35]/X2[i,40])* X2[i,34]
+  X2[i,43]<- (X2[i,36]/X2[i,40])* X2[i,34]
+  X2[i,44]<- (X2[i,37]/X2[i,40])* X2[i,34]
+  X2[i,45]<- (X2[i,38]/X2[i,40])* X2[i,34]
+  X2[i,46]<- (X2[i,39]/X2[i,40])* X2[i,34]
+}
+
+
+#Removing unnecessary variables 
+X1<- X1[-c(17:25,35:40,57:72)]
+X2<- X2[-c(17:25,35:40,57:72)]
 
 
 
@@ -233,12 +388,12 @@ phys <- sa$X
 
 
 #Writing the result into a file so that the environment can be cleaned to conserve memory
-write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\GSA_phys", row.names = TRUE)
+write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\RAT_250mg_inhalation_phys", row.names = TRUE)
 
 
 
 #Loading extracted simulation data. 
-solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SA_RAT_250mg_oral_CV", row.names=1)
+solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SA_rat_250mg_inhalation_C_V_corrected", row.names=1)
 
 #Analysing the generated data set 
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
@@ -267,9 +422,9 @@ SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
 
-write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes_RAT_oral_250mg_CV", row.names = TRUE)
+write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes_rat_250mg_inhalation_C_Pu_corrected", row.names = TRUE)
 
-SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes_RAT_oral_250mg_CV", row.names=1)
+SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes_RAT_oral_250mg_CV_corrected", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here would create an error.
@@ -551,10 +706,10 @@ FOI.L.t = FOI.L.t[sorting]
 FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
 tempC    = t(cbind(FOI.L.t,TI.L.t))
 
-tempC2 <- as.data.frame(tempC[,c(47:56)])
+tempC2 <- as.data.frame(tempC[,c(47:57)])
 
 #t_SA = 8
-sa.plot_8 <-as.data.frame(tempC[,c(47:56)])
+sa.plot_8 <-as.data.frame(tempC[,c(47:57)])
 rownames(sa.plot_8) <- c("8h total","8h main")
 
 par(mfrow=c(2,3),las=1, mar=c(3,5,3,3.5), mgp = c(3.5,0.5,0)) 
