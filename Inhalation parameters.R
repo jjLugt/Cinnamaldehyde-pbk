@@ -84,7 +84,7 @@ fQC_sp    <- 0.248  #Unit less fraction of total Cardiac output that goes to the
 
 Q_adjust <- fQC_fat + fQC_liver + fQC_si + fQC_rp + fQC_sp
 
-#-Blood flow to tissues in % cardiac output-#
+#-Blood flow to tissues in l#
 Q_F      <- (fQC_fat / Q_adjust)* Q_C    #Fat
 Q_L      <- (fQC_liver / Q_adjust)* Q_C  #Liver
 Q_SI     <- (fQC_si / Q_adjust)* Q_C     #Small intestine

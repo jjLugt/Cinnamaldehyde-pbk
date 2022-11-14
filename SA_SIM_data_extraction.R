@@ -319,17 +319,6 @@ solve.pbk.sa49 <-cbind(solve.pbk.sa49,solve49$C_V)
 colnames(solve.pbk.sa49) <- c("time","C_V")
 solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa49)
 
-solve50 <- read_csv("solve.pbk_nonpop50")
-solve.pbk.sa50 <-as.data.frame(solve50$time)
-solve.pbk.sa50 <-cbind(solve.pbk.sa50,solve50$C_V)
-colnames(solve.pbk.sa50) <- c("time","C_V")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa50)
 
-solve51 <- read_csv("solve.pbk_nonpop51")
-solve.pbk.sa51 <-as.data.frame(solve51$time)
-solve.pbk.sa51 <-cbind(solve.pbk.sa51,solve51$C_V)
-colnames(solve.pbk.sa51) <- c("time","C_V")
-solve.pbk.sa <-rbind(solve.pbk.sa,solve.pbk.sa51)
-
-write.csv(solve.pbk.sa,"D:/PBK/Cinnamaldehyde-pbk\\SA_RAT_250mg_oral_CV", row.names = TRUE)
+write.csv(solve.pbk.sa,"D:/PBK/Cinnamaldehyde-pbk\\SA_human_2.8mg_inhalation_C_V_corrected", row.names = TRUE)
 

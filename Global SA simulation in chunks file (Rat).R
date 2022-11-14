@@ -1,4 +1,4 @@
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[1:2500,]
@@ -50,7 +50,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -124,8 +124,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -183,7 +183,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\\\solve.pbk_nonpop1", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[2501:5000,]
@@ -235,7 +235,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -310,8 +310,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(2501:5000))
@@ -368,7 +368,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\\\solve.pbk_nonpop2", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[5001:7500,]
@@ -420,7 +420,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -494,8 +494,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -552,7 +552,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop3", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[7501:10000,]
@@ -604,7 +604,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -678,8 +678,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(7501:10000))
@@ -735,7 +735,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop4", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[10001:12500,]
@@ -787,7 +787,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -861,8 +861,8 @@ time.0                     <-0        #time start dosing
 time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(10001:12500))
@@ -918,7 +918,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop5", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[12501:15000,]
@@ -970,7 +970,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -1044,8 +1044,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(12501:15000))
@@ -1102,7 +1102,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop6", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[15001:17500,]
@@ -1154,7 +1154,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -1229,8 +1229,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -1286,7 +1286,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop7", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[17501:20000,]
@@ -1338,7 +1338,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -1412,8 +1412,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -1470,7 +1470,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop8", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[20001:22500,]
@@ -1522,7 +1522,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -1596,8 +1596,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 
@@ -1655,7 +1655,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop9", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[22501:25000,]
@@ -1707,7 +1707,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -1782,8 +1782,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(22501:25000))
@@ -1839,7 +1839,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop10", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[25001:27500,]
@@ -1891,7 +1891,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -1965,8 +1965,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(25001:27500))
@@ -2023,7 +2023,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop11", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[27501:30000,]
@@ -2075,7 +2075,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -2149,8 +2149,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(27501:30000))
@@ -2207,7 +2207,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop12", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[30001:32500,]
@@ -2259,7 +2259,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -2334,8 +2334,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(30001:32500))
@@ -2392,7 +2392,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop13", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[32501:35000,]
@@ -2444,7 +2444,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -2519,8 +2519,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(32501:35000))
@@ -2576,7 +2576,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop14", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[35001:37500,]
@@ -2628,7 +2628,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -2702,8 +2702,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(35001:37500))
@@ -2759,7 +2759,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop15", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[37501:40000,]
@@ -2811,7 +2811,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -2885,8 +2885,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(37501:40000))
@@ -2942,7 +2942,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop16", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[40001:42500,]
@@ -2994,7 +2994,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -3069,8 +3069,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(40001:42500))
@@ -3128,7 +3128,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop17", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[42501:45000,]
@@ -3180,7 +3180,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -3255,8 +3255,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(42501:45000))
@@ -3312,7 +3312,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop18", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[45001:47500,]
@@ -3364,7 +3364,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -3439,8 +3439,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(45001:47500))
@@ -3496,7 +3496,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop19", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[47501:50000,]
@@ -3548,7 +3548,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -3622,8 +3622,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(47501:50000))
@@ -3679,7 +3679,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop20", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[50001:52500,]
@@ -3731,7 +3731,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -3806,8 +3806,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(50001:52500))
@@ -3863,7 +3863,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop21", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[52501:55000,]
@@ -3915,7 +3915,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -3989,8 +3989,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(52501:55000))
@@ -4048,7 +4048,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop22", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[55001:57500,]
@@ -4100,7 +4100,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -4174,8 +4174,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -4232,7 +4232,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop23", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[57501:60000,]
@@ -4284,7 +4284,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -4358,8 +4358,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(57501:60000))
@@ -4416,7 +4416,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop24", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[60001:62500,]
@@ -4468,7 +4468,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -4542,8 +4542,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(60001:62500))
@@ -4601,7 +4601,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop25", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[62501:65000,]
@@ -4653,7 +4653,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -4728,8 +4728,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -4788,7 +4788,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop26", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[65001:67500,]
@@ -4840,7 +4840,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -4915,8 +4915,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(65001:67500))
@@ -4975,7 +4975,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop27", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[67501:70000,]
@@ -5027,7 +5027,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -5102,8 +5102,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(67501:70000))
@@ -5161,7 +5161,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop28", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[70001:72500,]
@@ -5213,7 +5213,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -5287,8 +5287,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(70001:72500))
@@ -5347,7 +5347,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop29", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[72501:75000,]
@@ -5399,7 +5399,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -5474,8 +5474,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -5534,7 +5534,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop30", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[75001:77500,]
@@ -5586,7 +5586,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -5660,8 +5660,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(75001:77500))
@@ -5721,7 +5721,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop31", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[77501:80000,]
@@ -5773,7 +5773,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -5847,8 +5847,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(77501:80000))
@@ -5908,7 +5908,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop32", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[80001:82500,]
@@ -5960,7 +5960,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -6035,8 +6035,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(80001:82500))
@@ -6097,7 +6097,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop33", row
 
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[82501:85000,]
@@ -6149,7 +6149,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -6224,8 +6224,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(82501:85000))
@@ -6285,7 +6285,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop34", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[85001:87500,]
@@ -6337,7 +6337,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -6412,8 +6412,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(85001:87500))
@@ -6473,7 +6473,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop35", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[87501:90000,]
@@ -6525,7 +6525,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -6599,8 +6599,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(87501:90000))
@@ -6661,7 +6661,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop36", row
 
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[90001:92500,]
@@ -6713,7 +6713,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -6787,8 +6787,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(90001:92500))
@@ -6850,7 +6850,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop37", row
 
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[92501:95000,]
@@ -6902,7 +6902,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -6977,8 +6977,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(92501:95000))
@@ -7040,7 +7040,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop38", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[95001:97500,]
@@ -7092,7 +7092,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -7166,8 +7166,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -7227,7 +7227,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop39", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[97501:100000,]
@@ -7279,7 +7279,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -7354,8 +7354,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(97501:100000))
@@ -7418,7 +7418,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop40", row
 
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[100001:102500,]
@@ -7470,7 +7470,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -7544,8 +7544,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(100001:102500))
@@ -7604,7 +7604,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop41", row.names = TRUE)
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[102501:105000,]
@@ -7656,7 +7656,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -7730,8 +7730,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -7793,7 +7793,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop42", row
 
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[105001:107500,]
@@ -7845,7 +7845,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -7919,8 +7919,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(105001:107500))
@@ -7981,7 +7981,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop43", row
 
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[107501:110000,]
@@ -8033,7 +8033,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -8108,8 +8108,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -8170,7 +8170,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop44", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[110001:112500,]
@@ -8222,7 +8222,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -8296,8 +8296,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(110001:112500))
@@ -8357,7 +8357,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop45", row
 
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[112501:115000,]
@@ -8409,7 +8409,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -8483,8 +8483,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -8545,7 +8545,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop46", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[115001:117500,]
@@ -8597,7 +8597,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -8671,8 +8671,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 
 #generating a bodyweight data frame for adjusting the dose 
@@ -8732,7 +8732,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop47", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[117501:118000,]
@@ -8784,7 +8784,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -8859,13 +8859,13 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(117501:118000))
 
-for(i in 1:2500){
+for(i in 1:500){
   Data_BW[i,2]<- sum(phys[i,c(17,18,19,20,21,22,23,24)])
   
 }
@@ -8921,7 +8921,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop48", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[120001:122500,]
@@ -8973,7 +8973,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -9048,8 +9048,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(120001:122500))
@@ -9110,7 +9110,7 @@ write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop49", row
 
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[122501:124000,]
@@ -9162,7 +9162,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -9236,8 +9236,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(122501:124000))
@@ -9297,7 +9297,7 @@ solve.pbk_nonpop1 <- solve(PBK_Cinnamaldehyde, parameters1, events = ex1, inits)
 write.csv(solve.pbk_nonpop1,"D:/PBK/Cinnamaldehyde-pbk\\solve.pbk_nonpop50", row.names = TRUE)
 
 
-phys <- read_csv("GSA_phys")
+phys <- read_csv("RAT_250mg_inhalation_phys")
 
 #Running the Global SA directly takes to much memory so it is necessary to split up the data set in parts
 phys<-phys[125001:126000,]
@@ -9349,7 +9349,7 @@ Km_SI_GST<-phys$Km_SI_GST
 Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_GST<-phys$Vsmax_SI_GST
-Volume_exposure_chamber<- phys$Volume_exposure_chamber
+Volume_exposure_chamber<- 10
 S9_scaling_SI<-phys$S9_scaling_SI
 S9_scaling_L<-phys$S9_scaling_L
 k_L_GST<- phys$k_L_GST
@@ -9423,8 +9423,8 @@ time.end                   <-8        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 
-Inhalation_Dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-Oral_Dose_in_mg_bw         <-250      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0      #Dose in mg/kg-bw
 
 #generating a bodyweight data frame for adjusting the dose 
 Data_BW<-as.data.frame(c(125001:126000))
