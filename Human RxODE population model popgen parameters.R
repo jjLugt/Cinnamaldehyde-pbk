@@ -29,37 +29,9 @@ MW                      <-132.16   #The molecular weight of Cinnamaldehyde
 
 
 #Importing the popgen data set 
-pg_m_par <- read_csv("popgen male parameters version 06-04-2022.csv", 
-                                                      col_types = cols(Age = col_number(), 
-                                                                       `Body Mass` = col_number(), Height = col_number(), 
-                                                                       `Cardiac Output` = col_number(), 
-                                                                       `Lung mass` = col_number(), `Lung flow` = col_number(), 
-                                                                       `Liver mass` = col_number(), `Liver flow` = col_number(), 
-                                                                       `Small intestine mass` = col_number(), 
-                                                                       `Small intestine flow` = col_number(), 
-                                                                       `Adipose mass` = col_number(), `Adipose flow` = col_number(), 
-                                                                       `Liver Total flow` = col_number(), 
-                                                                       `Slowly Perfused mass` = col_number(), 
-                                                                       `Slowly Perfused flow` = col_number(), 
-                                                                       `Richly Perfused mass` = col_number(), 
-                                                                       `Richly Perfused flow` = col_number(), 
-                                                                       `Lung Bronchial flow` = col_number()))
+pg_m_par <- read_csv("popgen male parameters version 06-04-2022.csv")
 
-pg_f_par <-read_csv("popgen female parameters version 09-08-2022.csv", 
-                            col_types = cols(Age = col_number(), 
-                                     `Body Mass` = col_number(), Height = col_number(), 
-                                     `Cardiac Output` = col_number(), 
-                                     `Lung mass` = col_number(), `Lung flow` = col_number(), 
-                                     `Liver mass` = col_number(), `Liver flow` = col_number(), 
-                                     `Small intestine mass` = col_number(), 
-                                     `Small intestine flow` = col_number(), 
-                                     `Adipose mass` = col_number(), `Adipose flow` = col_number(), 
-                                     `Liver Total flow` = col_number(), 
-                                     `Slowly Perfused mass` = col_number(), 
-                                     `Slowly Perfused flow` = col_number(), 
-                                     `Richly Perfused mass` = col_number(), 
-                                     `Richly Perfused flow` = col_number(), 
-                                     `Lung Bronchial flow` = col_number()))
+pg_f_par <- read_csv("popgen female parameters version 09-08-2022.csv")
 
 
 colnames <-c("Age","Height","BW","V_L","V_F",
@@ -80,11 +52,11 @@ var_f_pop <- as.data.frame(var_f_pop)
 
 #--Physico-chemical parameters--#
 #-Cinnamaldehyde-#
-var_m_pop$P_F      <-  47.75    #Fat/Blood partition coefficient
-var_m_pop$P_L      <-  1.83   #Fat/Blood partition coefficient
-var_m_pop$P_SI     <-  1.81   #Small intestine/Blood partition coefficients
+var_m_pop$P_F      <-  47.75   #Fat/Blood partition coefficient
+var_m_pop$P_L      <-  1.83    #Fat/Blood partition coefficient
+var_m_pop$P_SI     <-  1.81    #Small intestine/Blood partition coefficients
 var_m_pop$P_RP     <-  1.81    #Richly perfused tissues/Blood partition coefficients
-var_m_pop$P_B      <-  0.29  #Blood/Air Partition Coefficient 
+var_m_pop$P_B      <-  0.29    #Blood/Air Partition Coefficient 
 var_m_pop$P_SP     <-  1.50    #Slowly perfused tissues/Blood partition coefficients
 var_m_pop$P_Pu     <-  1.81    #Lung/Blood partition coefficients
 
@@ -93,7 +65,7 @@ var_m_pop$P_OH_F    <-  49.26  #Fat/Blood partition coefficient
 var_m_pop$P_OH_L    <-  1.18   #Fat/Blood partition coefficient
 var_m_pop$P_OH_SI   <-  1.18   #Small intestine/Blood partition coefficients
 var_m_pop$P_OH_RP   <-  1.18   #Richly perfused tissues/Blood partition coefficients
-var_m_pop$P_OH_SP   <-  1.53  #Slowly perfused tissues/Blood partition coefficients
+var_m_pop$P_OH_SP   <-  1.53   #Slowly perfused tissues/Blood partition coefficients
 var_m_pop$P_OH_Pu   <-  1.18   #Lung/Blood partition coefficients
 
 
@@ -121,15 +93,15 @@ var_m_pop$Age              <- pg_m_par$Age                            #Age (year
 var_m_pop$Height           <- pg_m_par$Height                         #Body height (cm)                                     
 var_m_pop$BW               <- pg_m_par$'Body Mass'                    #Body weight (kg)
 
-#-Tissues volumes in % body weight-#
+#-Tissues volume in L-#
 
-var_m_pop$V_L      <-pg_m_par$`Liver mass`              #Volume liver tissue (l)
+var_m_pop$V_L      <-pg_m_par$`Liver mass`              #Volume liver tissue (L)
 var_m_pop$V_F      <-pg_m_par$`Adipose mass`            #Volume adipose tissue (L)
 var_m_pop$V_B      <-(((13.1 * var_m_pop$Height + 18.05 * var_m_pop$BW - 480) / 0.5723) / 1000)#Volume blood (L)
 var_m_pop$V_A      <-var_m_pop$V_B / 3                  #Volume arterial blood (L)
 var_m_pop$V_V      <-var_m_pop$V_B * (2/3)              #Volume venous blood (L) 
 var_m_pop$V_SI     <-pg_m_par$`Small intestine mass`    #Volume Small intestine (L)
-var_m_pop$V_Pu     <-pg_m_par$`Lung mass`
+var_m_pop$V_Pu     <-pg_m_par$`Lung mass`               #Volume Lung tissue (L)
 var_m_pop$V_RP     <-pg_m_par$`Richly Perfused mass`    #Volume richly perfused tissue (L)
 var_m_pop$V_SP     <-pg_m_par$`Slowly Perfused mass`    #Volume slowly perfused tissue (L)
 
@@ -149,16 +121,16 @@ var_m_pop$P_V           <-rnorm(N,mean=540,sd=3)
 #----GSH parameters----#
 #--GSH synthesis in umol/kg tissue/h--#
 
-var_m_pop$G_SYN_L     <- 1122 * var_m_pop$V_L  #Liver 
-var_m_pop$G_SYN_SI    <- 27   * var_m_pop$V_SI   #Small intestine
+var_m_pop$G_SYN_L     <- 869 * var_m_pop$V_L  #Liver 
+var_m_pop$G_SYN_SI    <- 78   * var_m_pop$V_SI   #Small intestine
 
 #-Apparent first order rate constant GSH turn over(RAT?) per h-#
 var_m_pop$k_L_GLOS    <- 0.142 #Liver
 var_m_pop$k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-var_m_pop$init_GSH_L  <- 5639 * var_m_pop$V_L  #initial GSH concentration in the liver in umol
-var_m_pop$init_GSH_SI <- 1250 * var_m_pop$V_SI  #initial GSH concentration in the small intestine in umol
+var_m_pop$init_GSH_L  <- 6120 * var_m_pop$V_L  #initial GSH concentration in the liver in umol
+var_m_pop$init_GSH_SI <- 1780 * var_m_pop$V_SI  #initial GSH concentration in the small intestine in umol
 
 var_m_pop$k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 
@@ -181,13 +153,13 @@ var_m_pop$k_L_OH  <- 4.2e-02 * 60/1000 * var_m_pop$S9_scaling_L  #Scaled first r
 #--Michaelis menten constants--#
 var_m_pop$Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
 var_m_pop$Km_L_AO     <-  330  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the liver in μM
-var_m_pop$Km_L_GST    <-  100  #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM  
-var_m_pop$Km_L_GST_G  <-  1.7*10^3  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine μM
+var_m_pop$Km_L_GST    <-  1.7*10^3  #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM  
+var_m_pop$Km_L_GST_G  <-  100  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine μM
 
 #--Vmax values--#
 var_m_pop$Vsmax_L_CA    <-  9.7* 60/1000 * var_m_pop$S9_scaling_L #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
 var_m_pop$Vsmax_L_AO    <-  73 * 60/1000 * var_m_pop$S9_scaling_L  #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
-var_m_pop$Vsmax_L_GST   <-  37 * 60/1000 * var_m_pop$S9_scaling_L  #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
+var_m_pop$Vsmax_L_GST   <-  32 * 60/1000 * var_m_pop$S9_scaling_L  #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
 
 #----Small intestines----#
 
@@ -197,14 +169,11 @@ var_m_pop$S9_scaling_SI <-  11.4 * (var_m_pop$V_SI *1000) #scaling factor fracti
 var_m_pop$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
 var_m_pop$Km_SI_AO    <- 90  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
 var_m_pop$Km_SI_OH    <- 290 #Km for enzymatic oxidation of cinnamly alcOHol into cinnamaldehyde in the Small Intestine in μM
-var_m_pop$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM RAT value
-var_m_pop$Km_SI_GST_G <- 100 #Km toward cinnamaldehyde for enzymatic conjugation of cinnamaldehyde in the small intestine μM
 
 #-Vmax values-#
 var_m_pop$Vsmax_SI_CA    <- 21 * 60/1000 * var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
 var_m_pop$Vsmax_SI_AO    <- 30  * 60/1000* var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
 var_m_pop$Vsmax_SI_OH    <- 5.0 * 60/1000* var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
-var_m_pop$Vsmax_SI_GST   <- 63  * 60/1000* var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h RAT value
 
 #---Dose male---#
 var_m_pop$Oral_Dose       <- (Oral_Dose_in_mg_bw * var_m_pop$BW)/ MW  * 1e+3     #The administered dose in umol 
@@ -245,16 +214,16 @@ var_f_pop$P_V           <-rnorm(N,mean=390,sd=3) #Pulmonary ventilation in L/h
 #----GSH parameters female----#
 #--GSH synthesis in umol/kg tissue/h--#
 
-var_f_pop$G_SYN_L     <- 1122 * var_f_pop$V_L #Liver 
-var_f_pop$G_SYN_SI    <- 27   * var_f_pop$V_SI #Small intestine
+var_f_pop$G_SYN_L     <- 869 * var_f_pop$V_L #Liver 
+var_f_pop$G_SYN_SI    <- 78   * var_f_pop$V_SI #Small intestine
 
 #-Apparent first order rate constant GSH turn over(RAT?) per h-#
 var_f_pop$k_L_GLOS    <- 0.142 #Liver
 var_f_pop$k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-var_f_pop$init_GSH_L  <- 5639 * var_f_pop$V_L  #initial GSH concentration in the liver in umol/kg
-var_f_pop$init_GSH_SI <- 1250 * var_f_pop$V_SI  #initial GSH concentration in the small intestine in umol/kg
+var_f_pop$init_GSH_L  <- 6120 * var_f_pop$V_L  #initial GSH concentration in the liver in umol/kg
+var_f_pop$init_GSH_SI <- 1780 * var_f_pop$V_SI  #initial GSH concentration in the small intestine in umol/kg
 
 var_f_pop$k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 
@@ -276,13 +245,13 @@ var_f_pop$k_L_OH  <- 4.2e-02 * 60/1000 * var_f_pop$S9_scaling_L  #Scaled first r
 #--Michaelis menten constants--#
 var_f_pop$Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
 var_f_pop$Km_L_AO     <-  330  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the liver in μM
-var_f_pop$Km_L_GST    <-  100 #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM  
-var_f_pop$Km_L_GST_G  <-  1.7*10^3 #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the liver (μM)
+var_f_pop$Km_L_GST    <-  1.7*10^3 #Km for enzymatic conjugation of cinnamaldehyde with GST in the liver in μM  
+var_f_pop$Km_L_GST_G  <-  100 #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the liver (μM)
 
 #--Vmax values--#
 var_f_pop$Vsmax_L_CA    <-  9.7 * 60/1000 * var_f_pop$S9_scaling_L #Scaled Vmax for enzymatic oxidation of cinnamaldehyde in the liver in μmol/h 
 var_f_pop$Vsmax_L_AO    <-  73  * 60/1000 *var_f_pop$S9_scaling_L #Scaled Vmax for enzymatic reduction of cinnamaldehyde in the liver in μmol/h
-var_f_pop$Vsmax_L_GST   <-  37 * 60/1000 * var_f_pop$S9_scaling_L #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
+var_f_pop$Vsmax_L_GST   <-  32 * 60/1000 * var_f_pop$S9_scaling_L #Scaled Vmax for enzymatic conjugation of cinnamaldehyde with GSH in the liver in μmol/h
 
 #----Small intestines----#
 var_f_pop$S9_scaling_SI <-  11.4 * (var_f_pop$V_SI *1000) #scaling factor fraction S9 protein per g tissue
@@ -291,14 +260,11 @@ var_f_pop$S9_scaling_SI <-  11.4 * (var_f_pop$V_SI *1000) #scaling factor fracti
 var_f_pop$Km_SI_CA    <- 70  #Km for enzymatic oxidation of cinnamaldehyde into cinnamic acid in the Small Intestine in μM
 var_f_pop$Km_SI_AO    <- 90  #Km for enzymatic reduction of cinnamaldehyde into cinnamyl alcOHol in the Small Intestine in μM
 var_f_pop$Km_SI_OH    <- 290 #Km for enzymatic oxidation of cinnamly alcOHol into cinnamaldehyde in the Small Intestine in μM
-var_f_pop$Km_SI_GST   <- 600 #Km for enzymatic conjugation of cinnamaldehye with GST in the Small Intestine in μM (RAT value)
-var_f_pop$Km_SI_GST_G <- 100  #Km toward GSH for enzymatic conjugation of cinnamaldehyde in the small intestine (μM)
 
 #-Vmax values-#
 var_f_pop$Vsmax_SI_CA    <- 21 * 60/1000 * var_f_pop$S9_scaling_SI#Scaled Vmax for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the Small Intestine in μmol/h 
 var_f_pop$Vsmax_SI_AO    <- 30 * 60/1000 * var_f_pop$S9_scaling_SI #Scaled Vmax for enzymatic reduction of cinnamaldehyde into Cinnamyl alcOHol in  the Small Intestine in μmol/h 
 var_f_pop$Vsmax_SI_OH    <- 5.0 * 60/1000* var_f_pop$S9_scaling_SI #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
-var_f_pop$Vsmax_SI_GST   <- 63 * 60/1000 * var_f_pop$S9_scaling_SI#Scaled Vmax for enzymatic Conjugation of cinnamaldehyde with GSH in the in the small intestine in μmol/h (RAT value)
 
 #---Dose female---#
 var_f_pop$Oral_Dose       <-(Oral_Dose_in_mg_bw * var_f_pop$BW)/ MW  * 1e+3     #The administered dose in umol 
@@ -368,12 +334,9 @@ Vsmax_L_GST<-phys$Vsmax_L_GST
 Km_SI_CA<-phys$Km_SI_CA
 Km_SI_AO<-phys$Km_SI_AO
 Km_SI_OH<-phys$Km_SI_OH
-Km_SI_GST<-phys$Km_SI_GST
-Km_SI_GST_G<-phys$Km_SI_GST_G
 Vsmax_SI_CA<-phys$Vsmax_SI_CA
 Vsmax_SI_AO<-phys$Vsmax_SI_AO
 Vsmax_SI_OH<-phys$Vsmax_SI_OH
-Vsmax_SI_GST<-phys$Vsmax_SI_GST
 Oral_Dose<- phys$Oral_Dose 
 Inhalation_Dose<-phys$Inhalation_Dose
 Volume_exposure_chamber<-phys$Volume_exposure_chamber
@@ -433,12 +396,9 @@ parameters=cbind(P_F,
                  Km_SI_CA,
                  Km_SI_AO,
                  Km_SI_OH,
-                 Km_SI_GST,
-                 Km_SI_GST_G,
                  Vsmax_SI_CA,
                  Vsmax_SI_AO,
                  Vsmax_SI_OH,
-                 Vsmax_SI_GST,
                  Oral_Dose,
                  Inhalation_Dose,
                  Volume_exposure_chamber)
@@ -465,7 +425,6 @@ inits <- c("A_GI"         =0,
            "AM_Lc_GSH"    =0, 
            "AM_SI_CA"     =0,
            "AM_SI_AO"     =0,
-           "AM_SI_AG_GST" =0,
            "AM_SI_AG_CHEM"=0,
            "AM_SI_AP"     =0,
            "A_OH_M_SI_C_A"=0,

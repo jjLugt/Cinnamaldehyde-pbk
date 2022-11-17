@@ -89,9 +89,8 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #GSH#
   C_SIc_GSH      <- AM_SIc_GSH / V_SI;                                                       #Concentration of GSH in the Small Intestine in umol/l
-  RM_SI_AG_GST   <- Vsmax_SI_GST * C_V_SI * C_SIc_GSH / (Km_SI_GST_G * C_V_SI + Km_SI_GST * C_SIc_GSH + C_SIc_GSH * C_V_SI);  #-amount of cinnamaldehyde metabolized in the small intestine to GSH conjugate by GST in umol
-  RM_SI_AG_CHEM  <- k_GSH * C_V_SI * C_SIc_GSH;                                       #Rate of Cinnamaldehyde binding in the small intestine to GSH in μmol/h 
-  RM_SIc_GSH     <- G_SYN_SI - (RM_SI_AG_GST + RM_SI_AG_CHEM + k_SI_GLOS * AM_SIc_GSH);         #Rate of  GSH concentration in the Smal intesinte cytosol μmol/h 
+   RM_SI_AG_CHEM  <- k_GSH * C_V_SI * C_SIc_GSH;                                       #Rate of Cinnamaldehyde binding in the small intestine to GSH in μmol/h 
+  RM_SIc_GSH     <- G_SYN_SI - (RM_SI_AG_CHEM + k_SI_GLOS * AM_SIc_GSH);         #Rate of  GSH concentration in the Smal intesinte cytosol μmol/h 
   
   #Cinnamyl alcohol#
   C_OH_SI        <- A_OH_SI   / V_SI;                                      #Concentration of Cinnamyl alcOHol in the Small intestine in umol/l
@@ -102,7 +101,7 @@ PBK_Cinnamaldehyde <- RxODE({
   R_OH_SI        <- Q_SI * (C_OH_A - C_OH_V_SI) + RM_SI_AO - R_OH_M_SI_C_A;  #Rate of Cinnamyl alcohol concentration change in the small intestine in μmol/h 
   
   #Over all output small intestine#
-  R_SI           <- Q_SI * (C_A - C_V_SI)+ R_OH_M_SI_C_A -Rin - RM_SI_CA - RM_SI_AP - RM_SI_AG_GST - RM_SI_AG_CHEM - RM_SI_AO  ;        #Rate of change in cinnamaldehyde concentration in the SI in μmol/h 
+  R_SI           <- Q_SI * (C_A - C_V_SI)+ R_OH_M_SI_C_A -Rin - RM_SI_CA - RM_SI_AP  - RM_SI_AG_CHEM - RM_SI_AO  ;        #Rate of change in cinnamaldehyde concentration in the SI in μmol/h 
   
   #---------------Liver-----------------------------------#
   #-Cinnamaldehyde-#
@@ -113,7 +112,7 @@ PBK_Cinnamaldehyde <- RxODE({
   
   #GSH#
   C_Lc_GSH       <- AM_Lc_GSH / V_L;                                              #Concentration of GSH in the liver cytosol in umol/l  
-  RM_L_AG_GST    <- Vsmax_L_GST * C_V_L * C_Lc_GSH /(Km_L_GST_G * C_V_L + Km_L_GST * C_Lc_GSH + C_Lc_GSH * C_V_L); #Amount of cinnamaldehyde metabolized with GSH in the liver to conjugate GST   #KM_L_GST_G is stil unknown
+  RM_L_AG_GST    <- Vsmax_L_GST * C_V_L * C_Lc_GSH /(Km_L_GST_G * C_V_L + Km_L_GST * C_Lc_GSH + C_Lc_GSH * C_V_L); #Amount of cinnamaldehyde metabolized with GSH in the liver to conjugate GST 
   RM_L_AG_CHEM   <- k_GSH * C_V_L * C_Lc_GSH;                                     #Amount of Cinnamaldehyde chemically bound in liver to GSH in umol
   RM_Lc_GSH      <- G_SYN_L - (RM_L_AG_GST + RM_L_AG_CHEM + k_L_GLOS * AM_Lc_GSH);#Rate of change in GSH concentration in the liver cytosol μmol/h 
  
@@ -185,7 +184,6 @@ PBK_Cinnamaldehyde <- RxODE({
   d/dt(AM_SI_AP)      <- RM_SI_AP;      #Amount of Cinnamaldehyde protein adducts in the small intestine in μmol
   
   #-GSH in the small intestine cytosol-#
-  d/dt(AM_SI_AG_GST)  <- RM_SI_AG_GST;  #Amount of Cinnamaldehyde metabolized in the small intestine to GSH conjugate by GST in μmol
   d/dt(AM_SI_AG_CHEM) <- RM_SI_AG_CHEM; #Amount of Cinnamaldehyde bound in the small intestine to GSH in μmol
   d/dt(AM_SIc_GSH)    <- RM_SIc_GSH;    #Amount of GSH in the small intestine cytosol
   

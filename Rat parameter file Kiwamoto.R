@@ -19,9 +19,9 @@ nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
 time.end                   <-12        #time end of simulation
 time.frame                 <-0.1      #time steps of simulation
-Oral_dose_in_mg_bw         <-50     #Dose in mg/kg-bw
+Oral_dose_in_mg_bw         <-50      #Dose in mg/kg-bw
 Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
-iv_dose_in_mg_bw           <-0       #IV administered dose in mg/kg/bw
+iv_dose_in_mg_bw           <-10       #IV administerd dose in mg/kg/bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <- 0.25    #Body weight in Kg
 Oral_Dose                  <-(Oral_dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
@@ -33,22 +33,21 @@ Volume_exposure_chamber    <-10       #volume exposure chamber in L
 #--Physio-chemical parameters--#
 #-Cinnamaldehyde-#
 
-P_F      <-  17.42#Fat/Blood partition coefficient
-P_L      <-  1.18 #Fat/Blood partition coefficient 
-P_SI     <-  1.18 #Small intestine/Blood partition coefficients
-P_RP     <-  1.18 #Richly perfused tissues/Blood partition coefficients
-P_SP     <-  0.39 #Slowly perfused tissues/Blood partition coefficients
-P_B      <-  0.29 #Blood air partition coefficients
-P_Pu     <-  1.18 #Lung/Blood partition coefficients
+P_F      <-  14.2 #Fat/Blood partition coefficient
+P_L      <-  1.21 #Fat/Blood partition coefficient
+P_SI     <-  1.21 #Small intestine/Blood partition coefficients
+P_RP     <-  1.21 #Richly perfused tissues/Blood partition coefficients
+P_SP     <-  0.57 #Slowly perfused tissues/Blood partition coefficients
+P_B      <- 1.25E5#Blood air partition coefficients
+P_Pu     <-  1.21 #Lung/Blood partition coefficients
 
 #-Cinnamyl Alcohol-#
-P_OH_F    <- 17.65 #Fat/Blood partition coefficient
-P_OH_L    <-  1.18 #Fat/Blood partition coefficient
-P_OH_SI   <-  1.18 #Small intestine/Blood partition coefficients
-P_OH_RP   <-  1.18 #Richly perfused tissues/Blood partition coefficients
-P_OH_SP   <-  0.49 #Slowly perfused tissues/Blood partition coefficients
-P_OH_Pu   <-  1.18 #Lung/Blood partition coefficients
-
+P_OH_F    <-  14.6 #Fat/Blood partition coefficient
+P_OH_L    <-  1.22 #Fat/Blood partition coefficient
+P_OH_SI   <-  1.22 #Small intestine/Blood partition coefficients
+P_OH_RP   <-  1.22 #Richly perfused tissues/Blood partition coefficients
+P_OH_SP   <-  0.57 #Slowly perfused tissues/Blood partition coefficients
+P_OH_Pu   <-  1.22 #Lung/Blood partition coefficients
 
 #--Physiological Parameters--#
 
@@ -99,14 +98,14 @@ C_PRO_L     <- 5319  * V_L  #Liver
 C_PRO_SI    <- 245   * V_SI #Small intestine
 
 #--Chemical parameters--#
-Ka <- 0.2 #Absorption rate constant for uptake in the Small intestine in per H
+Ka <- 5 #Absorption rate constant for uptake in the Small intestine in per H
 
 #----Liver----#
 S9_scaling_L <- 143 * (V_L * 1000) #scaling factor for S9 fraction per g tissue
 
 
 #First order rate constants
-k_L_CA   <-  5*10^(-3)* 60 / 1000 * S9_scaling_L   #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the liver (L/h)
+k_L_CA   <-  10*10^(-3)* 60 / 1000 * S9_scaling_L   #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the liver (L/h)
 k_L_GST  <-  6.2*10^(-2)* 60 / 1000 * S9_scaling_L  #Scaled first-order rate constant for enzymatic conjugation of cinnamaldehyde with GSH in the liver (L/h)
 
 #--Michaelis menten constants--#
@@ -240,3 +239,4 @@ ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(dose= init_GSH_SI, cmt="AM_SIc_GSH", nbr.doses=1)%>%
   et(dose = Inhalation_Dose, dur=0.001, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
   et(seq(from = time.0, to = time.end, by = time.frame)) 
+

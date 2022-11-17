@@ -86,8 +86,7 @@ AUC_single_human[,8]<- solve.pbk[,3]+ solve.pbk[,4]
 
 colnames(AUC_single_human)<-c("time","C_Pu","C_F","C_RP","C_SP","C_SI","C_L","C_B")
 
-#passing the concentration data frame to PKNCA
-single_human_conc <- PKNCAconc(AUC_single_human, C_B~time)
+
 
 #Generating a Dose data frame which includes time and dose
 single_human_dose <-as.data.frame(solve.pbk[,1])
@@ -97,6 +96,8 @@ single_human_dose[2] <-solve.pbk[,7]
 single_human_dose[1,2] <-ex[2,6]
 colnames(single_human_dose)<-c("time","dose")
 
+#passing the concentration data frame to PKNCA
+single_human_conc <- PKNCAconc(AUC_single_human, C_L~time)
 
 #passing the dose data frame to PKNCA
 dose_obj <- PKNCAdose(single_human_dose, dose~time)
@@ -123,7 +124,7 @@ summary(results_obj_manual)
 results_obj_manual$result
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_B_AUC")
+write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_L_AUC")
 
 
 #250mg dose Rat AUC values 
@@ -374,6 +375,34 @@ results_250mg_oral_single_human_C_RP_AUC <- read.csv("D:/Joris/Toxicology and En
 results_250mg_oral_single_human_C_F_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_F_AUC")
 results_250mg_oral_single_human_C_Pu_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_Pu_AUC")
 
+Plot_AUC_Human_250mg<- as.data.frame(c())
+Plot_AUC_Human_250mg[1,1]<-as.data.frame(results_250mg_oral_single_human_C_B_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[1,2]<-as.data.frame(results_250mg_oral_single_human_C_B_AUC$PPORRES[2])
+
+Plot_AUC_Human_250mg[2,1]<-as.data.frame(results_250mg_oral_single_human_C_L_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[2,2]<-as.data.frame(results_250mg_oral_single_human_C_L_AUC$PPORRES[2])
+
+Plot_AUC_Human_250mg[3,1]<-as.data.frame(results_250mg_oral_single_human_C_SI_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[3,2]<-as.data.frame(results_250mg_oral_single_human_C_SI_AUC$PPORRES[2])
+
+Plot_AUC_Human_250mg[4,1]<-as.data.frame(results_250mg_oral_single_human_C_SP_AUC$PPORRES[2])
+Plot_AUC_Human_250mg[4,2]<-as.data.frame(results_250mg_oral_single_human_C_SP_AUC$PPORRES[2])
+
+Plot_AUC_Human_250mg[5,1]<-as.data.frame(results_250mg_oral_single_human_C_RP_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[5,2]<-as.data.frame(results_250mg_oral_single_human_C_RP_AUC$PPORRES[2])
+
+Plot_AUC_Human_250mg[6,1]<-as.data.frame(results_250mg_oral_single_human_C_F_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[6,2]<-as.data.frame(results_250mg_oral_single_human_C_F_AUC$PPORRES[2])
+
+Plot_AUC_Human_250mg[7,1]<-as.data.frame(results_250mg_oral_single_human_C_Pu_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[7,2]<-as.data.frame(results_250mg_oral_single_human_C_Pu_AUC$PPORRES[2])
+
+colnames(Plot_AUC_Human_250mg)<- c("AUC","Cmax") 
+rownames(Plot_AUC_Human_250mg)<- c("C_B","C_L","C_SI","C_SP","C_RP","C_F","C_Pu")
+
+plot(Plot_AUC_Human_250mg$AUC)
+plot(Plot_AUC_Human_250mg$Cmax)
+
 #Plotting rat and human results of the auc calculations
 results_250mg_oral_single_rat_C_B_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_rat_C_B_AUC")
 results_250mg_oral_single_rat_C_L_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_rat_C_L_AUC")
@@ -412,19 +441,19 @@ conc_C <- PKNCAconc(sub_set, C_B~time|id)
 
 #Liver compartment concentration
 sub_set <- solve.pbk[1:482000,c(1,2,50)]
-onc_C <- PKNCAconc(sub_set, C_L~time|id)
+conc_C <- PKNCAconc(sub_set, C_L~time|id)
 #Slowly perfused compartment
 sub_set <- solve.pbk[1:482000,c(1,2,30)]
-onc_C <- PKNCAconc(sub_set, C_SP~time|id)
+conc_C <- PKNCAconc(sub_set, C_SP~time|id)
 #richly perfused compartment
 sub_set <- solve.pbk[1:482000,c(1,2,24)]
-onc_C <- PKNCAconc(sub_set, C_RP~time|id)
+conc_C <- PKNCAconc(sub_set, C_RP~time|id)
 #Fat compartment
 sub_set <- solve.pbk[1:482000,c(1,2,18)]
-onc_C <- PKNCAconc(sub_set, C_F~time|id)
+conc_C <- PKNCAconc(sub_set, C_F~time|id)
 #sI compartment
 sub_set <- solve.pbk[1:482000,c(1,2,36)]
-onc_C <- PKNCAconc(sub_set, C_SI~time|id)
+conc_C <- PKNCAconc(sub_set, C_SI~time|id)
 
 
 
@@ -465,7 +494,7 @@ summary(results_obj_manual)
 
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250_oral_C_B.csv")
+write.csv(results_obj_manual$result, "results_250_oral_C_SI.csv")
 
 
 #C_Pu data extraction
@@ -895,7 +924,7 @@ p1 <- plot_ly(Combined_data_file_for_graph_500mg, x=~time, y=Combined_data_file_
               hovertext= ~sample)%>%
   layout(title= 'Blood concentration comparison dose = 500mg/kg-bw',
          xaxis= list(title= 'Time (hours)'),
-         yaxis= list(title= 'Cinnamaldehyde concentration in μmol/l', type="log"),
+         yaxis= list(title= 'Cinnamaldehyde concentration in μmol/l'),
          legend  =list(title= list(text='Type of Data')))
 p1
 
@@ -1245,12 +1274,13 @@ g + geom_point()+ scale_y_continuous(trans='log10')+
 
 KIWA_data <- Combined_data_file_for_graph[9:27,]
 SIM_data_pred <-Combined_data_file_for_graph[c(29,30,31,32,33,34,35,36,37,38,40,43,46,49,52,55,58,61,63),]
-
+SIM_data_kiwa <-Combined_data_file_for_graph[c(70,71,72,73,74,75,76,77,78,80,83,86,89,92,95,98,101,103,104),]
 
 SIM_data_pred[,4]<- as.data.frame(KIWA_data[,2])
+SIM_data_pred[,5]<- as.data.frame(SIM_data_kiwa[,2])
+colnames(SIM_data_pred)<- c("Time","sim","ID","KIWA","sim kiwa")
 
 
-colnames(SIM_data_pred)<- c("Time","sim","ID","KIWA")
 
 p <-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$KIWA)) +
   geom_point(size=3) +
@@ -1266,20 +1296,21 @@ ggsave(plot=p,"Pred vs pred 20mg iv.png",
        width= 11.69, height= 8.3, dpi= 250)
 
 
+
 ZAO_data_2014 <- Combined_data_file_for_graph[1:8,]
 SIM_data_kiwa    <-Combined_data_file_for_graph[c(29,30,31,33,38,43,48,58),]
 
-SIM_data_kiwa[,4]<- as.data.frame(ZAO_data_2014[,2])
+SIM_data_kiwa[,3]<- as.data.frame(ZAO_data_2014[,2])
 
 
-colnames(SIM_data_kiwa)<- c("Time","sim","ID","ZAO_2014")
+colnames(SIM_data_kiwa)<- c("Time","sim","ZAO")
 
-p <-ggplot(SIM_data_kiwa, aes(x=SIM_data_kiwa$sim, y=SIM_data_kiwa$ZAO_2014)) +
+p <-ggplot(SIM_data_kiwa, aes(x=SIM_data_kiwa$sim, y=SIM_data_kiwa$ZAO)) +
   geom_point(size=3) +
   geom_abline(intercept=0, slope=1) +
   labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 20mg IV dose ZAO data')+
   ylim(0,10)+
-  xlim(x,10)+
+  xlim(0,10)+
   theme_classic()+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
@@ -1341,6 +1372,29 @@ g + geom_point()+
        x="Time in Hours", 
        title="Cinnamaldehyde concentration in blood", 
        caption="PBK model")
+
+Shetty_data <- Combined_data_file_for_graph[1:8,]
+SIM_data<- Combined_data_file_for_graph[c(11,14,19,24,29,40,89,129),]
+
+SIM_data[,3]<- as.data.frame(Shetty_data[,2])
+
+
+colnames(SIM_data)<- c("Time","sim","Shetty")
+
+p <-ggplot(SIM_data, aes(x=SIM_data$sim, y=SIM_data$Shetty)) +
+  geom_point(size=3) +
+  geom_abline(intercept=0, slope=1) +
+  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 10mg IV dose Shetty data')+
+  xlim(0,17)+
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+ggsave(plot=p,"Pred vs actual 10mg iv.png",
+       width= 11.69, height= 8.3, dpi= 250)
+
+
 
 
 
@@ -1426,10 +1480,30 @@ p1 <- plot_ly(Combined_data_file_for_graph, x=~Time, y=Combined_data_file_for_gr
               hovertext= ~sample)%>%
   layout(title= 'Blood concentration comparison dose = 12.5mg/kg-bw IV',
          xaxis= list(title= 'Time (hours)'),
-         yaxis= list(title= 'Cinnamaldehyde concentration in umol/l', type="log"),
+         yaxis= list(title= 'Cinnamaldehyde concentration in umol/l'),
          legend  =list(title= list(text='Type of Data')))
 p1
 
+
+Ji_data <- Combined_data_file_for_graph[1:11,]
+SIM_data<- Combined_data_file_for_graph[c(13,15,17,22,27,32,42,52,92,132,252),]
+
+SIM_data[,3]<- as.data.frame(Ji_data[,2])
+
+
+colnames(SIM_data)<- c("Time","sim","Ji")
+
+p <-ggplot(SIM_data, aes(x=SIM_data$sim, y=SIM_data$Ji)) +
+  geom_point(size=3) +
+  geom_abline(intercept=0, slope=1) +
+  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 15mg oral dose Ji data')+
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+ggsave(plot=p,"Pred vs actual 15mg oral.png",
+       width= 11.69, height= 8.3, dpi= 250)
 
 g <- ggplot(Combined_data_file_for_graph,aes(Time,umol.l,color=ID))
 
