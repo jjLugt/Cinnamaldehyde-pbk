@@ -565,11 +565,11 @@ conc_C <- PKNCAconc(sub_set, C_Pu~time|id)
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,61])
+dose_extraction <- as.data.frame(parameters[,58])
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 61]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
@@ -603,17 +603,17 @@ write.csv(results_obj_manual$result, "results_250_oral_C_Pu.csv")
 
 #---------------------Liver compartment-------------------#
 #Liver compartment concentration
-sub_set <- solve.pbk[1:482000,c(1,2,50)]
+sub_set <- solve.pbk[1:482000,c(1,2,49)]
 conc_C <- PKNCAconc(sub_set, C_L~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,61])
+dose_extraction <- as.data.frame(parameters[,58])
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 61]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
@@ -659,11 +659,11 @@ conc_C <- PKNCAconc(sub_set, C_B~time|id)
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,61])
+dose_extraction <- as.data.frame(parameters[,58])
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 61]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
@@ -700,11 +700,11 @@ conc_C <- PKNCAconc(sub_set, C_SP~time|id)
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,61])
+dose_extraction <- as.data.frame(parameters[,58])
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 61]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
@@ -741,11 +741,11 @@ conc_C <- PKNCAconc(sub_set, C_RP~time|id)
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,61])
+dose_extraction <- as.data.frame(parameters[,58])
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 61]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
@@ -782,11 +782,11 @@ conc_C <- PKNCAconc(sub_set, C_F~time|id)
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,61])
+dose_extraction <- as.data.frame(parameters[,58])
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 61]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
@@ -824,11 +824,11 @@ conc_C <- PKNCAconc(sub_set, C_SI~time|id)
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,61])
+dose_extraction <- as.data.frame(parameters[,58])
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 61]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
