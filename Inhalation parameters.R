@@ -14,12 +14,13 @@ library(PKNCA)
 set.seed(15204)                       #to ensure a reproducible output if random input is used
 amount.units               <-"umol"
 time.units                 <-"h"
-nbr.doses                  <-1        #number of doses
+nbr.doses                  <-5        #number of doses
+interval                   <-0.2      #interval between dosing in H
 time.0                     <-0        #time start dosing
 time.end                   <-24        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
-Oral_Dose_in_mg_bw         <-250    #Dose in mg/kg-bw
-Inhalation_Dose_in_mg_bw   <-0      #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0    #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250      #The inhaled dose in mg/kg-bw
 iv_dose_in_mg_bw           <-0       #IV administered dose in mg/kg/bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg
@@ -245,8 +246,8 @@ inits <- c("A_GI"         =0,
 
 #inhalation exposure  exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
-  et(dose = Oral_Dose, dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(dose = Inhalation_Dose, dur=0.01, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
+  et(dose = Oral_Dose, dur=0.01, cmt="A_GI", nbr.doses=1)%>%
+  et(dose = Inhalation_Dose, dur=0.001, cmt="A_inhalation_Dose", nbr.doses=nbr.doses,ii=2)%>%
   et(dose= init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=1)%>%
   et(dose= init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)%>%
   et(dose=iv_dose, dur=0.005,cmt="A_V",nbr.doses=1)%>%
