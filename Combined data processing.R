@@ -87,6 +87,7 @@ plot(mass_at_t[,1])
 data_urinary_metabolites <- solve.pbk[,c(1,78,87)]
 
 total_dose <- Oral_Dose
+total_dose<- Inhalation_Dose
 
 total_urinary_metabolites_24h <- data_urinary_metabolites[241,2] + data_urinary_metabolites[241,3]
 
