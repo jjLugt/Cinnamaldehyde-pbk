@@ -15,17 +15,7 @@ single_human_dose <-as.data.frame(solve.pbk[,1])
 #Grabbing an easy empty colum of the correct length
 single_human_dose[2] <-solve.pbk[,7]
 #Adding the dose to the first time point in the dose data frame 
-
-#Oral Dose
 single_human_dose[1,2] <-ex[2,6]
-colnames(single_human_dose)<-c("time","dose")
-
-#inhalation dose 
-single_human_dose[1,2] <-ex[3,6]
-colnames(single_human_dose)<-c("time","dose")
-
-#IV dose
-single_human_dose[1,2] <-ex[6,6]
 colnames(single_human_dose)<-c("time","dose")
 
 
@@ -60,7 +50,7 @@ summary(results_obj_manual)
 results_obj_manual$result
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_L_AUC")
+write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_L_AUC")
 
 
 #-------------Lung tissue-----------#
@@ -94,7 +84,7 @@ summary(results_obj_manual)
 results_obj_manual$result
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_Pu_AUC")
+write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_Pu_AUC")
 
 
 #-------------Fat-----------#
@@ -128,7 +118,7 @@ summary(results_obj_manual)
 results_obj_manual$result
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_F_AUC")
+write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_F_AUC")
 
 
 #-------------Richly perfused-----------#
@@ -162,7 +152,7 @@ summary(results_obj_manual)
 results_obj_manual$result
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_RP_AUC")
+write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_RP_AUC")
 
 
 #-------------Slowly perfused-----------#
@@ -196,7 +186,7 @@ summary(results_obj_manual)
 results_obj_manual$result
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_SP_AUC")
+write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_SP_AUC")
 
 
 #-------------Blood-----------#
@@ -230,7 +220,7 @@ summary(results_obj_manual)
 results_obj_manual$result
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_B_AUC")
+write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_B_AUC")
 
 
 
@@ -265,11 +255,11 @@ summary(results_obj_manual)
 results_obj_manual$result
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_SI_AUC")
+write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_SI_AUC")
 
 
 
-#------------------250mg dose Rat AUC values------------------- 
+#------------------250mg dose Rat AUC values-------------------# 
 #AUC calculations
 #single Human model
 #Making a dataframe for the calculations
@@ -508,36 +498,36 @@ results_obj_manual$result
 write.csv(results_obj_manual$result, "results_250mg_oral_single_rat_C_F_AUC")
 
 
-#Plotting rat and human results of the auc calculations------
-results_250mg_inhalation_single_human_C_B_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_inhalation_single_human_C_B_AUC")
-results_250mg_inhalation_single_human_C_L_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_inhalation_single_human_C_L_AUC")
-results_250mg_inhalation_single_human_C_SI_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_inhalation_single_human_C_SI_AUC")
-results_250mg_inhalation_single_human_C_SP_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_inhalation_single_human_C_SP_AUC")
-results_250mg_inhalation_single_human_C_RP_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_inhalation_single_human_C_RP_AUC")
-results_250mg_inhalation_single_human_C_F_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_inhalation_single_human_C_F_AUC")
-results_250mg_inhalation_single_human_C_Pu_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_inhalation_single_human_C_Pu_AUC")
+#Plotting rat and human results of the auc calculations
+results_250mg_oral_single_human_C_B_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_B_AUC")
+results_250mg_oral_single_human_C_L_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_L_AUC")
+results_250mg_oral_single_human_C_SI_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_SI_AUC")
+results_250mg_oral_single_human_C_SP_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_SP_AUC")
+results_250mg_oral_single_human_C_RP_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_RP_AUC")
+results_250mg_oral_single_human_C_F_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_F_AUC")
+results_250mg_oral_single_human_C_Pu_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_Pu_AUC")
 
 Plot_AUC_Human_250mg<- as.data.frame(c())
-Plot_AUC_Human_250mg[1,1]<-as.data.frame(results_250mg_inhalation_single_human_C_B_AUC$PPORRES[1])
-Plot_AUC_Human_250mg[1,2]<-as.data.frame(results_250mg_inhalation_single_human_C_B_AUC$PPORRES[2])
+Plot_AUC_Human_250mg[1,1]<-as.data.frame(results_250mg_oral_single_human_C_B_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[1,2]<-as.data.frame(results_250mg_oral_single_human_C_B_AUC$PPORRES[2])
 
-Plot_AUC_Human_250mg[2,1]<-as.data.frame(results_250mg_inhalation_single_human_C_L_AUC$PPORRES[1])
-Plot_AUC_Human_250mg[2,2]<-as.data.frame(results_250mg_inhalation_single_human_C_L_AUC$PPORRES[2])
+Plot_AUC_Human_250mg[2,1]<-as.data.frame(results_250mg_oral_single_human_C_L_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[2,2]<-as.data.frame(results_250mg_oral_single_human_C_L_AUC$PPORRES[2])
 
-Plot_AUC_Human_250mg[3,1]<-as.data.frame(results_250mg_inhalation_single_human_C_SI_AUC$PPORRES[1])
-Plot_AUC_Human_250mg[3,2]<-as.data.frame(results_250mg_inhalation_single_human_C_SI_AUC$PPORRES[2])
+Plot_AUC_Human_250mg[3,1]<-as.data.frame(results_250mg_oral_single_human_C_SI_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[3,2]<-as.data.frame(results_250mg_oral_single_human_C_SI_AUC$PPORRES[2])
 
-Plot_AUC_Human_250mg[4,1]<-as.data.frame(results_250mg_inhalation_single_human_C_SP_AUC$PPORRES[2])
-Plot_AUC_Human_250mg[4,2]<-as.data.frame(results_250mg_inhalation_single_human_C_SP_AUC$PPORRES[2])
+Plot_AUC_Human_250mg[4,1]<-as.data.frame(results_250mg_oral_single_human_C_SP_AUC$PPORRES[2])
+Plot_AUC_Human_250mg[4,2]<-as.data.frame(results_250mg_oral_single_human_C_SP_AUC$PPORRES[2])
 
-Plot_AUC_Human_250mg[5,1]<-as.data.frame(results_250mg_inhalation_single_human_C_RP_AUC$PPORRES[1])
-Plot_AUC_Human_250mg[5,2]<-as.data.frame(results_250mg_inhalation_single_human_C_RP_AUC$PPORRES[2])
+Plot_AUC_Human_250mg[5,1]<-as.data.frame(results_250mg_oral_single_human_C_RP_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[5,2]<-as.data.frame(results_250mg_oral_single_human_C_RP_AUC$PPORRES[2])
 
-Plot_AUC_Human_250mg[6,1]<-as.data.frame(results_250mg_inhalation_single_human_C_F_AUC$PPORRES[1])
-Plot_AUC_Human_250mg[6,2]<-as.data.frame(results_250mg_inhalation_single_human_C_F_AUC$PPORRES[2])
+Plot_AUC_Human_250mg[6,1]<-as.data.frame(results_250mg_oral_single_human_C_F_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[6,2]<-as.data.frame(results_250mg_oral_single_human_C_F_AUC$PPORRES[2])
 
-Plot_AUC_Human_250mg[7,1]<-as.data.frame(results_250mg_inhalation_single_human_C_Pu_AUC$PPORRES[1])
-Plot_AUC_Human_250mg[7,2]<-as.data.frame(results_250mg_inhalation_single_human_C_Pu_AUC$PPORRES[2])
+Plot_AUC_Human_250mg[7,1]<-as.data.frame(results_250mg_oral_single_human_C_Pu_AUC$PPORRES[1])
+Plot_AUC_Human_250mg[7,2]<-as.data.frame(results_250mg_oral_single_human_C_Pu_AUC$PPORRES[2])
 
 colnames(Plot_AUC_Human_250mg)<- c("AUC","Cmax") 
 rownames(Plot_AUC_Human_250mg)<- c("C_B","C_L","C_SI","C_SP","C_RP","C_F","C_Pu")
@@ -1048,7 +1038,7 @@ boxplot(AUC_extraction_250_Oral__C_Pu$PPORRES,Cmax_extraction_C_Pu$PPORRES, AUC_
         AUC_extraction_250_Oral__C_RP$PPORRES,Cmax_extraction_C_RP$PPORRES, AUC_extraction_250_Oral__C_SP$PPORRES,Cmax_extraction_C_SP$PPORRES, AUC_extraction_250_Oral__C_SI$PPORRES,Cmax_extraction_C_SI$PPORRES,
         AUC_extraction_250_Oral__C_L$PPORRES,Cmax_extraction_C_L$PPORRES,
         Main= "Area under the curve Concentration of Cinnamaldehyde",
-        ylab= "umol/l",
+        ylab= "umol/l",log="y",
         names= c("Lung AUC","Lung Cmax", "Blood AUC","Blood Cmax", "Fat AUC", "Fat Cmax", "Richly perfused AUC","RP Cmax", "slowly perfused AUC","SP cmax", "SI AUC", "SI Cmax",
                  "Liver AUC","liver Cmax"),
         col="orange",
