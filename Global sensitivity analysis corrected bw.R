@@ -5,10 +5,13 @@ library(RxODE)
 library(tidyverse)
 library(readxl)
 library(readr)
-library(truncnorm)
-library(reshape2)
 library(sensitivity)
 library(PKNCA)
+library(gridExtra)
+
+
+
+
 
 #Simulations
 set.seed(15204)                       #to ensure a reproducible output if random input is used
@@ -424,7 +427,7 @@ SimRes[,8]=tab8[,2]
 
 write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes_inhalation_Human_2.8mg_C_Pu_corrected", row.names = TRUE)
 
-SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes_inhalation_Human_250mg_CV_corrected", row.names=1)
+SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes_inhalation_Human_250mg_C_Pu_corrected", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here would create an error.
@@ -434,8 +437,8 @@ par_var <- length(X1)
 
 #Sobol analysis plot blood Nrow is the number of paramters in the model
 t_A<-(c(0.2,0.5,1,1.5,2,3,4,8))
-FOI          = TI          = TI.borninf           = TI.bornsup          = matrix(NA, nrow = par_var, ncol = length(t_A))  
-rownames(FOI)= rownames(TI)= rownames(TI.borninf) = rownames(TI.bornsup)= colnames
+FOI          = TI          = TI.lower           = TI.upper =   FOI.lower   = FOI.upper   = matrix(NA, nrow = par_var, ncol = length(t_A))  
+rownames(FOI)= rownames(TI)= rownames(TI.lower) = rownames(TI.upper) =  rownames(FOI.lower)=  rownames(FOI.upper)= colnames
 
 t_SA <-0.2
 
@@ -444,285 +447,728 @@ for(i in 1:length(t_A)){
   print(i)
   if (t_A[i] %in% t_SA) {
     sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
-    FOI[,i]       <- sa$S[,1]    #First order indices
-    TI[,i]        <- sa$T[,1]    #Total indices
-    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
-    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI[,i]       <- sa$S[,1]  #First order indices
+    TI[,i]        <- sa$T[,1]  #Total indices
+    TI.lower[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.upper[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI.lower[,i]<- sa$S[,4]   #Lower CL total indices
+    FOI.upper[,i]<-sa$S[,5]    #Lower CL total indices
     
     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
 }
 
 
-FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
-TI.L  = as.matrix(TI[,1:length(t_A)])
+FOI.L <- as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  <- as.matrix(TI[,1:length(t_A)])
 
-FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+FOI.lower_matrix <- as.matrix(FOI.lower[,1:length(t_A)])    
+FOI.upper_matrix <- as.matrix(FOI.upper[,1:length(t_A)])   
+TI.lower_matrix <- as.matrix(TI.lower[,1:length(t_A)])    
+TI.upper_matrix <- as.matrix(TI.upper[,1:length(t_A)])   
+
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)       #transform it to a vector
 TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+FOI.lower_vector<- apply(FOI.lower_matrix, 1, mean, na.rm=TRUE)
+FOI.upper_vector<- apply(FOI.upper_matrix, 1, mean, na.rm=TRUE)
+TI.lower_vector<- apply(TI.lower_matrix, 1, mean, na.rm=TRUE)
+TI.upper_vector<- apply(TI.upper_matrix, 1, mean, na.rm=TRUE)
 
-sorting = order(TI.L.t, decreasing = F)
-TI.L.t  = TI.L.t[sorting]
-FOI.L.t = FOI.L.t[sorting]
+sorting <- order(TI.L.t, decreasing = F)          #sorting form low to high based on total effect
+TI.L.t  <- TI.L.t[sorting]
+FOI.L.t <- FOI.L.t[sorting]
+FOI.lower_vector <-FOI.lower_vector[sorting]
+FOI.upper_vector<-FOI.upper_vector[sorting]
+TI.lower_vector <-TI.lower_vector[sorting]
+TI.upper_vector<-TI.upper_vector[sorting]
 
-FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
-tempC    = t(cbind(FOI.L.t, TI.L.t))
+FOI.L.t <- ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    <- t(cbind(FOI.L.t, TI.L.t,FOI.lower_vector,FOI.upper_vector,TI.lower_vector,TI.upper_vector))
+tempC<- as.data.frame(tempC[,c(49:59)])  #top 10 variables with the highest total effect 
 
-tempC2 <- as.data.frame(tempC[,c(49:59)])
 
-#t_SA = 0.2
-sa.plot_0.2 <-as.data.frame(tempC[,c(49:59)])
-rownames(sa.plot_0.2 <- c("0.2h main","0.2h total"))
 
-par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
-plot_Pu_0.2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
+Global_sa_top_ten<-as.data.frame(melt(tempC[1,]))
+Global_sa_top_ten[,3:4]<-as.data.frame(melt(tempC[2,]))
+Global_sa_top_ten <- Global_sa_top_ten[ ,-c(3) ]
+colnames(Global_sa_top_ten)<-c("variable","main","total")
+Global_sa_top_ten<-melt(Global_sa_top_ten, id="variable")
+colnames(Global_sa_top_ten)<-c("variable","indices","value")
+
+
+#organising the upper and lower Ci for the First order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_main_lower<-as.data.frame(melt(tempC[3,]))
+Global_sa_main_lower <- Global_sa_main_lower[ ,-c(3) ]
+colnames(Global_sa_main_lower)<-c("variable","lower")
+Global_sa_main_lower<-melt(Global_sa_main_lower, id="variable")
+colnames(Global_sa_main_lower)<-c("variable","indices","lower")
+
+Global_sa_main_upper<-as.data.frame(melt(tempC[4,]))
+Global_sa_main_upper <- Global_sa_main_upper[ ,-c(3) ]
+colnames(Global_sa_main_upper)<-c("variable","upper")
+Global_sa_main_upper<-melt(Global_sa_main_upper, id="variable")
+colnames(Global_sa_main_upper)<-c("variable","indices","upper")
+
+Global_sa_main<-cbind(Global_sa_main_upper,Global_sa_main_lower)
+Global_sa_main <- Global_sa_main[ ,-c(1,2,4,5) ]
+
+#organising the upper and lower Ci for the total order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_total_lower<-as.data.frame(melt(tempC[5,]))
+Global_sa_total_lower <- Global_sa_total_lower[ ,-c(3) ]
+colnames(Global_sa_total_lower)<-c("variable","lower")
+Global_sa_total_lower<-melt(Global_sa_total_lower, id="variable")
+colnames(Global_sa_total_lower)<-c("variable","indices","lower")
+
+Global_sa_total_upper<-as.data.frame(melt(tempC[6,]))
+Global_sa_total_upper <- Global_sa_total_upper[ ,-c(3) ]
+colnames(Global_sa_total_upper)<-c("variable","upper")
+Global_sa_total_upper<-melt(Global_sa_total_upper, id="variable")
+colnames(Global_sa_total_upper)<-c("variable","indices","upper")
+
+Global_sa_total<-cbind(Global_sa_total_upper,Global_sa_total_lower)
+Global_sa_total <- Global_sa_total[ ,-c(1,2,4,5) ]
+
+Global_sa_CI<-rbind(Global_sa_main,Global_sa_total)
+
+Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
+
+p_0.2<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
+  geom_bar(position="dodge", stat="identity")+
+  ylim(0,1)+
+  theme_classic()+
+  scale_fill_brewer(palette="Set1")+
+  coord_flip()+
+geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+              position=position_dodge(.9))+
+  ggtitle('12 mins')  
+
+
 
 t_SA <-0.5
 
 
+
 for(i in 1:length(t_A)){
   print(i)
   if (t_A[i] %in% t_SA) {
     sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
-    FOI[,i]       <- sa$S[,1]    #First order indices
-    TI[,i]        <- sa$T[,1]    #Total indices
-    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
-    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI[,i]       <- sa$S[,1]  #First order indices
+    TI[,i]        <- sa$T[,1]  #Total indices
+    TI.lower[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.upper[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI.lower[,i]<- sa$S[,4]   #Lower CL total indices
+    FOI.upper[,i]<-sa$S[,5]    #Lower CL total indices
     
     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
 }
 
 
-FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
-TI.L  = as.matrix(TI[,1:length(t_A)])
+FOI.L <- as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  <- as.matrix(TI[,1:length(t_A)])
 
-FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+FOI.lower_matrix <- as.matrix(FOI.lower[,1:length(t_A)])    
+FOI.upper_matrix <- as.matrix(FOI.upper[,1:length(t_A)])   
+TI.lower_matrix <- as.matrix(TI.lower[,1:length(t_A)])    
+TI.upper_matrix <- as.matrix(TI.upper[,1:length(t_A)])   
+
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)       #transform it to a vector
 TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+FOI.lower_vector<- apply(FOI.lower_matrix, 1, mean, na.rm=TRUE)
+FOI.upper_vector<- apply(FOI.upper_matrix, 1, mean, na.rm=TRUE)
+TI.lower_vector<- apply(TI.lower_matrix, 1, mean, na.rm=TRUE)
+TI.upper_vector<- apply(TI.upper_matrix, 1, mean, na.rm=TRUE)
 
-sorting = order(TI.L.t, decreasing = F)
-TI.L.t  = TI.L.t[sorting]
-FOI.L.t = FOI.L.t[sorting]
+sorting <- order(TI.L.t, decreasing = F)          #sorting form low to high based on total effect
+TI.L.t  <- TI.L.t[sorting]
+FOI.L.t <- FOI.L.t[sorting]
+FOI.lower_vector <-FOI.lower_vector[sorting]
+FOI.upper_vector<-FOI.upper_vector[sorting]
+TI.lower_vector <-TI.lower_vector[sorting]
+TI.upper_vector<-TI.upper_vector[sorting]
 
-FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
-tempC    = t(cbind(FOI.L.t, TI.L.t))
+FOI.L.t <- ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    <- t(cbind(FOI.L.t, TI.L.t,FOI.lower_vector,FOI.upper_vector,TI.lower_vector,TI.upper_vector))
+tempC<- as.data.frame(tempC[,c(49:59)])  #top 10 variables with the highest total effect 
 
-tempC2 <- as.data.frame(tempC[,c(49:59)])
 
-#t_SA = 0.5
-sa.plot_0.5 <-as.data.frame(tempC[,c(49:59)])
-rownames(sa.plot_0.5) <- c("0.5h main","0.5h total")
 
-par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
-#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
-plot_Pu_0.5 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
+Global_sa_top_ten<-as.data.frame(melt(tempC[1,]))
+Global_sa_top_ten[,3:4]<-as.data.frame(melt(tempC[2,]))
+Global_sa_top_ten <- Global_sa_top_ten[ ,-c(3) ]
+colnames(Global_sa_top_ten)<-c("variable","main","total")
+Global_sa_top_ten<-melt(Global_sa_top_ten, id="variable")
+colnames(Global_sa_top_ten)<-c("variable","indices","value")
 
+
+#organising the upper and lower Ci for the First order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_main_lower<-as.data.frame(melt(tempC[3,]))
+Global_sa_main_lower <- Global_sa_main_lower[ ,-c(3) ]
+colnames(Global_sa_main_lower)<-c("variable","lower")
+Global_sa_main_lower<-melt(Global_sa_main_lower, id="variable")
+colnames(Global_sa_main_lower)<-c("variable","indices","lower")
+
+Global_sa_main_upper<-as.data.frame(melt(tempC[4,]))
+Global_sa_main_upper <- Global_sa_main_upper[ ,-c(3) ]
+colnames(Global_sa_main_upper)<-c("variable","upper")
+Global_sa_main_upper<-melt(Global_sa_main_upper, id="variable")
+colnames(Global_sa_main_upper)<-c("variable","indices","upper")
+
+Global_sa_main<-cbind(Global_sa_main_upper,Global_sa_main_lower)
+Global_sa_main <- Global_sa_main[ ,-c(1,2,4,5) ]
+
+#organising the upper and lower Ci for the total order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_total_lower<-as.data.frame(melt(tempC[5,]))
+Global_sa_total_lower <- Global_sa_total_lower[ ,-c(3) ]
+colnames(Global_sa_total_lower)<-c("variable","lower")
+Global_sa_total_lower<-melt(Global_sa_total_lower, id="variable")
+colnames(Global_sa_total_lower)<-c("variable","indices","lower")
+
+Global_sa_total_upper<-as.data.frame(melt(tempC[6,]))
+Global_sa_total_upper <- Global_sa_total_upper[ ,-c(3) ]
+colnames(Global_sa_total_upper)<-c("variable","upper")
+Global_sa_total_upper<-melt(Global_sa_total_upper, id="variable")
+colnames(Global_sa_total_upper)<-c("variable","indices","upper")
+
+Global_sa_total<-cbind(Global_sa_total_upper,Global_sa_total_lower)
+Global_sa_total <- Global_sa_total[ ,-c(1,2,4,5) ]
+
+Global_sa_CI<-rbind(Global_sa_main,Global_sa_total)
+
+Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
+
+p_0.5<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
+  geom_bar(position="dodge", stat="identity")+
+  ylim(0,1)+
+  theme_classic()+
+  scale_fill_brewer(palette="Set1")+
+  coord_flip()+
+  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+                position=position_dodge(.9)) +
+  ggtitle('30 mins') 
 t_SA <-1
 
 
+
 for(i in 1:length(t_A)){
   print(i)
   if (t_A[i] %in% t_SA) {
     sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
-    FOI[,i]       <- sa$S[,1]    #First order indices
-    TI[,i]        <- sa$T[,1]    #Total indices
-    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
-    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI[,i]       <- sa$S[,1]  #First order indices
+    TI[,i]        <- sa$T[,1]  #Total indices
+    TI.lower[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.upper[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI.lower[,i]<- sa$S[,4]   #Lower CL total indices
+    FOI.upper[,i]<-sa$S[,5]    #Lower CL total indices
     
     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
 }
 
 
-FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
-TI.L  = as.matrix(TI[,1:length(t_A)])
+FOI.L <- as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  <- as.matrix(TI[,1:length(t_A)])
 
-FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+FOI.lower_matrix <- as.matrix(FOI.lower[,1:length(t_A)])    
+FOI.upper_matrix <- as.matrix(FOI.upper[,1:length(t_A)])   
+TI.lower_matrix <- as.matrix(TI.lower[,1:length(t_A)])    
+TI.upper_matrix <- as.matrix(TI.upper[,1:length(t_A)])   
+
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)       #transform it to a vector
 TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+FOI.lower_vector<- apply(FOI.lower_matrix, 1, mean, na.rm=TRUE)
+FOI.upper_vector<- apply(FOI.upper_matrix, 1, mean, na.rm=TRUE)
+TI.lower_vector<- apply(TI.lower_matrix, 1, mean, na.rm=TRUE)
+TI.upper_vector<- apply(TI.upper_matrix, 1, mean, na.rm=TRUE)
 
-sorting = order(TI.L.t, decreasing = F)
-TI.L.t  = TI.L.t[sorting]
-FOI.L.t = FOI.L.t[sorting]
+sorting <- order(TI.L.t, decreasing = F)          #sorting form low to high based on total effect
+TI.L.t  <- TI.L.t[sorting]
+FOI.L.t <- FOI.L.t[sorting]
+FOI.lower_vector <-FOI.lower_vector[sorting]
+FOI.upper_vector<-FOI.upper_vector[sorting]
+TI.lower_vector <-TI.lower_vector[sorting]
+TI.upper_vector<-TI.upper_vector[sorting]
 
-FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
-tempC    = t(cbind(FOI.L.t, TI.L.t))
-
-tempC2 <- as.data.frame(tempC[,c(49:59)])
-#t_SA = 1
-sa.plot_1 <-as.data.frame(tempC[,c(49:59)])
-rownames(sa.plot_1) <- c("1h main","1h total")
+FOI.L.t <- ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    <- t(cbind(FOI.L.t, TI.L.t,FOI.lower_vector,FOI.upper_vector,TI.lower_vector,TI.upper_vector))
+tempC<- as.data.frame(tempC[,c(49:59)])  #top 10 variables with the highest total effect 
 
 
-par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
-#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
-plot_Pu_1 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
+
+Global_sa_top_ten<-as.data.frame(melt(tempC[1,]))
+Global_sa_top_ten[,3:4]<-as.data.frame(melt(tempC[2,]))
+Global_sa_top_ten <- Global_sa_top_ten[ ,-c(3) ]
+colnames(Global_sa_top_ten)<-c("variable","main","total")
+Global_sa_top_ten<-melt(Global_sa_top_ten, id="variable")
+colnames(Global_sa_top_ten)<-c("variable","indices","value")
+
+
+#organising the upper and lower Ci for the First order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_main_lower<-as.data.frame(melt(tempC[3,]))
+Global_sa_main_lower <- Global_sa_main_lower[ ,-c(3) ]
+colnames(Global_sa_main_lower)<-c("variable","lower")
+Global_sa_main_lower<-melt(Global_sa_main_lower, id="variable")
+colnames(Global_sa_main_lower)<-c("variable","indices","lower")
+
+Global_sa_main_upper<-as.data.frame(melt(tempC[4,]))
+Global_sa_main_upper <- Global_sa_main_upper[ ,-c(3) ]
+colnames(Global_sa_main_upper)<-c("variable","upper")
+Global_sa_main_upper<-melt(Global_sa_main_upper, id="variable")
+colnames(Global_sa_main_upper)<-c("variable","indices","upper")
+
+Global_sa_main<-cbind(Global_sa_main_upper,Global_sa_main_lower)
+Global_sa_main <- Global_sa_main[ ,-c(1,2,4,5) ]
+
+#organising the upper and lower Ci for the total order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_total_lower<-as.data.frame(melt(tempC[5,]))
+Global_sa_total_lower <- Global_sa_total_lower[ ,-c(3) ]
+colnames(Global_sa_total_lower)<-c("variable","lower")
+Global_sa_total_lower<-melt(Global_sa_total_lower, id="variable")
+colnames(Global_sa_total_lower)<-c("variable","indices","lower")
+
+Global_sa_total_upper<-as.data.frame(melt(tempC[6,]))
+Global_sa_total_upper <- Global_sa_total_upper[ ,-c(3) ]
+colnames(Global_sa_total_upper)<-c("variable","upper")
+Global_sa_total_upper<-melt(Global_sa_total_upper, id="variable")
+colnames(Global_sa_total_upper)<-c("variable","indices","upper")
+
+Global_sa_total<-cbind(Global_sa_total_upper,Global_sa_total_lower)
+Global_sa_total <- Global_sa_total[ ,-c(1,2,4,5) ]
+
+Global_sa_CI<-rbind(Global_sa_main,Global_sa_total)
+
+Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
+
+p_1<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
+  geom_bar(position="dodge", stat="identity")+
+  ylim(0,1)+
+  theme_classic()+
+  scale_fill_brewer(palette="Set1")+
+  coord_flip()+
+  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+                position=position_dodge(.9)) +
+  ggtitle('60 mins') 
 
 t_SA <-1.5
 
 
+
 for(i in 1:length(t_A)){
   print(i)
   if (t_A[i] %in% t_SA) {
     sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
-    FOI[,i]       <- sa$S[,1]    #First order indices
-    TI[,i]        <- sa$T[,1]    #Total indices
-    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
-    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI[,i]       <- sa$S[,1]  #First order indices
+    TI[,i]        <- sa$T[,1]  #Total indices
+    TI.lower[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.upper[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI.lower[,i]<- sa$S[,4]   #Lower CL total indices
+    FOI.upper[,i]<-sa$S[,5]    #Lower CL total indices
     
     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
 }
 
 
-FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
-TI.L  = as.matrix(TI[,1:length(t_A)])
+FOI.L <- as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  <- as.matrix(TI[,1:length(t_A)])
 
-FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+FOI.lower_matrix <- as.matrix(FOI.lower[,1:length(t_A)])    
+FOI.upper_matrix <- as.matrix(FOI.upper[,1:length(t_A)])   
+TI.lower_matrix <- as.matrix(TI.lower[,1:length(t_A)])    
+TI.upper_matrix <- as.matrix(TI.upper[,1:length(t_A)])   
+
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)       #transform it to a vector
 TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+FOI.lower_vector<- apply(FOI.lower_matrix, 1, mean, na.rm=TRUE)
+FOI.upper_vector<- apply(FOI.upper_matrix, 1, mean, na.rm=TRUE)
+TI.lower_vector<- apply(TI.lower_matrix, 1, mean, na.rm=TRUE)
+TI.upper_vector<- apply(TI.upper_matrix, 1, mean, na.rm=TRUE)
 
-sorting = order(TI.L.t, decreasing = F)
-TI.L.t  = TI.L.t[sorting]
-FOI.L.t = FOI.L.t[sorting]
+sorting <- order(TI.L.t, decreasing = F)          #sorting form low to high based on total effect
+TI.L.t  <- TI.L.t[sorting]
+FOI.L.t <- FOI.L.t[sorting]
+FOI.lower_vector <-FOI.lower_vector[sorting]
+FOI.upper_vector<-FOI.upper_vector[sorting]
+TI.lower_vector <-TI.lower_vector[sorting]
+TI.upper_vector<-TI.upper_vector[sorting]
 
-FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
-tempC    = t(cbind(FOI.L.t, TI.L.t))
+FOI.L.t <- ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    <- t(cbind(FOI.L.t, TI.L.t,FOI.lower_vector,FOI.upper_vector,TI.lower_vector,TI.upper_vector))
+tempC<- as.data.frame(tempC[,c(49:59)])  #top 10 variables with the highest total effect 
 
-tempC2 <- as.data.frame(tempC[,c(49:59)])
 
-#t_SA = 1.5
-sa.plot_1.5 <-as.data.frame(tempC[,c(49:59)])
-rownames(sa.plot_1.5) <- c("1.5h main","1.5h total")
 
-par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
-#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
-plot_Pu_1.5 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
+Global_sa_top_ten<-as.data.frame(melt(tempC[1,]))
+Global_sa_top_ten[,3:4]<-as.data.frame(melt(tempC[2,]))
+Global_sa_top_ten <- Global_sa_top_ten[ ,-c(3) ]
+colnames(Global_sa_top_ten)<-c("variable","main","total")
+Global_sa_top_ten<-melt(Global_sa_top_ten, id="variable")
+colnames(Global_sa_top_ten)<-c("variable","indices","value")
+
+
+#organising the upper and lower Ci for the First order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_main_lower<-as.data.frame(melt(tempC[3,]))
+Global_sa_main_lower <- Global_sa_main_lower[ ,-c(3) ]
+colnames(Global_sa_main_lower)<-c("variable","lower")
+Global_sa_main_lower<-melt(Global_sa_main_lower, id="variable")
+colnames(Global_sa_main_lower)<-c("variable","indices","lower")
+
+Global_sa_main_upper<-as.data.frame(melt(tempC[4,]))
+Global_sa_main_upper <- Global_sa_main_upper[ ,-c(3) ]
+colnames(Global_sa_main_upper)<-c("variable","upper")
+Global_sa_main_upper<-melt(Global_sa_main_upper, id="variable")
+colnames(Global_sa_main_upper)<-c("variable","indices","upper")
+
+Global_sa_main<-cbind(Global_sa_main_upper,Global_sa_main_lower)
+Global_sa_main <- Global_sa_main[ ,-c(1,2,4,5) ]
+
+#organising the upper and lower Ci for the total order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_total_lower<-as.data.frame(melt(tempC[5,]))
+Global_sa_total_lower <- Global_sa_total_lower[ ,-c(3) ]
+colnames(Global_sa_total_lower)<-c("variable","lower")
+Global_sa_total_lower<-melt(Global_sa_total_lower, id="variable")
+colnames(Global_sa_total_lower)<-c("variable","indices","lower")
+
+Global_sa_total_upper<-as.data.frame(melt(tempC[6,]))
+Global_sa_total_upper <- Global_sa_total_upper[ ,-c(3) ]
+colnames(Global_sa_total_upper)<-c("variable","upper")
+Global_sa_total_upper<-melt(Global_sa_total_upper, id="variable")
+colnames(Global_sa_total_upper)<-c("variable","indices","upper")
+
+Global_sa_total<-cbind(Global_sa_total_upper,Global_sa_total_lower)
+Global_sa_total <- Global_sa_total[ ,-c(1,2,4,5) ]
+
+Global_sa_CI<-rbind(Global_sa_main,Global_sa_total)
+
+Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
+
+p_1.5<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
+  geom_bar(position="dodge", stat="identity")+
+  ylim(0,1)+
+  theme_classic()+
+  scale_fill_brewer(palette="Set1")+
+  coord_flip()+
+  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+                position=position_dodge(.9))+
+  ggtitle('90 min hours') 
 
 t_SA <-2
 
 
+
 for(i in 1:length(t_A)){
   print(i)
   if (t_A[i] %in% t_SA) {
     sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
-    FOI[,i]       <- sa$S[,1]    #First order indices
-    TI[,i]        <- sa$T[,1]    #Total indices
-    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
-    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI[,i]       <- sa$S[,1]  #First order indices
+    TI[,i]        <- sa$T[,1]  #Total indices
+    TI.lower[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.upper[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI.lower[,i]<- sa$S[,4]   #Lower CL total indices
+    FOI.upper[,i]<-sa$S[,5]    #Lower CL total indices
     
     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
 }
 
 
-FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
-TI.L  = as.matrix(TI[,1:length(t_A)])
+FOI.L <- as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  <- as.matrix(TI[,1:length(t_A)])
 
-FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+FOI.lower_matrix <- as.matrix(FOI.lower[,1:length(t_A)])    
+FOI.upper_matrix <- as.matrix(FOI.upper[,1:length(t_A)])   
+TI.lower_matrix <- as.matrix(TI.lower[,1:length(t_A)])    
+TI.upper_matrix <- as.matrix(TI.upper[,1:length(t_A)])   
+
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)       #transform it to a vector
 TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+FOI.lower_vector<- apply(FOI.lower_matrix, 1, mean, na.rm=TRUE)
+FOI.upper_vector<- apply(FOI.upper_matrix, 1, mean, na.rm=TRUE)
+TI.lower_vector<- apply(TI.lower_matrix, 1, mean, na.rm=TRUE)
+TI.upper_vector<- apply(TI.upper_matrix, 1, mean, na.rm=TRUE)
 
-sorting = order(TI.L.t, decreasing = F)
-TI.L.t  = TI.L.t[sorting]
-FOI.L.t = FOI.L.t[sorting]
+sorting <- order(TI.L.t, decreasing = F)          #sorting form low to high based on total effect
+TI.L.t  <- TI.L.t[sorting]
+FOI.L.t <- FOI.L.t[sorting]
+FOI.lower_vector <-FOI.lower_vector[sorting]
+FOI.upper_vector<-FOI.upper_vector[sorting]
+TI.lower_vector <-TI.lower_vector[sorting]
+TI.upper_vector<-TI.upper_vector[sorting]
 
-FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
-tempC    = t(cbind(FOI.L.t, TI.L.t))
+FOI.L.t <- ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    <- t(cbind(FOI.L.t, TI.L.t,FOI.lower_vector,FOI.upper_vector,TI.lower_vector,TI.upper_vector))
+tempC<- as.data.frame(tempC[,c(49:59)])  #top 10 variables with the highest total effect 
 
-tempC2 <- as.data.frame(tempC[,c(49:59)])
 
-par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
-#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
-plot_Pu_2 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
 
-#t_SA = 2
-sa.plot_2 <-as.data.frame(tempC[,c(49:59)])
-rownames(sa.plot_2) <- c("2h main","2h total")
+Global_sa_top_ten<-as.data.frame(melt(tempC[1,]))
+Global_sa_top_ten[,3:4]<-as.data.frame(melt(tempC[2,]))
+Global_sa_top_ten <- Global_sa_top_ten[ ,-c(3) ]
+colnames(Global_sa_top_ten)<-c("variable","main","total")
+Global_sa_top_ten<-melt(Global_sa_top_ten, id="variable")
+colnames(Global_sa_top_ten)<-c("variable","indices","value")
+
+
+#organising the upper and lower Ci for the First order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_main_lower<-as.data.frame(melt(tempC[3,]))
+Global_sa_main_lower <- Global_sa_main_lower[ ,-c(3) ]
+colnames(Global_sa_main_lower)<-c("variable","lower")
+Global_sa_main_lower<-melt(Global_sa_main_lower, id="variable")
+colnames(Global_sa_main_lower)<-c("variable","indices","lower")
+
+Global_sa_main_upper<-as.data.frame(melt(tempC[4,]))
+Global_sa_main_upper <- Global_sa_main_upper[ ,-c(3) ]
+colnames(Global_sa_main_upper)<-c("variable","upper")
+Global_sa_main_upper<-melt(Global_sa_main_upper, id="variable")
+colnames(Global_sa_main_upper)<-c("variable","indices","upper")
+
+Global_sa_main<-cbind(Global_sa_main_upper,Global_sa_main_lower)
+Global_sa_main <- Global_sa_main[ ,-c(1,2,4,5) ]
+
+#organising the upper and lower Ci for the total order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_total_lower<-as.data.frame(melt(tempC[5,]))
+Global_sa_total_lower <- Global_sa_total_lower[ ,-c(3) ]
+colnames(Global_sa_total_lower)<-c("variable","lower")
+Global_sa_total_lower<-melt(Global_sa_total_lower, id="variable")
+colnames(Global_sa_total_lower)<-c("variable","indices","lower")
+
+Global_sa_total_upper<-as.data.frame(melt(tempC[6,]))
+Global_sa_total_upper <- Global_sa_total_upper[ ,-c(3) ]
+colnames(Global_sa_total_upper)<-c("variable","upper")
+Global_sa_total_upper<-melt(Global_sa_total_upper, id="variable")
+colnames(Global_sa_total_upper)<-c("variable","indices","upper")
+
+Global_sa_total<-cbind(Global_sa_total_upper,Global_sa_total_lower)
+Global_sa_total <- Global_sa_total[ ,-c(1,2,4,5) ]
+
+Global_sa_CI<-rbind(Global_sa_main,Global_sa_total)
+
+Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
+
+p_2<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
+  geom_bar(position="dodge", stat="identity")+
+  ylim(0,1)+
+  theme_classic()+
+  scale_fill_brewer(palette="Set1")+
+  coord_flip()+
+  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+                position=position_dodge(.9))+
+  ggtitle('2 hours') 
 
 t_SA <-4
 
 
+
 for(i in 1:length(t_A)){
   print(i)
   if (t_A[i] %in% t_SA) {
     sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
-    FOI[,i]       <- sa$S[,1]    #First order indices
-    TI[,i]        <- sa$T[,1]    #Total indices
-    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
-    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI[,i]       <- sa$S[,1]  #First order indices
+    TI[,i]        <- sa$T[,1]  #Total indices
+    TI.lower[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.upper[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI.lower[,i]<- sa$S[,4]   #Lower CL total indices
+    FOI.upper[,i]<-sa$S[,5]    #Lower CL total indices
     
     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
 }
 
 
-FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
-TI.L  = as.matrix(TI[,1:length(t_A)])
+FOI.L <- as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  <- as.matrix(TI[,1:length(t_A)])
 
-FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+FOI.lower_matrix <- as.matrix(FOI.lower[,1:length(t_A)])    
+FOI.upper_matrix <- as.matrix(FOI.upper[,1:length(t_A)])   
+TI.lower_matrix <- as.matrix(TI.lower[,1:length(t_A)])    
+TI.upper_matrix <- as.matrix(TI.upper[,1:length(t_A)])   
+
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)       #transform it to a vector
 TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+FOI.lower_vector<- apply(FOI.lower_matrix, 1, mean, na.rm=TRUE)
+FOI.upper_vector<- apply(FOI.upper_matrix, 1, mean, na.rm=TRUE)
+TI.lower_vector<- apply(TI.lower_matrix, 1, mean, na.rm=TRUE)
+TI.upper_vector<- apply(TI.upper_matrix, 1, mean, na.rm=TRUE)
 
-sorting = order(TI.L.t, decreasing = F)
-TI.L.t  = TI.L.t[sorting]
-FOI.L.t = FOI.L.t[sorting]
+sorting <- order(TI.L.t, decreasing = F)          #sorting form low to high based on total effect
+TI.L.t  <- TI.L.t[sorting]
+FOI.L.t <- FOI.L.t[sorting]
+FOI.lower_vector <-FOI.lower_vector[sorting]
+FOI.upper_vector<-FOI.upper_vector[sorting]
+TI.lower_vector <-TI.lower_vector[sorting]
+TI.upper_vector<-TI.upper_vector[sorting]
 
-FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
-tempC    = t(cbind(FOI.L.t, TI.L.t))
+FOI.L.t <- ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    <- t(cbind(FOI.L.t, TI.L.t,FOI.lower_vector,FOI.upper_vector,TI.lower_vector,TI.upper_vector))
+tempC<- as.data.frame(tempC[,c(49:59)])  #top 10 variables with the highest total effect 
 
-tempC2 <- as.data.frame(tempC[,c(49:59)])
 
-par(mfrow=c(1,1), las=1, mai=c(0.35,1,0.35,0.1), mgp = c(3.5,0.5,0))
-#colnames(tempC2) <- c("Q_SI", "Ka", "V_SP", "Q_RP", "P_SP", "Q_SP", "k_GSH", "C_PRO_L", "VL", "QC")
-plot_Pu_4 <- barplot(as.matrix(tempC2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="", cex.lab=1.5 , xlim=c(0,1.1) )
 
-#t_SA = 4
-sa.plot_4 <-as.data.frame(tempC[,c(49:59)])
-rownames(sa.plot_4) <- c("4h main","4h total")
+Global_sa_top_ten<-as.data.frame(melt(tempC[1,]))
+Global_sa_top_ten[,3:4]<-as.data.frame(melt(tempC[2,]))
+Global_sa_top_ten <- Global_sa_top_ten[ ,-c(3) ]
+colnames(Global_sa_top_ten)<-c("variable","main","total")
+Global_sa_top_ten<-melt(Global_sa_top_ten, id="variable")
+colnames(Global_sa_top_ten)<-c("variable","indices","value")
+
+
+#organising the upper and lower Ci for the First order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_main_lower<-as.data.frame(melt(tempC[3,]))
+Global_sa_main_lower <- Global_sa_main_lower[ ,-c(3) ]
+colnames(Global_sa_main_lower)<-c("variable","lower")
+Global_sa_main_lower<-melt(Global_sa_main_lower, id="variable")
+colnames(Global_sa_main_lower)<-c("variable","indices","lower")
+
+Global_sa_main_upper<-as.data.frame(melt(tempC[4,]))
+Global_sa_main_upper <- Global_sa_main_upper[ ,-c(3) ]
+colnames(Global_sa_main_upper)<-c("variable","upper")
+Global_sa_main_upper<-melt(Global_sa_main_upper, id="variable")
+colnames(Global_sa_main_upper)<-c("variable","indices","upper")
+
+Global_sa_main<-cbind(Global_sa_main_upper,Global_sa_main_lower)
+Global_sa_main <- Global_sa_main[ ,-c(1,2,4,5) ]
+
+#organising the upper and lower Ci for the total order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_total_lower<-as.data.frame(melt(tempC[5,]))
+Global_sa_total_lower <- Global_sa_total_lower[ ,-c(3) ]
+colnames(Global_sa_total_lower)<-c("variable","lower")
+Global_sa_total_lower<-melt(Global_sa_total_lower, id="variable")
+colnames(Global_sa_total_lower)<-c("variable","indices","lower")
+
+Global_sa_total_upper<-as.data.frame(melt(tempC[6,]))
+Global_sa_total_upper <- Global_sa_total_upper[ ,-c(3) ]
+colnames(Global_sa_total_upper)<-c("variable","upper")
+Global_sa_total_upper<-melt(Global_sa_total_upper, id="variable")
+colnames(Global_sa_total_upper)<-c("variable","indices","upper")
+
+Global_sa_total<-cbind(Global_sa_total_upper,Global_sa_total_lower)
+Global_sa_total <- Global_sa_total[ ,-c(1,2,4,5) ]
+
+Global_sa_CI<-rbind(Global_sa_main,Global_sa_total)
+
+Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
+
+p_4<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
+  geom_bar(position="dodge", stat="identity")+
+  ylim(0,1)+
+  theme_classic()+
+  scale_fill_brewer(palette="Set1")+
+  coord_flip()+
+  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+                position=position_dodge(.9))+
+  ggtitle('4 hours') 
+
 
 t_SA <-8
 
 
+
 for(i in 1:length(t_A)){
   print(i)
   if (t_A[i] %in% t_SA) {
     sa=tell(sa, y = SimRes[,i], nboot = n_boot, conf = 0.95)
-    FOI[,i]       <- sa$S[,1]    #First order indices
-    TI[,i]        <- sa$T[,1]    #Total indices
-    TI.borninf[,i] <- sa$T[,4]   #Lower CL total indices
-    TI.bornsup[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI[,i]       <- sa$S[,1]  #First order indices
+    TI[,i]        <- sa$T[,1]  #Total indices
+    TI.lower[,i] <- sa$T[,4]   #Lower CL total indices
+    TI.upper[,i] <- sa$T[,5]   #Upper CL total indices
+    FOI.lower[,i]<- sa$S[,4]   #Lower CL total indices
+    FOI.upper[,i]<-sa$S[,5]    #Lower CL total indices
     
     plot(sa, main=colnames(SimRes)[i],las=3, cex=0.7)
   }
 }
 
 
-FOI.L = as.matrix(FOI[,1:length(t_A)])       # as.matrix
-TI.L  = as.matrix(TI[,1:length(t_A)])
+FOI.L <- as.matrix(FOI[,1:length(t_A)])       # as.matrix
+TI.L  <- as.matrix(TI[,1:length(t_A)])
 
-FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)
+FOI.lower_matrix <- as.matrix(FOI.lower[,1:length(t_A)])    
+FOI.upper_matrix <- as.matrix(FOI.upper[,1:length(t_A)])   
+TI.lower_matrix <- as.matrix(TI.lower[,1:length(t_A)])    
+TI.upper_matrix <- as.matrix(TI.upper[,1:length(t_A)])   
+
+
+FOI.L.t <- apply(FOI.L, 1, mean, na.rm=TRUE)       #transform it to a vector
 TI.L.t <- apply(TI.L, 1, mean, na.rm=TRUE)
+FOI.lower_vector<- apply(FOI.lower_matrix, 1, mean, na.rm=TRUE)
+FOI.upper_vector<- apply(FOI.upper_matrix, 1, mean, na.rm=TRUE)
+TI.lower_vector<- apply(TI.lower_matrix, 1, mean, na.rm=TRUE)
+TI.upper_vector<- apply(TI.upper_matrix, 1, mean, na.rm=TRUE)
 
-sorting = order(TI.L.t, decreasing = F)
-TI.L.t  = TI.L.t[sorting]
-FOI.L.t = FOI.L.t[sorting]
+sorting <- order(TI.L.t, decreasing = F)          #sorting form low to high based on total effect
+TI.L.t  <- TI.L.t[sorting]
+FOI.L.t <- FOI.L.t[sorting]
+FOI.lower_vector <-FOI.lower_vector[sorting]
+FOI.upper_vector<-FOI.upper_vector[sorting]
+TI.lower_vector <-TI.lower_vector[sorting]
+TI.upper_vector<-TI.upper_vector[sorting]
 
-FOI.L.t = ifelse(FOI.L.t <= 0, 0, FOI.L.t)
-tempC    = t(cbind(FOI.L.t,TI.L.t))
-
-tempC2 <- as.data.frame(tempC[,c(49:59)])
-
-#t_SA = 8
-sa.plot_8 <-as.data.frame(tempC[,c(49:59)])
-rownames(sa.plot_8) <- c("8h total","8h main")
-
-par(mfrow=c(2,3),las=1, mar=c(3,5,3,3.5), mgp = c(3.5,0.5,0)) 
-mtext("Main and total sensitivity indexes", side=2, line=1)
-#barplot(as.matrix(sa.plot_0.2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="20 min", cex.lab=1.5 , xlim=c(0,1.1) )
-barplot(as.matrix(sa.plot_0.5), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="30 min", cex.lab=1.5 , xlim=c(0,1.1) )
-barplot(as.matrix(sa.plot_1), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="1 hour", cex.lab=1.5 , xlim=c(0,1.1) )
-barplot(as.matrix(sa.plot_1,5), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="1.5 hours", cex.lab=1.5 , xlim=c(0,1.1) )
-barplot(as.matrix(sa.plot_2), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="2 hours", cex.lab=1.5 , xlim=c(0,1.1) )
-barplot(as.matrix(sa.plot_4), col=c("firebrick1","firebrick4"), horiz = T, beside =T , main="4 hours", cex.lab=1.5 , xlim=c(0,1.1) )
-barplot(as.matrix(sa.plot_8), col=c("firebrick1","firebrick4"), horiz =T , beside =T , main="8 hours", cex.lab=1.5 , xlim=c(0,1.1))
+FOI.L.t <- ifelse(FOI.L.t <= 0, 0, FOI.L.t)
+tempC    <- t(cbind(FOI.L.t, TI.L.t,FOI.lower_vector,FOI.upper_vector,TI.lower_vector,TI.upper_vector))
+tempC<- as.data.frame(tempC[,c(49:59)])  #top 10 variables with the highest total effect 
 
 
 
+Global_sa_top_ten<-as.data.frame(melt(tempC[1,]))
+Global_sa_top_ten[,3:4]<-as.data.frame(melt(tempC[2,]))
+Global_sa_top_ten <- Global_sa_top_ten[ ,-c(3) ]
+colnames(Global_sa_top_ten)<-c("variable","main","total")
+Global_sa_top_ten<-melt(Global_sa_top_ten, id="variable")
+colnames(Global_sa_top_ten)<-c("variable","indices","value")
 
+
+#organising the upper and lower Ci for the First order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_main_lower<-as.data.frame(melt(tempC[3,]))
+Global_sa_main_lower <- Global_sa_main_lower[ ,-c(3) ]
+colnames(Global_sa_main_lower)<-c("variable","lower")
+Global_sa_main_lower<-melt(Global_sa_main_lower, id="variable")
+colnames(Global_sa_main_lower)<-c("variable","indices","lower")
+
+Global_sa_main_upper<-as.data.frame(melt(tempC[4,]))
+Global_sa_main_upper <- Global_sa_main_upper[ ,-c(3) ]
+colnames(Global_sa_main_upper)<-c("variable","upper")
+Global_sa_main_upper<-melt(Global_sa_main_upper, id="variable")
+colnames(Global_sa_main_upper)<-c("variable","indices","upper")
+
+Global_sa_main<-cbind(Global_sa_main_upper,Global_sa_main_lower)
+Global_sa_main <- Global_sa_main[ ,-c(1,2,4,5) ]
+
+#organising the upper and lower Ci for the total order indices into the correct format so that it can be added to the global_sa_top_ten file
+Global_sa_total_lower<-as.data.frame(melt(tempC[5,]))
+Global_sa_total_lower <- Global_sa_total_lower[ ,-c(3) ]
+colnames(Global_sa_total_lower)<-c("variable","lower")
+Global_sa_total_lower<-melt(Global_sa_total_lower, id="variable")
+colnames(Global_sa_total_lower)<-c("variable","indices","lower")
+
+Global_sa_total_upper<-as.data.frame(melt(tempC[6,]))
+Global_sa_total_upper <- Global_sa_total_upper[ ,-c(3) ]
+colnames(Global_sa_total_upper)<-c("variable","upper")
+Global_sa_total_upper<-melt(Global_sa_total_upper, id="variable")
+colnames(Global_sa_total_upper)<-c("variable","indices","upper")
+
+Global_sa_total<-cbind(Global_sa_total_upper,Global_sa_total_lower)
+Global_sa_total <- Global_sa_total[ ,-c(1,2,4,5) ]
+
+Global_sa_CI<-rbind(Global_sa_main,Global_sa_total)
+
+Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
+
+p_8<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
+  geom_bar(position="dodge", stat="identity")+
+  ylim(0,1)+
+  theme_classic()+
+  scale_fill_brewer(palette="Set1")+
+  coord_flip()+
+  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+                position=position_dodge(.9)) +
+ggtitle('8 hours')
+
+
+grid.arrange( p_0.5, p_1, p_1.5, p_2, p_4, p_8, ncol=3, nrow =2)
 
