@@ -8,10 +8,8 @@ library(readr)
 library(sensitivity)
 library(PKNCA)
 library(gridExtra)
-
-
-
-
+library(plotly)
+library(PKNCA)
 
 #Simulations
 set.seed(15204)                       #to ensure a reproducible output if random input is used
@@ -396,7 +394,7 @@ write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\GSA_phys_human_2.8mg_inhalation_corre
 
 
 #Loading extracted simulation data. 
-solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SA_human_2.8mg_inhalation_C_Pu_corrected", row.names=1)
+solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SA_human_2.8mg_inhalation_C_V_corrected", row.names=1)
 
 #Analyzing the generated data set 
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
@@ -425,9 +423,9 @@ SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
 
-write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes_inhalation_Human_2.8mg_C_Pu_corrected", row.names = TRUE)
+#write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes_inhalation_Human_2.8mg_C_Pu_corrected", row.names = TRUE)
 
-SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes_inhalation_Human_250mg_C_Pu_corrected", row.names=1)
+SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes_oral_Human_250g_corrected", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here would create an error.
@@ -535,11 +533,11 @@ Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
 
 p_0.2<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
   geom_bar(position="dodge", stat="identity")+
-  ylim(0,1)+
+ ylim(-0.1,1)+
   theme_classic()+
   scale_fill_brewer(palette="Set1")+
   coord_flip()+
-geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+ geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
               position=position_dodge(.9))+
   ggtitle('12 mins')  
 
@@ -641,11 +639,11 @@ Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
 
 p_0.5<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
   geom_bar(position="dodge", stat="identity")+
-  ylim(0,1)+
+ ylim(-0.1,1)+
   theme_classic()+
   scale_fill_brewer(palette="Set1")+
   coord_flip()+
-  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
                 position=position_dodge(.9)) +
   ggtitle('30 mins') 
 t_SA <-1
@@ -744,11 +742,11 @@ Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
 
 p_1<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
   geom_bar(position="dodge", stat="identity")+
-  ylim(0,1)+
+ ylim(-0.1,1)+
   theme_classic()+
   scale_fill_brewer(palette="Set1")+
   coord_flip()+
-  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
                 position=position_dodge(.9)) +
   ggtitle('60 mins') 
 
@@ -848,11 +846,11 @@ Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
 
 p_1.5<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
   geom_bar(position="dodge", stat="identity")+
-  ylim(0,1)+
+ ylim(-0.1,1)+
   theme_classic()+
   scale_fill_brewer(palette="Set1")+
   coord_flip()+
-  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
                 position=position_dodge(.9))+
   ggtitle('90 min hours') 
 
@@ -952,11 +950,11 @@ Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
 
 p_2<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
   geom_bar(position="dodge", stat="identity")+
-  ylim(0,1)+
+ ylim(-0.1,1)+
   theme_classic()+
   scale_fill_brewer(palette="Set1")+
   coord_flip()+
-  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+  geom_errorbar(aes(ymin=abs(lower), ymax=abs(upper)), width=.2,
                 position=position_dodge(.9))+
   ggtitle('2 hours') 
 
@@ -1056,11 +1054,11 @@ Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
 
 p_4<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
   geom_bar(position="dodge", stat="identity")+
-  ylim(0,1)+
+ ylim(-0.1,1)+
   theme_classic()+
   scale_fill_brewer(palette="Set1")+
   coord_flip()+
-  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
                 position=position_dodge(.9))+
   ggtitle('4 hours') 
 
@@ -1161,14 +1159,13 @@ Global_sa_top_ten<-cbind(Global_sa_top_ten,Global_sa_CI)
 
 p_8<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
   geom_bar(position="dodge", stat="identity")+
-  ylim(0,1)+
+  ylim(-0.1,1)+
   theme_classic()+
   scale_fill_brewer(palette="Set1")+
   coord_flip()+
-  geom_errorbar(aes(ymin=value-abs(lower), ymax=value+abs(upper)), width=.2,
+  geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
                 position=position_dodge(.9)) +
 ggtitle('8 hours')
 
-
-grid.arrange( p_0.5, p_1, p_1.5, p_2, p_4, p_8, ncol=3, nrow =2)
+grid.arrange(p_0.5, p_1, p_1.5, p_2, p_4, p_8, ncol=3, nrow =3, top="Concentration in Blood Human 250mg Oral",common.legend = TRUE)
 

@@ -11,8 +11,7 @@ library(truncnorm)
 library(reshape2)
 library(plotly)
 library(PKNCA)
-library(MESS)
-
+library(ggplot2)
 
 #single Human model
 #Making a dataframe for the calculations
@@ -1666,18 +1665,30 @@ boxplot_250mg_oral[,8]<-AUC_extraction_250_Oral__C_SI$PPORRES[1:2000]
 colnames(boxplot_250mg_oral)<-c("id","Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine")
 melt_boxplot_250mg_oral <- melt(boxplot_250mg_oral,id=c("id")) 
 
+melt_boxplot_250mg_oral$id[boxplot_250mg_oral$id == 1:1000] <- "Male"  
+melt_boxplot_250mg_oral$id[boxplot_250mg_oral$id == 1001:2000] <- "Female" 
 
-ggplot(melt_boxplot_250mg_oral ,aes(x=variable,y=value))+
+p_auc_250mg_oral<-ggplot(melt_boxplot_250mg_oral ,aes(x=variable,y=value))+
   geom_boxplot(notch=TRUE)+
-  geom_jitter((aes(color = ifelse(id < 1000, "red", "black"))), size=1, alpha=1) +
-  scale_y_continuous(trans='log10', breaks =100)+
+  geom_jitter(aes(col=id),alpha=0.3)+
+  scale_color_manual(values = c( "Male" = "blue",
+                                 "Female" = "red"),
+                     labels= c( "Male", "Female"),
+                     name= "Sex")+
+  geom_text(aes(x, y, label=lab),
+            data=data.frame(x=c("Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine"),
+                            y=c(13,45,80,10,350,15,10000),
+                            lab=c("a","a","a","a","a","a","b"),
+                            size=4))+
+  scale_y_continuous(trans='log10')+
   labs(x='Organs', y='umol/l-hr', title='Oral AUC values 250mg dose Human')+
-theme_classic()+
-  theme(axis.title = element_text(size=14),
-        axis.text = element_text(size = 12),
+  theme_classic()+
+  theme(axis.title = element_text(size=15),
+        axis.text = element_text(size = 15),
         title = element_text(size=20))+
-theme(legend.text = element_text(size=12, color="black"),
-      legend.position ="top")
+  theme(legend.text = element_text(size=15, color="black"),
+        legend.position ="top")
+ggplotly(p_auc_250mg_oral)
 
 
 
@@ -1694,21 +1705,22 @@ boxplot(AUC_extraction_250_Oral__C_Pu$PPORRES,Cmax_extraction_oral_C_Pu$PPORRES,
         las=2)
 
 boxplot_250mg_oral<-as.data.frame(1:2000)
-boxplot_250mg_oral[,2]<-AUC_extraction_250_Oral__C_Pu$PPORRES[1:2000]
-boxplot_250mg_oral[,3]<-AUC_extraction_250_Oral__C_B$PPORRES[1:2000]
-boxplot_250mg_oral[,4]<-AUC_extraction_250_Oral__C_F$PPORRES[1:2000]
-boxplot_250mg_oral[,5]<-AUC_extraction_250_Oral__C_SP$PPORRES[1:2000]
-boxplot_250mg_oral[,6]<-AUC_extraction_250_Oral__C_L$PPORRES[1:2000]
-boxplot_250mg_oral[,7]<-AUC_extraction_250_Oral__C_RP$PPORRES[1:2000]
-boxplot_250mg_oral[,8]<-AUC_extraction_250_Oral__C_SI$PPORRES[1:2000]
+boxplot_250mg_oral[,2]<-Cmax_extraction_oral_C_Pu$PPORRES[1:2000]
+boxplot_250mg_oral[,3]<-Cmax_extraction_oral_C_B$PPORRES[1:2000]
+boxplot_250mg_oral[,4]<-Cmax_extraction_oral_C_F$PPORRES[1:2000]
+boxplot_250mg_oral[,5]<-Cmax_extraction_oral_C_SP$PPORRES[1:2000]
+boxplot_250mg_oral[,6]<-Cmax_extraction_oral_C_L$PPORRES[1:2000]
+boxplot_250mg_oral[,7]<-Cmax_extraction_oral_C_RP$PPORRES[1:2000]
+boxplot_250mg_oral[,8]<-Cmax_extraction_oral_C_SI$PPORRES[1:2000]
 colnames(boxplot_250mg_oral)<-c("id","Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine")
 melt_boxplot_250mg_oral <- melt(boxplot_250mg_oral,id=c("id")) 
 
 melt_boxplot_250mg_oral$id[boxplot_250mg_oral$id == 1:1000] <- "Male"  
 melt_boxplot_250mg_oral$id[boxplot_250mg_oral$id == 1001:2000] <- "Female" 
 
+write.csv(melt_boxplot_250mg_oral,"D:/PBK/Cinnamaldehyde-pbk\\melt_boxplot_250mg_oral_cmax")
 
-p<-ggplot(melt_boxplot_250mg_oral ,aes(x=variable,y=value))+
+p_cmax_250mg_oral<-ggplot(melt_boxplot_250mg_oral ,aes(x=variable,y=value))+
   geom_boxplot(notch=TRUE)+
   geom_jitter(aes(col=id),alpha=0.3)+
 scale_color_manual(values = c( "Male" = "blue",
@@ -1716,14 +1728,14 @@ scale_color_manual(values = c( "Male" = "blue",
                    labels= c( "Male", "Female"),
                    name= "Sex")+
   scale_y_continuous(trans='log10')+
-  labs(x='Organs', y='umol/l-hr', title='Oral AUC values 250mg dose Human')+
+  labs(x='Organs', y='umol/l', title='Oral Cmax values 250mg dose Human')+
   theme_classic()+
   theme(axis.title = element_text(size=15),
         axis.text = element_text(size = 15),
         title = element_text(size=20))+
   theme(legend.text = element_text(size=15, color="black"),
         legend.position ="top")
-ggplotly(p)
+ggplotly(p_cmax_250mg_oral)
 
 
 
@@ -1884,18 +1896,42 @@ boxplot(AUC_extraction_250_inhalation__C_Pu$PPORRES[1:1000], AUC_extraction_250_
         col="orange",
         las=2)
 
+boxplot_250mg_inhalation<-as.data.frame(1:2000)
+boxplot_250mg_inhalation[,2]<-AUC_extraction_250_inhalation__C_Pu$PPORRES[1:2000]
+boxplot_250mg_inhalation[,3]<-AUC_extraction_250_inhalation__C_B$PPORRES[1:2000]
+boxplot_250mg_inhalation[,4]<-AUC_extraction_250_inhalation__C_F$PPORRES[1:2000]
+boxplot_250mg_inhalation[,5]<-AUC_extraction_250_inhalation__C_SP$PPORRES[1:2000]
+boxplot_250mg_inhalation[,6]<-AUC_extraction_250_inhalation__C_L$PPORRES[1:2000]
+boxplot_250mg_inhalation[,7]<-AUC_extraction_250_inhalation__C_RP$PPORRES[1:2000]
+boxplot_250mg_inhalation[,8]<-AUC_extraction_250_inhalation__C_SI$PPORRES[1:2000]
+colnames(boxplot_250mg_inhalation)<-c("id","Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine")
+melt_boxplot_250mg_inhalation <- melt(boxplot_250mg_inhalation,id=c("id")) 
+
+melt_boxplot_250mg_inhalation$id[boxplot_250mg_inhalation$id == 1:1000] <- "Male"  
+melt_boxplot_250mg_inhalation$id[boxplot_250mg_inhalation$id == 1001:2000] <- "Female" 
+
+write.csv(melt_boxplot_250mg_inhalation,"D:/PBK/Cinnamaldehyde-pbk\\melt_boxplot_250mg_inhalation_auc")
+
+p_auc_250mg_inhalation<-ggplot(melt_boxplot_250mg_inhalation ,aes(x=variable,y=value))+
+  geom_boxplot(notch=TRUE)+
+  geom_jitter(aes(col=id),alpha=0.3)+
+  scale_color_manual(values = c( "Male" = "blue",
+                                 "Female" = "red"),
+                     labels= c( "Male", "Female"),
+                     name= "Sex")+
+  scale_y_continuous(trans='log10')+
+  labs(x='Organs', y='umol/l-hr', title='Inhalation AUC values 250mg dose Human')+
+  theme_classic()+
+  theme(axis.title = element_text(size=15),
+        axis.text = element_text(size = 15),
+        title = element_text(size=20))+
+  theme(legend.text = element_text(size=15, color="black"),
+        legend.position ="top")
+ggplotly(p_auc_250mg_inhalation)
 
 
-#Combinded box plot 
-boxplot(AUC_extraction_250_inhalation__C_Pu$PPORRES, AUC_extraction_250_inhalation__C_B$PPORRES,AUC_extraction_250_inhalation__C_F$PPORRES,
-        AUC_extraction_250_inhalation__C_RP$PPORRES,AUC_extraction_250_inhalation__C_SP$PPORRES,AUC_extraction_250_inhalation__C_SI$PPORRES,
-        AUC_extraction_250_inhalation__C_L$PPORRES,
-        Main= "Area under the curve Concentration of Cinnamaldehyde",
-        ylab= "umol/l",log="y",
-        names= c("Lung","Blood", "Fat", "Richly perfused","slowly perfused","SI",
-                 "Liver"),
-        col="orange",
-        las=2)
+
+
 
 #AUC and C max box plot
 boxplot(AUC_extraction_250_inhalation__C_Pu$PPORRES,Cmax_extraction_inhalation_C_Pu$PPORRES, AUC_extraction_250_inhalation__C_B$PPORRES,Cmax_extraction_inhalation_C_B$PPORRES, AUC_extraction_250_inhalation__C_F$PPORRES,Cmax_extraction_inhalation_C_F$PPORRES,
@@ -1908,6 +1944,38 @@ boxplot(AUC_extraction_250_inhalation__C_Pu$PPORRES,Cmax_extraction_inhalation_C
         col="orange",
         las=2)
 
+boxplot_250mg_inhalation<-as.data.frame(1:2000)
+boxplot_250mg_inhalation[,2]<-Cmax_extraction_inhalation_C_Pu$PPORRES[1:2000]
+boxplot_250mg_inhalation[,3]<-Cmax_extraction_inhalation_C_B$PPORRES[1:2000]
+boxplot_250mg_inhalation[,4]<-Cmax_extraction_inhalation_C_F$PPORRES[1:2000]
+boxplot_250mg_inhalation[,5]<-Cmax_extraction_inhalation_C_SP$PPORRES[1:2000]
+boxplot_250mg_inhalation[,6]<-Cmax_extraction_inhalation_C_L$PPORRES[1:2000]
+boxplot_250mg_inhalation[,7]<-Cmax_extraction_inhalation_C_RP$PPORRES[1:2000]
+boxplot_250mg_inhalation[,8]<-Cmax_extraction_inhalation_C_SI$PPORRES[1:2000]
+colnames(boxplot_250mg_inhalation)<-c("id","Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine")
+melt_boxplot_250mg_inhalation <- melt(boxplot_250mg_inhalation,id=c("id")) 
+
+melt_boxplot_250mg_inhalation$id[boxplot_250mg_inhalation$id == 1:1000] <- "Male"  
+melt_boxplot_250mg_inhalation$id[boxplot_250mg_inhalation$id == 1001:2000] <- "Female" 
+
+write.csv(melt_boxplot_250mg_inhalation,"D:/PBK/Cinnamaldehyde-pbk\\melt_boxplot_250mg_inhalation_cmax")
+
+p_cmax_250mg_inhalation<-ggplot(melt_boxplot_250mg_inhalation ,aes(x=variable,y=value))+
+  geom_boxplot(notch=TRUE)+
+  geom_jitter(aes(col=id),alpha=0.3)+
+  scale_color_manual(values = c( "Male" = "blue",
+                                 "Female" = "red"),
+                     labels= c( "Male", "Female"),
+                     name= "Sex")+
+  scale_y_continuous(trans='log10')+
+  labs(x='Organs', y='umol/l', title='Inhalation Cmax values 250mg dose Human')+
+  theme_classic()+
+  theme(axis.title = element_text(size=15),
+        axis.text = element_text(size = 15),
+        title = element_text(size=20))+
+  theme(legend.text = element_text(size=15, color="black"),
+        legend.position ="top")
+ggplotly(p_cmax_250mg_inhalation)
 
 
 
@@ -1923,7 +1991,48 @@ boxplot(AUC_extraction_250_Oral__C_Pu$PPORRES,AUC_extraction_250_inhalation__C_P
         col="orange",
         las=2)
 
+boxplot_250mg<-as.data.frame(1:2000)
+boxplot_250mg[,2]<-Cmax_extraction_inhalation_C_Pu$PPORRES[1:2000]
+boxplot_250mg[,3]<-Cmax_extraction_inhalation_C_B$PPORRES[1:2000]
+boxplot_250mg[,4]<-Cmax_extraction_inhalation_C_F$PPORRES[1:2000]
+boxplot_250mg[,5]<-Cmax_extraction_inhalation_C_SP$PPORRES[1:2000]
+boxplot_250mg[,6]<-Cmax_extraction_inhalation_C_L$PPORRES[1:2000]
+boxplot_250mg[,7]<-Cmax_extraction_inhalation_C_RP$PPORRES[1:2000]
+boxplot_250mg[,8]<-Cmax_extraction_inhalation_C_SI$PPORRES[1:2000]
+boxplot_250mg[,9]<-AUC_extraction_250_Oral__C_Pu$PPORRES[1:2000]
+boxplot_250mg[,10]<-AUC_extraction_250_Oral__C_B$PPORRES[1:2000]
+boxplot_250mg[,11]<-AUC_extraction_250_Oral__C_F$PPORRES[1:2000]
+boxplot_250mg[,12]<-AUC_extraction_250_Oral__C_SP$PPORRES[1:2000]
+boxplot_250mg[,13]<-AUC_extraction_250_Oral__C_L$PPORRES[1:2000]
+boxplot_250mg[,14]<-AUC_extraction_250_Oral__C_RP$PPORRES[1:2000]
+boxplot_250mg[,15]<-AUC_extraction_250_Oral__C_SI$PPORRES[1:2000]
 
+colnames(boxplot_250mg)<-c("id","Lung I","Blood I","Fat I","Slowly Perfused I","Liver I","Richly Perfused I","Small Intestine I","Lung O","Blood O","Fat O","Slowly Perfused O","Liver O","Richly Perfused O","Small intestine O")
+melt_boxplot_250mg <- melt(boxplot_250mg,id=c("id")) 
+
+melt_boxplot_250mg$id[boxplot_250mg$id == 1:1000] <- "Male"  
+melt_boxplot_250mg$id[boxplot_250mg$id == 1001:2000] <- "Female" 
+
+write.csv(melt_boxplot_250mg_inhalation,"D:/PBK/Cinnamaldehyde-pbk\\melt_boxplot_250mg_inhalation_cmax")
+
+p_250mg<-ggplot(melt_boxplot_250mg ,aes(x=variable,y=value))+
+  geom_boxplot(notch=TRUE)+
+  geom_jitter(aes(col=id),alpha=0.3)+
+  scale_color_manual(values = c( "Male" = "blue",
+                                 "Female" = "red"),
+                     labels= c( "Male", "Female"),
+                     name= "Sex")+
+
+  scale_y_continuous(trans='log10')+
+  labs(x='Organs', y='umol/l', title='250mg dose Human')+
+  theme_classic()+
+  theme(axis.title = element_text(size=15),
+        axis.text = element_text(size = 15),
+        title = element_text(size=20))+
+  theme(legend.text = element_text(size=15, color="black"),
+        legend.position ="top")
+
+ggplotly(p_250mg)
 
 
 #------------inhalation closed space exposure--------

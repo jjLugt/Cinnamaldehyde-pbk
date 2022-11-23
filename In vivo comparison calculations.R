@@ -6,12 +6,10 @@ library(RxODE)
 library(tidyverse)
 library(readxl)
 library(readr)
-library(shiny)
 library(truncnorm)
 library(reshape2)
 library(plotly)
 library(PKNCA)
-library(MESS)
 
 
 #Generating a file for the comparison with in vivo data 
