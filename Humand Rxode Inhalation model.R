@@ -28,7 +28,7 @@ PBK_Cinnamaldehyde <- RxODE({
   #----Inhalation------#
   #Cinnamaldehyde
   
-  R_Inhalation  <- -P_V *(A_inhalation_Dose/Volume_exposure_chamber );   #Rate of Cinnamaldehyde inhalation in μmol/h
+  R_Inhalation  <- -P_V *(A_inhalation_Dose/Volume_exposure_chamber);   #Rate of Cinnamaldehyde inhalation in μmol/h
   
   C_P_Art       <-(Q_Pu * C_V + -R_Inhalation )/(Q_Pu + P_V/P_B);        #Concentration of Cinnamaldehyde  in Arterial blood leaving the lung in  μmol/l
   

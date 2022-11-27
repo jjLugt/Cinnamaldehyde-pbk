@@ -14,7 +14,7 @@ library(truncnorm)
 library(reshape2)
 library(plotly)
 library(PKNCA)
-library(MESS)
+
 
 #Rxode
 #cinnamaldehyde model Human
@@ -43,8 +43,8 @@ plot(mass_at_t[,1])
 
 #Rxode 
 #population mass balance
-mass_df <- solve.pbk/phys[1,3] * MW /1e+3
-mass_df <- mass_df[1:241,c(67:80,82,83,86:90,94:98)]
+mass_df <- solve.pbk/phys[2,3] * MW /1e+3
+mass_df <- mass_df[242:482,c(67:80,82,83,86:90,94:98)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 
