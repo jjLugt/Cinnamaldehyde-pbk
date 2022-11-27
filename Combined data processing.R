@@ -123,5 +123,197 @@ hist(male_metabolised_data)
 hist(female_metabolised_data)
 
 
+#significance analysis 
+#data analysis for Joris
+#info: Levene test is less sensitive than the Bartlett test to departures from normality.
+
+library(ggpubr)
+library(plyr)
+library(multcompView)
+library(car)
+
+
+setwd("C:/Users/OrfeasPetropoulos/OneDrive - Wageningen University & Research/joris")
+
+data<- read.csv("melt_boxplot_250mg_oral.csv")
+unique(data$id)
+data$id <- factor(data$id)
+unique(data$variable)
+
+#subset the data for analysis
+{
+  data_Lung <- subset(data, variable %in% c("Lung"))
+  data_Blood <- subset(data, variable %in% c("Blood"))
+  data_Fat <- subset(data, variable %in% c("Fat"))
+  data_SlowlyPerfused <- subset(data, variable %in% c("Slowly Perfused"))
+  data_Liver <- subset(data, variable %in% c("Liver"))
+  data_RichlyPerfused <- subset(data, variable %in% c("Richly Perfused"))
+  data_SmallIntestine <- subset(data, variable %in% c("Small Intestine"))
+  data_MALE <- subset(data, id %in% c("Male"))
+  data_FEMALE <- subset(data, id %in% c("Female"))
+} 
+
+
+###Data analysis
+
+#1. Is there difference between the organs?
+{
+  #1a--> within Female
+  results <- aov(value ~ variable , data_FEMALE)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1b--> within Male
+  results <- aov(value ~ variable , data_MALE)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+} 
+
+
+#2. Is there difference between males and females for the same organ?
+#2.a. LUNG DATA
+{
+  shapiro.test(data_Lung$value) # we can reject the null hypothesis that the data tested follows a normal distribution
+  plot(density(na.omit(data_Lung$value)))
+  ggqqplot(data_Lung$value) #it is indeed right skewed
+  leveneTest(value ~ id, data = data_Lung) #sign.we can reject the null hypothesis that the data tested has equal variances
+  #because of big sample size, we are allowed to perform parametric test
+  results <- aov(value ~ id , data_Lung)
+  # t.test(value ~ id , data = data_Lung, var.equal= F) #is the same as the anova here
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld) #Significant differences between blocks
+  
+} 
+
+#2.b. BLOOD DATA
+{
+  shapiro.test(data_Blood$value) # we can reject the null hypothesis that the data tested follows a normal distribution
+  plot(density(na.omit(data_Blood$value)))
+  ggqqplot(data_Blood$value) #it is indeed right skewed
+  leveneTest(value ~ id, data = data_Blood) #sign.we can reject the null hypothesis that the data tested has equal variances
+  #because of big sample size, we are allowed to perform parametric test
+  results <- aov(value ~ id , data_Blood)
+  # t.test(value ~ id , data = data_Lung, var.equal= F) #is the same as the anova here
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld) #Significant differences between blocks
+  
+} 
+
+#2.c. FAT DATA
+{
+  shapiro.test(data_Fat$value) # we can reject the null hypothesis that the data tested follows a normal distribution
+  plot(density(na.omit(data_Fat$value)))
+  ggqqplot(data_Fat$value) #it is indeed right skewed
+  leveneTest(value ~ id, data = data_Fat) #sign.we can reject the null hypothesis that the data tested has equal variances
+  #because of big sample size, we are allowed to perform parametric test
+  results <- aov(value ~ id , data_Fat)
+  # t.test(value ~ id , data = data_Lung, var.equal= F) #is the same as the anova here
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld) #Significant differences between blocks
+  
+} 
+
+#2.d. SlowlyPerfused DATA
+{
+  shapiro.test(data_SlowlyPerfused$value) # we can reject the null hypothesis that the data tested follows a normal distribution
+  plot(density(na.omit(data_SlowlyPerfused$value)))
+  ggqqplot(data_SlowlyPerfused$value) #it is indeed right skewed
+  leveneTest(value ~ id, data = data_SlowlyPerfused) #sign.we can reject the null hypothesis that the data tested has equal variances
+  #because of big sample size, we are allowed to perform parametric test
+  results <- aov(value ~ id , data_SlowlyPerfused)
+  # t.test(value ~ id , data = data_Lung, var.equal= F) #is the same as the anova here
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld) #Significant differences between blocks
+  
+} 
+
+#2.e. LIVER DATA
+{
+  shapiro.test(data_Liver$value) # we can reject the null hypothesis that the data tested follows a normal distribution
+  plot(density(na.omit(data_Liver$value)))
+  ggqqplot(data_Liver$value) #it is indeed right skewed
+  leveneTest(value ~ id, data = data_Liver) #sign.we can reject the null hypothesis that the data tested has equal variances
+  #because of big sample size, we are allowed to perform parametric test
+  results <- aov(value ~ id , data_Liver)
+  # t.test(value ~ id , data = data_Lung, var.equal= F) #is the same as the anova here
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld) #Significant differences between blocks
+  
+} 
+
+#2.f. Richly Perfused DATA
+{
+  shapiro.test(data_RichlyPerfused$value) # we can reject the null hypothesis that the data tested follows a normal distribution
+  plot(density(na.omit(data_RichlyPerfused$value)))
+  ggqqplot(data_RichlyPerfused$value) #it is indeed right skewed
+  leveneTest(value ~ id, data = data_RichlyPerfused) #sign.we can reject the null hypothesis that the data tested has equal variances
+  #because of big sample size, we are allowed to perform parametric test
+  results <- aov(value ~ id , data_RichlyPerfused)
+  # t.test(value ~ id , data = data_Lung, var.equal= F) #is the same as the anova here
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld) #Significant differences between blocks
+  
+} 
+
+#2.g. Small Intestine DATA
+{
+  shapiro.test(data_SmallIntestine$value) # we can reject the null hypothesis that the data tested follows a normal distribution
+  plot(density(na.omit(data_SmallIntestine$value)))
+  ggqqplot(data_SmallIntestine$value) #it is indeed right skewed
+  leveneTest(value ~ id, data = data_SmallIntestine) #NOT sign.we cannot reject the null hypothesis that the data tested has equal variances
+  #because of big sample size, we are allowed to perform parametric test
+  results <- aov(value ~ id , data_SmallIntestine)
+  # t.test(value ~ id , data = data_Lung, var.equal= F) #is the same as the anova here
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld) #Significant differences between blocks
+  
+} 
+
+
+#because almost all variables have UNEQUAL VARIANCE, I peformed 
+# a welch test instead of the one-way anova, just to be sure 
+# but the results remain the same!
+
+library(rstatix)
+welch_anova_test(data_Lung, value ~ id)
+welch_anova_test(data_Blood, value ~ id)
+welch_anova_test(data_Fat, value ~ id)
+welch_anova_test(data_RichlyPerfused, value ~ id)
+welch_anova_test(data_SlowlyPerfused, value ~ id)
+welch_anova_test(data_Liver, value ~ id)
+welch_anova_test(data_SmallIntestine, value ~ id) #for small intestine not needed, as it had equal variances
+
+
+fig <- ggplot(subset(data, variable %in% c("Lung")),
+              mapping = aes(x = id, y= value))+
+  geom_boxplot(aes(fill= id),position="identity", size=0.5)+
+  geom_dotplot(fill="black", binaxis='y', stackdir='center',position=position_dodge(0.5), binwidth= 0.03)+
+  
+  #adding the significance letters manualy
+  geom_text(aes(x, y, label=lab),
+            data=data.frame(x=c("Female","Male"),
+                            y=c(6,8.5),
+                            lab=c("a", "b"),
+                            size=4))
+
+fig
 
 
