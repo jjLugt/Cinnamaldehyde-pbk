@@ -106,7 +106,7 @@ S9_scaling_L <- 143 * (V_L * 1000) #scaling factor for S9 fraction per g tissue
 
 
 #First order rate constants
-k_L_CA   <-  5*10^(-3)* 60 / 1000 * S9_scaling_L   #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the liver (L/h)
+k_L_CA   <-  7.4*10^(-3)* 60 / 1000 * S9_scaling_L   #Scaled first-order rate constant for enzymatic oxidation of cinnamaldehyde in the liver (L/h)
 k_L_GST  <-  6.2*10^(-2)* 60 / 1000 * S9_scaling_L  #Scaled first-order rate constant for enzymatic conjugation of cinnamaldehyde with GSH in the liver (L/h)
 
 #--Michaelis menten constants--#
