@@ -32,7 +32,7 @@ plot(mass_at_t_single[,1])
 #cinnamaldehyde model Rat
 #Mass balance calculation rxode inhalation complete
 mass_df <- solve.pbk_rat/BW * MW /1e+3
-mass_df <- mass_df[,c(66:84,86,88:92,94,96,97)]
+mass_df <- mass_df[,c(66:84,86,88:92,94,96)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 for (i in 1:nrow(mass_df)){
@@ -135,7 +135,7 @@ library(car)
 
 setwd("C:/Users/OrfeasPetropoulos/OneDrive - Wageningen University & Research/joris")
 
-data<- read.csv("melt_boxplot_250mg_oral.csv")
+data<- read.csv("melt_boxplot_250mg_inhalation_cmax")
 unique(data$id)
 data$id <- factor(data$id)
 unique(data$variable)

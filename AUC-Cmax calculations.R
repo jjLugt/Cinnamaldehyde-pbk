@@ -13,7 +13,9 @@ library(plotly)
 library(PKNCA)
 library(ggplot2)
 
-#single Human model
+#---------------Single rat and Human models-----------------
+
+#-----------single Human model-------------------
 #Making a dataframe for the calculations
 AUC_single_human<- solve.pbk[,c(1,11,17,23,29,35,49)]
 
@@ -284,7 +286,7 @@ results_obj_manual$result
 write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_SI_AUC")
 
 
-
+#-----------Single Rat--------------------
 #------------------250mg dose Rat AUC values-------------------# 
 #AUC calculations
 #single Human model
@@ -523,7 +525,7 @@ results_obj_manual$result
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250mg_oral_single_rat_C_F_AUC")
 
-
+#-----------Plotting single model results-------------
 #Plotting rat and human results of the auc calculations
 results_250mg_oral_single_human_C_B_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_B_AUC")
 results_250mg_oral_single_human_C_L_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_human_C_L_AUC")
@@ -571,8 +573,8 @@ results_250mg_oral_single_rat_C_F_AUC <- read.csv("D:/Joris/Toxicology and Envir
 results_250mg_oral_single_rat_C_Pu_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_rat_C_Pu_AUC")
 
 
-#--------------------Population model-----------------
-#------------Inhalation calculations---------------
+#--------------------------------------------Population model-----------------
+#------------------------Inhalation calculations---------------
 #---------------------Lung compartment-------------------#
 sub_set <- solve.pbk[1:482000,c(1,2,12)]
 
@@ -874,7 +876,7 @@ summary(results_obj_manual)
 write.csv(results_obj_manual$result, "results_250_inhalation_C_SI.csv")
 
 
-#-----------------------------------Inhalation closed space--------------------------------------------------------------------------------------------
+#-----------------Inhalation closed space--------------------------------------------------------------------------------------------
 #---------------------Lung compartment-------------------#
 sub_set <- solve.pbk[1:482000,c(1,2,12)]
 
@@ -1176,7 +1178,7 @@ summary(results_obj_manual)
 write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_SI.csv")
 
 
-#----------------------------------------Oral calculations-------------
+#------------------------Oral calculations-------------
 #---------------------Lung compartment-------------------#
 sub_set <- solve.pbk[1:482000,c(1,2,12)]
 
@@ -1479,10 +1481,8 @@ write.csv(results_obj_manual$result, "results_250_oral_C_SI.csv")
 
 
 ---------------------------------------------------------------------------------------------------------------
-#---------------------------Extracting the calculated PKNCA data----------
+#----------------------------Extracting the calculated PKNCA data----------
 #---------------------------------------------Oral exposure---------------
-
-
 #------C_Pu data extraction---#
 #Loading data back in
 results_250_oral_C_Pu <- read_csv("results_250_oral_C_Pu.csv")
@@ -1728,6 +1728,11 @@ scale_color_manual(values = c( "Male" = "blue",
                    labels= c( "Male", "Female"),
                    name= "Sex")+
   scale_y_continuous(trans='log10')+
+  geom_text(aes(x, y, label=lab),
+            data=data.frame(x=c("Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine"),
+                            y=c(13,45,6,10,350,15,10000),
+                            lab=c("a","a","a","a","a","a","b"),
+                            size=4))+
   labs(x='Organs', y='umol/l', title='Oral Cmax values 250mg dose Human')+
   theme_classic()+
   theme(axis.title = element_text(size=15),
@@ -1919,6 +1924,11 @@ p_auc_250mg_inhalation<-ggplot(melt_boxplot_250mg_inhalation ,aes(x=variable,y=v
                                  "Female" = "red"),
                      labels= c( "Male", "Female"),
                      name= "Sex")+
+  geom_text(aes(x, y, label=lab),
+            data=data.frame(x=c("Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine"),
+                            y=c(100,170,6000,400,2,250,80),
+                            lab=c("d","c","a","b","e,d","c","e,d"),#needs fixing
+                            size=4))+
   scale_y_continuous(trans='log10')+
   labs(x='Organs', y='umol/l-hr', title='Inhalation AUC values 250mg dose Human')+
   theme_classic()+
@@ -1968,6 +1978,11 @@ p_cmax_250mg_inhalation<-ggplot(melt_boxplot_250mg_inhalation ,aes(x=variable,y=
                      labels= c( "Male", "Female"),
                      name= "Sex")+
   scale_y_continuous(trans='log10')+
+  geom_text(aes(x, y, label=lab),
+            data=data.frame(x=c("Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine"),
+                            y=c(700,1000,600,500,12,1800,800),
+                            lab=c("c,d","b","f,e","d,c","g","a","e,f"),#needs fixing
+                            size=4))+
   labs(x='Organs', y='umol/l', title='Inhalation Cmax values 250mg dose Human')+
   theme_classic()+
   theme(axis.title = element_text(size=15),
