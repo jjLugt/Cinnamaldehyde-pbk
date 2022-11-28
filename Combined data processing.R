@@ -108,17 +108,53 @@ for (i in 1:2000){
   percentage_metabolised_popgen <-append(percentage_metabolised_popgen, metabolised)
 }
 
-metabolised_data_frame <- as.data.frame(melt(percentage_metabolised_popgen))
 
-male_metabolised_data<- metabolised_data_frame[1:1000,]
-female_metabolised_data<- metabolised_data_frame[1:2000,]
+meta_extraction <- meta_extraction[-c(1,3,4)]
+meta_extraction[,2] <- as.data.frame(percentage_metabolised_popgen)
+
+
+colnames(meta_extraction)<-c("id","percentage metabolised")
+melt_meta_extraction <- melt(meta_extraction,id=c("id")) 
+
+
+single_meta<- as.data.frame(c("single","percentage metabolised","97.34"))
+single_meta <- as.data.frame(t(single_meta))
+
+rownames(single_meta) <-c("2001")
+
+melt_meta_extraction$id[meta_extraction$id == 1:1000] <- "Male"  
+melt_meta_extraction$id[meta_extraction$id == 1001:2000] <- "Female" 
+melt_meta_extraction[2001,1:3]<-single_meta[1,1:3]
+
+
+p_metabolism<-ggplot(melt_meta_extraction ,aes(x=variable,y=value))+
+  geom_boxplot(notch=TRUE)+
+  geom_jitter(aes(col=id),alpha=0.6)+
+  scale_color_manual(values = c( "Male" = "blue",
+                                 "Female" = "red"),
+                     labels= c( "Male", "Female"),
+                     name= "Sex")+
+  labs(x='', y='Percentage metabolised', title='Carboxylic acid metabolism Human')+
+  theme_classic()+
+  theme(axis.title = element_text(size=15),
+        axis.text = element_text(size = 15),
+        title = element_text(size=20))+
+  theme(legend.text = element_text(size=15, color="black"),
+        legend.position ="top")
+ggplotly(p_metabolism)
+
 
 boxplot(male_metabolised_data,female_metabolised_data,
         ylab= "percentage metabolised into carboxylic acid metabolites",
         names= c("Male", "Female"),
         col="orange",
         las=2,
-        title="Amount metabolized to carboxylic acid")
+        title="Amount metabolized to carboxylic acid")+
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
 hist(male_metabolised_data)
 hist(female_metabolised_data)
 
@@ -315,5 +351,73 @@ fig <- ggplot(subset(data, variable %in% c("Lung")),
                             size=4))
 
 fig
+
+
+
+#visualisation of popgen results
+#Venous blood concentration
+tab_solve_C_V=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
+for (i in 1:(N+NF)) {
+  tab.i=solve.pbk[which(solve.pbk[,"id"]==i),]                  #Put all individuals in data frame
+  tab.i=as.data.frame(tab.i)
+  tab_solve_C_V[,i]=tab.i$C_V
+}
+
+tab_C_V=as.data.frame(matrix(NA,time.end/time.frame+1,4))       #Create an empty data frame with amount of timepoints=amount of rows and 4 columns
+tab_C_V[,1]=c(seq(time.0,time.end,by=time.frame))               #Timepoints in first column
+for (i in 1:(time.end/time.frame+1)) {
+  tab_C_V[i,2]=quantile(tab_solve_C_V[i,],0.025, na.rm = TRUE)      #Lower bound of confidence interval in second column
+  tab_C_V[i,3]=quantile(tab_solve_C_V[i,],0.5, na.rm = TRUE)        #Median in third column
+  tab_C_V[i,4]=quantile(tab_solve_C_V[i,],0.975, na.rm = TRUE)      #Upper bound of confidence interval in fourth column
+}
+colnames(tab_C_V)=c("time","CV_P2.5","CV_P50","CV_P97.5")       #Add column names
+
+gg <- ggplot(tab_C_V)+
+  geom_line(aes(x=time, y=CV_P2.5), linetype = "dashed")+
+  geom_line(aes(x=time, y=CV_P50), color = "red", size = 1)+
+  geom_line(aes(x=time, y=CV_P97.5), linetype = "dashed")+
+  labs(y = "Venous Blood concentration ",
+       x = "Time (h)")  +
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+
+gg
+
+#arterial blood concentration
+tab_solve_C_A=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
+for (i in 1:(N+NF)) {
+  tab.i=solve.pbk[which(solve.pbk[,"id"]==i),]                  #Put all individuals in data frame
+  tab.i=as.data.frame(tab.i)
+  tab_solve_C_A[,i]=tab.i$C_A
+}
+
+tab_C_A=as.data.frame(matrix(NA,time.end/time.frame+1,4))       #Create an empty data frame with amount of timepoints=amount of rows and 4 columns
+tab_C_A[,1]=c(seq(time.0,time.end,by=time.frame))               #Timepoints in first column
+for (i in 1:(time.end/time.frame+1)) {
+  tab_C_A[i,2]=quantile(tab_solve_C_A[i,],0.025, na.rm = TRUE)      #Lower bound of confidence interval in second column
+  tab_C_A[i,3]=quantile(tab_solve_C_A[i,],0.5, na.rm = TRUE)        #Median in third column
+  tab_C_A[i,4]=quantile(tab_solve_C_A[i,],0.975, na.rm = TRUE)      #Upper bound of confidence interval in fourth column
+}
+colnames(tab_C_A)=c("time","CA_P2.5","CA_P50","CA_P97.5")       #Add column names
+
+gg <- ggplot(tab_C_A)+
+  geom_line(aes(x=time, y=CA_P2.5), linetype = "dashed")+
+  geom_line(aes(x=time, y=CA_P50), color = "red", size = 1)+
+  geom_line(aes(x=time, y=CA_P97.5), linetype = "dashed")+
+  labs(y = "Arterial Blood concentration ",
+       x = "Time (h)")  +
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+
+gg
+
+
+
 
 
