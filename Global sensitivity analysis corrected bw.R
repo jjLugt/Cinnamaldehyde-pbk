@@ -394,7 +394,7 @@ write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\GSA_phys_human_2.8mg_inhalation_corre
 
 
 #Loading extracted simulation data. 
-solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SA_human_2.8mg_inhalation_C_V_corrected", row.names=1)
+solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SA_human_2.8mg_inhalation_C_Pu_corrected", row.names=1)
 
 #Analyzing the generated data set 
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
@@ -852,7 +852,7 @@ p_1.5<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
   coord_flip()+
    geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
                 position=position_dodge(.9))+
-  ggtitle('90 min hours') 
+  ggtitle('90 mins') 
 
 t_SA <-2
 
@@ -1167,5 +1167,5 @@ p_8<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
                 position=position_dodge(.9)) +
 ggtitle('8 hours')
 
-grid.arrange(p_0.5, p_1, p_1.5, p_2, p_4, p_8, ncol=3, nrow =3, top="Concentration in Blood Human 250mg Oral",common.legend = TRUE)
+grid.arrange(p_0.5, p_1, p_1.5, p_2, p_4, p_8, ncol=3, nrow =3, top="Concentration in blood Human 250mg oral exposure")
 

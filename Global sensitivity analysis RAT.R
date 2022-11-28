@@ -109,14 +109,14 @@ Km_SI_GST_G <- 100 #Km toward GSH for enzymatic conjugation of cinnamaldehyde in
 
 k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 
-Ka <- 1.37  #Absorption rate constant for uptake in the Small intestine in per H
+Ka <- 0.2  #Absorption rate constant for uptake in the Small intestine in per H
 
-#Al parameters that have a body weight component can only be defined after a distribution of bodyweight valus has been made. parameters that consist of a body weight term
+#Al parameters that have a body weight component can only be defined after a distribution of body weight values has been made. parameters that consist of a body weight term
 #multiplied by a factor should also have a distribution. this is defined below. 
 #example 
 #1<- a * x(tissue volume)
 
-#1 can only be defined after x has been defined. the factor a should also have its one distrubtion to see the impact of this term. so this is seperately done
+#1 can only be defined after x has been defined. the factor a should also have its one distribution to see the impact of this term. so this is seperately done
 
 
 G_SYN_L_Factor     <- 869
@@ -390,12 +390,12 @@ phys <- sa$X
 
 
 #Writing the result into a file so that the environment can be cleaned to conserve memory
-write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\RAT_250mg_inhalation_phys", row.names = TRUE)
+write.csv(phys,"D:/PBK/Cinnamaldehyde-pbk\\RAT_250mg_oral_phys_0.2ka", row.names = TRUE)
 
 
 
 #Loading extracted simulation data. 
-solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SA_rat_250mg_inhalation_C_V_corrected", row.names=1)
+solve.pbk.sa <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SA_rat_250mg_oral_C_Pu_corrected", row.names=1)
 
 #Analysing the generated data set 
 solve.pbk.sa=solve.pbk.sa[which(solve.pbk.sa[,"time"]==0.2|solve.pbk.sa[,"time"]==0.5|solve.pbk.sa[,"time"]==1|solve.pbk.sa[,"time"]==1.5| 
@@ -424,9 +424,9 @@ SimRes[,7]=tab7[,2]
 SimRes[,8]=tab8[,2]
 
 
-write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes_rat_250mg_inhalation_C_V_corrected", row.names = TRUE)
+write.csv(SimRes,"D:/PBK/Cinnamaldehyde-pbk\\SimRes_rat_250mg_oral_C_Pu_corrected", row.names = TRUE)
 
-SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes_RAT_oral_250mg_CV_corrected", row.names=1)
+SimRes <- read.csv("D:/PBK/Cinnamaldehyde-pbk\\SimRes_rat_250mg_oral_C_Pu_corrected", row.names=1)
 
 #Redefining these two variables as these are also used with dist_parm creation but not all of thet variables in dist_parm are used in the SA calculation
 #so using them here would create an error.
@@ -854,7 +854,7 @@ p_1.5<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
   coord_flip()+
   geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
                 position=position_dodge(.9))+
-  ggtitle('90 min hours') 
+  ggtitle('90 mins') 
 
 t_SA <-2
 
@@ -1170,6 +1170,6 @@ p_8<-ggplot(Global_sa_top_ten,(aes(fill=indices,x=variable, y=value )))+
   ggtitle('8 hours')
 
 
-grid.arrange( p_0.5, p_1, p_1.5, p_2, p_4, p_8, ncol=3, nrow =2, top="Concentration in Lung tissue Rat 250mg Oral")
+grid.arrange( p_0.5, p_1, p_1.5, p_2, p_4, p_8, ncol=3, nrow =2, top="Concentration in Lung tissue Rat 250mg oral exposure")
 
 
