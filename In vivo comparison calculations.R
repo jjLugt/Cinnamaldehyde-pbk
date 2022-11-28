@@ -47,7 +47,7 @@ p1 <- plot_ly(Combined_data_file_for_graph_500mg, x=~time, y=Combined_data_file_
               hovertext= ~sample)%>%
   layout(title= 'Blood concentration comparison dose = 500mg/kg-bw',
          xaxis= list(title= 'Time (hours)'),
-         yaxis= list(title= 'Cinnamaldehyde concentration in μmol/l'),
+         yaxis= list(title= 'Cinnamaldehyde concentration in μmol/l', type="log"),
          legend  =list(title= list(text='Type of Data')))
 p1
 
@@ -405,7 +405,7 @@ colnames(SIM_data_pred)<- c("Time","sim","ID","KIWA","sim kiwa")
 
 
 
-p <-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$KIWA)) +
+p <-ggplot(SIM_data_pred, aes(x=SIM_data_pred$"sim kiwa", y=SIM_data_pred$KIWA)) +
   geom_point(size=3) +
   geom_abline(intercept=0, slope=1) +
   labs(x='Predicted Values R', y='Predicted values Kiwa', title='Predicted vs. predicted Values 20mg IV dose Kiwa')+
@@ -432,8 +432,8 @@ p <-ggplot(SIM_data_kiwa, aes(x=SIM_data_kiwa$sim, y=SIM_data_kiwa$ZAO)) +
   geom_point(size=3) +
   geom_abline(intercept=0, slope=1) +
   labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 20mg IV dose ZAO data')+
-  ylim(0,10)+
-  xlim(0,10)+
+  ylim(0,15)+
+  xlim(0,15)+
   theme_classic()+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),

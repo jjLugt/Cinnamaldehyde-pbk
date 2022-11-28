@@ -20,8 +20,8 @@ time.end                <-24        #time end of simulation
 time.frame              <-0.1     #time steps of simulation
 N                       <-1000     #Number of males
 NF                      <-1000     #Number of females
-Oral_Dose_in_mg_bw      <-0      #Dose in mg/kg-bw
-Inhalation_Dose_in_mg_bw<-250       #The inhaled dose in mg/kg
+Oral_Dose_in_mg_bw      <-0.7      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw<-0       #The inhaled dose in mg/kg
 iv_dose_in_mg_bw        <-0       #IV administered dose in mg/kg/bw
 Volume_exposure_chamber <-10       #volume exposure chamber in L
 MW                      <-132.16   #The molecular weight of Cinnamaldehyde
