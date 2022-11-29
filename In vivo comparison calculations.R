@@ -91,7 +91,7 @@ p<-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$rat_1)) +
 ggsave(plot=p,"Pred vs actual 500mg oral Yuan data.png",
        width= 11.69, height= 8.3, dpi= 250)
 
-#plotting new plot with adjusted parameters for ka and k_l_ca
+#plotting new plot with adjusted parameters for ka
 p<-ggplot(SIM_data_pred, aes(x=SIM_data_pred$ka, y=SIM_data_pred$rat_1)) +
   geom_point() +
   geom_abline(intercept=0, slope=1) +
@@ -112,15 +112,19 @@ ggsave(plot=p,"Pred vs actual 500mg oral Yuan data ka .png",
 #Making a pred vs pred plot
 
 Kiwa_data      <-Combined_data_file_for_graph_500mg[c(58,60:72),]
-SIM_data_pred  <-Combined_data_file_for_graph_500mg[c(374,375,376,379,384,401,427,468,505,538,574,607,640,667),]
-SIM_data_pred[2,2]  <-blood_data[6,2]
-SIM_data_pred[3,2]  <-blood_data[16,2]
-SIM_data_pred[4,3]<- blood_data[47,2]
+SIM_pred_pred  <-Combined_data_file_for_graph_500mg[c(374,375,376,379,384,401,427,468,505,538,574,607,640,667),]
+SIM_pred_pred[,3]<- as.data.frame(Kiwa_data[,2])
+SIM_pred_pred[,4]<-SIM_pred_pred[,2]/SIM_pred_pred[,3]
+SIM_pred_pred[,5]<-SIM_pred_pred[,3]/SIM_pred_pred[,2]
+colnames(SIM_pred_pred)<- c("Time","sim","kiwa","sim/kiwa","kiwa/sim")
 
-colnames(SIM_data_pred)<- c("Time","sim","kiwa")
-p<-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$kiwa)) +
+
+
+p<-ggplot(SIM_pred_pred, aes(x=sim, y=kiwa)) +
   geom_point() +
   geom_abline(intercept=0, slope=1) +
+  ylim(0,1000)+
+  xlim(0,1000)+
   labs(x='Predicted Values R', y='Predicted values Kiwa', title='Predicted vs. Predicted Values 500mg oral dose')+
   theme_classic()+
   theme(axis.title = element_text(size=14),
@@ -129,6 +133,7 @@ p<-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$kiwa)) +
         title = element_text(size=20))
 ggsave(plot=p,"Pred vs pred 500mg oral.png",
        width= 11.69, height= 8.3, dpi= 250)
+
 
 #Calculating AUC values vor the comparison graphs made above  
 
@@ -212,7 +217,7 @@ p1 <- plot_ly(Combined_data_file_for_graph_250mg, x=~time, y=Combined_data_file_
          legend  =list(title= list(text='Type of Data')))
 p1
 
-g <- ggplot(Combined_data_file_for_graph_250mg,aes(time,Combined_data_file_for_graph_250mg$`ug/ml`,color=ID))
+g <- ggplot(Combined_data_file_for_graph_250mg,aes(time,Combined_data_file_for_graph_250mg$`ug.ml`,color=ID))
 
 g + geom_point()+ scale_y_continuous(trans='log10')+
   labs(subtitle="Oral dose 250mg/kg/bw", 

@@ -14,14 +14,14 @@ library(PKNCA)
 set.seed(15204)         #to ensure a reproducible output
 amount.units            <-"umol"
 time.units              <-"h"
-nbr.doses               <-1        #number of doses
+nbr.doses               <-30        #number of doses
 time.0                  <-0        #time start dosing
 time.end                <-24        #time end of simulation
 time.frame              <-0.1     #time steps of simulation
 N                       <-1000     #Number of males
 NF                      <-1000     #Number of females
-Oral_Dose_in_mg_bw      <-0.7      #Dose in mg/kg-bw
-Inhalation_Dose_in_mg_bw<-0       #The inhaled dose in mg/kg
+Oral_Dose_in_mg_bw      <-0      #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw<-2.8       #The inhaled dose in mg/kg
 iv_dose_in_mg_bw        <-0       #IV administered dose in mg/kg/bw
 Volume_exposure_chamber <-10       #volume exposure chamber in L
 MW                      <-132.16   #The molecular weight of Cinnamaldehyde
@@ -443,9 +443,9 @@ inits <- c("A_GI"         =0,
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=1:nrow(phys),seq(from = time.0, to = time.end, by = time.frame))%>%
   et(id=1:nrow(phys),amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(id=1:nrow(phys),amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.01, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%
-  et(id=1:nrow(phys),amt=phys$init_GSH_SI, dur=0.01, cmt="AM_SIc_GSH", nbr.doses=nbr.doses)%>%
+  et(id=1:nrow(phys),amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.001, cmt="A_inhalation_Dose", nbr.doses=nbr.doses,ii=0.008)%>%
+  et(id=1:nrow(phys),amt=phys$init_GSH_SI, dur=0.001, cmt="AM_SIc_GSH", nbr.doses=1)%>%
   et(id=1:nrow(phys),amt=(iv_dose_in_mg_bw) * phys$BW/ MW  * 1e+3, dur=0.005,cmt="A_V",nbr.doses=nbr.doses)%>%
-  et(id=1:nrow(phys),amt=phys$init_GSH_L, dur=0.01, cmt="AM_Lc_GSH", nbr.doses=1)
+  et(id=1:nrow(phys),amt=phys$init_GSH_L, dur=0.001, cmt="AM_Lc_GSH", nbr.doses=1)
   
 

@@ -13,7 +13,7 @@ library(plotly)
 library(PKNCA)
 library(ggplot2)
 
-#single Human model
+#----------------------------------single Human model------------------
 #Making a dataframe for the calculations
 AUC_single_human<- solve.pbk[,c(1,11,17,23,29,35,49)]
 
@@ -571,9 +571,9 @@ results_250mg_oral_single_rat_C_F_AUC <- read.csv("D:/Joris/Toxicology and Envir
 results_250mg_oral_single_rat_C_Pu_AUC <- read.csv("D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK/results_250mg_oral_single_rat_C_Pu_AUC")
 
 
-#--------------------Population model-----------------
-#------------Inhalation calculations---------------
-#---------------------Lung compartment-------------------#
+#--------------------------------Population model-----------------
+#-------------------------Inhalation calculations---------------
+#---------------------Lung compartment-------------------
 sub_set <- solve.pbk[1:482000,c(1,2,12)]
 
 conc_C <- PKNCAconc(sub_set, C_Pu~time|id)
@@ -617,7 +617,7 @@ write.csv(results_obj_manual$result, "results_250_inhalation_C_Pu.csv")
 
 
 
-#---------------------Liver compartment-------------------#
+#---------------------Liver compartment-------------------
 #Liver compartment concentration
 sub_set <- solve.pbk[1:482000,c(1,2,49)]
 conc_C <- PKNCAconc(sub_set, C_L~time|id)
@@ -659,7 +659,7 @@ summary(results_obj_manual)
 write.csv(results_obj_manual$result, "results_250_inhalation_C_L.csv")
 
 
-#---------------------Blood compartment-------------------#
+#---------------------Blood compartment-------------------
 #Blood compartment concentration
 sub_set <- solve.pbk[1:482000,c(1,2,4,5)]
 
@@ -708,7 +708,7 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_inhalation_C_B.csv")
 
-#---------------------Slowly compartment-------------------#
+#---------------------Slowly compartment-------------------
 #Slowly perfused compartment
 sub_set <- solve.pbk[1:482000,c(1,2,30)]
 conc_C <- PKNCAconc(sub_set, C_SP~time|id)
@@ -749,7 +749,7 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_inhalation_C_SP.csv")
 
-#---------------------Richly  compartment-------------------#
+#---------------------Richly  compartment-------------------
 #richly perfused compartment
 sub_set <- solve.pbk[1:482000,c(1,2,24)]
 conc_C <- PKNCAconc(sub_set, C_RP~time|id)
@@ -790,7 +790,7 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_inhalation_C_RP.csv")
 
-#---------------------Fat compartment-------------------#
+#---------------------Fat compartment-------------------
 #Fat compartment
 sub_set <- solve.pbk[1:482000,c(1,2,18)]
 conc_C <- PKNCAconc(sub_set, C_F~time|id)
@@ -831,7 +831,7 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_inhalation_C_F.csv")
 
-#---------------------Small Intestine compartment-------------------#
+#---------------------Small Intestine compartment-------------------
 
 #SI compartment
 sub_set <- solve.pbk[1:482000,c(1,2,36)]
@@ -875,7 +875,7 @@ write.csv(results_obj_manual$result, "results_250_inhalation_C_SI.csv")
 
 
 #-----------------------------------Inhalation closed space--------------------------------------------------------------------------------------------
-#---------------------Lung compartment-------------------#
+#---------------------Lung compartment-------------------
 sub_set <- solve.pbk[1:482000,c(1,2,12)]
 
 conc_C <- PKNCAconc(sub_set, C_Pu~time|id)
@@ -919,7 +919,7 @@ write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_Pu.csv")
 
 
 
-#---------------------Liver compartment-------------------#
+#---------------------Liver compartment-------------------
 #Liver compartment concentration
 sub_set <- solve.pbk[1:482000,c(1,2,49)]
 conc_C <- PKNCAconc(sub_set, C_L~time|id)
@@ -961,7 +961,7 @@ summary(results_obj_manual)
 write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_L.csv")
 
 
-#---------------------Blood compartment-------------------#
+#---------------------Blood compartment-------------------
 #Blood compartment concentration
 sub_set <- solve.pbk[1:482000,c(1,2,4,5)]
 
@@ -1010,7 +1010,7 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_B.csv")
 
-#---------------------Slowly compartment-------------------#
+#---------------------Slowly compartment-------------------
 #Slowly perfused compartment
 sub_set <- solve.pbk[1:482000,c(1,2,30)]
 conc_C <- PKNCAconc(sub_set, C_SP~time|id)
@@ -1051,7 +1051,7 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_SP.csv")
 
-#---------------------Richly  compartment-------------------#
+#---------------------Richly  compartment-------------------
 #richly perfused compartment
 sub_set <- solve.pbk[1:482000,c(1,2,24)]
 conc_C <- PKNCAconc(sub_set, C_RP~time|id)
@@ -1092,7 +1092,7 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_RP.csv")
 
-#---------------------Fat compartment-------------------#
+#---------------------Fat compartment-------------------
 #Fat compartment
 sub_set <- solve.pbk[1:482000,c(1,2,18)]
 conc_C <- PKNCAconc(sub_set, C_F~time|id)
@@ -1133,7 +1133,7 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_F.csv")
 
-#---------------------Small Intestine compartment-------------------#
+#---------------------Small Intestine compartment-------------------
 
 #SI compartment
 sub_set <- solve.pbk[1:482000,c(1,2,36)]
@@ -1177,7 +1177,7 @@ write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_SI.csv")
 
 
 #----------------------------------------Oral calculations-------------
-#---------------------Lung compartment-------------------#
+#---------------------Lung compartment-------------------
 sub_set <- solve.pbk[1:482000,c(1,2,12)]
 
 conc_C <- PKNCAconc(sub_set, C_Pu~time|id)
@@ -1221,7 +1221,7 @@ write.csv(results_obj_manual$result, "results_250_oral_C_Pu.csv")
 
 
 
-#---------------------Liver compartment-------------------#
+#---------------------Liver compartment-------------------
 #Liver compartment concentration
 sub_set <- solve.pbk[1:482000,c(1,2,49)]
 conc_C <- PKNCAconc(sub_set, C_L~time|id)
@@ -1261,9 +1261,7 @@ summary(results_obj_manual)
 
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_oral_C_L.csv")
-
-
-#---------------------Blood compartment-------------------#
+#---------------------Blood compartment-------------------
 #Blood compartment concentration
 sub_set <- solve.pbk[1:482000,c(1,2,4,5)]
 
@@ -1311,8 +1309,7 @@ summary(results_obj_manual)
 
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_oral_C_B.csv")
-
-#---------------------Slowly compartment-------------------#
+#---------------------Slowly compartment-------------------
 #Slowly perfused compartment
 sub_set <- solve.pbk[1:482000,c(1,2,30)]
 conc_C <- PKNCAconc(sub_set, C_SP~time|id)
@@ -1353,7 +1350,7 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_oral_C_SP.csv")
 
-#---------------------Richly  compartment-------------------#
+#---------------------Richly  compartment-------------------
 #richly perfused compartment
 sub_set <- solve.pbk[1:482000,c(1,2,24)]
 conc_C <- PKNCAconc(sub_set, C_RP~time|id)
@@ -1394,7 +1391,7 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_oral_C_RP.csv")
 
-#---------------------Fat compartment-------------------#
+#---------------------Fat compartment-------------------
 #Fat compartment
 sub_set <- solve.pbk[1:482000,c(1,2,18)]
 conc_C <- PKNCAconc(sub_set, C_F~time|id)
@@ -1435,7 +1432,7 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250_oral_C_F.csv")
 
-#---------------------Small Intestine compartment-------------------#
+#---------------------Small Intestine compartment-------------------
 
 #SI compartment
 sub_set <- solve.pbk[1:482000,c(1,2,36)]
