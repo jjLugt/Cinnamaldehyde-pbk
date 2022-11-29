@@ -171,7 +171,7 @@ library(car)
 
 setwd("C:/Users/OrfeasPetropoulos/OneDrive - Wageningen University & Research/joris")
 
-data<- read.csv("melt_boxplot_250mg_oral.csv")
+data<- read.csv("melt_boxplot_250mg_inhalation_cmax")
 unique(data$id)
 data$id <- factor(data$id)
 unique(data$variable)
