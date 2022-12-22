@@ -1705,18 +1705,18 @@ write.csv(melt_boxplot_250mg_oral,"D:/PBK/Cinnamaldehyde-pbk\\melt_boxplot_250mg
 
 p_auc_250mg_oral<-ggplot(melt_boxplot_250mg_oral ,aes(x=variable,y=value))+
   geom_boxplot(notch=TRUE)+
-  geom_jitter(aes(col=id),alpha=0.3)+
+  geom_jitter(aes(col=id),alpha=0.15)+
   scale_color_manual(values = c( "Male" = "blue",
                                  "Female" = "red"),
                      labels= c( "Male", "Female"),
                      name= "Sex")+
   geom_text(aes(x, y, label=lab),
             data=data.frame(x=c("Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine"),
-                            y=c(13,45,80,10,350,15,10000),
+                            y=c(13,45,80,10,350,15,8000),
                             lab=c("a","a","a","a","a","a","b"),
                             size=4))+
   scale_y_continuous(trans='log10')+
-  labs(x='Organs', y='umol/l-hr', title='Oral AUC values 250mg dose Human')+
+  labs(x='Organs', y='μmol/l-hr', title='AUC values 250mg oral dose Human')+
   theme_classic()+
   theme(axis.title = element_text(size=15),
         axis.text = element_text(size = 15),
