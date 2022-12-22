@@ -10,7 +10,7 @@ library(truncnorm)
 library(reshape2)
 library(plotly)
 library(PKNCA)
-
+library(bio3d)
 
 #Generating a file for the comparison with in vivo data 
 blood_data <- as.data.frame(solve.pbk_rat[,c(1,3,4)])
@@ -54,12 +54,13 @@ p1
 g <- ggplot(Combined_data_file_for_graph_500mg,aes(time,Combined_data_file_for_graph_500mg$'umol.l',color=ID))
 
 g + geom_point()+ scale_y_continuous(trans='log10')+
-  labs(subtitle="Oral dose 500mg/kg/bw", 
-       y="Cinnamaldehyde concentration in μmol/l", 
+  labs(subtitle="Oral dose 500mg/kg-BW", 
+       y="Cinnamaldehyde concentration (μmol/L)", 
        x="Time in Hours", 
        title="Cinnamaldehyde concentration in blood", 
        caption="PBK model")
-
+ggsave(plot=g,"CNMA in blood 500mg oral comparison.png",
+       width= 11.69, height= 8.3, dpi= 250)
 
 RAT_data_obs_1 <- Combined_data_file_for_graph_500mg[1:15,]
 RAT_data_obs_2 <- Combined_data_file_for_graph_500mg[16:30,]
@@ -74,13 +75,39 @@ SIM_data_pred[,5]<- as.data.frame(RAT_data_obs_2[,2])
 SIM_data_pred[,6]<- as.data.frame(RAT_data_obs_3[1:15,2])
 SIM_data_pred[,7]<- as.data.frame(SIM_data_pred_kiwa[,2])
 SIM_data_pred[,8]<- as.data.frame(SIM_data_ka[,2])
+
 colnames(SIM_data_pred)<- c("Time","sim","ID","rat_1","rat_2","rat_3","SIM-Kiwa","ka")
+
+
+#sim rat 1
+rsmesim_rat1<-sqrt(mean((SIM_data_pred$sim - SIM_data_pred$rat_1)^2))
+
+#sim rat 2
+rsmesim_rat2<- sqrt(mean((SIM_data_pred$sim - SIM_data_pred$rat_2)^2))
+
+#sim rat 3
+rsmesim_rat3<- sqrt(mean((SIM_data_pred$sim - SIM_data_pred$rat_3)^2))
+
+mean_RSME<-(rsmesim_rat1+rsmesim_rat2+rsmesim_rat3)/3
+
+RSMD_500mg_1<- rmsd(a=SIM_data_pred$sim, b=SIM_data_pred$rat_1)
+RSMD_500mg_2<- rmsd(a=SIM_data_pred$sim, b=SIM_data_pred$rat_2)
+RSMD_500mg_3<- rmsd(a=SIM_data_pred$sim, b=SIM_data_pred$rat_3)
 
 p<-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$rat_1)) +
   geom_point() +
   geom_abline(intercept=0, slope=1) +
-  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 500mg oral dose Yuan data ')+
-  ylim(0,50)+
+  geom_line(data=tibble(x=c(0, 60),y=c(0,60)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 60),y=c(0,60)),linetype = "dashed",
+            aes(x=x,y=y*2),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 60),y=c(0,60)),linetype = "dashed",
+            aes(x=x,y=y*0.5),
+            inherit.aes = FALSE)+
+  annotate("text", x = 10, y = 75, label = "RSMD: 21.9", size= 8)+
+  labs(x='Predicted Values(μmol/L)', y='Actual Values(μmol/L)', title='Predicted vs. Actual Values 500mg/kg-BW oral dose',subtitle="Yuan et al 1992")+
   geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_2))+
   geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_3))+
   theme_classic()+
@@ -88,16 +115,40 @@ p<-ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$rat_1)) +
         axis.text = element_text(size = 12),
         legend.position = "none",
         title = element_text(size=20))
-ggsave(plot=p,"Pred vs actual 500mg oral Yuan data.png",
+p
+ggsave(plot=p,"Pred vs actual 500mg oral data.png",
        width= 11.69, height= 8.3, dpi= 250)
+
+#sim rat 1
+rsmesimka_rat1<-sqrt(mean((SIM_data_pred$ka - SIM_data_pred$rat_1)^2))
+
+#sim rat 2
+rsmesimka_rat2<- sqrt(mean((SIM_data_pred$ka - SIM_data_pred$rat_2)^2))
+
+#sim rat 3
+rsmesimka_rat3<- sqrt(mean((SIM_data_pred$ka - SIM_data_pred$rat_3)^2))
+
+mean_RSME_ka<-(rsmesimka_rat1+rsmesimka_rat2+rsmesimka_rat3)/3
+
+RSMD_500mg_ka_1<- rmsd(a=SIM_data_pred$ka, b=SIM_data_pred$rat_1)
+RSMD_500mg_ka_2<- rmsd(a=SIM_data_pred$ka, b=SIM_data_pred$rat_2)
+RSMD_500mg_ka_3<- rmsd(a=SIM_data_pred$ka, b=SIM_data_pred$rat_3)
 
 #plotting new plot with adjusted parameters for ka
 p<-ggplot(SIM_data_pred, aes(x=SIM_data_pred$ka, y=SIM_data_pred$rat_1)) +
   geom_point() +
-  geom_abline(intercept=0, slope=1) +
-  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 500mg oral dose Yuan data ka ')+
-  xlim(0,20)+
-  ylim(0,20)+
+  geom_abline(intercept=0, slope=1)+
+  geom_line(data=tibble(x=c(0, 15),y=c(0,15)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0,15),y=c(0,15)),linetype = "dashed",
+            aes(x=x,y=y*2),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0,15),y=c(0,15)),linetype = "dashed",
+            aes(x=x,y=y*0.5),
+            inherit.aes = FALSE)+
+  labs(x='Predicted Values(μmol/L)', y='Actual Values(μmol/L)', title='Predicted vs. Actual Values 500mg/kg-BW oral dose',subtitle="Yuan et al 1992, Ka = 0.2")+
+  annotate("text", x = 4, y = 20, label = "RSMD: 5.5", size= 8)+
   geom_point(aes(x=SIM_data_pred$ka,y=SIM_data_pred$rat_2))+
   geom_point(aes(x=SIM_data_pred$ka,y=SIM_data_pred$rat_3))+
   theme_classic()+
@@ -105,7 +156,8 @@ p<-ggplot(SIM_data_pred, aes(x=SIM_data_pred$ka, y=SIM_data_pred$rat_1)) +
         axis.text = element_text(size = 12),
         legend.position = "none",
         title = element_text(size=20))
-ggsave(plot=p,"Pred vs actual 500mg oral Yuan data ka .png",
+p
+ggsave(plot=p,"Pred vs actual 500mg oral ka .png",
        width= 11.69, height= 8.3, dpi= 250)
 
 
@@ -119,12 +171,19 @@ SIM_pred_pred[,5]<-SIM_pred_pred[,3]/SIM_pred_pred[,2]
 colnames(SIM_pred_pred)<- c("Time","sim","kiwa","sim/kiwa","kiwa/sim")
 
 
+#sim ka vs kiwa
+rsmesim_kiwa<-sqrt(mean((SIM_pred_pred$sim - SIM_pred_pred$kiwa)^2))
+
+
+RSME_sim_kiwa<-(rsmesim_kiwa)
+
 
 p<-ggplot(SIM_pred_pred, aes(x=sim, y=kiwa)) +
   geom_point() +
   geom_abline(intercept=0, slope=1) +
   ylim(0,1000)+
   xlim(0,1000)+
+  annotate("text", x = 200, y = 750, label = "Mean RSME: 167.03", size= 8)+
   labs(x='Predicted Values R', y='Predicted values Kiwa', title='Predicted vs. Predicted Values 500mg oral dose')+
   theme_classic()+
   theme(axis.title = element_text(size=14),
@@ -220,11 +279,13 @@ p1
 g <- ggplot(Combined_data_file_for_graph_250mg,aes(time,Combined_data_file_for_graph_250mg$`ug.ml`,color=ID))
 
 g + geom_point()+ scale_y_continuous(trans='log10')+
-  labs(subtitle="Oral dose 250mg/kg/bw", 
-       y="Cinnamaldehyde concentration in umol/l", 
+  labs(subtitle="Oral dose 250mg/kg-BW", 
+       y="Cinnamaldehyde concentration (μmol/L)", 
        x="Time in Hours", 
        title="Cinnamaldehyde concentration in blood", 
        caption="Cinnamaldehyde PBK model")
+ggsave(plot=g,"CNMA in blood 250mg oral comparison.png",
+       width= 11.69, height= 8.3, dpi= 250)
 
 RAT_data_obs_1 <- Combined_data_file_for_graph_250mg[21:36,]
 RAT_data_obs_2 <- Combined_data_file_for_graph_250mg[37:52,]
@@ -248,23 +309,80 @@ SIM_data_pred[,10] <- SIM_data_pred[,5]-SIM_data_pred[,7]
 
 colnames(SIM_data_pred)<- c("Time","sim","ID","rat_1", "rat_2","rat_3","SIM_ka","Residual_Rat_1","Residual_Rat1_ka","Residual_Rat2_ka")
 
+
+
+#sim rat 1
+rsmesim_rat1_250<-sqrt(mean((SIM_data_pred$sim - SIM_data_pred$rat_1)^2))
+
+#sim rat 2
+rsmesim_rat2_250<- sqrt(mean((SIM_data_pred$sim - SIM_data_pred$rat_2)^2))
+
+#sim rat 3
+rsmesim_rat3_250<- sqrt(mean((SIM_data_pred$sim - SIM_data_pred$rat_3)^2))
+
+mean_RSME_250<-mean(c(rsmesim_rat1_250,rsmesim_rat2_250,rsmesim_rat3_250))
+
+RSMD_250mg_1<- rmsd(a=SIM_data_pred$sim, b=SIM_data_pred$rat_1)
+RSMD_250mg_2<- rmsd(a=SIM_data_pred$sim, b=SIM_data_pred$rat_2)
+RSMD_250mg_3<- rmsd(a=SIM_data_pred$sim, b=SIM_data_pred$rat_3)
+
 predvsout_250mg <- ggplot(SIM_data_pred, aes(x=SIM_data_pred$sim, y=SIM_data_pred$rat_1)) +
   geom_point() +
-  geom_abline(intercept=0, slope=1) +
-  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 250mg oral Yuan data')+
-  ylim(0,20)+
-  xlim(0,20)+
-  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_2))
+  #geom_abline(intercept=0, slope=1)+
+  geom_line(data=tibble(x=c(0, 30),y=c(0,30)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 30),y=c(0,30)),linetype = "dashed",
+            aes(x=x,y=y*2),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 30),y=c(0,30)),linetype = "dashed",
+            aes(x=x,y=y*0.5),
+            inherit.aes = FALSE)+
+  labs(x='Predicted Values(μmol/L)', y='Actual Values(μmol/L)', title='Predicted vs. Actual Values 250mg/kg-BW oral',subtitle="Yuan et al 1992")+
+  annotate("text", x = 10, y = 40, label = "RSMD: 18.9", size= 8)+
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))+
+  geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_2))+
 geom_point(aes(x=SIM_data_pred$sim,y=SIM_data_pred$rat_3))
+predvsout_250mg
+
+ggsave(plot=predvsout_250mg,"Pred vs data 250mg oral.png",
+       width= 11.69, height= 8.3, dpi= 250)
 
 predvsout_250mg
 
+
+#sim rat 1
+rsmesim_rat1_250ka<-sqrt(mean((SIM_data_pred$SIM_ka - SIM_data_pred$rat_1)^2))
+
+#sim rat 2
+rsmesim_rat2_250ka<- sqrt(mean((SIM_data_pred$SIM_ka - SIM_data_pred$rat_2)^2))
+
+#sim rat 3
+rsmesim_rat3_250ka<- sqrt(mean((SIM_data_pred$SIM_ka - SIM_data_pred$rat_3)^2))
+
+mean_RSME_250ka<-mean(c(rsmesim_rat1_250ka,rsmesim_rat2_250ka,rsmesim_rat3_250ka))
+RSMD_250mg_1_ka<- rmsd(a=SIM_data_pred$SIM_ka, b=SIM_data_pred$rat_1)
+RSMD_250mg_2_ka<- rmsd(a=SIM_data_pred$SIM_ka, b=SIM_data_pred$rat_2)
+RSMD_250mg_3_ka<- rmsd(a=SIM_data_pred$SIM_ka, b=SIM_data_pred$rat_3)
+
 predvsout_250mg_ka <- ggplot(SIM_data_pred, aes(x=SIM_data_pred$SIM_ka, y=SIM_data_pred$rat_1)) +
   geom_point() +
-  geom_abline(intercept=0, slope=1) +
-  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 250mg oral Yuan data')+
-  ylim(0,15)+
-  xlim(0,10)+
+  geom_abline(intercept=0, slope=1)+
+  geom_line(data=tibble(x=c(0, 7.5),y=c(0,7.5)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 7.5),y=c(0,7.5)),linetype = "dashed",
+            aes(x=x,y=y*2),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 7.5),y=c(0,7.5)),linetype = "dashed",
+            aes(x=x,y=y*0.5),
+            inherit.aes = FALSE)+
+  labs(x='Predicted Values(μmol/L)', y='Actual Values(μmol/L)', title='Predicted vs. Actual Values 250mg/kg-BW oral',subtitle="Yuan et al 1992, Ka= 0.2")+
+  annotate("text", x = 2.5, y = 17, label = "RSMD: 4.45", size= 8)+
   geom_point(aes(x=SIM_data_pred$SIM_ka,y=SIM_data_pred$rat_2))+
   geom_point(aes(x=SIM_data_pred$SIM_ka,y=SIM_data_pred$rat_3))+
   theme_classic()+
@@ -272,7 +390,9 @@ predvsout_250mg_ka <- ggplot(SIM_data_pred, aes(x=SIM_data_pred$SIM_ka, y=SIM_da
         axis.text = element_text(size = 12),
         legend.position = "none",
         title = element_text(size=20))
-ggsave(plot=p,"Pred vs actual 250mg oral Yuan data.png",
+predvsout_250mg_ka
+
+ggsave(plot=predvsout_250mg_ka,"Pred vs actual 250mg oral ka data.png",
        width= 11.69, height= 8.3, dpi= 250)
 
 predvsout_250mg_ka
@@ -410,11 +530,17 @@ colnames(SIM_data_pred)<- c("Time","sim","ID","KIWA","sim kiwa")
 
 
 
+#sim ka vs kiwa
+RMSE_sim_kiwa_iv<-sqrt(mean((SIM_data_pred$sim - SIM_data_pred$KIWA)^2))
+
+
+RSME_sim_kiwa<-(rsme_sim_kiwa)
+
+
 p <-ggplot(SIM_data_pred, aes(x=SIM_data_pred$"sim kiwa", y=SIM_data_pred$KIWA)) +
   geom_point(size=3) +
   geom_abline(intercept=0, slope=1) +
   labs(x='Predicted Values R', y='Predicted values Kiwa', title='Predicted vs. predicted Values 20mg IV dose Kiwa')+
-  xlim(0,45)+
   theme_classic()+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
@@ -426,26 +552,39 @@ ggsave(plot=p,"Pred vs pred 20mg iv.png",
 
 
 ZAO_data_2014 <- Combined_data_file_for_graph[1:8,]
-SIM_data_kiwa    <-Combined_data_file_for_graph[c(29,30,31,33,38,43,48,58),]
+SIM_data    <-Combined_data_file_for_graph[c(29,30,31,33,38,43,48,58),]
 
-SIM_data_kiwa[,3]<- as.data.frame(ZAO_data_2014[,2])
+SIM_data[,3]<- as.data.frame(ZAO_data_2014[,2])
 
 
-colnames(SIM_data_kiwa)<- c("Time","sim","ZAO")
+colnames(SIM_data)<- c("Time","sim","ZAO")
 
-p <-ggplot(SIM_data_kiwa, aes(x=SIM_data_kiwa$sim, y=SIM_data_kiwa$ZAO)) +
+RSME_sim_IV<-sqrt(mean((SIM_data$sim - SIM_data$ZAO)^2))
+
+RSMD<- rmsd(a=SIM_data$sim, b=SIM_data$ZAO)
+
+p<-ggplot(SIM_data, aes(x=SIM_data$sim, y=SIM_data$ZAO)) +
   geom_point(size=3) +
   geom_abline(intercept=0, slope=1) +
-  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 20mg IV dose ZAO data')+
-  ylim(0,15)+
-  xlim(0,15)+
+  geom_line(data=tibble(x=c(0, 11),y=c(0,11)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 11),y=c(0,11)),linetype = "dashed",
+            aes(x=x,y=y*2),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 11),y=c(0,11)),linetype = "dashed",
+            aes(x=x,y=y*0.5),
+            inherit.aes = FALSE)+
+  labs(x='Predicted Values(μmol/L)', y='Actual Values(μmol/L)', title='Predicted vs. Actual Values 20mg IV dose',subtitle="Zao et al 2014")+
   theme_classic()+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
         legend.position = "none",
         title = element_text(size=20))
+p
 ggsave(plot=p,"Pred vs actual 20mg iv.png",
        width= 11.69, height= 8.3, dpi= 250)
+p
 
 
 #Generating a file for the comparison with in vivo data 
@@ -463,16 +602,9 @@ blood_data[3]<-blood_data[2]+ blood_data[3]
 #Dropping the second colum 
 blood_data<-blood_data[-c(2)]
 
-
-#going from umol to ug
-blood_data[2]<- blood_data[2]*136.12
-
-
 #going back an amount to an amount per L
 blood_data[2]<- blood_data[2]/ (V_V + V_A)
 
-#going back an amount to an amount per ml
-blood_data[2]<- blood_data[2]/ 1000
 
 
 write.csv(blood_data,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK//Blood_Data.csv")
@@ -485,9 +617,9 @@ p1 <- plot_ly(Combined_data_file_for_graph, x=~Time, y=Combined_data_file_for_gr
               type= "scatter",
               mode= "markers",
               hovertext= ~sample)%>%
-  layout(title= 'Blood concentration comparison dose = 10mg/kg-bw IV',
+  layout(title= 'Blood concentration comparison dose = 10mg/kg-BW IV',
          xaxis= list(title= 'Time (hours)'),
-         yaxis= list(title= 'Cinnamaldehyde concentration in ug/ml', type="log"),
+         yaxis= list(title= 'Cinnamaldehyde concentration in umol/l', type="log"),
          legend  =list(title= list(text='Type of Data')))
 p1
 
@@ -496,7 +628,7 @@ g <- ggplot(Combined_data_file_for_graph,aes(Time,ug.ml,color=ID))
 
 g + geom_point()+ 
   labs(subtitle="IV dose 10mg/kg/bw", 
-       y="Cinnamaldehyde concentration in ug/ml", 
+       y="Cinnamaldehyde concentration in umol/L", 
        x="Time in Hours", 
        title="Cinnamaldehyde concentration in blood", 
        caption="PBK model")
@@ -509,19 +641,32 @@ SIM_data[,3]<- as.data.frame(Shetty_data[,2])
 
 colnames(SIM_data)<- c("Time","sim","Shetty")
 
+RSME_sim_IV_shetty<-sqrt(mean((SIM_data$sim - SIM_data$Shetty)^2))
+
+RSMD<- rmsd(a=SIM_data$sim, b=SIM_data$Shetty)
+
 p <-ggplot(SIM_data, aes(x=SIM_data$sim, y=SIM_data$Shetty)) +
   geom_point(size=3) +
   geom_abline(intercept=0, slope=1) +
-  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 10mg IV dose Shetty data')+
-  xlim(0,17)+
+  geom_line(data=tibble(x=c(0, 75),y=c(0,75)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 75),y=c(0,75)),linetype = "dashed",
+            aes(x=x,y=y*2),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 75),y=c(0,75)),linetype = "dashed",
+            aes(x=x,y=y*0.5),
+            inherit.aes = FALSE)+
+  labs(x='Predicted Values(μmol/L) ', y='Actual Values(μmol/L)', title='Predicted vs. Actual Values 10mg/kg-BW IV dose',subtitle="Shetty et al 2020")+
   theme_classic()+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
         legend.position = "none",
         title = element_text(size=20))
+p
 ggsave(plot=p,"Pred vs actual 10mg iv.png",
        width= 11.69, height= 8.3, dpi= 250)
-
+p
 
 
 
@@ -574,7 +719,77 @@ g + geom_point()+ scale_y_continuous(trans='log10')+
        title="Cinnamaldehyde concentration in blood", 
        caption="PBK model")
 
-####-------------JI et al 2013 data comparison--------------####
+
+
+Dong_data <- Combined_data_file_for_graph[1:10,]
+SIM_data <-Combined_data_file_for_graph[c(12,13,14,16,19,21,31,51,71,91),]
+SIM_data_kiwa<-Combined_data_file_for_graph[c(93,94,95,97,100,102,112,132,152,172),]
+
+SIM_data[,4]<- as.data.frame(Dong_data[,2])
+SIM_data[,5]<- as.data.frame(SIM_data_kiwa[,2])
+colnames(SIM_data)<- c("Time","sim","ID","Dong","simka")
+
+
+#sim ka vs kiwa
+RMSE_sim_dong<-sqrt(mean((SIM_data$sim - SIM_data$Dong)^2))
+
+
+RSME_sim_kiwa<-(rsme_sim_kiwa)
+
+RSMD<- rmsd(a=SIM_data$sim, b=SIM_data$Dong)
+
+p <-ggplot(SIM_data, aes(x=SIM_data$"sim", y=SIM_data$Dong)) +
+  geom_point(size=3) +
+  geom_abline(intercept=0, slope=1) +
+  geom_line(data=tibble(x=c(0, 5000),y=c(0,5000)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 5000),y=c(0,5000)),linetype = "dashed",
+            aes(x=x,y=y*2),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 5000),y=c(0,5000)),linetype = "dashed",
+            aes(x=x,y=y*0.5),
+            inherit.aes = FALSE)+
+  labs(x='Predicted Values(μmol/L)', y='Predicted values(μmol/L)', title='Predicted vs. predicted Values 375mg/kg-BW dose',subtitle="Dong et al 2022")+
+  theme_classic()+
+  annotate("text", x = 2000, y = 7500, label = "RSMD: 10201", size= 8)+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+p
+ggsave(plot=p,"Pred vs actual 375mg oral.png",
+       width= 11.69, height= 8.3, dpi= 250)
+
+RMSE_sim_dong_ka<-sqrt(mean((SIM_data$simka - SIM_data$Dong)^2))
+
+RSMD<- rmsd(a=SIM_data$simka, b=SIM_data$Dong)
+p <-ggplot(SIM_data, aes(x=SIM_data$"simka", y=SIM_data$Dong)) +
+  geom_point(size=3) +
+  geom_abline(intercept=0, slope=1) +
+  geom_line(data=tibble(x=c(0, 5000),y=c(0,5000)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 5000),y=c(0,5000)),linetype = "dashed",
+            aes(x=x,y=y*2),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 5000),y=c(0,5000)),linetype = "dashed",
+            aes(x=x,y=y*0.5),
+            inherit.aes = FALSE)+
+  labs(x='Predicted Values(μmol/L)', y='Predicted values(μmol/L)', title='Predicted vs. predicted Values 375mg/kg-BW dose',subtitle="Dong et al 2022 Ka= 0.2")+
+  theme_classic()+
+  annotate("text", x = 2000, y = 7500, label = "RSMD: 10259", size= 8)+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+p
+ggsave(plot=p,"Pred vs actual ka = 0.2 375mg oral.png",
+      width= 11.69, height= 8.3, dpi= 250)
+
+
+
+####-------------JI et al 2015 data comparison--------------####
 #Generating a file for the comparison with in vivo data 
 blood_data <- as.data.frame(solve.pbk_rat[,c(1,3,4)])
 #write.csv(blood_data,"D:/Joris/Toxicology and Environmental Health/Master stage/R/Cinnamaldehyde PBK//Blood_Data.csv")
@@ -615,22 +830,37 @@ p1
 
 Ji_data <- Combined_data_file_for_graph[1:11,]
 SIM_data<- Combined_data_file_for_graph[c(13,15,17,22,27,32,42,52,92,132,252),]
-
+SIM_data_ka<- Combined_data_file_for_graph[c(264,266,268,273,278,283,293,303,343,383,503),]
 SIM_data[,3]<- as.data.frame(Ji_data[,2])
+SIM_data[,4]<- as.data.frame(SIM_data_ka[,2])
 
+colnames(SIM_data)<- c("Time","sim","Ji","simka")
 
-colnames(SIM_data)<- c("Time","sim","Ji")
+RMSE_sim_ji<-sqrt(mean((SIM_data$sim - SIM_data$Ji)^2))
+
+RMSD_sim_ji<- rmsd(a=SIM_data$sim, b=SIM_data$Ji )
 
 p <-ggplot(SIM_data, aes(x=SIM_data$sim, y=SIM_data$Ji)) +
   geom_point(size=3) +
   geom_abline(intercept=0, slope=1) +
-  labs(x='Predicted Values', y='Actual Values', title='Predicted vs. Actual Values 15mg oral dose Ji data')+
+  geom_line(data=tibble(x=c(0, 1.5),y=c(0,1.5)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 1.5),y=c(0,1.5)),linetype = "dashed",
+            aes(x=x,y=y*10),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 1.5),y=c(0,1.5)),linetype = "dashed",
+            aes(x=x,y=y*0.1),
+            inherit.aes = FALSE)+
+  labs(x='Predicted Values(μmol/L)', y='Actual Values(μmol/L)', title='Predicted vs. Actual Values 15mg/kg-BW oral dose',subtitle="Ji et al 2015" )+
   theme_classic()+
+  annotate("text", x = 0.25, y = 2, label = "RSMD: 0.76", size= 8)+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
         legend.position = "none",
         title = element_text(size=20))
-ggsave(plot=p,"Pred vs actual 15mg oral.png",
+p
+ggsave(plot=p,"Pred vs actual 15mg 10 fold difference oral.png",
        width= 11.69, height= 8.3, dpi= 250)
 
 g <- ggplot(Combined_data_file_for_graph,aes(Time,umol.l,color=ID))
@@ -641,6 +871,33 @@ g + geom_point()+ scale_y_continuous(trans='log10')+
        x="Time in Hours", 
        title="Cinnamaldehyde concentration in blood", 
        caption="PBK model")
+
+RMSE_sim_ka<-sqrt(mean((SIM_data$simka - SIM_data$Ji)^2))
+
+RMSD_sim_ka<- rmsd(a=SIM_data$simka, b=SIM_data$Ji )
+
+p <-ggplot(SIM_data, aes(x=SIM_data$simka, y=SIM_data$Ji)) +
+  geom_point(size=3) +
+  geom_abline(intercept=0, slope=1) +
+  geom_line(data=tibble(x=c(0, 0.3),y=c(0,0.3)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 0.3),y=c(0,0.3)),linetype = "dashed",
+            aes(x=x,y=y*5),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 0.3),y=c(0,0.3)),linetype = "dashed",
+            aes(x=x,y=y*0.2),
+            inherit.aes = FALSE)+
+  labs(x='Predicted Values(μmol/L)', y='Actual Values(μmol/L)', title='Predicted vs. Actual Values 15mg/kg-BW oral dose',subtitle="Ji et al 2015 ka= 0.2" )+
+  theme_classic()+
+  annotate("text", x = 0.05, y = 0.40, label = "RSMD: 0.102", size= 8)+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+p
+ggsave(plot=p,"Pred vs actual ka 15mg 5 fold difference oral.png",
+       width= 11.69, height= 8.3, dpi= 250)
 
 
 ####-------------YOUNG et al 2020 data comparison--------------####
@@ -691,8 +948,69 @@ g + geom_point()+ scale_y_continuous(trans='log10')+
        title="Cinnamaldehyde concentration in blood", 
        caption="PBK model")
 
+Yong_data <- Combined_data_file_for_graph[1:13,]
+SIM_data<- Combined_data_file_for_graph[c(15,16,17,19,22,24,29,34,44,54,74,94,134),]
+SIM_data_ka<- Combined_data_file_for_graph[c(136,137,138,140,143,145,150,155,165,175,195,215,255),]
+SIM_data[,3]<- as.data.frame(Yong_data[,2])
+SIM_data[,4]<- as.data.frame(SIM_data_ka[,2])
 
 
 
+colnames(SIM_data)<- c("Time","sim","Yong","simka")
+
+
+RMSE_sim_Yong<-sqrt(mean((SIM_data$sim - SIM_data$Yong)^2))
+
+RMSD_sim_Yong<-rmsd(a=SIM_data$sim, b=SIM_data$Yong)
+p <-ggplot(SIM_data, aes(x=SIM_data$sim, y=SIM_data$Yong)) +
+  geom_point(size=3) +
+  geom_abline(intercept=0, slope=1) +
+  geom_line(data=tibble(x=c(0, 5),y=c(0,5)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 5),y=c(0,5)),linetype = "dashed",
+            aes(x=x,y=y*2),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 5),y=c(0,5)),linetype = "dashed",
+            aes(x=x,y=y*0.5),
+            inherit.aes = FALSE)+
+  labs(x='Predicted Values(μmol/L)', y='Actual Values(μmol/L)', title='Predicted vs. Actual Values 50mg/kg-BW oral dose',subtitle="Yong et al 2020" )+
+  theme_classic()+
+  annotate("text", x = 1, y = 6, label = "RSMD: 1.74", size= 8)+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+p
+ggsave(plot=p,"Pred vs actual 50mg oral.png",
+       width= 11.69, height= 8.3, dpi= 250)
+
+
+RMSE_sim_ka<-sqrt(mean((SIM_data$simka - SIM_data$Yong)^2))
+
+RMSD_sim_ka<-rmsd(a=SIM_data$simka, b=SIM_data$Yong)
+
+p <-ggplot(SIM_data, aes(x=SIM_data$simka, y=SIM_data$Yong)) +
+  geom_point(size=3) +
+  geom_abline(intercept=0, slope=1) +
+  geom_line(data=tibble(x=c(0, 2),y=c(0,2)),
+            aes(x=x,y=y),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 2),y=c(0,2)),linetype = "dashed",
+            aes(x=x,y=y*2),
+            inherit.aes = FALSE)+
+  geom_line(data=tibble(x=c(0, 2),y=c(0,2)),linetype = "dashed",
+            aes(x=x,y=y*0.5),
+            inherit.aes = FALSE)+
+  labs(x='Predicted Values(μmol/L)', y='Actual Values(μmol/L)', title='Predicted vs. Actual Values 50mg/kg-BW oral dose',subtitle="Yong et al 2020 ka= 0.2" )+
+  theme_classic()+
+  annotate("text", x = 0.5, y = 3, label = "RSMD: 1.82", size= 8)+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+p
+ggsave(plot=p,"Pred vs actual ka 5 fold difference 50mg oral.png",
+       width= 11.69, height= 8.3, dpi= 250)
 
 

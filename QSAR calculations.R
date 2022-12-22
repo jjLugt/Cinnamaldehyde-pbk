@@ -178,7 +178,7 @@ P_B_Benzaldehdye_R <- 0.4445/HL_Benzaldehyde + 0.005189 * Koa_Benzaldehyde
 #Calculation of Ka and Fa based on the QSAR in Ans Punt
 #Just change h polar surface area
 #rat
-R<-0.18 #radius small intestine
+R<-0.125 #radius small intestine 0.252/2
 Tsi<-1.63 #small intestine transit time 
 kt<-1/(Tsi/7)
 
@@ -195,7 +195,7 @@ Fa = 1-(1+Ka/kt)**-7
 #Calculation of Ka and Fa based on the QSAR in Ans Punt
 #Just change h polar sufrace area
 Human
-R<-0.4 #radius small intestine = C/2π=2.52·π≈0.39789cm
+R<-1.25 #radius small intestine=2.52·π≈0.39789cm
 Tsi<-1.63 #small intestine transit time 
 kt<-1/(Tsi/7)
 
