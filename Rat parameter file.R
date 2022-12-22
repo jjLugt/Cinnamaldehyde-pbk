@@ -17,9 +17,9 @@ amount.units               <-"umol"
 time.units                 <-"h"
 nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
-time.end                   <-8        #time end of simulation
+time.end                   <-12        #time end of simulation
 time.frame                 <-0.1      #time steps of simulation
-Oral_dose_in_mg_bw         <-250     #Dose in mg/kg-bw
+Oral_dose_in_mg_bw         <-50     #Dose in mg/kg-bw
 Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
 iv_dose_in_mg_bw           <-0       #IV administered dose in mg/kg/bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
@@ -100,7 +100,7 @@ C_PRO_SI    <- 245   * V_SI #Small intestine
 
 #--Chemical parameters--#
 Ka <- 0.2 #Absorption rate constant for uptake in the Small intestine in per H
-
+#Ka <- 1.97 #Calculated
 #----Liver----#
 S9_scaling_L <- 143 * (V_L * 1000) #scaling factor for S9 fraction per g tissue
 
@@ -235,7 +235,7 @@ inits <- c("A_GI"         =0,
 #inhalation exposure  exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(dose = Oral_Dose, dur=0.001, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  et(dose=iv_dose, dur=0.005,cmt="A_V",nbr.doses=1)%>%
+  et(dose=iv_dose, dur=0.0005,cmt="A_V",nbr.doses=1)%>%
   et(dose= init_GSH_L, cmt="AM_Lc_GSH", nbr.doses=1)%>%
   et(dose= init_GSH_SI, cmt="AM_SIc_GSH", nbr.doses=1)%>%
   et(dose = Inhalation_Dose, dur=0.001, cmt="A_inhalation_Dose", nbr.doses=nbr.doses)%>%

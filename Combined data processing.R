@@ -127,15 +127,14 @@ colnames(meta_extraction)<-c("id","percentage metabolised")
 melt_meta_extraction <- melt(meta_extraction,id=c("id")) 
 
 
-single_meta<- as.data.frame(c("single","percentage metabolised","97.34"))
-single_meta <- as.data.frame(t(single_meta))
 
 rownames(single_meta) <-c("2001")
 
 melt_meta_extraction$id[meta_extraction$id == 1:1000] <- "Male"  
 melt_meta_extraction$id[meta_extraction$id == 1001:2000] <- "Female" 
-melt_meta_extraction[2001,1:3]<-single_meta[1,1:3]
 
+male_melt_meta_extraction<-melt_meta_extraction[1:1000,1:3]
+female_melt_meta_extraction<-melt_meta_extraction[1001:2000,1:3]
 
 p_metabolism<-ggplot(melt_meta_extraction ,aes(x=variable,y=value))+
   geom_boxplot(notch=TRUE)+
@@ -144,6 +143,31 @@ p_metabolism<-ggplot(melt_meta_extraction ,aes(x=variable,y=value))+
                                  "Female" = "red"),
                      labels= c( "Male", "Female"),
                      name= "Sex")+
+  labs(x='', y='Percentage metabolised', title='Carboxylic acid metabolism Human')+
+  theme_classic()+
+  theme(axis.title = element_text(size=15),
+        axis.text = element_text(size = 15),
+        title = element_text(size=20))+
+  theme(legend.text = element_text(size=15, color="black"),
+        legend.position ="top")
+ggplotly(p_metabolism)
+
+
+p_metabolism<-ggplot(male_melt_meta_extraction ,aes(x=variable,y=value))+
+  geom_boxplot(notch=TRUE)+
+  geom_jitter(aes(col=id),alpha=0.6)+
+  labs(x='', y='Percentage metabolised', title='Carboxylic acid metabolism Human')+
+  theme_classic()+
+  theme(axis.title = element_text(size=15),
+        axis.text = element_text(size = 15),
+        title = element_text(size=20))+
+  theme(legend.text = element_text(size=15, color="black"),
+        legend.position ="top")
+ggplotly(p_metabolism)
+
+p_metabolism<-ggplot(female_melt_meta_extraction ,aes(x=variable,y=value))+
+  geom_boxplot(notch=TRUE)+
+  geom_jitter(aes(col=id),alpha=0.6)+
   labs(x='', y='Percentage metabolised', title='Carboxylic acid metabolism Human')+
   theme_classic()+
   theme(axis.title = element_text(size=15),
