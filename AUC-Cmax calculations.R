@@ -602,8 +602,9 @@ plot(Plot_AUC_rat_250mg$Cmax)
 
 #--------------------------------Population model-----------------
 #-------------------------Inhalation calculations---------------
+#-------------------------Multiple exposures-----------
 #---------------------Lung compartment-------------------
-sub_set <- solve.pbk[1:962000,c(1,2,12)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,12)]
 
 conc_C <- PKNCAconc(sub_set, C_Pu~time|id)
 
@@ -619,9 +620,9 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
-                               end=12,
+                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
                                aucinf.obs=FALSE,
@@ -648,7 +649,7 @@ write.csv(results_obj_manual$result, "results_2.8_multiple_inhalation_C_Pu.csv")
 
 #---------------------Liver compartment-------------------
 #Liver compartment concentration
-sub_set <- solve.pbk[1:962000,c(1,2,49)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,49)]
 conc_C <- PKNCAconc(sub_set, C_L~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
@@ -663,9 +664,9 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
-                               end=12,
+                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
                                aucinf.obs=FALSE,
@@ -691,7 +692,7 @@ write.csv(results_obj_manual$result, "results_2.8_multiple_inhalation_C_L.csv")
 
 #---------------------Blood compartment-------------------
 #Blood compartment concentration
-sub_set <- solve.pbk[1:962000,c(1,2,4,5)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,4,5)]
 
 #Combining Arterial and venous blood into one general blood compartment
 sub_set[3]<- sub_set[3]+sub_set[4]
@@ -714,9 +715,9 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
-                               end=12,
+                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
                                aucinf.obs=FALSE,
@@ -742,7 +743,7 @@ write.csv(results_obj_manual$result, "results_2.8_multiple_inhalation_C_B.csv")
 
 #---------------------Slowly compartment-------------------
 #Slowly perfused compartment
-sub_set <- solve.pbk[1:962000,c(1,2,30)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,30)]
 conc_C <- PKNCAconc(sub_set, C_SP~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
@@ -757,9 +758,9 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
-                               end=12,
+                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
                                aucinf.obs=FALSE,
@@ -784,7 +785,7 @@ write.csv(results_obj_manual$result, "results_2.8_multiple_inhalation_C_SP.csv")
 
 #---------------------Richly  compartment-------------------
 #richly perfused compartment
-sub_set <- solve.pbk[1:962000,c(1,2,24)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,24)]
 conc_C <- PKNCAconc(sub_set, C_RP~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
@@ -799,9 +800,9 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
-                               end=12,
+                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
                                aucinf.obs=FALSE,
@@ -826,7 +827,7 @@ write.csv(results_obj_manual$result, "results_2.8_multiple_inhalation_C_RP.csv")
 
 #---------------------Fat compartment-------------------
 #Fat compartment
-sub_set <- solve.pbk[1:962000,c(1,2,18)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,18)]
 conc_C <- PKNCAconc(sub_set, C_F~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
@@ -841,9 +842,9 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
-                               end=12,
+                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
                                aucinf.obs=FALSE,
@@ -868,7 +869,7 @@ write.csv(results_obj_manual$result, "results_2.8_multiple_inhalation_C_F.csv")
 #---------------------Small Intestine compartment-------------------
 
 #SI compartment
-sub_set <- solve.pbk[1:962000,c(1,2,36)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,36)]
 conc_C <- PKNCAconc(sub_set, C_SI~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
@@ -883,9 +884,9 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
-                               end=12,
+                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
                                aucinf.obs=FALSE,
@@ -909,31 +910,30 @@ summary(results_obj_manual)
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_2.8_multiple_inhalation_C_SI.csv")
 
-
-#-----------------------------------Inhalation closed space--------------------------------------------------------------------------------------------
-#---------------------Lung compartment-------------------
-sub_set <- solve.pbk[1:482000,c(1,2,12)]
+#---------single exposure---------------
+#---------------------Lung compartment single-------------------
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,12)]
 
 conc_C <- PKNCAconc(sub_set, C_Pu~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,58])
+dose_extraction <- as.data.frame(parameters[,59]*nbr.doses)
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
-                               aucinf.obs=TRUE,
+                               aucinf.obs=FALSE,
                                auclast=TRUE)
 
 
@@ -950,35 +950,36 @@ summary(results_obj_manual)
 
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_Pu.csv")
+write.csv(results_obj_manual$result, "results_250_inhalation_C_Pu.csv")
 
 
 
 
-#---------------------Liver compartment-------------------
+#---------------------Liver compartment single-------------------
 #Liver compartment concentration
-sub_set <- solve.pbk[1:962000,c(1,2,49)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,49)]
 conc_C <- PKNCAconc(sub_set, C_L~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,58])
+dose_extraction <- as.data.frame(parameters[,59]*nbr.doses)
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
-                               aucinf.obs=TRUE,
+                               aucinf.obs=FALSE,
                                auclast=TRUE)
+
 
 
 data_obj_manual<- PKNCAdata(conc_C, dose_obj,
@@ -994,12 +995,12 @@ summary(results_obj_manual)
 
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_L.csv")
+write.csv(results_obj_manual$result, "results_250_inhalation_C_L.csv")
 
 
-#---------------------Blood compartment-------------------
+#---------------------Blood compartment single-------------------
 #Blood compartment concentration
-sub_set <- solve.pbk[1:482000,c(1,2,4,5)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,4,5)]
 
 #Combining Arterial and venous blood into one general blood compartment
 sub_set[3]<- sub_set[3]+sub_set[4]
@@ -1013,22 +1014,24 @@ conc_C <- PKNCAconc(sub_set, C_B~time|id)
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,58])
+dose_extraction <- as.data.frame(parameters[,59]*nbr.doses )
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
-                               aucinf.obs=TRUE,
+                               aucinf.obs=FALSE,
                                auclast=TRUE)
+
+
 
 
 data_obj_manual<- PKNCAdata(conc_C, dose_obj,
@@ -1044,32 +1047,33 @@ summary(results_obj_manual)
 
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_B.csv")
+write.csv(results_obj_manual$result, "results_250_inhalation_C_B.csv")
 
-#---------------------Slowly compartment-------------------
+#---------------------Slowly compartment single-------------------
 #Slowly perfused compartment
-sub_set <- solve.pbk[1:482000,c(1,2,30)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,30)]
 conc_C <- PKNCAconc(sub_set, C_SP~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,58])
+dose_extraction <- as.data.frame(parameters[,59]*nbr.doses )
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
-                               aucinf.obs=TRUE,
+                               aucinf.obs=FALSE,
                                auclast=TRUE)
+
 
 
 data_obj_manual<- PKNCAdata(conc_C, dose_obj,
@@ -1085,32 +1089,33 @@ summary(results_obj_manual)
 
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_SP.csv")
+write.csv(results_obj_manual$result, "results_250_inhalation_C_SP.csv")
 
-#---------------------Richly  compartment-------------------
+#---------------------Richly  compartment single-------------------
 #richly perfused compartment
-sub_set <- solve.pbk[1:482000,c(1,2,24)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,24)]
 conc_C <- PKNCAconc(sub_set, C_RP~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,58])
+dose_extraction <- as.data.frame(parameters[,59]*nbr.doses )
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
-                               aucinf.obs=TRUE,
+                               aucinf.obs=FALSE,
                                auclast=TRUE)
+
 
 
 data_obj_manual<- PKNCAdata(conc_C, dose_obj,
@@ -1126,31 +1131,31 @@ summary(results_obj_manual)
 
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_RP.csv")
+write.csv(results_obj_manual$result, "results_250_inhalation_C_RP.csv")
 
-#---------------------Fat compartment-------------------
+#---------------------Fat compartment single-------------------
 #Fat compartment
-sub_set <- solve.pbk[1:482000,c(1,2,18)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,18)]
 conc_C <- PKNCAconc(sub_set, C_F~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,58])
+dose_extraction <- as.data.frame(parameters[,59]*nbr.doses )
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
-                               aucinf.obs=TRUE,
+                               aucinf.obs=FALSE,
                                auclast=TRUE)
 
 
@@ -1167,33 +1172,35 @@ summary(results_obj_manual)
 
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_F.csv")
+write.csv(results_obj_manual$result, "results_250_inhalation_C_F.csv")
 
-#---------------------Small Intestine compartment-------------------
+#---------------------Small Intestine compartment single-------------------
 
 #SI compartment
-sub_set <- solve.pbk[1:482000,c(1,2,36)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,36)]
 conc_C <- PKNCAconc(sub_set, C_SI~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
 #these will be added.
 #Oral dose extraction
-dose_extraction <- as.data.frame(parameters[,58])
+dose_extraction <- as.data.frame(parameters[,59]*nbr.doses)
 sim_extraction <- unique(solve.pbk[solve.pbk$time == 0,c("time", "id")])
 
 #Combining into 1 file that can be used
-d_dose <- cbind(sim_extraction,dose_extraction$`parameters[, 58]`)                       
+d_dose <- cbind(sim_extraction,dose_extraction)                       
 d_dose <- set_names(d_dose, c("time","id","dose"))                        
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
                                tmax=TRUE,
-                               aucinf.obs=TRUE,
+                               aucinf.obs=FALSE,
                                auclast=TRUE)
+
+
 
 
 data_obj_manual<- PKNCAdata(conc_C, dose_obj,
@@ -1209,12 +1216,12 @@ summary(results_obj_manual)
 
 
 #Writing the results into a CSV file 
-write.csv(results_obj_manual$result, "results_250_inhalation_closed_C_SI.csv")
+write.csv(results_obj_manual$result, "results_250_inhalation_C_SI.csv")
 
 
 #----------------------------------------Oral calculations-------------
 #---------------------Lung compartment-------------------
-sub_set <- solve.pbk[1:482000,c(1,2,12)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,12)]
 
 conc_C <- PKNCAconc(sub_set, C_Pu~time|id)
 
@@ -1230,7 +1237,7 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
@@ -1259,7 +1266,7 @@ write.csv(results_obj_manual$result, "results_250_oral_C_Pu.csv")
 
 #---------------------Liver compartment-------------------
 #Liver compartment concentration
-sub_set <- solve.pbk[1:482000,c(1,2,49)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,49)]
 conc_C <- PKNCAconc(sub_set, C_L~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
@@ -1274,7 +1281,7 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
@@ -1299,7 +1306,7 @@ summary(results_obj_manual)
 write.csv(results_obj_manual$result, "results_250_oral_C_L.csv")
 #---------------------Blood compartment-------------------
 #Blood compartment concentration
-sub_set <- solve.pbk[1:482000,c(1,2,4,5)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,4,5)]
 
 #Combining Arterial and venous blood into one general blood compartment
 sub_set[3]<- sub_set[3]+sub_set[4]
@@ -1322,7 +1329,7 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
@@ -1347,7 +1354,7 @@ summary(results_obj_manual)
 write.csv(results_obj_manual$result, "results_250_oral_C_B.csv")
 #---------------------Slowly compartment-------------------
 #Slowly perfused compartment
-sub_set <- solve.pbk[1:482000,c(1,2,30)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,30)]
 conc_C <- PKNCAconc(sub_set, C_SP~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
@@ -1362,7 +1369,7 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
@@ -1388,7 +1395,7 @@ write.csv(results_obj_manual$result, "results_250_oral_C_SP.csv")
 
 #---------------------Richly  compartment-------------------
 #richly perfused compartment
-sub_set <- solve.pbk[1:482000,c(1,2,24)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,24)]
 conc_C <- PKNCAconc(sub_set, C_RP~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
@@ -1403,7 +1410,7 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
@@ -1429,7 +1436,7 @@ write.csv(results_obj_manual$result, "results_250_oral_C_RP.csv")
 
 #---------------------Fat compartment-------------------
 #Fat compartment
-sub_set <- solve.pbk[1:482000,c(1,2,18)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,18)]
 conc_C <- PKNCAconc(sub_set, C_F~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
@@ -1444,7 +1451,7 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
@@ -1471,7 +1478,7 @@ write.csv(results_obj_manual$result, "results_250_oral_C_F.csv")
 #---------------------Small Intestine compartment-------------------
 
 #SI compartment
-sub_set <- solve.pbk[1:482000,c(1,2,36)]
+sub_set <- solve.pbk[1:dim(solve.pbk)[1],c(1,2,36)]
 conc_C <- PKNCAconc(sub_set, C_SI~time|id)
 
 #Dosing data per subject is part of the parameter file but it is missing sim id and the time variable 
@@ -1486,7 +1493,7 @@ d_dose <- set_names(d_dose, c("time","id","dose"))
 
 dose_obj <- PKNCAdose(d_dose, dose~time|id)
 
-#Setting the end of the auc calculation at 8 hours
+#Setting the end of the auc calculation at 24 hours
 intervals_manual <- data.frame(start=0,
                                end=24,
                                cmax=TRUE,
@@ -1705,18 +1712,18 @@ write.csv(melt_boxplot_250mg_oral,"D:/PBK/Cinnamaldehyde-pbk\\melt_boxplot_250mg
 
 p_auc_250mg_oral<-ggplot(melt_boxplot_250mg_oral ,aes(x=variable,y=value))+
   geom_boxplot(notch=TRUE)+
-  geom_jitter(aes(col=id),alpha=0.15)+
+  geom_jitter(aes(col=id),alpha=0.3)+
   scale_color_manual(values = c( "Male" = "blue",
                                  "Female" = "red"),
                      labels= c( "Male", "Female"),
                      name= "Sex")+
   geom_text(aes(x, y, label=lab),
             data=data.frame(x=c("Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine"),
-                            y=c(13,45,80,10,350,15,8000),
+                            y=c(13,45,80,10,350,15,10000),
                             lab=c("a","a","a","a","a","a","b"),
                             size=4))+
   scale_y_continuous(trans='log10')+
-  labs(x='Organs', y='μmol/l-hr', title='AUC values 250mg oral dose Human')+
+  labs(x='Organs', y='umol/l-hr', title='Oral AUC values 250mg dose Human')+
   theme_classic()+
   theme(axis.title = element_text(size=15),
         axis.text = element_text(size = 15),
@@ -1776,7 +1783,7 @@ ggplotly(p_cmax_250mg_oral)
 
 ---------------------------------------------------------------------------------
 #--------------Inhalation exposure--------------
-#Lung AUC
+#------Lung AUC----
 #Loading data back in
 results_250_inhalation_C_Pu <- read_csv("results_250_inhalation_C_Pu.csv")
 
@@ -1949,13 +1956,18 @@ write.csv(melt_boxplot_250mg_inhalation,"D:/PBK/Cinnamaldehyde-pbk\\melt_boxplot
 
 p_auc_250mg_inhalation<-ggplot(melt_boxplot_250mg_inhalation ,aes(x=variable,y=value))+
   geom_boxplot(notch=TRUE)+
-  geom_jitter(aes(col=id),alpha=0.3)+
+  geom_jitter(aes(col=id),alpha=0.15)+
   scale_color_manual(values = c( "Male" = "blue",
                                  "Female" = "red"),
                      labels= c( "Male", "Female"),
                      name= "Sex")+
-  scale_y_continuous(trans='log10')+
-  labs(x='Organs', y='umol/l-hr', title='Inhalation AUC values 250mg dose Human')+
+  geom_text(aes(x, y, label=lab),
+            data=data.frame(x=c("Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine"),
+                            y=c(300,300,4000,300,8,330,150),
+                            lab=c("c","bc,b","a","c,bc","e","b","d"),
+                            size=4))+
+  scale_y_continuous(trans='log10',labels = function(x) sprintf("%g", x))+
+  labs(x='Organs', y='μmol/l-hr', title='AUC values 250mg inhalation dose Human')+
   theme_classic()+
   theme(axis.title = element_text(size=15),
         axis.text = element_text(size = 15),
