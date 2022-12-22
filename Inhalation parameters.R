@@ -27,7 +27,7 @@ BW                         <-70      #Body weight in Kg
 Oral_Dose                  <-(Oral_Dose_in_mg_bw * BW)/ MW  * 1e+3       #The administered dose in μmol
 Inhalation_Dose            <-(Inhalation_Dose_in_mg_bw * BW)/ MW  * 1e+3 #The inhaled dose in μmol
 iv_dose                    <-(iv_dose_in_mg_bw * BW)/ MW  * 1e+3    
-Volume_exposure_chamber    <-10       #volume exposure chamber in L
+Volume_exposure_chamber    <-1000       #volume exposure chamber in L
 
 
 #--Physio-chemical parameters--#

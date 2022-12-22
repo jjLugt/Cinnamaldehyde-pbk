@@ -29,6 +29,17 @@ for (i in 1:nrow(mass_df_single)){
 plot(mass_at_t_single[,1])
 
 
+
+mass_df_single <- solve.pbk/BW * MW /1e+3
+mass_df_single <- mass_df_single[,c(65:69,71:77,79,80,83:87,91:95)]
+mass_at_t_single <- data.frame(mass=as.numeric())
+
+for (i in 1:nrow(mass_df_single)){
+  mass_at_t_single[nrow(mass_at_t_single) + 1,] <- rowSums(mass_df_single[i,])
+}
+plot(mass_at_t_single[,1])
+
+
 #cinnamaldehyde model Rat
 #Mass balance calculation rxode inhalation complete
 mass_df <- solve.pbk_rat/BW * MW /1e+3
@@ -44,7 +55,7 @@ plot(mass_at_t[,1])
 #Rxode 
 #population mass balance
 mass_df <- solve.pbk/phys[2,3] * MW /1e+3
-mass_df <- mass_df[242:482,c(67:80,82,83,86:90,94:98)]
+mass_df <- mass_df[1:481,c(67:80,82,83,86:90,94:98)]
 mass_at_t <- data.frame(mass=as.numeric())
 
 
@@ -54,7 +65,6 @@ for (i in 1:nrow(mass_df)){
 plot(mass_at_t[,1])
 
 results_human<-solve.pbk[c(1:241),c(1:98)]
-plot(results_human$AM_L_CA)
 
 
 
@@ -169,28 +179,267 @@ library(multcompView)
 library(car)
 
 
-setwd("C:/Users/OrfeasPetropoulos/OneDrive - Wageningen University & Research/joris")
+#setwd("C:/Users/OrfeasPetropoulos/OneDrive - Wageningen University & Research/joris")
 
-data<- read.csv("melt_boxplot_250mg_inhalation_cmax")
-unique(data$id)
-data$id <- factor(data$id)
-unique(data$variable)
+data_2.8<- read.csv("melt_boxplot_2.8mg_inhalation_auc")
+unique(data_2.8$id)
+data_2.8$id <- factor(data_2.8$id)
+unique(data_2.8$variable)
 
-#subset the data for analysis
+#subset the data_2.8 for analysis
 {
-  data_Lung <- subset(data, variable %in% c("Lung"))
-  data_Blood <- subset(data, variable %in% c("Blood"))
-  data_Fat <- subset(data, variable %in% c("Fat"))
-  data_SlowlyPerfused <- subset(data, variable %in% c("Slowly Perfused"))
-  data_Liver <- subset(data, variable %in% c("Liver"))
-  data_RichlyPerfused <- subset(data, variable %in% c("Richly Perfused"))
-  data_SmallIntestine <- subset(data, variable %in% c("Small Intestine"))
-  data_MALE <- subset(data, id %in% c("Male"))
-  data_FEMALE <- subset(data, id %in% c("Female"))
+  data_2.8_Lung <- subset(data_2.8, variable %in% c("Lung"))
+  data_2.8_Blood <- subset(data_2.8, variable %in% c("Blood"))
+  data_2.8_Fat <- subset(data_2.8, variable %in% c("Fat"))
+  data_2.8_SlowlyPerfused <- subset(data_2.8, variable %in% c("Slowly Perfused"))
+  data_2.8_Liver <- subset(data_2.8, variable %in% c("Liver"))
+  data_2.8_RichlyPerfused <- subset(data_2.8, variable %in% c("Richly Perfused"))
+  data_2.8_SmallIntestine <- subset(data_2.8, variable %in% c("Small Intestine"))
+  data_2.8_MALE <- subset(data_2.8, id %in% c("Male"))
+  data_2.8_FEMALE <- subset(data_2.8, id %in% c("Female"))
 } 
 
 
+data_250<- read.csv("melt_boxplot_250mg_inhalation_auc")
+unique(data_250$id)
+data_250$id <- factor(data_250$id)
+unique(data_250$variable)
+
+#subset the data_250 for analysis
+{
+  data_250_Lung <- subset(data_250, variable %in% c("Lung"))
+  data_250_Blood <- subset(data_250, variable %in% c("Blood"))
+  data_250_Fat <- subset(data_250, variable %in% c("Fat"))
+  data_250_SlowlyPerfused <- subset(data_250, variable %in% c("Slowly Perfused"))
+  data_250_Liver <- subset(data_250, variable %in% c("Liver"))
+  data_250_RichlyPerfused <- subset(data_250, variable %in% c("Richly Perfused"))
+  data_250_SmallIntestine <- subset(data_250, variable %in% c("Small Intestine"))
+  data_250_MALE <- subset(data_250, id %in% c("Male"))
+  data_250_FEMALE <- subset(data_250, id %in% c("Female"))
+} 
+
+data_250_oral<- read.csv("melt_boxplot_250mg_oral_auc")
+unique(data_250_oral$id)
+data_250_oral$id <- factor(data_250_oral$id)
+unique(data_250_oral$variable)
+
+#subset the data_250_oral for analysis
+{
+  data_250_oral_Lung <- subset(data_250_oral, variable %in% c("Lung"))
+  data_250_oral_Blood <- subset(data_250_oral, variable %in% c("Blood"))
+  data_250_oral_Fat <- subset(data_250_oral, variable %in% c("Fat"))
+  data_250_oral_SlowlyPerfused <- subset(data_250_oral, variable %in% c("Slowly Perfused"))
+  data_250_oral_Liver <- subset(data_250_oral, variable %in% c("Liver"))
+  data_250_oral_RichlyPerfused <- subset(data_250_oral, variable %in% c("Richly Perfused"))
+  data_250_oral_SmallIntestine <- subset(data_250_oral, variable %in% c("Small Intestine"))
+  data_250_oral_MALE <- subset(data_250_oral, id %in% c("Male"))
+  data_250_oral_FEMALE <- subset(data_250_oral, id %in% c("Female"))
+} 
+
+
+#Creation of combined 2.8 and 250 inhalation testing
+data_250_Lung$id<-as.factor(250)
+data_2.8_Lung$id<-as.factor(2.8)
+
+combined_lung<-rbind(data_250_Lung,data_2.8_Lung)
+
+data_250_Blood$id<-as.factor(250)
+data_2.8_Blood$id<-as.factor(2.8)
+
+combined_blood<-rbind(data_250_Blood,data_2.8_Blood)
+
+data_250_Fat$id<-as.factor(250)
+data_2.8_Fat$id<-as.factor(2.8)
+
+combined_Fat<-rbind(data_250_Fat,data_2.8_Fat)
+
+
+
+data_250_SlowlyPerfused$id<-as.factor(250)
+data_2.8_SlowlyPerfused$id<-as.factor(2.8)
+
+combined_SlowlyPerfused<-rbind(data_250_SlowlyPerfused,data_2.8_SlowlyPerfused)
+
+
+
+data_250_RichlyPerfused$id<-as.factor(250)
+data_2.8_RichlyPerfused$id<-as.factor(2.8)
+
+combined_RichlyPerfused<-rbind(data_250_RichlyPerfused,data_2.8_RichlyPerfused)
+
+data_250_SmallIntestine$id<-as.factor(250)
+data_2.8_SmallIntestine$id<-as.factor(2.8)
+
+combined_SmallIntestine<-rbind(data_250_SmallIntestine,data_2.8_SmallIntestine)
+
+data_250_Liver$id<-as.factor(250)
+data_2.8_Liver$id<-as.factor(2.8)
+
+combined_liver<-rbind(data_250_Liver,data_2.8_Liver)
+
+
 ###Data analysis
+
+#1. Is there difference between the organs?
+{
+  #1a--> between exposures lung 
+  results <- aov(value ~ id , combined_lung)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1b--> between exposures blood 
+  results <- aov(value ~ id , combined_blood)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1c--> between exposures Fat 
+  results <- aov(value ~ id , combined_Fat)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1d--> between exposures Slowlyperfused 
+  results <- aov(value ~ id , combined_SlowlyPerfused)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1e--> between exposures Richlyperfused 
+  results <- aov(value ~ id , combined_RichlyPerfused)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1e--> between exposures SmallIntestine 
+  results <- aov(value ~ id , combined_SmallIntestine)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1e--> between exposures SmallIntestine 
+  results <- aov(value ~ id , combined_SmallIntestine)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1e--> between exposures Liver
+  results <- aov(value ~ id , combined_liver)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  
+} 
+#Combined 250 oral and inhalation
+data_250_Lung$id<-as.factor(250)
+data_250_oral_Lung$id<-as.factor(2.8)
+
+combined_lung_oral<-rbind(data_250_Lung,data_250_oral_Lung)
+
+data_250_Blood$id<-as.factor(250)
+data_250_oral_Blood$id<-as.factor(2.8)
+
+combined_blood_oral<-rbind(data_250_Blood,data_250_oral_Blood)
+
+data_250_Fat$id<-as.factor(250)
+data_250_oral_Fat$id<-as.factor(2.8)
+
+combined_Fat_oral<-rbind(data_250_Fat,data_250_oral_Fat)
+
+
+
+data_250_SlowlyPerfused$id<-as.factor(250)
+data_250_oral_SlowlyPerfused$id<-as.factor(2.8)
+
+combined_SlowlyPerfused_oral<-rbind(data_250_SlowlyPerfused,data_250_oral_SlowlyPerfused)
+
+
+
+data_250_RichlyPerfused$id<-as.factor(250)
+data_250_oral_RichlyPerfused$id<-as.factor(2.8)
+
+combined_RichlyPerfused_oral<-rbind(data_250_RichlyPerfused,data_250_oral_RichlyPerfused)
+
+data_250_SmallIntestine$id<-as.factor(250)
+data_250_oral_SmallIntestine$id<-as.factor(2.8)
+
+combined_SmallIntestine_oral<-rbind(data_250_SmallIntestine,data_250_oral_SmallIntestine)
+
+data_250_Liver$id<-as.factor(250)
+data_250_oral_Liver$id<-as.factor(2.8)
+
+combined_liver_oral<-rbind(data_250_Liver,data_250_oral_Liver)
+
+#1. Is there difference between the organs?
+{
+  #1a--> between exposures lung 
+  results <- aov(value ~ id , combined_lung_oral)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1b--> between exposures blood 
+  results <- aov(value ~ id , combined_blood_oral)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1c--> between exposures Fat 
+  results <- aov(value ~ id , combined_Fat_oral)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1d--> between exposures Slowlyperfused 
+  results <- aov(value ~ id , combined_SlowlyPerfused_oral)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1e--> between exposures Richlyperfused 
+  results <- aov(value ~ id , combined_RichlyPerfused_oral)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1e--> between exposures SmallIntestine 
+  results <- aov(value ~ id , combined_SmallIntestine_oral)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1e--> between exposures SmallIntestine 
+  results <- aov(value ~ id , combined_SmallIntestine_oral)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+  #1e--> between exposures Liver
+  results <- aov(value ~ id , combined_liver_oral)
+  summary(results)
+  tukey <- TukeyHSD(results, conf.level = 0.95)
+  tukey.cld <- multcompLetters4(results, tukey)
+  print(tukey.cld)
+  
+} 
+
 
 #1. Is there difference between the organs?
 {
@@ -208,8 +457,6 @@ unique(data$variable)
   tukey.cld <- multcompLetters4(results, tukey)
   print(tukey.cld)
 } 
-
-
 #2. Is there difference between males and females for the same organ?
 #2.a. LUNG DATA
 {
@@ -338,6 +585,24 @@ welch_anova_test(data_Liver, value ~ id)
 welch_anova_test(data_SmallIntestine, value ~ id) #for small intestine not needed, as it had equal variances
 
 
+welch_anova_test(combined_lung, value ~ id)
+welch_anova_test(combined_blood, value ~ id)
+welch_anova_test(combined_Fat, value ~ id)
+welch_anova_test(combined_RichlyPerfused, value ~ id)
+welch_anova_test(combined_SlowlyPerfused, value ~ id)
+welch_anova_test(combined_liver, value ~ id)
+welch_anova_test(combined_SmallIntestine, value ~ id) #for small intestine not needed, as it had equal variances
+
+
+welch_anova_test(combined_lung_oral, value ~ id)
+welch_anova_test(combined_blood_oral, value ~ id)
+welch_anova_test(combined_Fat_oral, value ~ id)
+welch_anova_test(combined_RichlyPerfused_oral, value ~ id)
+welch_anova_test(combined_SlowlyPerfused_oral, value ~ id)
+welch_anova_test(combined_liver_oral, value ~ id)
+welch_anova_test(combined_SmallIntestine_oral, value ~ id) #for small intestine not needed, as it had equal variances
+
+
 fig <- ggplot(subset(data, variable %in% c("Lung")),
               mapping = aes(x = id, y= value))+
   geom_boxplot(aes(fill= id),position="identity", size=0.5)+
@@ -376,8 +641,9 @@ gg <- ggplot(tab_C_V)+
   geom_line(aes(x=time, y=CV_P2.5), linetype = "dashed")+
   geom_line(aes(x=time, y=CV_P50), color = "red", size = 1)+
   geom_line(aes(x=time, y=CV_P97.5), linetype = "dashed")+
-  labs(y = "Venous Blood concentration ",
+  labs(y = "Venous Blood concentration (umol/l) ",
        x = "Time (h)")  +
+  xlim(0,4)
   theme_classic()+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
@@ -418,6 +684,97 @@ gg <- ggplot(tab_C_A)+
 gg
 
 
+#fat concentration
+tab_solve_C_F=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
+for (i in 1:(N+NF)) {
+  tab.i=solve.pbk[which(solve.pbk[,"id"]==i),]                  #Put all individuals in data frame
+  tab.i=as.data.frame(tab.i)
+  tab_solve_C_F[,i]=tab.i$C_F
+}
+
+tab_C_F=as.data.frame(matrix(NA,time.end/time.frame+1,4))       #Create an empty data frame with amount of timepoints=amount of rows and 4 columns
+tab_C_F[,1]=c(seq(time.0,time.end,by=time.frame))               #Timepoints in first column
+for (i in 1:(time.end/time.frame+1)) {
+  tab_C_F[i,2]=quantile(tab_solve_C_F[i,],0.025, na.rm = TRUE)      #Lower bound of confidence interval in second column
+  tab_C_F[i,3]=quantile(tab_solve_C_F[i,],0.5, na.rm = TRUE)        #Median in third column
+  tab_C_F[i,4]=quantile(tab_solve_C_F[i,],0.975, na.rm = TRUE)      #Upper bound of confidence interval in fourth column
+}
+colnames(tab_C_F)=c("time","CF_P2.5","CF_P50","CF_P97.5")       #Add column names
+
+gg <- ggplot(tab_C_F)+
+  geom_line(aes(x=time, y=CF_P2.5), linetype = "dashed")+
+  geom_line(aes(x=time, y=CF_P50), color = "red", size = 1)+
+  geom_line(aes(x=time, y=CF_P97.5), linetype = "dashed")+
+  labs(y = "Cinnamaldehyde concentratin in Fat umol/l",
+       x = "Time (h)")  +
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+
+gg
+
+#Lung concentration
+tab_solve_C_Pu=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
+for (i in 1:(N+NF)) {
+  tab.i=solve.pbk[which(solve.pbk[,"id"]==i),]                  #Put all individuals in data frame
+  tab.i=as.data.frame(tab.i)
+  tab_solve_C_Pu[,i]=tab.i$C_Pu
+}
+
+tab_C_Pu=as.data.frame(matrix(NA,time.end/time.frame+1,4))       #Create an empty data frame with amount of timepoints=amount of rows and 4 columns
+tab_C_Pu[,1]=c(seq(time.0,time.end,by=time.frame))               #Timepoints in first column
+for (i in 1:(time.end/time.frame+1)) {
+  tab_C_Pu[i,2]=quantile(tab_solve_C_Pu[i,],0.025, na.rm = TRUE)      #Lower bound of confidence interval in second column
+  tab_C_Pu[i,3]=quantile(tab_solve_C_Pu[i,],0.5, na.rm = TRUE)        #Median in third column
+  tab_C_Pu[i,4]=quantile(tab_solve_C_Pu[i,],0.975, na.rm = TRUE)      #Upper bound of confidence interval in fourth column
+}
+colnames(tab_C_Pu)=c("time","C_P2.5","C_P50","C_P97.5")       #Add column names
+
+gg <- ggplot(tab_C_Pu)+
+  geom_line(aes(x=time, y=C_P2.5), linetype = "dashed")+
+  geom_line(aes(x=time, y=C_P50), color = "red", size = 1)+
+  geom_line(aes(x=time, y=C_P97.5), linetype = "dashed")+
+  labs(y = "Cinnamaldehyde concentratin in Lung umol/l",
+       x = "Time (h)")  +
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+
+gg
 
 
 
+#Lung concentration
+tab_solve_C_L=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
+for (i in 1:(N+NF)) {
+  tab.i=solve.pbk[which(solve.pbk[,"id"]==i),]                  #Put all individuals in data frame
+  tab.i=as.data.frame(tab.i)
+  tab_solve_C_L[,i]=tab.i$C_L
+}
+
+tab_C_L=as.data.frame(matrix(NA,time.end/time.frame+1,4))       #Create an empty data frame with amount of timepoints=amount of rows and 4 columns
+tab_C_L[,1]=c(seq(time.0,time.end,by=time.frame))               #Timepoints in first column
+for (i in 1:(time.end/time.frame+1)) {
+  tab_C_L[i,2]=quantile(tab_solve_C_L[i,],0.025, na.rm = TRUE)      #Lower bound of confidence interval in second column
+  tab_C_L[i,3]=quantile(tab_solve_C_L[i,],0.5, na.rm = TRUE)        #Median in third column
+  tab_C_L[i,4]=quantile(tab_solve_C_L[i,],0.975, na.rm = TRUE)      #Upper bound of confidence interval in fourth column
+}
+colnames(tab_C_L)=c("time","C_P2.5","C_P50","C_P97.5")       #Add column names
+
+gg <- ggplot(tab_C_L)+
+  geom_line(aes(x=time, y=C_P2.5), linetype = "dashed")+
+  geom_line(aes(x=time, y=C_P50), color = "red", size = 1)+
+  geom_line(aes(x=time, y=C_P97.5), linetype = "dashed")+
+  labs(y = "Cinnamaldehyde concentratin in Lung umol/l",
+       x = "Time (h)")  +
+  theme_classic()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        legend.position = "none",
+        title = element_text(size=20))
+
+gg
