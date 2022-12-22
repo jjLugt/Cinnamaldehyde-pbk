@@ -231,15 +231,15 @@ unique(data_250$variable)
 
 #subset the data_250 for analysis
 {
-  data_250_Lung <- subset(data_250, variable %in% c("Lung"))
-  data_250_Blood <- subset(data_250, variable %in% c("Blood"))
-  data_250_Fat <- subset(data_250, variable %in% c("Fat"))
-  data_250_SlowlyPerfused <- subset(data_250, variable %in% c("Slowly Perfused"))
-  data_250_Liver <- subset(data_250, variable %in% c("Liver"))
-  data_250_RichlyPerfused <- subset(data_250, variable %in% c("Richly Perfused"))
-  data_250_SmallIntestine <- subset(data_250, variable %in% c("Small Intestine"))
-  data_250_MALE <- subset(data_250, id %in% c("Male"))
-  data_250_FEMALE <- subset(data_250, id %in% c("Female"))
+  data_Lung <- subset(data_250, variable %in% c("Lung"))
+  data_Blood <- subset(data_250, variable %in% c("Blood"))
+  data_Fat <- subset(data_250, variable %in% c("Fat"))
+  data_SlowlyPerfused <- subset(data_250, variable %in% c("Slowly Perfused"))
+  data_Liver <- subset(data_250, variable %in% c("Liver"))
+  data_RichlyPerfused <- subset(data_250, variable %in% c("Richly Perfused"))
+  data_SmallIntestine <- subset(data_250, variable %in% c("Small Intestine"))
+  data_MALE <- subset(data_250, id %in% c("Male"))
+  data_FEMALE <- subset(data_250, id %in% c("Female"))
 } 
 
 data_250_oral<- read.csv("melt_boxplot_250mg_oral_auc")
@@ -261,7 +261,7 @@ unique(data_250_oral$variable)
 } 
 
 
-#Creation of combined 2.8 and 250 inhalation testing
+#Creation of combined 2.8 and 250 inhalation testing-----------
 data_250_Lung$id<-as.factor(250)
 data_2.8_Lung$id<-as.factor(2.8)
 
@@ -302,9 +302,9 @@ data_2.8_Liver$id<-as.factor(2.8)
 combined_liver<-rbind(data_250_Liver,data_2.8_Liver)
 
 
-###Data analysis
+###Data analysis--------
 
-#1. Is there difference between the organs?
+#1. Is there difference between the organs? for combined------------
 {
   #1a--> between exposures lung 
   results <- aov(value ~ id , combined_lung)
@@ -364,7 +364,7 @@ combined_liver<-rbind(data_250_Liver,data_2.8_Liver)
   
   
 } 
-#Combined 250 oral and inhalation
+#Combined 250 oral and inhalation---------------
 data_250_Lung$id<-as.factor(250)
 data_250_oral_Lung$id<-as.factor(2.8)
 
@@ -404,7 +404,7 @@ data_250_oral_Liver$id<-as.factor(2.8)
 
 combined_liver_oral<-rbind(data_250_Liver,data_250_oral_Liver)
 
-#1. Is there difference between the organs?
+#1. Is there difference between the organs? combined-------------
 {
   #1a--> between exposures lung 
   results <- aov(value ~ id , combined_lung_oral)
@@ -465,7 +465,7 @@ combined_liver_oral<-rbind(data_250_Liver,data_250_oral_Liver)
 } 
 
 
-#1. Is there difference between the organs?
+#1. Is there difference between the organs?---------
 {
   #1a--> within Female
   results <- aov(value ~ variable , data_FEMALE)
@@ -594,8 +594,8 @@ combined_liver_oral<-rbind(data_250_Liver,data_250_oral_Liver)
   
 } 
 
-
-#because almost all variables have UNEQUAL VARIANCE, I peformed 
+#male female differences in a organ
+#because almost all variables have UNEQUAL VARIANCE, I performed 
 # a welch test instead of the one-way anova, just to be sure 
 # but the results remain the same!
 
@@ -627,23 +627,8 @@ welch_anova_test(combined_liver_oral, value ~ id)
 welch_anova_test(combined_SmallIntestine_oral, value ~ id) #for small intestine not needed, as it had equal variances
 
 
-fig <- ggplot(subset(data, variable %in% c("Lung")),
-              mapping = aes(x = id, y= value))+
-  geom_boxplot(aes(fill= id),position="identity", size=0.5)+
-  geom_dotplot(fill="black", binaxis='y', stackdir='center',position=position_dodge(0.5), binwidth= 0.03)+
-  
-  #adding the significance letters manualy
-  geom_text(aes(x, y, label=lab),
-            data=data.frame(x=c("Female","Male"),
-                            y=c(6,8.5),
-                            lab=c("a", "b"),
-                            size=4))
 
-fig
-
-
-
-#visualisation of popgen results
+#visualization of popgen results
 #Venous blood concentration
 tab_solve_C_V=as.data.frame(matrix(NA,time.end/time.frame+1,(N+NF)))    #Create an empty data frame with amount of timepoints=amount of rows and amount of individuals=amount of columns
 for (i in 1:(N+NF)) {
@@ -665,14 +650,16 @@ gg <- ggplot(tab_C_V)+
   geom_line(aes(x=time, y=CV_P2.5), linetype = "dashed")+
   geom_line(aes(x=time, y=CV_P50), color = "red", size = 1)+
   geom_line(aes(x=time, y=CV_P97.5), linetype = "dashed")+
-  labs(y = "Venous Blood concentration (umol/l) ",
-       x = "Time (h)")  +
-  xlim(0,4)
-  theme_classic()+
-  theme(axis.title = element_text(size=14),
-        axis.text = element_text(size = 12),
-        legend.position = "none",
-        title = element_text(size=20))
+  labs(y = "Venous Blood concentration (μmol/l) ",
+       x = "Time (h)",
+       title='CNMA venous blood concentration')  +
+  xlim(0,12)+
+theme_classic()+
+  theme(axis.title = element_text(size=15),
+        axis.text = element_text(size = 15),
+        title = element_text(size=20))+
+  theme(legend.text = element_text(size=15, color="black"),
+        legend.position ="top")
 
 gg
 
@@ -697,9 +684,10 @@ gg <- ggplot(tab_C_A)+
   geom_line(aes(x=time, y=CA_P2.5), linetype = "dashed")+
   geom_line(aes(x=time, y=CA_P50), color = "red", size = 1)+
   geom_line(aes(x=time, y=CA_P97.5), linetype = "dashed")+
-  labs(y = "Arterial Blood concentration ",
+  labs(y = "Arterial Blood concentration (μmol/l) ",
        x = "Time (h)")  +
   theme_classic()+
+  xlim(0,4)+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
         legend.position = "none",

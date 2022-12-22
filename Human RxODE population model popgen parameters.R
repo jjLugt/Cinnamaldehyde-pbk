@@ -443,11 +443,11 @@ inits <- c("A_GI"         =0,
 #exposure
 ex <- eventTable(amount.units = amount.units, time.units = time.units) %>%
   et(id=1:nrow(phys),seq(from = time.0, to = time.end, by = time.frame))%>%
-  #et(id=1:nrow(phys),amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
-  #et(id=1:nrow(phys),amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.1, cmt="A_inhalation_Dose", nbr.doses=0,ii=0.008)%>%
+  et(id=1:nrow(phys),amt=(Oral_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3  , dur=0.01, cmt="A_GI", nbr.doses=nbr.doses)%>%
+  #et(id=1:nrow(phys),amt=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3 , dur=0.1, cmt="A_inhalation_Dose")%>%
   et(id=1:nrow(phys),amt=phys$init_GSH_SI, dur=0.001, cmt="AM_SIc_GSH", nbr.doses=1)%>%
-  #et(id=1:nrow(phys),amt=(iv_dose_in_mg_bw) * phys$BW/ MW  * 1e+3, dur=0.005,cmt="A_V",nbr.doses=nbr.doses)%>%
+  et(id=1:nrow(phys),amt=(iv_dose_in_mg_bw) * phys$BW/ MW  * 1e+3, dur=0.005,cmt="A_V",nbr.doses=nbr.doses)%>%
   et(id=1:nrow(phys),amt=phys$init_GSH_L, dur=0.001, cmt="AM_Lc_GSH", nbr.doses=1)
   
-ex$add.dosing(dose=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3, nbr.doses=12, dosing.interval=0.5, cmt="A_inhalation_Dose",dur=0.08, start.time=0.1)
+ex$add.dosing(dose=(Inhalation_Dose_in_mg_bw) * phys$BW/ MW  * 1e+3, nbr.doses=12, dosing.interval=0.5, cmt="A_inhalation_Dose",dur=0.05, start.time=0.1)
 

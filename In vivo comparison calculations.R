@@ -10,7 +10,6 @@ library(truncnorm)
 library(reshape2)
 library(plotly)
 library(PKNCA)
-library(bio3d)
 
 #Generating a file for the comparison with in vivo data 
 blood_data <- as.data.frame(solve.pbk_rat[,c(1,3,4)])

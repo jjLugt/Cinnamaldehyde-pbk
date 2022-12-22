@@ -2014,8 +2014,8 @@ p_cmax_250mg_inhalation<-ggplot(melt_boxplot_250mg_inhalation ,aes(x=variable,y=
                                  "Female" = "red"),
                      labels= c( "Male", "Female"),
                      name= "Sex")+
-  scale_y_continuous(trans='log10')+
-  labs(x='Organs', y='umol/l', title='Inhalation Cmax values 250mg dose Human')+
+  scale_y_continuous(trans='log10',labels = function(x) sprintf("%g", x))+
+  labs(x='Organs', y='μmol/l-hr', title='Inhalation Cmax values 250mg dose Human')+
   theme_classic()+
   theme(axis.title = element_text(size=15),
         axis.text = element_text(size = 15),
@@ -2250,7 +2250,7 @@ write.csv(melt_boxplot_2.8mg_inhalation,"D:/PBK/Cinnamaldehyde-pbk\\melt_boxplot
 
 p_auc_2.8mg_inhalation<-ggplot(melt_boxplot_2.8mg_inhalation ,aes(x=variable,y=value))+
   geom_boxplot(notch=TRUE)+
-  geom_jitter(aes(col=id),alpha=0.3)+
+  geom_jitter(aes(col=id),alpha=0.15)+
   scale_color_manual(values = c( "Male" = "blue",
                                  "Female" = "red"),
                      labels= c( "Male", "Female"),
@@ -2260,8 +2260,8 @@ p_auc_2.8mg_inhalation<-ggplot(melt_boxplot_2.8mg_inhalation ,aes(x=variable,y=v
                   y=c(40,40,800,40,0.8,40,10),
                   lab=c("bc,c","bc","a","c","e","b","d"),
                   size=4))+
-  scale_y_continuous(trans='log10')+
-  labs(x='Organs', y='umol/l-hr', title='Inhalation AUC multiple 2.8mg dose Human')+
+  scale_y_continuous(trans='log10',labels = function(x) sprintf("%g", x))+
+  labs(x='Organs', y='μmol/l-hr', title='AUC multiple 2.8mg dose inhalation Human')+
   theme_classic()+
   theme(axis.title = element_text(size=15),
         axis.text = element_text(size = 15),
