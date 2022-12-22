@@ -90,12 +90,12 @@ PBK_Cinnamaldehyde <- RxODE({
   #GSH#
   C_SIc_GSH      <- AM_SIc_GSH / V_SI;                                                       #Concentration of GSH in the Small Intestine in umol/l
   RM_SI_AG_CHEM  <- k_GSH * C_V_SI * C_SIc_GSH;                                       #Rate of Cinnamaldehyde binding in the small intestine to GSH in μmol/h 
-  RM_SIc_GSH     <- G_SYN_SI - (RM_SI_AG_CHEM + k_SI_GLOS * AM_SIc_GSH);         #Rate of  GSH concentration in the Smal intesinte cytosol μmol/h 
+  RM_SIc_GSH     <- G_SYN_SI - (RM_SI_AG_CHEM + k_SI_GLOS * AM_SIc_GSH);         #Rate of  GSH concentration in the Small intestine cytosol μmol/h 
   
   #Cinnamyl alcohol#
   C_OH_SI        <- A_OH_SI   / V_SI;                                      #Concentration of Cinnamyl alcOHol in the Small intestine in umol/l
   C_OH_V_SI      <- C_OH_SI   / P_OH_SI;                                   #Concentration of Cinnamyl alcOHol in venous blood leaving the Small intestine  in umol/l
-  RM_SI_AO       <- (Vsmax_SI_AO * C_V_SI) / (Km_SI_AO + C_V_SI);          #Ammount of Cinnamaldehyde reduced to cinnamyl alcOHol in the small intestine in umol
+  RM_SI_AO       <- (Vsmax_SI_AO * C_V_SI) / (Km_SI_AO + C_V_SI);          #Amount of Cinnamaldehyde reduced to cinnamyl alcOHol in the small intestine in umol
   R_OH_M_SI_C_A  <- (Vsmax_SI_OH * C_OH_V_SI)/(Km_SI_OH + C_OH_V_SI);      #Rate of Cinnamyl alcOHol enzymatically oxidized to cinnamaldehyde in the small intestine in umol 
   
   R_OH_SI        <- Q_SI * (C_OH_A - C_OH_V_SI) + RM_SI_AO - R_OH_M_SI_C_A;  #Rate of Cinnamyl alcohol concentration change in the small intestine in μmol/h 
