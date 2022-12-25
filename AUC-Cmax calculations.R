@@ -1722,7 +1722,7 @@ p_auc_250mg_oral<-ggplot(melt_boxplot_250mg_oral ,aes(x=variable,y=value))+
                             y=c(13,45,80,10,350,15,8000),
                             lab=c("a","a","a","a","a","a","b"),
                             size=4))+
-  scale_y_continuous(trans='log10')+
+  #scale_y_continuous(trans='log10')+
   labs(x='Organs', y='μmol/l-hr', title='AUC values 250mg oral dose Human')+
   theme_classic()+
   theme(axis.title = element_text(size=15),
@@ -1966,7 +1966,7 @@ p_auc_250mg_inhalation<-ggplot(melt_boxplot_250mg_inhalation ,aes(x=variable,y=v
                             y=c(300,300,4000,300,8,330,150),
                             lab=c("c","bc,b","a","c,bc","e","b","d"),
                             size=4))+
-  scale_y_continuous(trans='log10',labels = function(x) sprintf("%g", x))+
+  #scale_y_continuous(trans='log10',labels = function(x) sprintf("%g", x))+
   labs(x='Organs', y='μmol/l-hr', title='AUC values 250mg inhalation dose Human')+
   theme_classic()+
   theme(axis.title = element_text(size=15),
@@ -2257,7 +2257,7 @@ p_auc_2.8mg_inhalation<-ggplot(melt_boxplot_2.8mg_inhalation ,aes(x=variable,y=v
                      name= "Sex")+
   geom_text(aes(x, y, label=lab),
   data=data.frame(x=c("Lung","Blood","Fat","Slowly Perfused","Liver","Richly Perfused","Small Intestine"),
-                  y=c(40,40,800,40,0.8,40,10),
+                  y=c(40,40,1000,40,0.5,40,10),
                   lab=c("bc,c","bc","a","c","e","b","d"),
                   size=4))+
   scale_y_continuous(trans='log10',labels = function(x) sprintf("%g", x))+
