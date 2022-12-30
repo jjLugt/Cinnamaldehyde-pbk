@@ -753,8 +753,7 @@ gg <- ggplot(tab_C_Pu)+
        x = "Time (h)",
        title='CNMA Concentration in lung tissue')  +
   theme_linedraw()+
-  xlim(0.1,0.3)+
-  #scale_x_continuous(breaks=seq(0,1,0.5))+
+  scale_x_continuous(breaks=seq(0,10,0.5))+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
         legend.position = "none",
