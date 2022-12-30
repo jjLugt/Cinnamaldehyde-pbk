@@ -650,9 +650,9 @@ gg <- ggplot(tab_C_V)+
   geom_line(aes(x=time, y=CV_P2.5), linetype = "dashed")+
   geom_line(aes(x=time, y=CV_P50), color = "red", size = 1)+
   geom_line(aes(x=time, y=CV_P97.5), linetype = "dashed")+
-  labs(y = "Venous Blood concentration (μmol/l) ",
+  labs(y = "Blood concentration (μmol/l) ",
        x = "Time (h)",
-       title='CNMA venous blood concentration')  +
+       title='CNMA blood concentration')  +
   xlim(0,12)+
 theme_classic()+
   theme(axis.title = element_text(size=15),
@@ -717,14 +717,15 @@ gg <- ggplot(tab_C_F)+
   geom_line(aes(x=time, y=CF_P2.5), linetype = "dashed")+
   geom_line(aes(x=time, y=CF_P50), color = "red", size = 1)+
   geom_line(aes(x=time, y=CF_P97.5), linetype = "dashed")+
-  labs(y = "Cinnamaldehyde concentratin in Fat umol/l",
+  labs(y = "Cinnamaldehyde concentratin in Fat μmol/l ",
        x = "Time (h)")  +
   theme_classic()+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
         legend.position = "none",
         title = element_text(size=20))
-
+ggsave(plot=gg,"CNMA concentration in fat tissue 2.8mg/kg-BW",
+       width= 11.69, height= 8.3, dpi= 250)
 gg
 
 #Lung concentration
@@ -748,13 +749,17 @@ gg <- ggplot(tab_C_Pu)+
   geom_line(aes(x=time, y=C_P2.5), linetype = "dashed")+
   geom_line(aes(x=time, y=C_P50), color = "red", size = 1)+
   geom_line(aes(x=time, y=C_P97.5), linetype = "dashed")+
-  labs(y = "Cinnamaldehyde concentratin in Lung umol/l",
-       x = "Time (h)")  +
+  labs(y = "Cinnamaldehyde concentratin in Lung μmol/l ",
+       x = "Time(h)",  
+  title='CNMA Concentratin in Lung Tissue')  +
   theme_classic()+
+  xlim(0,12)+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
         legend.position = "none",
         title = element_text(size=20))
+ggsave(plot=gg,"CNMA concentration in Lung tissue 2.8mg/kg-BW",
+       width= 11.69, height= 8.3, dpi= 250)
 
 gg
 
@@ -781,12 +786,13 @@ gg <- ggplot(tab_C_L)+
   geom_line(aes(x=time, y=C_P2.5), linetype = "dashed")+
   geom_line(aes(x=time, y=C_P50), color = "red", size = 1)+
   geom_line(aes(x=time, y=C_P97.5), linetype = "dashed")+
-  labs(y = "Cinnamaldehyde concentratin in Lung umol/l",
+  labs(y = "Cinnamaldehyde concentratin in Lung μmol/l ",
        x = "Time (h)")  +
   theme_classic()+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
         legend.position = "none",
         title = element_text(size=20))
-
+ggsave(plot=gg,"CNMA concentration in Liver tissue 2.8mg/kg-BW",
+       width= 11.69, height= 8.3, dpi= 250)
 gg
