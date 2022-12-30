@@ -19,8 +19,8 @@ interval                   <-0.1      #interval between dosing in H
 time.0                     <-0        #time start dosing
 time.end                   <-24        #time end of simulation
 time.frame                 <-0.1     #time steps of simulation
-Oral_Dose_in_mg_bw         <-0.7    #Dose in mg/kg-bw
-Inhalation_Dose_in_mg_bw   <-0      #The inhaled dose in mg/kg-bw
+Oral_Dose_in_mg_bw         <-0    #Dose in mg/kg-bw
+Inhalation_Dose_in_mg_bw   <-250      #The inhaled dose in mg/kg-bw
 iv_dose_in_mg_bw           <-0       #IV administered dose in mg/kg/bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <-70      #Body weight in Kg

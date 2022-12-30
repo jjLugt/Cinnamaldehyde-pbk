@@ -12,7 +12,7 @@ library(PKNCA)
 
 #Simulations
 set.seed(15204)         #to ensure a reproducible output
-amount.units            <-"umol"
+amount.units            <-"μmol"
 time.units              <-"h"
 nbr.doses               <-12
 dosing.interval         <-0.8     # time between dosing in hours
@@ -120,7 +120,7 @@ var_m_pop$check         <- var_m_pop$Q_SI + var_m_pop$Q_F + var_m_pop$Q_L + var_
 var_m_pop$P_V           <-rnorm(N,mean=540,sd=3)
 
 #----GSH parameters----#
-#--GSH synthesis in umol/kg tissue/h--#
+#--GSH synthesis in μmol/kg tissue/h--#
 
 var_m_pop$G_SYN_L     <- 869 * var_m_pop$V_L  #Liver 
 var_m_pop$G_SYN_SI    <- 78   * var_m_pop$V_SI   #Small intestine
@@ -130,8 +130,8 @@ var_m_pop$k_L_GLOS    <- 0.142 #Liver
 var_m_pop$k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-var_m_pop$init_GSH_L  <- 6120 * var_m_pop$V_L  #initial GSH concentration in the liver in umol
-var_m_pop$init_GSH_SI <- 1780 * var_m_pop$V_SI  #initial GSH concentration in the small intestine in umol
+var_m_pop$init_GSH_L  <- 6120 * var_m_pop$V_L  #initial GSH concentration in the liver in μmol
+var_m_pop$init_GSH_SI <- 1780 * var_m_pop$V_SI  #initial GSH concentration in the small intestine in μmol
 
 var_m_pop$k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 
@@ -149,7 +149,7 @@ var_m_pop$S9_scaling_L <- 143 * (var_m_pop$V_L * 1000) #scaling factor for S9 fr
 #----Liver----#
 
 #-first rate order constants-#
-var_m_pop$k_L_OH  <- 4.2e-02 * 60/1000 * var_m_pop$S9_scaling_L  #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
+var_m_pop$k_L_OH  <- 4.2e-02 * 60/1000 * var_m_pop$S9_scaling_L  #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in μmol/h
 
 #--Michaelis menten constants--#
 var_m_pop$Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
@@ -177,7 +177,7 @@ var_m_pop$Vsmax_SI_AO    <- 30  * 60/1000* var_m_pop$S9_scaling_SI #Scaled Vmax 
 var_m_pop$Vsmax_SI_OH    <- 5.0 * 60/1000* var_m_pop$S9_scaling_SI #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
 
 #---Dose male---#
-var_m_pop$Oral_Dose       <- (Oral_Dose_in_mg_bw * var_m_pop$BW)/ MW  * 1e+3     #The administered dose in umol 
+var_m_pop$Oral_Dose       <- (Oral_Dose_in_mg_bw * var_m_pop$BW)/ MW  * 1e+3     #The administered dose in μmol 
 var_m_pop$Inhalation_Dose <- (Inhalation_Dose_in_mg_bw * var_m_pop$BW)/ MW  * 1e+3 #The inhaled dose in μmol
 
 var_m_pop$Volume_exposure_chamber <-Volume_exposure_chamber
@@ -213,7 +213,7 @@ var_f_pop$check         <- var_f_pop$Q_SI + var_f_pop$Q_F + var_f_pop$Q_L + var_
 var_f_pop$P_V           <-rnorm(N,mean=390,sd=3) #Pulmonary ventilation in L/h
 
 #----GSH parameters female----#
-#--GSH synthesis in umol/kg tissue/h--#
+#--GSH synthesis in μmol/kg tissue/h--#
 
 var_f_pop$G_SYN_L     <- 869 * var_f_pop$V_L #Liver 
 var_f_pop$G_SYN_SI    <- 78   * var_f_pop$V_SI #Small intestine
@@ -223,8 +223,8 @@ var_f_pop$k_L_GLOS    <- 0.142 #Liver
 var_f_pop$k_SI_GLOS   <- 0.044 #Small intestine
 
 #--Initial GSH concentration--#
-var_f_pop$init_GSH_L  <- 6120 * var_f_pop$V_L  #initial GSH concentration in the liver in umol/kg
-var_f_pop$init_GSH_SI <- 1780 * var_f_pop$V_SI  #initial GSH concentration in the small intestine in umol/kg
+var_f_pop$init_GSH_L  <- 6120 * var_f_pop$V_L  #initial GSH concentration in the liver in μmol/kg
+var_f_pop$init_GSH_SI <- 1780 * var_f_pop$V_SI  #initial GSH concentration in the small intestine in μmol/kg
 
 var_f_pop$k_GSH <- 6.6 * 10^(-4) #The second-order rate constant of the chemical reaction of cinnamaldehyde with GSH in μmol/h
 
@@ -241,7 +241,7 @@ var_f_pop$S9_scaling_L <- 143 * (var_f_pop$V_L * 1000)#scaling factor for S9 fra
 #----Liver----#
 
 #-first rate order constants-#
-var_f_pop$k_L_OH  <- 4.2e-02 * 60/1000 * var_f_pop$S9_scaling_L  #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in umol/h
+var_f_pop$k_L_OH  <- 4.2e-02 * 60/1000 * var_f_pop$S9_scaling_L  #Scaled first rate order constant for the enzymatic oxidation of cinnamyl alcohol in the liver in μmol/h
 
 #--Michaelis menten constants--#
 var_f_pop$Km_L_CA     <-  8.5  #Km for enzymatic oxidation of cinnamaldehyde into Cinnamic acid in the liver in μM
@@ -268,7 +268,7 @@ var_f_pop$Vsmax_SI_AO    <- 30 * 60/1000 * var_f_pop$S9_scaling_SI #Scaled Vmax 
 var_f_pop$Vsmax_SI_OH    <- 5.0 * 60/1000* var_f_pop$S9_scaling_SI #Scaled Vmax for enzymatic Oxidation of cinnamyl alcohol into cinnamaldehyde in the Small Intestine in μmol/h 
 
 #---Dose female---#
-var_f_pop$Oral_Dose       <-(Oral_Dose_in_mg_bw * var_f_pop$BW)/ MW  * 1e+3     #The administered dose in umol 
+var_f_pop$Oral_Dose       <-(Oral_Dose_in_mg_bw * var_f_pop$BW)/ MW  * 1e+3     #The administered dose in μmol 
 var_f_pop$Inhalation_Dose <- (Inhalation_Dose_in_mg_bw * var_f_pop$BW)/ MW  * 1e+3 #The inhaled dose in μmol
 
 var_f_pop$Volume_exposure_chamber <-Volume_exposure_chamber

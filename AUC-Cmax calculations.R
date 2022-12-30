@@ -14,6 +14,7 @@ library(PKNCA)
 library(ggplot2)
 
 #----------------------------------single Human model------------------
+#----------------Oral exposure--------------------------
 #Making a dataframe for the calculations
 AUC_single_human<- solve.pbk[,c(1,11,17,23,29,35,49)]
 
@@ -284,11 +285,281 @@ results_obj_manual$result
 write.csv(results_obj_manual$result, "results_250mg_oral_single_human_C_SI_AUC")
 
 
+#-------------------------Inhalation exposure -----------------------
 
-#------------------250mg dose Rat AUC values-------------------# 
-#AUC calculations
-#single Human model
 #Making a dataframe for the calculations
+AUC_single_human<- solve.pbk[,c(1,11,17,23,29,35,49)]
+
+#Combining Arterial and venous blood into one general blood compartment
+AUC_single_human[,8]<- solve.pbk[,3]+ solve.pbk[,4]
+
+colnames(AUC_single_human)<-c("time","C_Pu","C_F","C_RP","C_SP","C_SI","C_L","C_B")
+
+
+
+#Generating a Dose data frame which includes time and dose
+single_human_dose <-as.data.frame(solve.pbk[,1])
+#Grabbing an easy empty colum of the correct length
+single_human_dose[2] <-solve.pbk[,7]
+
+
+#Adding the dose to the first time point in the dose data frame 
+
+#oral dose 
+single_human_dose[1,2] <-ex[2,6]
+colnames(single_human_dose)<-c("time","dose")
+
+#inhalation dose 
+single_human_dose[1,2] <-ex[3,6]
+
+colnames(single_human_dose)<-c("time","dose")
+
+#IV dose
+single_human_dose[1,2] <-ex[6,6]
+
+colnames(single_human_dose)<-c("time","dose")
+#-------------Liver-----------#
+#passing the concentration data frame to PKNCA
+single_human_conc <- PKNCAconc(AUC_single_human, C_L~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_human_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_human_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_L_AUC")
+
+
+
+#-------------Lung tissue-----------#
+#passing the concentration data frame to PKNCA
+single_human_conc <- PKNCAconc(AUC_single_human, C_Pu~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_human_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_human_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_Pu_AUC")
+
+
+#-------------Fat-----------#
+#passing the concentration data frame to PKNCA
+single_human_conc <- PKNCAconc(AUC_single_human, C_F~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_human_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_human_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_F_AUC")
+
+
+#-------------Richly perfused-----------#
+#passing the concentration data frame to PKNCA
+single_human_conc <- PKNCAconc(AUC_single_human, C_RP~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_human_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_human_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_RP_AUC")
+
+
+#-------------Slowly perfused-----------#
+#passing the concentration data frame to PKNCA
+single_human_conc <- PKNCAconc(AUC_single_human, C_SP~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_human_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_human_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_SP_AUC")
+
+
+#-------------Blood-----------#
+#passing the concentration data frame to PKNCA
+single_human_conc <- PKNCAconc(AUC_single_human, C_B~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_human_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_human_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_B_AUC")
+
+
+
+#-------------Small intestine-----------#
+#passing the concentration data frame to PKNCA
+single_human_conc <- PKNCAconc(AUC_single_human, C_SI~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_human_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_human_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_human_C_SI_AUC")
+
+#------------------250mg oral dose Rat AUC values-------------------
+#AUC calculations
+#Making a data frame for the calculations
 AUC_single_rat<- solve.pbk_rat[,c(1,11,17,23,29,35,48)]
 
 #Combining Arterial and venous blood into one general blood compartment
@@ -522,6 +793,243 @@ results_obj_manual$result
 
 #Writing the results into a CSV file 
 write.csv(results_obj_manual$result, "results_250mg_oral_single_rat_C_F_AUC")
+
+#-----------250mg inhalation RAT auc calculations-------------------------------------------------- 
+#AUC calculations
+#Making a data frame for the calculations
+AUC_single_rat<- solve.pbk_rat[,c(1,11,17,23,29,35,48)]
+
+#Combining Arterial and venous blood into one general blood compartment
+AUC_single_rat[,8]<- solve.pbk_rat[,3]+ solve.pbk_rat[,4]
+
+colnames(AUC_single_rat)<-c("time","C_Pu","C_F","C_RP","C_SP","C_SI","C_L","C_B")
+
+#Generating a Dose data frame which includes time and dose
+single_rat_dose <-as.data.frame(solve.pbk_rat[,1])
+#Grabbing an easy empty colum of the correct length
+single_rat_dose[2] <-solve.pbk_rat[,7]
+#Adding the dose to the first time point in the dose data frame 
+single_rat_dose[1,2] <-ex[2,6]
+colnames(single_rat_dose)<-c("time","dose")
+
+
+#---------Calculating Blood auc values--------------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_B~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_rat_C_B_AUC")
+
+#------------------calculating Lung auc values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_Pu~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_rat_C_Pu_AUC")
+
+#------------------calculating SP tissue auc values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_SP~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_rat_C_SP_AUC")
+
+#------------------calculating RP auc values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_RP~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_rat_C_RP_AUC")
+
+
+#------------------calculating si auc values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_SI~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_rat_C_SI_AUC")
+
+#------------------calculating Liver auc values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_L~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_rat_C_L_AUC")
+
+#------------------calculating Lung FAT values----------#
+#passing the concentration data frame to PKNCA
+single_rat_conc <- PKNCAconc(AUC_single_rat, C_Pu~time)
+
+#passing the dose data frame to PKNCA
+dose_obj <- PKNCAdose(single_rat_dose, dose~time)
+
+#Running the calculations 
+#Setting the end of the auc calculation at 24 hours
+intervals_manual <- data.frame(start=0,
+                               end=24,
+                               cmax=TRUE,
+                               tmax=TRUE,
+                               aucinf.obs=TRUE,
+                               auclast=TRUE)
+
+#Creating the combined data obj with bothe dose and concentration data 
+data_obj_manual<- PKNCAdata(single_rat_conc, dose_obj,
+                            intervals=intervals_manual)
+#Running the PKNCA analysis 
+results_obj_manual <- pk.nca(data_obj_manual)
+
+#look at the data to get an impression
+knitr::kable(head(as.data.frame(results_obj_manual)))
+
+summary(results_obj_manual)
+results_obj_manual$result
+
+#Writing the results into a CSV file 
+write.csv(results_obj_manual$result, "results_250mg_inhalation_single_rat_C_F_AUC")
 
 
 #Plotting rat and human results of the auc calculations

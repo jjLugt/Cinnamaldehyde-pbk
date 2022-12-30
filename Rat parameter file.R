@@ -17,10 +17,10 @@ amount.units               <-"umol"
 time.units                 <-"h"
 nbr.doses                  <-1        #number of doses
 time.0                     <-0        #time start dosing
-time.end                   <-12        #time end of simulation
+time.end                   <-24        #time end of simulation
 time.frame                 <-0.1      #time steps of simulation
-Oral_dose_in_mg_bw         <-50     #Dose in mg/kg-bw
-Inhalation_dose_in_mg_bw   <-0        #The inhaled dose in mg/kg-bw
+Oral_dose_in_mg_bw         <-0     #Dose in mg/kg-bw
+Inhalation_dose_in_mg_bw   <-250        #The inhaled dose in mg/kg-bw
 iv_dose_in_mg_bw           <-0       #IV administered dose in mg/kg/bw
 MW                         <-132.16   #The molecular weight of Cinnamaldehyde
 BW                         <- 0.25    #Body weight in Kg
@@ -84,7 +84,7 @@ P_V      <- 0.75 #Pulmonary ventilation in L/h
 G_SYN_L     <- 869 * V_L * 0.9  #Liver 
 G_SYN_SI    <- 78  * V_SI * 0.9  #Small intestine
 
-#-Apparent first order rate constant GSH turn over(RAT?) per h-#
+#-Apparent first order rate constant GSH turn over per h-#
 k_L_GLOS    <- 0.142 #Liver
 k_SI_GLOS   <- 0.044 #Small intestine
 
@@ -99,8 +99,8 @@ C_PRO_L     <- 5319  * V_L  #Liver
 C_PRO_SI    <- 245   * V_SI #Small intestine
 
 #--Chemical parameters--#
-Ka <- 0.2 #Absorption rate constant for uptake in the Small intestine in per H
-#Ka <- 1.97 #Calculated
+#Ka <- 0.2 #Absorption rate constant for uptake in the Small intestine in per H
+Ka <- 1.97 #Calculated
 #----Liver----#
 S9_scaling_L <- 143 * (V_L * 1000) #scaling factor for S9 fraction per g tissue
 
