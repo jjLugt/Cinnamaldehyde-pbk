@@ -43,6 +43,7 @@ p1 <- plot_ly(Combined_data_file_for_graph_500mg, x=~time, y=Combined_data_file_
               colors = "Set2",
               type= "scatter",
               mode= "markers",
+              shape= ~ID,
               hovertext= ~sample)%>%
   layout(title= 'Blood concentration comparison dose = 500mg/kg-bw',
          xaxis= list(title= 'Time (hours)'),
@@ -52,13 +53,24 @@ p1
 
 g <- ggplot(Combined_data_file_for_graph_500mg,aes(time,Combined_data_file_for_graph_500mg$'umol.l',color=ID))
 
-g + geom_point()+ scale_y_continuous(trans='log10')+
-  labs(subtitle="Oral dose 500mg/kg-BW", 
+g + geom_point(aes(shape=ID),size=2)+ 
+  scale_y_continuous(trans='log10',labels = function(x) sprintf("%g", x))+
+  scale_x_continuous(breaks= c(0:30))+
+  scale_shape_manual(values=c(0, 1, 1,1,2,17,8,5))+
+  theme_linedraw()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        title = element_text(size=20),
+        panel.grid = element_line(color = "#8ccde3",
+                                  size = 0.75,
+                                  linetype = 2),
+  )+
+  labs(subtitle="Oral dose 500 mg/kg-BW", 
        y="Cinnamaldehyde concentration (μmol/L)", 
-       x="Time in Hours", 
+       x="Time (H)", 
        title="Cinnamaldehyde concentration in blood", 
        caption="PBK model")
-ggsave(plot=g,"CNMA in blood 500mg oral comparison.png",
+ggsave(plot=g,"CNMA in blood 500 mg oral comparison.png",
        width= 11.69, height= 8.3, dpi= 250)
 
 RAT_data_obs_1 <- Combined_data_file_for_graph_500mg[1:15,]
@@ -277,10 +289,21 @@ p1
 
 g <- ggplot(Combined_data_file_for_graph_250mg,aes(time,Combined_data_file_for_graph_250mg$`ug.ml`,color=ID))
 
-g + geom_point()+ scale_y_continuous(trans='log10')+
-  labs(subtitle="Oral dose 250mg/kg-BW", 
+g + geom_point(aes(shape=ID),size=2)+ 
+  scale_y_continuous(trans='log10',labels = function(x) sprintf("%g", x))+
+  scale_x_continuous(breaks= c(0:30))+
+  scale_shape_manual(values=c(0, 1, 1,1,2,17,8,5))+
+  theme_linedraw()+
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size = 12),
+        title = element_text(size=20),
+        panel.grid = element_line(color = "#8ccde3",
+                                  size = 0.75,
+                                  linetype = 2),
+  )+
+  labs(subtitle="Oral dose 250 mg/kg-BW", 
        y="Cinnamaldehyde concentration (μmol/L)", 
-       x="Time in Hours", 
+       x="Time (H)", 
        title="Cinnamaldehyde concentration in blood", 
        caption="Cinnamaldehyde PBK model")
 ggsave(plot=g,"CNMA in blood 250mg oral comparison.png",

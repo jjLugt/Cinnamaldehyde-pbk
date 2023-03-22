@@ -1,6 +1,7 @@
 #author: Joris Jean van der Lugt
 #date: 28-10-2021
-#Human cinnamaldehyde pbk Model adapted from:  "Dose-dependent DNA adduct formation by cinnamaldehyde and other food-borne α,β-unsaturated aldehydes predicted by physiologically based in silico modelling"
+#rat cinnamaldehyde pbk Model adapted from:  "Dose-dependent DNA adduct formation by cinnamaldehyde and other food-borne α,β-unsaturated aldehydes predicted by physiologically based in silico modelling"
+library(RxODE)
 PBK_Cinnamaldehyde <- RxODE({
   
   #--Defining the compartments of the model--#
