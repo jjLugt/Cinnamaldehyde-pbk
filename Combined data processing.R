@@ -717,7 +717,7 @@ gg <- ggplot(tab_C_F)+
   geom_line(aes(x=time, y=CF_P2.5), linetype = "dashed")+
   geom_line(aes(x=time, y=CF_P50), color = "red", size = 1)+
   geom_line(aes(x=time, y=CF_P97.5), linetype = "dashed")+
-  labs(y = "Cinnamaldehyde concentratin in Fat μmol/l ",
+  labs(y = "Cinnamaldehyde concentration in Fat μmol/l",
        x = "Time (h)")  +
   theme_classic()+
   theme(axis.title = element_text(size=14),
@@ -744,24 +744,25 @@ for (i in 1:(time.end/time.frame+1)) {
   tab_C_Pu[i,4]=quantile(tab_solve_C_Pu[i,],0.975, na.rm = TRUE)      #Upper bound of confidence interval in fourth column
 }
 colnames(tab_C_Pu)=c("time","C_P2.5","C_P50","C_P97.5")       #Add column names
+tab_C_Pu<-tab_C_Pu[-c(202:481),]
 
 gg <- ggplot(tab_C_Pu)+
   geom_line(aes(x=time, y=C_P2.5), linetype = "dashed")+
   geom_line(aes(x=time, y=C_P50), color = "red", size = 1)+
   geom_line(aes(x=time, y=C_P97.5), linetype = "dashed")+
-  labs(y = "Cinnamaldehyde concentratin in Lung μmol/l ",
-       x = "Time(h)",  
-  title='CNMA Concentratin in Lung Tissue')  +
-  theme_classic()+
-  xlim(0,12)+
+  labs(y = "Cinnamaldehyde concentration in Lung μmol/l",
+       x = "Time (h)",
+       title='CNMA Concentration in lung tissue')  +
+  theme_linedraw()+
+  scale_x_continuous(breaks=seq(0,10,0.5))+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
         legend.position = "none",
-        title = element_text(size=20))
-ggsave(plot=gg,"CNMA concentration in Lung tissue 2.8mg/kg-BW",
-       width= 11.69, height= 8.3, dpi= 250)
-
-gg
+        title = element_text(size=20),
+        panel.grid = element_line(color = "#8ccde3",
+                                      size = 0.75,
+                                      linetype = 2),
+        )
 
 
 
@@ -786,8 +787,9 @@ gg <- ggplot(tab_C_L)+
   geom_line(aes(x=time, y=C_P2.5), linetype = "dashed")+
   geom_line(aes(x=time, y=C_P50), color = "red", size = 1)+
   geom_line(aes(x=time, y=C_P97.5), linetype = "dashed")+
-  labs(y = "Cinnamaldehyde concentratin in Lung μmol/l ",
-       x = "Time (h)")  +
+  labs(y = "Cinnamaldehyde concentratin in Lung μmol/l",
+       x = "Time (h)")+
+
   theme_classic()+
   theme(axis.title = element_text(size=14),
         axis.text = element_text(size = 12),
