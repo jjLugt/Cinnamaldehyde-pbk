@@ -1,6 +1,6 @@
 #author: Joris Jean van der Lugt
 #date: 05-08-2022
-#De Jongh et al 2011 Qsar calculation 
+#QSAR calculation 
 
 #EPIsuite Log Kow QSAR
 Log_Kow_Benzaldehyde    <- 1.71
