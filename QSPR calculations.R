@@ -1,8 +1,8 @@
 #author: Joris Jean van der Lugt
 #date: 05-08-2022
-#QSAR calculation 
+#QSPR calculation 
 
-#EPIsuite Log Kow QSAR
+#EPIsuite Log Kow QSPR
 Log_Kow_Benzaldehyde    <- 1.71
 Kow_Benzaldehyde       <- 1*10^1.71
 Log_Kow_Cinnamaldehyde  <- 1.82
@@ -10,7 +10,7 @@ Kow_Cinnamaldehyde      <- 1*10^1.82
 Log_Kow_Cinnamylalcohol <- 1.84
 Kow_Cinnamylalcohol     <- 1*10^1.84
 
-#EPIsuite Log Koa QSAR
+#EPIsuite Log Koa QSPR
 Log_Koa_Benzaldehyde    <- 4.79
 Koa_Benzaldehyde        <- 1*10^4.79
 Log_Koa_Cinnamaldehyde  <- 1.119928             #calculated using Log_Kow_Cinnamaldehyde - log(Cinnamaldehyde_Henry_DL)
@@ -175,7 +175,7 @@ P_B_Benzaldehdye_R <- 0.4445/HL_Benzaldehyde + 0.005189 * Koa_Benzaldehyde
 
 
 
-#Calculation of Ka and Fa based on the QSAR in Ans Punt
+#Calculation of Ka and Fa based on the QSPR in Ans Punt
 #Just change h polar surface area
 #rat
 R<-0.125 #radius small intestine 0.252/2
@@ -192,7 +192,7 @@ Peff.cm.per.hr = Peff.cm.power.minus.four.per.s/10000*3600
 Ka= (Peff.cm.per.hr*2)/R
 Fa = 1-(1+Ka/kt)**-7
 
-#Calculation of Ka and Fa based on the QSAR in Ans Punt
+#Calculation of Ka and Fa based on the QSPR in Ans Punt
 #Just change h polar sufrace area
 Human
 R<-1.25 #radius small intestine=2.52·π≈0.39789cm
